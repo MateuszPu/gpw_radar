@@ -1,0 +1,21 @@
+{
+  "generator-jhipster": {
+    "baseName": "gpwRadar",
+    "packageName": "com.gpw.radar",
+    "packageFolder": "com/gpw/radar",
+    "authenticationType": "session",
+    "hibernateCache": "no",
+    "clusteredHttpSession": "no",
+    "websocket": "no",
+    "databaseType": "sql",
+    "devDatabaseType": "postgresql",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": "no",
+    "useCompass": false,
+    "buildTool": "maven",
+    "frontendBuilder": "grunt",
+    "javaVersion": "8",
+    "enableTranslation": true,
+    "rememberMeKey": "518923451ccd315459aa417b18ef0fc8e302b035"
+  }
+}
