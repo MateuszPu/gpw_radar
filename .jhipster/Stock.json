@@ -1,0 +1,52 @@
+{
+    "relationships": [],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "y",
+            "fieldType": "GpwStockTicker",
+            "fieldIsEnum": true,
+            "fieldValues": "wig20",
+            "fieldNameCapitalized": "Y",
+            "fieldNameUnderscored": "y",
+            "fieldInJavaBeanMethod": "Y",
+            "fieldValidate": true,
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "stockName",
+            "fieldType": "String",
+            "fieldIsEnum": false,
+            "fieldNameCapitalized": "StockName",
+            "fieldNameUnderscored": "stock_name",
+            "fieldInJavaBeanMethod": "StockName",
+            "fieldValidate": true,
+            "fieldValidateRules": []
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "stockShortName",
+            "fieldType": "String",
+            "fieldIsEnum": false,
+            "fieldNameCapitalized": "StockShortName",
+            "fieldNameUnderscored": "stock_short_name",
+            "fieldInJavaBeanMethod": "StockShortName",
+            "fieldValidate": false
+        }
+    ],
+    "fieldsContainOwnerManyToMany": false,
+    "fieldsContainOwnerOneToOne": false,
+    "fieldsContainOneToMany": false,
+    "fieldsContainLocalDate": false,
+    "fieldsContainCustomTime": false,
+    "fieldsContainBigDecimal": false,
+    "fieldsContainDateTime": false,
+    "fieldsContainDate": false,
+    "changelogDate": "20150723192013",
+    "dto": "no",
+    "pagination": "pagination",
+    "validation": true
+}

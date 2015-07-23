@@ -10,10 +10,10 @@ spring:
     datasource:
         dataSourceClassName: org.postgresql.ds.PGSimpleDataSource
         url: 
-        databaseName: gpwRadar
+        databaseName: gpw_radar
         serverName: localhost
-        username: gpwRadar
-        password: 
+        username: postgres
+        password: postgres
 
     jpa:
         database-platform: org.hibernate.dialect.PostgreSQL82Dialect

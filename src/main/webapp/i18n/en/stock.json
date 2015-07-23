@@ -1,0 +1,20 @@
+{
+    "gpwradarApp": {
+        "stock" : {
+            "home": {
+                "title": "Stocks",
+                "createLabel": "Create a new Stock",
+                "createOrEditLabel": "Create or edit a Stock"
+            },
+            "delete": {
+                "question": "Are you sure you want to delete Stock {{ id }}?"
+            },
+            "detail": {
+                "title": "Stock"
+            },
+            "y": "Y",
+            "stockName": "StockName",
+            "stockShortName": "StockShortName"
+        }
+    }
+}
