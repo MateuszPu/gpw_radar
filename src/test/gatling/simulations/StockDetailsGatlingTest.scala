@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory
 import scala.concurrent.duration._
 
 /**
- * Performance test for the Stock entity.
+ * Performance test for the StockDetails entity.
  */
-class StockGatlingTest extends Simulation {
+class StockDetailsGatlingTest extends Simulation {
 
     val context: LoggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
     // Log all HTTP requests
@@ -37,7 +37,7 @@ class StockGatlingTest extends Simulation {
         "X-CSRF-TOKEN" -> "${csrf_token}"
     )
 
-    val scn = scenario("Test the Stock entity")
+    val scn = scenario("Test the StockDetails entity")
         .exec(http("First unauthenticated request")
         .get("/api/account")
         .headers(headers_http)
@@ -59,26 +59,26 @@ class StockGatlingTest extends Simulation {
         .check(headerRegex("Set-Cookie", "CSRF-TOKEN=(.*); [P,p]ath=/").saveAs("csrf_token")))
         .pause(10)
         .repeat(2) {
-            exec(http("Get all stocks")
-            .get("/api/stocks")
+            exec(http("Get all stockDetailss")
+            .get("/api/stockDetailss")
             .headers(headers_http_authenticated)
             .check(status.is(200)))
             .pause(10 seconds, 20 seconds)
-            .exec(http("Create new stock")
-            .post("/api/stocks")
+            .exec(http("Create new stockDetails")
+            .post("/api/stockDetailss")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "ticker":null, "stockName":"SAMPLE_TEXT", "stockShortName":"SAMPLE_TEXT"}""")).asJSON
+            .body(StringBody("""{"id":null, "date":"2020-01-01T00:00:00.000Z", "openPrice":null, "maxPrice":null, "minPrice":null, "closePrice":null, "volume":null, "averageVolume10Days":null, "averageVolume30Days":null, "volumeRatio10":null, "volumeRatio30":null, "percentReturn":null}""")).asJSON
             .check(status.is(201))
-            .check(headerRegex("Location", "(.*)").saveAs("new_stock_url")))
+            .check(headerRegex("Location", "(.*)").saveAs("new_stockDetails_url")))
             .pause(10)
             .repeat(5) {
-                exec(http("Get created stock")
-                .get("${new_stock_url}")
+                exec(http("Get created stockDetails")
+                .get("${new_stockDetails_url}")
                 .headers(headers_http_authenticated))
                 .pause(10)
             }
-            .exec(http("Delete created stock")
-            .delete("${new_stock_url}")
+            .exec(http("Delete created stockDetails")
+            .delete("${new_stockDetails_url}")
             .headers(headers_http_authenticated))
             .pause(10)
         }

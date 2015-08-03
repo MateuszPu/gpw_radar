@@ -1,0 +1,29 @@
+{
+    "gpwradarApp": {
+        "stockDetails" : {
+            "home": {
+                "title": "StockDetailss",
+                "createLabel": "Créer un nouveau StockDetails",
+                "createOrEditLabel": "Créer ou éditer un StockDetails"
+            },
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le StockDetails {{ id }} ?"
+            },
+            "detail": {
+                "title": "StockDetails"
+            },
+            "date": "Date",
+            "openPrice": "OpenPrice",
+            "maxPrice": "MaxPrice",
+            "minPrice": "MinPrice",
+            "closePrice": "ClosePrice",
+            "volume": "Volume",
+            "averageVolume10Days": "AverageVolume10Days",
+            "averageVolume30Days": "AverageVolume30Days",
+            "volumeRatio10": "VolumeRatio10",
+            "volumeRatio30": "VolumeRatio30",
+            "percentReturn": "PercentReturn"
+        }
+    }
+}
+

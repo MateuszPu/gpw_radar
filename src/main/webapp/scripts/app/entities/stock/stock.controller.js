@@ -38,6 +38,6 @@ angular.module('gpwradarApp')
         };
 
         $scope.clear = function () {
-            $scope.stock = {y: null, stockName: null, stockShortName: null, id: null};
+            $scope.stock = {ticker: null, stockName: null, stockShortName: null, id: null};
         };
     });

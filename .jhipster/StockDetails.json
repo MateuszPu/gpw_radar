@@ -1,0 +1,145 @@
+{
+    "relationships": [],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "date",
+            "fieldType": "LocalDate",
+            "fieldIsEnum": false,
+            "fieldNameCapitalized": "Date",
+            "fieldNameUnderscored": "date",
+            "fieldInJavaBeanMethod": "Date",
+            "fieldValidate": true,
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "openPrice",
+            "fieldType": "BigDecimal",
+            "fieldIsEnum": false,
+            "fieldNameCapitalized": "OpenPrice",
+            "fieldNameUnderscored": "open_price",
+            "fieldInJavaBeanMethod": "OpenPrice",
+            "fieldValidate": true,
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "maxPrice",
+            "fieldType": "BigDecimal",
+            "fieldIsEnum": false,
+            "fieldNameCapitalized": "MaxPrice",
+            "fieldNameUnderscored": "max_price",
+            "fieldInJavaBeanMethod": "MaxPrice",
+            "fieldValidate": true,
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "minPrice",
+            "fieldType": "BigDecimal",
+            "fieldIsEnum": false,
+            "fieldNameCapitalized": "MinPrice",
+            "fieldNameUnderscored": "min_price",
+            "fieldInJavaBeanMethod": "MinPrice",
+            "fieldValidate": true,
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldId": 5,
+            "fieldName": "closePrice",
+            "fieldType": "BigDecimal",
+            "fieldIsEnum": false,
+            "fieldNameCapitalized": "ClosePrice",
+            "fieldNameUnderscored": "close_price",
+            "fieldInJavaBeanMethod": "ClosePrice",
+            "fieldValidate": true,
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldId": 6,
+            "fieldName": "volume",
+            "fieldType": "Long",
+            "fieldIsEnum": false,
+            "fieldNameCapitalized": "Volume",
+            "fieldNameUnderscored": "volume",
+            "fieldInJavaBeanMethod": "Volume",
+            "fieldValidate": true,
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldId": 7,
+            "fieldName": "averageVolume10Days",
+            "fieldType": "BigDecimal",
+            "fieldIsEnum": false,
+            "fieldNameCapitalized": "AverageVolume10Days",
+            "fieldNameUnderscored": "average_volume10_days",
+            "fieldInJavaBeanMethod": "AverageVolume10Days",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 8,
+            "fieldName": "averageVolume30Days",
+            "fieldType": "BigDecimal",
+            "fieldIsEnum": false,
+            "fieldNameCapitalized": "AverageVolume30Days",
+            "fieldNameUnderscored": "average_volume30_days",
+            "fieldInJavaBeanMethod": "AverageVolume30Days",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 9,
+            "fieldName": "volumeRatio10",
+            "fieldType": "BigDecimal",
+            "fieldIsEnum": false,
+            "fieldNameCapitalized": "VolumeRatio10",
+            "fieldNameUnderscored": "volume_ratio10",
+            "fieldInJavaBeanMethod": "VolumeRatio10",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 10,
+            "fieldName": "volumeRatio30",
+            "fieldType": "BigDecimal",
+            "fieldIsEnum": false,
+            "fieldNameCapitalized": "VolumeRatio30",
+            "fieldNameUnderscored": "volume_ratio30",
+            "fieldInJavaBeanMethod": "VolumeRatio30",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 11,
+            "fieldName": "percentReturn",
+            "fieldType": "BigDecimal",
+            "fieldIsEnum": false,
+            "fieldNameCapitalized": "PercentReturn",
+            "fieldNameUnderscored": "percent_return",
+            "fieldInJavaBeanMethod": "PercentReturn",
+            "fieldValidate": false
+        }
+    ],
+    "fieldsContainOwnerManyToMany": false,
+    "fieldsContainOwnerOneToOne": false,
+    "fieldsContainOneToMany": false,
+    "fieldsContainLocalDate": true,
+    "fieldsContainCustomTime": true,
+    "fieldsContainBigDecimal": true,
+    "fieldsContainDateTime": false,
+    "fieldsContainDate": false,
+    "changelogDate": "20150803182915",
+    "dto": "no",
+    "pagination": "pagination",
+    "validation": true
+}

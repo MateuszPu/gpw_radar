@@ -7,6 +7,7 @@
             "entities": {
                 "main": "Entities",
                 "stock": "Stock",
+                "stockDetails": "StockDetails",
                 "additionalEntity": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

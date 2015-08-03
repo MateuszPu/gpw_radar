@@ -3,91 +3,91 @@
 angular.module('gpwradarApp')
     .config(function ($stateProvider) {
         $stateProvider
-            .state('stock', {
+            .state('stockDetails', {
                 parent: 'entity',
-                url: '/stocks',
+                url: '/stockDetailss',
                 data: {
                     roles: ['ROLE_USER'],
-                    pageTitle: 'gpwradarApp.stock.home.title'
+                    pageTitle: 'gpwradarApp.stockDetails.home.title'
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/entities/stock/stocks.html',
-                        controller: 'StockController'
+                        templateUrl: 'scripts/app/entities/stockDetails/stockDetailss.html',
+                        controller: 'StockDetailsController'
                     }
                 },
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('stock');
+                        $translatePartialLoader.addPart('stockDetails');
                         $translatePartialLoader.addPart('global');
                         return $translate.refresh();
                     }]
                 }
             })
-            .state('stock.detail', {
+            .state('stockDetails.detail', {
                 parent: 'entity',
-                url: '/stock/{id}',
+                url: '/stockDetails/{id}',
                 data: {
                     roles: ['ROLE_USER'],
-                    pageTitle: 'gpwradarApp.stock.detail.title'
+                    pageTitle: 'gpwradarApp.stockDetails.detail.title'
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/entities/stock/stock-detail.html',
-                        controller: 'StockDetailController'
+                        templateUrl: 'scripts/app/entities/stockDetails/stockDetails-detail.html',
+                        controller: 'StockDetailsDetailController'
                     }
                 },
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('stock');
+                        $translatePartialLoader.addPart('stockDetails');
                         return $translate.refresh();
                     }],
-                    entity: ['$stateParams', 'Stock', function($stateParams, Stock) {
-                        return Stock.get({id : $stateParams.id});
+                    entity: ['$stateParams', 'StockDetails', function($stateParams, StockDetails) {
+                        return StockDetails.get({id : $stateParams.id});
                     }]
                 }
             })
-            .state('stock.new', {
-                parent: 'stock',
+            .state('stockDetails.new', {
+                parent: 'stockDetails',
                 url: '/new',
                 data: {
                     roles: ['ROLE_USER'],
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/entities/stock/stock-dialog.html',
-                        controller: 'StockDialogController',
+                        templateUrl: 'scripts/app/entities/stockDetails/stockDetails-dialog.html',
+                        controller: 'StockDetailsDialogController',
                         size: 'lg',
                         resolve: {
                             entity: function () {
-                                return {ticker: null, stockName: null, stockShortName: null, id: null};
+                                return {date: null, openPrice: null, maxPrice: null, minPrice: null, closePrice: null, volume: null, averageVolume10Days: null, averageVolume30Days: null, volumeRatio10: null, volumeRatio30: null, percentReturn: null, id: null};
                             }
                         }
                     }).result.then(function(result) {
-                        $state.go('stock', null, { reload: true });
+                        $state.go('stockDetails', null, { reload: true });
                     }, function() {
-                        $state.go('stock');
+                        $state.go('stockDetails');
                     })
                 }]
             })
-            .state('stock.edit', {
-                parent: 'stock',
+            .state('stockDetails.edit', {
+                parent: 'stockDetails',
                 url: '/{id}/edit',
                 data: {
                     roles: ['ROLE_USER'],
                 },
                 onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
                     $modal.open({
-                        templateUrl: 'scripts/app/entities/stock/stock-dialog.html',
-                        controller: 'StockDialogController',
+                        templateUrl: 'scripts/app/entities/stockDetails/stockDetails-dialog.html',
+                        controller: 'StockDetailsDialogController',
                         size: 'lg',
                         resolve: {
-                            entity: ['Stock', function(Stock) {
-                                return Stock.get({id : $stateParams.id});
+                            entity: ['StockDetails', function(StockDetails) {
+                                return StockDetails.get({id : $stateParams.id});
                             }]
                         }
                     }).result.then(function(result) {
-                        $state.go('stock', null, { reload: true });
+                        $state.go('stockDetails', null, { reload: true });
                     }, function() {
                         $state.go('^');
                     })

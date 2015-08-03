@@ -21,8 +21,8 @@ public class Stock implements Serializable {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "y", nullable = false)
-    private GpwStockTicker y;
+    @Column(name = "ticker", nullable = false)
+    private GpwStockTicker ticker;
 
     @Column(name = "stock_name")
     private String stockName;
@@ -38,12 +38,12 @@ public class Stock implements Serializable {
         this.id = id;
     }
 
-    public GpwStockTicker getY() {
-        return y;
+    public GpwStockTicker getticker() {
+        return ticker;
     }
 
-    public void setY(GpwStockTicker y) {
-        this.y = y;
+    public void setticker(GpwStockTicker ticker) {
+        this.ticker = ticker;
     }
 
     public String getStockName() {
@@ -87,7 +87,7 @@ public class Stock implements Serializable {
     public String toString() {
         return "Stock{" +
                 "id=" + id +
-                ", y='" + y + "'" +
+                ", ticker='" + ticker + "'" +
                 ", stockName='" + stockName + "'" +
                 ", stockShortName='" + stockShortName + "'" +
                 '}';

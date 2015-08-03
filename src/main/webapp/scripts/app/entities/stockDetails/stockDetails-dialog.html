@@ -1,0 +1,148 @@
+
+<form name="editForm" role="form" novalidate ng-submit="save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="clear()">&times;</button>
+        <h4 class="modal-title" id="myStockDetailsLabel" translate="gpwradarApp.stockDetails.home.createOrEditLabel">Create or edit a StockDetails</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label translate="global.field.id">ID</label>
+            <input type="text" class="form-control" name="id"
+                    ng-model="stockDetails.id" readonly>
+        </div>
+
+        <div class="form-group">
+            <label translate="gpwradarApp.stockDetails.date" for="field_date">Date</label>
+            <input type="date" class="form-control" name="date" id="field_date"
+                    ng-model="stockDetails.date" required>
+
+            <div ng-show="editForm.date.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.date.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label translate="gpwradarApp.stockDetails.openPrice" for="field_openPrice">OpenPrice</label>
+            <input type="number" class="form-control" name="openPrice" id="field_openPrice"
+                    ng-model="stockDetails.openPrice" required>
+
+            <div ng-show="editForm.openPrice.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.openPrice.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.openPrice.$error.number" translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label translate="gpwradarApp.stockDetails.maxPrice" for="field_maxPrice">MaxPrice</label>
+            <input type="number" class="form-control" name="maxPrice" id="field_maxPrice"
+                    ng-model="stockDetails.maxPrice" required>
+
+            <div ng-show="editForm.maxPrice.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.maxPrice.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.maxPrice.$error.number" translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label translate="gpwradarApp.stockDetails.minPrice" for="field_minPrice">MinPrice</label>
+            <input type="number" class="form-control" name="minPrice" id="field_minPrice"
+                    ng-model="stockDetails.minPrice" required>
+
+            <div ng-show="editForm.minPrice.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.minPrice.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.minPrice.$error.number" translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label translate="gpwradarApp.stockDetails.closePrice" for="field_closePrice">ClosePrice</label>
+            <input type="number" class="form-control" name="closePrice" id="field_closePrice"
+                    ng-model="stockDetails.closePrice" required>
+
+            <div ng-show="editForm.closePrice.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.closePrice.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.closePrice.$error.number" translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label translate="gpwradarApp.stockDetails.volume" for="field_volume">Volume</label>
+            <input type="number" class="form-control" name="volume" id="field_volume"
+                    ng-model="stockDetails.volume" required>
+
+            <div ng-show="editForm.volume.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.volume.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.volume.$error.number" translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label translate="gpwradarApp.stockDetails.averageVolume10Days" for="field_averageVolume10Days">AverageVolume10Days</label>
+            <input type="number" class="form-control" name="averageVolume10Days" id="field_averageVolume10Days"
+                    ng-model="stockDetails.averageVolume10Days">
+
+        </div>
+        <div class="form-group">
+            <label translate="gpwradarApp.stockDetails.averageVolume30Days" for="field_averageVolume30Days">AverageVolume30Days</label>
+            <input type="number" class="form-control" name="averageVolume30Days" id="field_averageVolume30Days"
+                    ng-model="stockDetails.averageVolume30Days">
+
+        </div>
+        <div class="form-group">
+            <label translate="gpwradarApp.stockDetails.volumeRatio10" for="field_volumeRatio10">VolumeRatio10</label>
+            <input type="number" class="form-control" name="volumeRatio10" id="field_volumeRatio10"
+                    ng-model="stockDetails.volumeRatio10">
+
+        </div>
+        <div class="form-group">
+            <label translate="gpwradarApp.stockDetails.volumeRatio30" for="field_volumeRatio30">VolumeRatio30</label>
+            <input type="number" class="form-control" name="volumeRatio30" id="field_volumeRatio30"
+                    ng-model="stockDetails.volumeRatio30">
+
+        </div>
+        <div class="form-group">
+            <label translate="gpwradarApp.stockDetails.percentReturn" for="field_percentReturn">PercentReturn</label>
+            <input type="number" class="form-control" name="percentReturn" id="field_percentReturn"
+                    ng-model="stockDetails.percentReturn">
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>
