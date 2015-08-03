@@ -50,6 +50,7 @@ public class StockIndicators {
 		return slopeSimpleRegression30Days;
 	}
 
+	
 	public void setSlopeSimpleRegression30Days(double slopeSimpleRegression30Days) {
 		this.slopeSimpleRegression30Days = slopeSimpleRegression30Days;
 	}
