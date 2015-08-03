@@ -1,0 +1,20 @@
+{
+    "gpwradarApp": {
+        "stockFinanceEvent" : {
+            "home": {
+                "title": "StockFinanceEvents",
+                "createLabel": "Créer un nouveau StockFinanceEvent",
+                "createOrEditLabel": "Créer ou éditer un StockFinanceEvent"
+            },
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le StockFinanceEvent {{ id }} ?"
+            },
+            "detail": {
+                "title": "StockFinanceEvent"
+            },
+            "date": "Date",
+            "message": "Message"
+        }
+    }
+}
+
