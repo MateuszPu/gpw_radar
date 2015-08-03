@@ -18,10 +18,6 @@ public class StockIndicators {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@JsonIgnore
-	@OneToOne(mappedBy = "stockIndicators")
-	private Stock stock;
-
 	@Column(name = "slope_simple_regression_10")
 	private double slopeSimpleRegression10Days;
 
@@ -40,14 +36,6 @@ public class StockIndicators {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Stock getStock() {
-		return stock;
-	}
-
-	public void setStock(Stock stock) {
-		this.stock = stock;
 	}
 
 	public double getSlopeSimpleRegression10Days() {
