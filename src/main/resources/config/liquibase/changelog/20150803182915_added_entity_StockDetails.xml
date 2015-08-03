@@ -14,7 +14,7 @@
         Added the entity StockDetails.
     -->
     <changeSet id="20150803182915" author="jhipster">
-        <createTable tableName="STOCKDETAILS">
+        <createTable tableName="STOCK_DETAILS">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}" >
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -36,10 +36,10 @@
             <column name="volume" type="bigint">
                 <constraints nullable="false" />
             </column>
-            <column name="average_volume10_days" type="decimal(10,2)"/>
-            <column name="average_volume30_days" type="decimal(10,2)"/>
-            <column name="volume_ratio10" type="decimal(10,2)"/>
-            <column name="volume_ratio30" type="decimal(10,2)"/>
+            <column name="average_volume_10_days" type="decimal(10,2)"/>
+            <column name="average_volume_30_days" type="decimal(10,2)"/>
+            <column name="volume_ratio_10" type="decimal(10,2)"/>
+            <column name="volume_ratio_30" type="decimal(10,2)"/>
             <column name="percent_return" type="decimal(10,2)"/>
         </createTable>
         

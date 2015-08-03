@@ -18,7 +18,7 @@ import java.util.Objects;
  * A StockDetails.
  */
 @Entity
-@Table(name = "STOCKDETAILS")
+@Table(name = "STOCK_DETAILS")
 public class StockDetails implements Serializable {
 
     @Id
@@ -52,16 +52,16 @@ public class StockDetails implements Serializable {
     @Column(name = "volume", nullable = false)
     private Long volume;
 
-    @Column(name = "average_volume10_days", precision=10, scale=2, nullable = false)
+    @Column(name = "average_volume_10_days", precision=10, scale=2, nullable = false)
     private BigDecimal averageVolume10Days;
 
-    @Column(name = "average_volume30_days", precision=10, scale=2, nullable = false)
+    @Column(name = "average_volume_30_days", precision=10, scale=2, nullable = false)
     private BigDecimal averageVolume30Days;
 
-    @Column(name = "volume_ratio10", precision=10, scale=2, nullable = false)
+    @Column(name = "volume_ratio_10", precision=10, scale=2, nullable = false)
     private BigDecimal volumeRatio10;
 
-    @Column(name = "volume_ratio30", precision=10, scale=2, nullable = false)
+    @Column(name = "volume_ratio_30", precision=10, scale=2, nullable = false)
     private BigDecimal volumeRatio30;
 
     @Column(name = "percent_return", precision=10, scale=2, nullable = false)
