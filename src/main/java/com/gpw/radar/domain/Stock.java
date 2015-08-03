@@ -6,7 +6,7 @@ import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-import com.gpw.radar.domain.enumeration.GpwStockTicker;
+import com.gpw.radar.domain.enumeration.StockTicker;
 
 /**
  * A Stock.
@@ -22,7 +22,7 @@ public class Stock implements Serializable {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "ticker", nullable = false)
-    private GpwStockTicker ticker;
+    private StockTicker ticker;
 
     @Column(name = "stock_name")
     private String stockName;
@@ -38,11 +38,11 @@ public class Stock implements Serializable {
         this.id = id;
     }
 
-    public GpwStockTicker getticker() {
+    public StockTicker getticker() {
         return ticker;
     }
 
-    public void setticker(GpwStockTicker ticker) {
+    public void setticker(StockTicker ticker) {
         this.ticker = ticker;
     }
 

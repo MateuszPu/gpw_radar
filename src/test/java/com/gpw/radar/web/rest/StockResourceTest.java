@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import com.gpw.radar.domain.enumeration.GpwStockTicker;
+import com.gpw.radar.domain.enumeration.StockTicker;
 
 /**
  * Test class for the StockResource REST controller.
@@ -41,8 +41,8 @@ import com.gpw.radar.domain.enumeration.GpwStockTicker;
 public class StockResourceTest {
 
 
-    private static final GpwStockTicker DEFAULT_TICKER = GpwStockTicker.wig20;
-    private static final GpwStockTicker UPDATED_TICKER = GpwStockTicker.wig20;
+    private static final StockTicker DEFAULT_TICKER = StockTicker.wig20;
+    private static final StockTicker UPDATED_TICKER = StockTicker.wig20;
     private static final String DEFAULT_STOCK_NAME = "SAMPLE_TEXT";
     private static final String UPDATED_STOCK_NAME = "UPDATED_TEXT";
     private static final String DEFAULT_STOCK_SHORT_NAME = "SAMPLE_TEXT";
