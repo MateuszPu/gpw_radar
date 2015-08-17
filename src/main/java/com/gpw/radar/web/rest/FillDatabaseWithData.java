@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -12,11 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gpw.radar.domain.Stock;
+import com.gpw.radar.domain.StockDetails;
 import com.gpw.radar.domain.enumeration.StockTicker;
+import com.gpw.radar.repository.StockDetailsRepository;
 import com.gpw.radar.repository.StockRepository;
 import com.gpw.radar.security.AuthoritiesConstants;
-import com.gpw.radar.service.FillDatabaseWithDataService;
-import com.gpw.radar.service.StockDetailsService;
+import com.gpw.radar.service.FillDataBaseWithDataService;
 import com.gpw.radar.service.WebParserService;
 
 @RestController
@@ -28,19 +30,19 @@ public class FillDatabaseWithData {
     private StockRepository stockRepository;
 
     @Inject
-    private StockDetailsService stockDetailsService;
-
-    @Inject
     private WebParserService webParserService;
 
     @Inject
-    private FillDatabaseWithDataService fillDataPrepareWebAppService;
+    private FillDataBaseWithDataService fillDataBaseWithDataService;
+    
+    @Inject
+    private StockDetailsRepository stockDetailsRepository;
 
     private List<StockTicker> gpwStockTickers = new ArrayList<StockTicker>(Arrays.asList(StockTicker.values()));
 
     @RequestMapping(value = "/1")
     public void fillDataBaseWithStocks() throws IOException {
-        fillDataPrepareWebAppService.fillDataBaseWithStocks();
+        fillDataBaseWithDataService.fillDataBaseWithStocks();
     }
 
     @RequestMapping(value = "/2")
@@ -91,15 +93,17 @@ public class FillDatabaseWithData {
     private void parseFromTxtFile(int start, int increment) {
         for (int index = start; index < gpwStockTickers.size(); index += increment) {
         	StockTicker ticker = StockTicker.valueOf(gpwStockTickers.get(index).name());
-            getStockDetailsForStockByTicker(ticker);
+        	Stock stock = stockRepository.findByTicker(ticker);
+        	Set<StockDetails> stockDetails = fillDataBaseWithDataService.dataStockDetailsParserByTickerFromFile(stock);
+        	stockDetailsRepository.save(stockDetails);
         }
     }
 
-    private void getStockDetailsForStockByTicker(StockTicker ticker) {
-        Stock stock = stockRepository.findByTicker(ticker);
-        stock.setStockDetails(fillDataPrepareWebAppService.dataStockDetailsParserByTickerFromFile(ticker));
-        stockRepository.save(stock);
-    }
+//    private void getStockDetailsForStockByTicker(StockTicker ticker) {
+//        Stock stock = stockRepository.findByTicker(ticker);
+//        stock.setStockDetails(fillDataBaseWithDataService.dataStockDetailsParserByTickerFromFile(ticker));
+//        stockRepository.save(stock);
+//    }
 
     @RequestMapping(value = "/3")
     public void fillDataBaseWithStockFinanceEvent() throws IOException {

@@ -23,9 +23,9 @@ import com.gpw.radar.repository.StockRepository;
 
 @Service
 @Transactional
-public class FillDatabaseWithDataService {
+public class FillDataBaseWithDataService {
 
-	private final Logger log = LoggerFactory.getLogger(FillDatabaseWithDataService.class);
+	private final Logger log = LoggerFactory.getLogger(FillDataBaseWithDataService.class);
 
 	@Inject
 	private StockRepository stockRepository;
@@ -46,13 +46,13 @@ public class FillDatabaseWithDataService {
 		}
 	}
 
-	public Set<StockDetails> dataStockDetailsParserByTickerFromFile(StockTicker ticker) {
+	public Set<StockDetails> dataStockDetailsParserByTickerFromFile(Stock stock) {
 		String line = "";
 		String cvsSplitBy = ",";
 		Set<StockDetails> stockDetailList = new HashSet<StockDetails>();
-
+		
 		try {
-			FileReader fileIn = new FileReader("C:/Users/ppp/Desktop/data/daily/pl/wse stocks/" + ticker.name() + ".txt");
+			FileReader fileIn = new FileReader("C:/Users/ppp/Desktop/data/daily/pl/wse stocks/" + stock.getTicker().name() + ".txt");
 
 			BufferedReader in = new BufferedReader(fileIn);
 
@@ -62,8 +62,7 @@ public class FillDatabaseWithDataService {
 				String[] stockdetails = line.split(cvsSplitBy);
 
 				// setting stock to stockdetails
-//				Stock stock = stockRepository.findByTicker(ticker);
-//				stockDetails.setStock(stock);
+				stockDetails.setStock(stock);
 
 				stockDetails.setDate(parserService.parseLocalDateFromString(stockdetails[0]));
 				stockDetails.setOpenPrice(new BigDecimal(stockdetails[1]));

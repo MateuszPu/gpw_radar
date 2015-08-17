@@ -3,11 +3,15 @@ package com.gpw.radar.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -57,6 +61,10 @@ public class StockDetails implements Serializable {
     @NotNull
     @Column(name = "volume", nullable = false)
     private Long volume;
+    
+    @ManyToOne
+    @JoinColumn(name="stock_id", foreignKey = @ForeignKey(name="FK_stock"))
+    private Stock stock;
 
     public Long getId() {
         return id;
@@ -113,4 +121,12 @@ public class StockDetails implements Serializable {
     public void setVolume(Long volume) {
         this.volume = volume;
     }
+
+	public Stock getStock() {
+		return stock;
+	}
+
+	public void setStock(Stock stock) {
+		this.stock = stock;
+	}
 }

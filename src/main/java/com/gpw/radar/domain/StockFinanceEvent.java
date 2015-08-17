@@ -2,11 +2,15 @@ package com.gpw.radar.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -40,6 +44,10 @@ public class StockFinanceEvent implements Serializable {
     @NotNull
     @Column(name = "message", nullable = false)
     private String message;
+    
+    @ManyToOne
+    @JoinColumn(name="stock_id", foreignKey = @ForeignKey(name="FK_finance_event_to_stock"))
+    private Stock stock;
 
     public Long getId() {
         return id;
@@ -64,4 +72,12 @@ public class StockFinanceEvent implements Serializable {
     public void setMessage(String message) {
         this.message = message;
     }
+
+	public Stock getStock() {
+		return stock;
+	}
+
+	public void setStock(Stock stock) {
+		this.stock = stock;
+	}
 }

@@ -33,9 +33,6 @@ public class StockDetailsService {
 	@Autowired
 	private WebParserService parserService;
 
-	@Autowired
-	private StockService stockService;
-
 	public void saveOrUpdate(StockDetails stockDetails) {
 		stockDetailsRepository.save(stockDetails);
 	}

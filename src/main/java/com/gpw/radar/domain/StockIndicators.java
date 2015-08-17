@@ -2,15 +2,19 @@ package com.gpw.radar.domain;
 
 import java.math.BigDecimal;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "T_STOCK_INDICATORS")
+@Table(name = "STOCK_INDICATORS")
 public class StockIndicators {
 
 	@Id
@@ -43,6 +47,10 @@ public class StockIndicators {
 
     @Column(name = "percent_return", precision=10, scale=2, nullable = false)
     private BigDecimal percentReturn;
+    
+    @ManyToOne
+    @JoinColumn(name="stock_id", foreignKey = @ForeignKey(name="FK_indicators_to_stock"))
+    private Stock stock;
 
 	public Long getId() {
 		return id;
@@ -123,5 +131,13 @@ public class StockIndicators {
 
 	public void setPercentReturn(BigDecimal percentReturn) {
 		this.percentReturn = percentReturn;
+	}
+
+	public Stock getStock() {
+		return stock;
+	}
+
+	public void setStock(Stock stock) {
+		this.stock = stock;
 	}
 }

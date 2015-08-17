@@ -24,6 +24,7 @@ import com.gpw.radar.domain.StockDetails;
 import com.gpw.radar.domain.StockIndicators;
 import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.repository.StockDetailsRepository;
+import com.gpw.radar.repository.StockIndicatorsRepository;
 import com.gpw.radar.repository.StockRepository;
 import com.gpw.radar.service.StockDetailsService;
 
@@ -38,6 +39,9 @@ public class AutoUpdateDb {
 
 	@Inject
 	private StockDetailsService stockDetailsService;
+	
+	@Inject
+	private StockIndicatorsRepository stockIndicatorsRepository;
 
 	@Inject
 	private StockDetailsRepository stockDetailsRepository;
@@ -87,6 +91,7 @@ public class AutoUpdateDb {
 	private void updateDailyStockIndicators() {
 		for (StockTicker element : StockTicker.values()) {
 			Stock stock = stockRepository.findByTicker(element);
+			StockIndicators stockIndicators = new StockIndicators();
 			Pageable top100th = new PageRequest(0, 100);
 			Page<StockDetails> stockDetails = stockDetailsRepository.findByStockOrderByDateDesc(stock, top100th);
 			int size = stockDetails.getContent().size();
@@ -100,7 +105,7 @@ public class AutoUpdateDb {
 			getDetails(stockDetails, size, openPrice, minPrice, maxPrice, closePrice, volume);
 			double[] percentReturn = calculatePercentReturn(closePrice);
 
-			calculateVolumeIndicators(stock, volume);
+			calculateVolumeIndicators(stockIndicators, volume);
 
 			double[] dataFor10DaysTrend = normalizeArray(Arrays.copyOfRange(closePrice, 0, 10));
 			double[] dataFor30DaysTrend = normalizeArray(Arrays.copyOfRange(closePrice, 0, 30));
@@ -112,15 +117,17 @@ public class AutoUpdateDb {
 			double slopeSimpleRegression60 = calculateSlopeSimpleRegression(dataFor60DaysTrend);
 			double slopeSimpleRegression90 = calculateSlopeSimpleRegression(dataFor90DaysTrend);
 
-			// slopeSimpleRegression10 liczyc dla stop zwrotu
-            stock.setStockIndicators(new StockIndicators());
-			stock.getStockIndicators().setSlopeSimpleRegression10Days(slopeSimpleRegression10);
-			stock.getStockIndicators().setSlopeSimpleRegression30Days(slopeSimpleRegression30);
-			stock.getStockIndicators().setSlopeSimpleRegression60Days(slopeSimpleRegression60);
-			stock.getStockIndicators().setSlopeSimpleRegression90Days(slopeSimpleRegression90);
-			stock.setPercentReturn(new BigDecimal(percentReturn[0]));
-
-			stockRepository.save(stock);
+			
+			
+			stockIndicators.setSlopeSimpleRegression10Days(slopeSimpleRegression10);
+			stockIndicators.setSlopeSimpleRegression30Days(slopeSimpleRegression30);
+			stockIndicators.setSlopeSimpleRegression60Days(slopeSimpleRegression60);
+			stockIndicators.setSlopeSimpleRegression90Days(slopeSimpleRegression90);
+			stockIndicators.setPercentReturn(new BigDecimal(percentReturn[0]));
+			stockIndicators.setStock(stock);
+			
+			stockIndicatorsRepository.save(stockIndicators);
+//			stockRepository.save(stock);
 			step++;
 		}
 	}
@@ -164,11 +171,11 @@ public class AutoUpdateDb {
 		return percentReturn;
 	}
 
-	private void calculateVolumeIndicators(Stock stock, double[] volume) {
-		stock.setAverageVolume10Days(new BigDecimal(StatUtils.mean(Arrays.copyOfRange(volume, 1, 11))));
-		stock.setAverageVolume30Days(new BigDecimal(StatUtils.mean(Arrays.copyOfRange(volume, 1, 31))));
-		stock.setVolumeRatio10(new BigDecimal(volume[0] / stock.getAverageVolume10Days().doubleValue()));
-		stock.setVolumeRatio30(new BigDecimal(volume[0] / stock.getAverageVolume30Days().doubleValue()));
+	private void calculateVolumeIndicators(StockIndicators stockIndicators, double[] volume) {
+		stockIndicators.setAverageVolume10Days(new BigDecimal(StatUtils.mean(Arrays.copyOfRange(volume, 1, 11))));
+		stockIndicators.setAverageVolume30Days(new BigDecimal(StatUtils.mean(Arrays.copyOfRange(volume, 1, 31))));
+		stockIndicators.setVolumeRatio10(new BigDecimal(volume[0] / stockIndicators.getAverageVolume10Days().doubleValue()));
+		stockIndicators.setVolumeRatio30(new BigDecimal(volume[0] / stockIndicators.getAverageVolume30Days().doubleValue()));
 	}
 
 	private double[] calculateDataForTrends(double[] closePrice, int size) {

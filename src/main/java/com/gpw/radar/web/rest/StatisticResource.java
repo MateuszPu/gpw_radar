@@ -1,4 +1,4 @@
-package com.gpw.radar.web;
+package com.gpw.radar.web.rest;
 
 import java.util.TreeSet;
 
@@ -43,18 +43,18 @@ public class StatisticResource {
         return new CorrelationStatus(statisticService.getStep());
     }
 
-    @RequestMapping(value = "/stocks/up", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public long getUpStocks() {
-        return stockRepository.countUpStocks();
-    }
-
-    @RequestMapping(value = "/stocks/down", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public long getDownStocks() {
-        return stockRepository.countDownStocks();
-    }
-
-    @RequestMapping(value = "/stocks/no/change", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public long getNoChangeStocks() {
-        return stockRepository.countNoChangeStocks();
-    }
+//    @RequestMapping(value = "/stocks/up", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public long getUpStocks() {
+//        return stockRepository.countUpStocks();
+//    }
+//
+//    @RequestMapping(value = "/stocks/down", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public long getDownStocks() {
+//        return stockRepository.countDownStocks();
+//    }
+//
+//    @RequestMapping(value = "/stocks/no/change", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public long getNoChangeStocks() {
+//        return stockRepository.countNoChangeStocks();
+//    }
 }

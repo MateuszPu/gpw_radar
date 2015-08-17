@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+   <changeSet author="ppp (generated)" id="1439832268539-1">
+      <createTable tableName="STOCK_INDICATORS">
+         <column autoIncrement="true" name="id" type="BIGINT">
+            <constraints primaryKey="true" primaryKeyName="STOCK_INDICATORSPK"/>
+         </column>
+         <column name="average_volume_10_days" type="NUMBER(10, 2)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="average_volume_30_days" type="NUMBER(10, 2)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="percent_return" type="NUMBER(10, 2)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="slope_simple_regression_10" type="FLOAT8"/>
+         <column name="slope_simple_regression_30" type="FLOAT8"/>
+         <column name="slope_simple_regression_60" type="FLOAT8"/>
+         <column name="slope_simple_regression_90" type="FLOAT8"/>
+         <column name="volume_ratio_10" type="NUMBER(10, 2)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="volume_ratio_30" type="NUMBER(10, 2)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="stock_id" type="BIGINT"/>
+      </createTable>
+   </changeSet>
+   <changeSet author="ppp (generated)" id="1439832268539-2">
+      <createTable tableName="USER_STOCKS">
+         <column name="user_id" type="BIGINT">
+            <constraints nullable="false"/>
+         </column>
+         <column name="stock_id" type="BIGINT">
+            <constraints nullable="false"/>
+         </column>
+      </createTable>
+   </changeSet>
+   <changeSet author="ppp (generated)" id="1439832268539-3">
+      <addColumn tableName="STOCK_DETAILS">
+         <column name="stock_id" type="int8"/>
+      </addColumn>
+   </changeSet>
+   <changeSet author="ppp (generated)" id="1439832268539-4">
+      <addColumn tableName="STOCK_FINANCE_EVENT">
+         <column name="stock_id" type="int8"/>
+      </addColumn>
+   </changeSet>
+   <changeSet author="ppp (generated)" id="1439832268539-5">
+      <addPrimaryKey columnNames="user_id, stock_id" tableName="USER_STOCKS"/>
+   </changeSet>
+   <changeSet author="ppp (generated)" id="1439832268539-6">
+      <addForeignKeyConstraint baseColumnNames="stock_id"
+                               baseTableName="STOCK_DETAILS"
+                               constraintName="FK_details_to_stock"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="id"
+                               referencedTableName="STOCK"/>
+   </changeSet>
+   <changeSet author="ppp (generated)" id="1439832268539-7">
+      <addForeignKeyConstraint baseColumnNames="stock_id"
+                               baseTableName="STOCK_FINANCE_EVENT"
+                               constraintName="FK_finance_event_to_stock"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="id"
+                               referencedTableName="STOCK"/>
+   </changeSet>
+   <changeSet author="ppp (generated)" id="1439832268539-8">
+      <addForeignKeyConstraint baseColumnNames="user_id"
+                               baseTableName="USER_STOCKS"
+                               constraintName="FK_g6cvj484i36nbnrpm8yoxpb4x"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="id"
+                               referencedTableName="JHI_USER"/>
+   </changeSet>
+   <changeSet author="ppp (generated)" id="1439832268539-9">
+      <addForeignKeyConstraint baseColumnNames="stock_id"
+                               baseTableName="STOCK_INDICATORS"
+                               constraintName="FK_indicators_to_stock"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="id"
+                               referencedTableName="STOCK"/>
+   </changeSet>
+   <changeSet author="ppp (generated)" id="1439832268539-10">
+      <addForeignKeyConstraint baseColumnNames="stock_id"
+                               baseTableName="USER_STOCKS"
+                               constraintName="FK_wba96o6yqs2xcu0fhedibupn"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="id"
+                               referencedTableName="STOCK"/>
+   </changeSet>
+   <changeSet author="ppp (generated)" id="1439832268539-11">
+      <dropColumn columnName="average_volume_10_days" tableName="stock_details"/>
+   </changeSet>
+   <changeSet author="ppp (generated)" id="1439832268539-12">
+      <dropColumn columnName="average_volume_30_days" tableName="stock_details"/>
+   </changeSet>
+   <changeSet author="ppp (generated)" id="1439832268539-13">
+      <dropColumn columnName="percent_return" tableName="stock_details"/>
+   </changeSet>
+   <changeSet author="ppp (generated)" id="1439832268539-14">
+      <dropColumn columnName="volume_ratio_10" tableName="stock_details"/>
+   </changeSet>
+   <changeSet author="ppp (generated)" id="1439832268539-15">
+      <dropColumn columnName="volume_ratio_30" tableName="stock_details"/>
+   </changeSet>
+</databaseChangeLog>

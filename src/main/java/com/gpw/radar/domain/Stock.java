@@ -2,7 +2,10 @@ package com.gpw.radar.domain;
 
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,9 +13,15 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gpw.radar.domain.enumeration.StockTicker;
 
 /**
@@ -36,6 +45,15 @@ public class Stock implements Serializable {
 
     @Column(name = "stock_short_name")
     private String stockShortName;
+    
+    @JsonIgnore
+	@ManyToMany(mappedBy = "stocks")
+	private Set<User> users = new HashSet<>();
+    
+//    @JsonIgnore
+//	@OneToMany(mappedBy = "stock", cascade = CascadeType.ALL)
+//	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+//	private Set<StockDetails> stockDetails = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -68,4 +86,20 @@ public class Stock implements Serializable {
     public void setStockShortName(String stockShortName) {
         this.stockShortName = stockShortName;
     }
+
+	public Set<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<User> users) {
+		this.users = users;
+	}
+
+//	public Set<StockDetails> getStockDetails() {
+//		return stockDetails;
+//	}
+//
+//	public void setStockDetails(Set<StockDetails> stockDetails) {
+//		this.stockDetails = stockDetails;
+//	}
 }
