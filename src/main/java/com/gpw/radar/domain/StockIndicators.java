@@ -1,14 +1,13 @@
 package com.gpw.radar.domain;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "T_STOCK_INDICATORS")
@@ -29,6 +28,21 @@ public class StockIndicators {
 
 	@Column(name = "slope_simple_regression_90")
 	private double slopeSimpleRegression90Days;
+	
+    @Column(name = "average_volume_10_days", precision=10, scale=2, nullable = false)
+    private BigDecimal averageVolume10Days;
+
+    @Column(name = "average_volume_30_days", precision=10, scale=2, nullable = false)
+    private BigDecimal averageVolume30Days;
+
+    @Column(name = "volume_ratio_10", precision=10, scale=2, nullable = false)
+    private BigDecimal volumeRatio10;
+
+    @Column(name = "volume_ratio_30", precision=10, scale=2, nullable = false)
+    private BigDecimal volumeRatio30;
+
+    @Column(name = "percent_return", precision=10, scale=2, nullable = false)
+    private BigDecimal percentReturn;
 
 	public Long getId() {
 		return id;
@@ -69,5 +83,45 @@ public class StockIndicators {
 
 	public void setSlopeSimpleRegression90Days(double slopeSimpleRegression90Days) {
 		this.slopeSimpleRegression90Days = slopeSimpleRegression90Days;
+	}
+
+	public BigDecimal getAverageVolume10Days() {
+		return averageVolume10Days;
+	}
+
+	public void setAverageVolume10Days(BigDecimal averageVolume10Days) {
+		this.averageVolume10Days = averageVolume10Days;
+	}
+
+	public BigDecimal getAverageVolume30Days() {
+		return averageVolume30Days;
+	}
+
+	public void setAverageVolume30Days(BigDecimal averageVolume30Days) {
+		this.averageVolume30Days = averageVolume30Days;
+	}
+
+	public BigDecimal getVolumeRatio10() {
+		return volumeRatio10;
+	}
+
+	public void setVolumeRatio10(BigDecimal volumeRatio10) {
+		this.volumeRatio10 = volumeRatio10;
+	}
+
+	public BigDecimal getVolumeRatio30() {
+		return volumeRatio30;
+	}
+
+	public void setVolumeRatio30(BigDecimal volumeRatio30) {
+		this.volumeRatio30 = volumeRatio30;
+	}
+
+	public BigDecimal getPercentReturn() {
+		return percentReturn;
+	}
+
+	public void setPercentReturn(BigDecimal percentReturn) {
+		this.percentReturn = percentReturn;
 	}
 }

@@ -1,10 +1,17 @@
 package com.gpw.radar.domain;
 
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.gpw.radar.domain.enumeration.StockTicker;
 
@@ -38,11 +45,11 @@ public class Stock implements Serializable {
         this.id = id;
     }
 
-    public StockTicker getticker() {
+    public StockTicker getTicker() {
         return ticker;
     }
 
-    public void setticker(StockTicker ticker) {
+    public void setTicker(StockTicker ticker) {
         this.ticker = ticker;
     }
 
@@ -60,36 +67,5 @@ public class Stock implements Serializable {
 
     public void setStockShortName(String stockShortName) {
         this.stockShortName = stockShortName;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Stock stock = (Stock) o;
-
-        if ( ! Objects.equals(id, stock.id)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Stock{" +
-                "id=" + id +
-                ", ticker='" + ticker + "'" +
-                ", stockName='" + stockName + "'" +
-                ", stockShortName='" + stockShortName + "'" +
-                '}';
     }
 }

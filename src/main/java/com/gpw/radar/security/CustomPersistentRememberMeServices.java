@@ -1,9 +1,12 @@
 package com.gpw.radar.security;
 
-import com.gpw.radar.domain.PersistentToken;
-import com.gpw.radar.domain.User;
-import com.gpw.radar.repository.PersistentTokenRepository;
-import com.gpw.radar.repository.UserRepository;
+import java.security.SecureRandom;
+import java.util.Arrays;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,11 +23,9 @@ import org.springframework.security.web.authentication.rememberme.RememberMeAuth
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.security.SecureRandom;
-import java.util.Arrays;
+import com.gpw.radar.domain.PersistentToken;
+import com.gpw.radar.repository.PersistentTokenRepository;
+import com.gpw.radar.repository.UserRepository;
 
 /**
  * Custom implementation of Spring Security's RememberMeServices.

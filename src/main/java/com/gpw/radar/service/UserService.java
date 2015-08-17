@@ -1,13 +1,12 @@
 package com.gpw.radar.service;
 
-import com.gpw.radar.domain.Authority;
-import com.gpw.radar.domain.PersistentToken;
-import com.gpw.radar.domain.User;
-import com.gpw.radar.repository.AuthorityRepository;
-import com.gpw.radar.repository.PersistentTokenRepository;
-import com.gpw.radar.repository.UserRepository;
-import com.gpw.radar.security.SecurityUtils;
-import com.gpw.radar.service.util.RandomUtil;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.inject.Inject;
+
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
@@ -17,11 +16,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import com.gpw.radar.domain.Authority;
+import com.gpw.radar.domain.User;
+import com.gpw.radar.repository.AuthorityRepository;
+import com.gpw.radar.repository.PersistentTokenRepository;
+import com.gpw.radar.repository.UserRepository;
+import com.gpw.radar.security.SecurityUtils;
+import com.gpw.radar.service.util.RandomUtil;
 
 /**
  * Service class for managing users.

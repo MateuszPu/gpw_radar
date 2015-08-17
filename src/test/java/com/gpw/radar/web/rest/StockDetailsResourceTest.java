@@ -1,13 +1,26 @@
 package com.gpw.radar.web.rest;
 
-import com.gpw.radar.Application;
-import com.gpw.radar.domain.StockDetails;
-import com.gpw.radar.repository.StockDetailsRepository;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.StrictAssertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.math.BigDecimal;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.hamcrest.Matchers.hasItem;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -19,15 +32,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import org.joda.time.LocalDate;
-import java.math.BigDecimal;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import com.gpw.radar.Application;
+import com.gpw.radar.domain.StockDetails;
+import com.gpw.radar.repository.StockDetailsRepository;
 
 
 /**
@@ -60,21 +67,6 @@ public class StockDetailsResourceTest {
     private static final Long DEFAULT_VOLUME = 0L;
     private static final Long UPDATED_VOLUME = 1L;
 
-    private static final BigDecimal DEFAULT_AVERAGE_VOLUME10_DAYS = new BigDecimal(0);
-    private static final BigDecimal UPDATED_AVERAGE_VOLUME10_DAYS = new BigDecimal(1);
-
-    private static final BigDecimal DEFAULT_AVERAGE_VOLUME30_DAYS = new BigDecimal(0);
-    private static final BigDecimal UPDATED_AVERAGE_VOLUME30_DAYS = new BigDecimal(1);
-
-    private static final BigDecimal DEFAULT_VOLUME_RATIO10 = new BigDecimal(0);
-    private static final BigDecimal UPDATED_VOLUME_RATIO10 = new BigDecimal(1);
-
-    private static final BigDecimal DEFAULT_VOLUME_RATIO30 = new BigDecimal(0);
-    private static final BigDecimal UPDATED_VOLUME_RATIO30 = new BigDecimal(1);
-
-    private static final BigDecimal DEFAULT_PERCENT_RETURN = new BigDecimal(0);
-    private static final BigDecimal UPDATED_PERCENT_RETURN = new BigDecimal(1);
-
     @Inject
     private StockDetailsRepository stockDetailsRepository;
 
@@ -99,11 +91,6 @@ public class StockDetailsResourceTest {
         stockDetails.setMinPrice(DEFAULT_MIN_PRICE);
         stockDetails.setClosePrice(DEFAULT_CLOSE_PRICE);
         stockDetails.setVolume(DEFAULT_VOLUME);
-        stockDetails.setAverageVolume10Days(DEFAULT_AVERAGE_VOLUME10_DAYS);
-        stockDetails.setAverageVolume30Days(DEFAULT_AVERAGE_VOLUME30_DAYS);
-        stockDetails.setVolumeRatio10(DEFAULT_VOLUME_RATIO10);
-        stockDetails.setVolumeRatio30(DEFAULT_VOLUME_RATIO30);
-        stockDetails.setPercentReturn(DEFAULT_PERCENT_RETURN);
     }
 
     @Test
@@ -127,11 +114,6 @@ public class StockDetailsResourceTest {
         assertThat(testStockDetails.getMinPrice()).isEqualTo(DEFAULT_MIN_PRICE);
         assertThat(testStockDetails.getClosePrice()).isEqualTo(DEFAULT_CLOSE_PRICE);
         assertThat(testStockDetails.getVolume()).isEqualTo(DEFAULT_VOLUME);
-        assertThat(testStockDetails.getAverageVolume10Days()).isEqualTo(DEFAULT_AVERAGE_VOLUME10_DAYS);
-        assertThat(testStockDetails.getAverageVolume30Days()).isEqualTo(DEFAULT_AVERAGE_VOLUME30_DAYS);
-        assertThat(testStockDetails.getVolumeRatio10()).isEqualTo(DEFAULT_VOLUME_RATIO10);
-        assertThat(testStockDetails.getVolumeRatio30()).isEqualTo(DEFAULT_VOLUME_RATIO30);
-        assertThat(testStockDetails.getPercentReturn()).isEqualTo(DEFAULT_PERCENT_RETURN);
     }
 
     @Test
@@ -252,12 +234,7 @@ public class StockDetailsResourceTest {
                 .andExpect(jsonPath("$.[*].maxPrice").value(hasItem(DEFAULT_MAX_PRICE.intValue())))
                 .andExpect(jsonPath("$.[*].minPrice").value(hasItem(DEFAULT_MIN_PRICE.intValue())))
                 .andExpect(jsonPath("$.[*].closePrice").value(hasItem(DEFAULT_CLOSE_PRICE.intValue())))
-                .andExpect(jsonPath("$.[*].volume").value(hasItem(DEFAULT_VOLUME.intValue())))
-                .andExpect(jsonPath("$.[*].averageVolume10Days").value(hasItem(DEFAULT_AVERAGE_VOLUME10_DAYS.intValue())))
-                .andExpect(jsonPath("$.[*].averageVolume30Days").value(hasItem(DEFAULT_AVERAGE_VOLUME30_DAYS.intValue())))
-                .andExpect(jsonPath("$.[*].volumeRatio10").value(hasItem(DEFAULT_VOLUME_RATIO10.intValue())))
-                .andExpect(jsonPath("$.[*].volumeRatio30").value(hasItem(DEFAULT_VOLUME_RATIO30.intValue())))
-                .andExpect(jsonPath("$.[*].percentReturn").value(hasItem(DEFAULT_PERCENT_RETURN.intValue())));
+                .andExpect(jsonPath("$.[*].volume").value(hasItem(DEFAULT_VOLUME.intValue())));
     }
 
     @Test
@@ -276,12 +253,7 @@ public class StockDetailsResourceTest {
             .andExpect(jsonPath("$.maxPrice").value(DEFAULT_MAX_PRICE.intValue()))
             .andExpect(jsonPath("$.minPrice").value(DEFAULT_MIN_PRICE.intValue()))
             .andExpect(jsonPath("$.closePrice").value(DEFAULT_CLOSE_PRICE.intValue()))
-            .andExpect(jsonPath("$.volume").value(DEFAULT_VOLUME.intValue()))
-            .andExpect(jsonPath("$.averageVolume10Days").value(DEFAULT_AVERAGE_VOLUME10_DAYS.intValue()))
-            .andExpect(jsonPath("$.averageVolume30Days").value(DEFAULT_AVERAGE_VOLUME30_DAYS.intValue()))
-            .andExpect(jsonPath("$.volumeRatio10").value(DEFAULT_VOLUME_RATIO10.intValue()))
-            .andExpect(jsonPath("$.volumeRatio30").value(DEFAULT_VOLUME_RATIO30.intValue()))
-            .andExpect(jsonPath("$.percentReturn").value(DEFAULT_PERCENT_RETURN.intValue()));
+            .andExpect(jsonPath("$.volume").value(DEFAULT_VOLUME.intValue()));
     }
 
     @Test
@@ -307,11 +279,6 @@ public class StockDetailsResourceTest {
         stockDetails.setMinPrice(UPDATED_MIN_PRICE);
         stockDetails.setClosePrice(UPDATED_CLOSE_PRICE);
         stockDetails.setVolume(UPDATED_VOLUME);
-        stockDetails.setAverageVolume10Days(UPDATED_AVERAGE_VOLUME10_DAYS);
-        stockDetails.setAverageVolume30Days(UPDATED_AVERAGE_VOLUME30_DAYS);
-        stockDetails.setVolumeRatio10(UPDATED_VOLUME_RATIO10);
-        stockDetails.setVolumeRatio30(UPDATED_VOLUME_RATIO30);
-        stockDetails.setPercentReturn(UPDATED_PERCENT_RETURN);
         restStockDetailsMockMvc.perform(put("/api/stockDetailss")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(stockDetails)))
@@ -327,11 +294,6 @@ public class StockDetailsResourceTest {
         assertThat(testStockDetails.getMinPrice()).isEqualTo(UPDATED_MIN_PRICE);
         assertThat(testStockDetails.getClosePrice()).isEqualTo(UPDATED_CLOSE_PRICE);
         assertThat(testStockDetails.getVolume()).isEqualTo(UPDATED_VOLUME);
-        assertThat(testStockDetails.getAverageVolume10Days()).isEqualTo(UPDATED_AVERAGE_VOLUME10_DAYS);
-        assertThat(testStockDetails.getAverageVolume30Days()).isEqualTo(UPDATED_AVERAGE_VOLUME30_DAYS);
-        assertThat(testStockDetails.getVolumeRatio10()).isEqualTo(UPDATED_VOLUME_RATIO10);
-        assertThat(testStockDetails.getVolumeRatio30()).isEqualTo(UPDATED_VOLUME_RATIO30);
-        assertThat(testStockDetails.getPercentReturn()).isEqualTo(UPDATED_PERCENT_RETURN);
     }
 
     @Test

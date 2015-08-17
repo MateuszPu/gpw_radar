@@ -41,8 +41,8 @@ import com.gpw.radar.domain.enumeration.StockTicker;
 public class StockResourceTest {
 
 
-    private static final StockTicker DEFAULT_TICKER = StockTicker.wig20;
-    private static final StockTicker UPDATED_TICKER = StockTicker.wig20;
+    private static final StockTicker DEFAULT_TICKER = StockTicker.abc;
+    private static final StockTicker UPDATED_TICKER = StockTicker.abc;
     private static final String DEFAULT_STOCK_NAME = "SAMPLE_TEXT";
     private static final String UPDATED_STOCK_NAME = "UPDATED_TEXT";
     private static final String DEFAULT_STOCK_SHORT_NAME = "SAMPLE_TEXT";
@@ -66,7 +66,7 @@ public class StockResourceTest {
     @Before
     public void initTest() {
         stock = new Stock();
-        stock.setticker(DEFAULT_TICKER);
+        stock.setTicker(DEFAULT_TICKER);
         stock.setStockName(DEFAULT_STOCK_NAME);
         stock.setStockShortName(DEFAULT_STOCK_SHORT_NAME);
     }
@@ -86,7 +86,7 @@ public class StockResourceTest {
         List<Stock> stocks = stockRepository.findAll();
         assertThat(stocks).hasSize(databaseSizeBeforeCreate + 1);
         Stock testStock = stocks.get(stocks.size() - 1);
-        assertThat(testStock.getticker()).isEqualTo(DEFAULT_TICKER);
+        assertThat(testStock.getTicker()).isEqualTo(DEFAULT_TICKER);
         assertThat(testStock.getStockName()).isEqualTo(DEFAULT_STOCK_NAME);
         assertThat(testStock.getStockShortName()).isEqualTo(DEFAULT_STOCK_SHORT_NAME);
     }
@@ -96,7 +96,7 @@ public class StockResourceTest {
     public void checktickerIsRequired() throws Exception {
         int databaseSizeBeforeTest = stockRepository.findAll().size();
         // set the field null
-        stock.setticker(null);
+        stock.setTicker(null);
 
         // Create the Stock, which fails.
         restStockMockMvc.perform(post("/api/stocks")
@@ -157,7 +157,7 @@ public class StockResourceTest {
 		int databaseSizeBeforeUpdate = stockRepository.findAll().size();
 
         // Update the stock
-        stock.setticker(UPDATED_TICKER);
+        stock.setTicker(UPDATED_TICKER);
         stock.setStockName(UPDATED_STOCK_NAME);
         stock.setStockShortName(UPDATED_STOCK_SHORT_NAME);
         restStockMockMvc.perform(put("/api/stocks")
@@ -169,7 +169,7 @@ public class StockResourceTest {
         List<Stock> stocks = stockRepository.findAll();
         assertThat(stocks).hasSize(databaseSizeBeforeUpdate);
         Stock testStock = stocks.get(stocks.size() - 1);
-        assertThat(testStock.getticker()).isEqualTo(UPDATED_TICKER);
+        assertThat(testStock.getTicker()).isEqualTo(UPDATED_TICKER);
         assertThat(testStock.getStockName()).isEqualTo(UPDATED_STOCK_NAME);
         assertThat(testStock.getStockShortName()).isEqualTo(UPDATED_STOCK_SHORT_NAME);
     }
