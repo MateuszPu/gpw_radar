@@ -24,36 +24,36 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
 			+ "INNER JOIN t_user u on us.user_id = u.id GROUP BY s.ticker ORDER BY count(*) DESC LIMIT 5", nativeQuery = true)
 	List<StockStatistic> getTop5MostFollowedStocks();
 
-//	@Query("select count(st) from Stock st where st.percentReturn > 0")
-//	Long countUpStocks();
-//
-//	@Query("select count(st) from Stock st where st.percentReturn < 0")
-//	Long countDownStocks();
-//
-//	@Query("select count(st) from Stock st where st.percentReturn = 0")
-//	Long countNoChangeStocks();
-//
-//	@Query(value = "from Stock as st inner join fetch st.stockIndicators where st.stockIndicators.slopeSimpleRegression10Days > 1 order by st.stockIndicators.slopeSimpleRegression10Days desc", countQuery = "select count(st) from Stock st inner join st.stockIndicators where st.stockIndicators.slopeSimpleRegression10Days > 1")
-//	Page<Stock> findWithStocksIndicators10DaysTrendUp(Pageable pageable);
-//
-//	@Query(value = "from Stock as st inner join fetch st.stockIndicators where st.stockIndicators.slopeSimpleRegression30Days > 1 order by st.stockIndicators.slopeSimpleRegression30Days desc", countQuery = "select count(st) from Stock st inner join st.stockIndicators where st.stockIndicators.slopeSimpleRegression30Days > 1")
-//	Page<Stock> findWithStocksIndicators30DaysTrendUp(Pageable pageable);
-//
-//	@Query(value = "from Stock as st inner join fetch st.stockIndicators where st.stockIndicators.slopeSimpleRegression60Days > 1 order by st.stockIndicators.slopeSimpleRegression60Days desc", countQuery = "select count(st) from Stock st inner join st.stockIndicators where st.stockIndicators.slopeSimpleRegression60Days > 1")
-//	Page<Stock> findWithStocksIndicators60DaysTrendUp(Pageable pageable);
-//
-//	@Query(value = "from Stock as st inner join fetch st.stockIndicators where st.stockIndicators.slopeSimpleRegression90Days > 1 order by st.stockIndicators.slopeSimpleRegression90Days desc", countQuery = "select count(st) from Stock st inner join st.stockIndicators where st.stockIndicators.slopeSimpleRegression90Days > 1")
-//	Page<Stock> findWithStocksIndicators90DaysTrendUp(Pageable pageable);
-//
-//	@Query(value = "from Stock as st inner join fetch st.stockIndicators where st.stockIndicators.slopeSimpleRegression10Days < -1 order by st.stockIndicators.slopeSimpleRegression10Days asc", countQuery = "select count(st) from Stock st inner join st.stockIndicators where st.stockIndicators.slopeSimpleRegression10Days < -1")
-//	Page<Stock> findWithStocksIndicators10DaysTrendDown(Pageable pageable);
-//
-//	@Query(value = "from Stock as st inner join fetch st.stockIndicators where st.stockIndicators.slopeSimpleRegression30Days < -1 order by st.stockIndicators.slopeSimpleRegression30Days asc", countQuery = "select count(st) from Stock st inner join st.stockIndicators where st.stockIndicators.slopeSimpleRegression30Days < -1")
-//	Page<Stock> findWithStocksIndicators30DaysTrendDown(Pageable pageable);
-//
-//	@Query(value = "from Stock as st inner join fetch st.stockIndicators where st.stockIndicators.slopeSimpleRegression60Days < -1 order by st.stockIndicators.slopeSimpleRegression60Days asc", countQuery = "select count(st) from Stock st inner join st.stockIndicators where st.stockIndicators.slopeSimpleRegression60Days < -1")
-//	Page<Stock> findWithStocksIndicators60DaysTrendDown(Pageable pageable);
-//
-//	@Query(value = "from Stock as st inner join fetch st.stockIndicators where st.stockIndicators.slopeSimpleRegression90Days < -1 order by st.stockIndicators.slopeSimpleRegression90Days asc", countQuery = "select count(st) from Stock st inner join st.stockIndicators where st.stockIndicators.slopeSimpleRegression90Days < -1")
-//	Page<Stock> findWithStocksIndicators90DaysTrendDown(Pageable pageable);
+	@Query("select count(si) from StockIndicators si where si.percentReturn > 0")
+	Long countUpStocks();
+
+	@Query("select count(si) from StockIndicators si where si.percentReturn < 0")
+	Long countDownStocks();
+
+	@Query("select count(si) from StockIndicators si where si.percentReturn = 0")
+	Long countNoChangeStocks();
+	
+	@Query(value = "select si.stock from StockIndicators si where si.slopeSimpleRegression10Days > 1 order by si.slopeSimpleRegression10Days desc", countQuery = "select count(si.stock) from StockIndicators si where si.slopeSimpleRegression10Days > 1")
+	Page<Stock> findWithStocksIndicators10DaysTrendUp(Pageable pageable);
+	
+	@Query(value = "select si.stock from StockIndicators si where si.slopeSimpleRegression30Days > 1 order by si.slopeSimpleRegression30Days desc", countQuery = "select count(si.stock) from StockIndicators si where si.slopeSimpleRegression30Days > 1")
+	Page<Stock> findWithStocksIndicators30DaysTrendUp(Pageable pageable);
+	
+	@Query(value = "select si.stock from StockIndicators si where si.slopeSimpleRegression60Days > 1 order by si.slopeSimpleRegression60Days desc", countQuery = "select count(si.stock) from StockIndicators si where si.slopeSimpleRegression60Days > 1")
+	Page<Stock> findWithStocksIndicators60DaysTrendUp(Pageable pageable);
+	
+	@Query(value = "select si.stock from StockIndicators si where si.slopeSimpleRegression90Days > 1 order by si.slopeSimpleRegression90Days desc", countQuery = "select count(si.stock) from StockIndicators si where si.slopeSimpleRegression90Days > 1")
+	Page<Stock> findWithStocksIndicators90DaysTrendUp(Pageable pageable);
+	
+	@Query(value = "select si.stock from StockIndicators si where si.slopeSimpleRegression10Days < -1 order by si.slopeSimpleRegression10Days desc", countQuery = "select count(si.stock) from StockIndicators si where si.slopeSimpleRegression10Days < -1")
+	Page<Stock> findWithStocksIndicators10DaysTrendDown(Pageable pageable);
+	
+	@Query(value = "select si.stock from StockIndicators si where si.slopeSimpleRegression30Days < -1 order by si.slopeSimpleRegression30Days desc", countQuery = "select count(si.stock) from StockIndicators si where si.slopeSimpleRegression30Days < -1")
+	Page<Stock> findWithStocksIndicators30DaysTrendDown(Pageable pageable);
+	
+	@Query(value = "select si.stock from StockIndicators si where si.slopeSimpleRegression60Days < -1 order by si.slopeSimpleRegression60Days desc", countQuery = "select count(si.stock) from StockIndicators si where si.slopeSimpleRegression60Days < -1")
+	Page<Stock> findWithStocksIndicators60DaysTrendDown(Pageable pageable);
+	
+	@Query(value = "select si.stock from StockIndicators si where si.slopeSimpleRegression90Days < -1 order by si.slopeSimpleRegression90Days desc", countQuery = "select count(si.stock) from StockIndicators si where si.slopeSimpleRegression90Days < -1")
+	Page<Stock> findWithStocksIndicators90DaysTrendDown(Pageable pageable);
 }

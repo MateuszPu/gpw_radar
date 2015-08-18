@@ -99,12 +99,6 @@ public class FillDatabaseWithData {
         }
     }
 
-//    private void getStockDetailsForStockByTicker(StockTicker ticker) {
-//        Stock stock = stockRepository.findByTicker(ticker);
-//        stock.setStockDetails(fillDataBaseWithDataService.dataStockDetailsParserByTickerFromFile(ticker));
-//        stockRepository.save(stock);
-//    }
-
     @RequestMapping(value = "/3")
     public void fillDataBaseWithStockFinanceEvent() throws IOException {
         for (StockTicker element : StockTicker.values()) {
