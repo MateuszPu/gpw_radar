@@ -91,7 +91,10 @@ public class AutoUpdateDb {
 	private void updateDailyStockIndicators() {
 		for (StockTicker element : StockTicker.values()) {
 			Stock stock = stockRepository.findByTicker(element);
-			StockIndicators stockIndicators = new StockIndicators();
+			StockIndicators stockIndicators = stockIndicatorsRepository.findByStock(stock);
+			if(stockIndicators == null){
+				stockIndicators = new StockIndicators();
+			}
 			Pageable top100th = new PageRequest(0, 100);
 			Page<StockDetails> stockDetails = stockDetailsRepository.findByStockOrderByDateDesc(stock, top100th);
 			int size = stockDetails.getContent().size();
@@ -116,8 +119,6 @@ public class AutoUpdateDb {
 			double slopeSimpleRegression30 = calculateSlopeSimpleRegression(dataFor30DaysTrend);
 			double slopeSimpleRegression60 = calculateSlopeSimpleRegression(dataFor60DaysTrend);
 			double slopeSimpleRegression90 = calculateSlopeSimpleRegression(dataFor90DaysTrend);
-
-			
 			
 			stockIndicators.setSlopeSimpleRegression10Days(slopeSimpleRegression10);
 			stockIndicators.setSlopeSimpleRegression30Days(slopeSimpleRegression30);
@@ -178,17 +179,6 @@ public class AutoUpdateDb {
 		stockIndicators.setVolumeRatio30(new BigDecimal(volume[0] / stockIndicators.getAverageVolume30Days().doubleValue()));
 	}
 
-	private double[] calculateDataForTrends(double[] closePrice, int size) {
-		double[] dataForTrends = new double[size];
-		dataForTrends[size - 1] = (closePrice[size - 1] / closePrice[size] - 1) * 100;
-		for (int i = dataForTrends.length - 2; i >= 0; i--) {
-			double percentReturn = (closePrice[i] / closePrice[i + 1] - 1) * 100;
-			dataForTrends[i] = percentReturn + dataForTrends[i + 1];
-		}
-		ArrayUtils.reverse(dataForTrends);
-		return dataForTrends;
-	}
-
 	private double calculateSlopeSimpleRegression(double[] dataForTrend) {
 		SimpleRegression simpleRegerssion = new SimpleRegression();
 		int size = dataForTrend.length - 1;
@@ -197,11 +187,7 @@ public class AutoUpdateDb {
 		}
 		return simpleRegerssion.getSlope();
 	}
-
-	private double calculateAngleInDegress(double slopeSimpleRegression10) {
-		return Math.atan2(slopeSimpleRegression10, 1) * 180 / Math.PI;
-	}
-
+	
 	public boolean isUpdating() {
 		return updating;
 	}
