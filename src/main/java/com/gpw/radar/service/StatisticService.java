@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -21,105 +24,99 @@ import com.gpw.radar.repository.StockDetailsRepository;
 @Service
 public class StatisticService {
 
-    @Inject
-    private StockDetailsRepository stockDetailsRepository;
+	@Inject
+	private StockDetailsRepository stockDetailsRepository;
 
-    private List<StockTicker> tickersWithOutOneAnalysed;
-    private TreeSet<StockStatistic> correlationTreeSet;
-    private double[] closePricesAnalysed;
-    private int period;
-    private PearsonsCorrelation pearsonsCorrelation;
-    private int step;
-    private boolean isComputing;
+	private List<StockTicker> tickersWithOutOneAnalysed;
+	private TreeSet<StockStatistic> correlationTreeSet;
+	private double[] closePricesAnalysed;
+	private int period;
+	private PearsonsCorrelation pearsonsCorrelation;
+	private int step;
+	private boolean isComputing;
 
-    public TreeSet<StockStatistic> computePearsonCorrelation(StockTicker analysedTicker, int period) {
-        this.period = period;
-        this.isComputing = true;
+	public TreeSet<StockStatistic> computePearsonCorrelation(StockTicker correlationForTicker, int period) {
+		prepareVariables(correlationForTicker, period);
 
-        correlationTreeSet = new TreeSet<>();
-        pearsonsCorrelation = new PearsonsCorrelation();
-        List<StockDetails> stockDetailsAnalysed = getContent(analysedTicker, period);
-        closePricesAnalysed = getClosePrices(stockDetailsAnalysed);
-        EnumSet<StockTicker> tickers = complementOf(EnumSet.of(analysedTicker));
-        tickersWithOutOneAnalysed = new ArrayList<StockTicker>(tickers);
+		ExecutorService executor = Executors.newFixedThreadPool(3);
 
-        Thread threadOne = new Thread(new Runnable() {
-            public void run() {
-                firstPartTickers();
-            }
-        });
+		for (StockTicker ticker : tickersWithOutOneAnalysed) {
+			executor.submit(new CorrelationStock(ticker));
+		}
 
-        Thread threadTwo = new Thread(new Runnable() {
-            public void run() {
-                secondPartTickers();
-            }
-        });
+		executor.shutdown();
 
-        threadOne.start();
-        threadTwo.start();
+		try {
+			executor.awaitTermination(1, TimeUnit.HOURS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
-        try {
-            threadOne.join();
-            threadTwo.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+		this.step = 0;
+		this.isComputing = false;
+		return correlationTreeSet;
+	}
 
-        this.step = 0;
-        this.isComputing = false;
-        return correlationTreeSet;
-    }
+	private void prepareVariables(StockTicker correlationForTicker, int period) {
+		this.period = period;
+		this.isComputing = true;
 
-    private void firstPartTickers() {
-        calculateTickers(0, 2);
-    }
+		correlationTreeSet = new TreeSet<>();
+		pearsonsCorrelation = new PearsonsCorrelation();
+		List<StockDetails> stockDetailsAnalysed = getContent(correlationForTicker, period);
+		closePricesAnalysed = getClosePrices(stockDetailsAnalysed);
+		EnumSet<StockTicker> tickers = complementOf(EnumSet.of(correlationForTicker));
+		tickersWithOutOneAnalysed = new ArrayList<StockTicker>(tickers);
+	}
+	
+	private void calculateCorrelation(StockTicker ticker) {
+		double[] closePricesToCompare = getClosePrices(getContent(ticker, period));
+		Double correlation = 0.0;
+		if (closePricesToCompare.length == closePricesAnalysed.length) {
+			correlation = pearsonsCorrelation.correlation(closePricesAnalysed, closePricesToCompare);
+		}
+		StockStatistic stockCorrelation = new StockStatistic(correlation, ticker);
+		correlationTreeSet.add(stockCorrelation);
+		increaseStep();
+	}
+	
+	private double[] getClosePrices(List<StockDetails> stockDetails) {
+		double[] closePrices = new double[stockDetails.size()];
 
-    private void secondPartTickers() {
-        calculateTickers(1, 2);
-    }
+		int index = 0;
+		for (StockDetails stds : stockDetails) {
+			closePrices[index++] = stds.getClosePrice().doubleValue();
+		}
 
-    private void calculateTickers(int start, int increment) {
-        for (int index = start; index < tickersWithOutOneAnalysed.size(); index += increment) {
-            calculateCorrelation(index);
-        }
-    }
+		return closePrices;
+	}
 
-    private void calculateCorrelation(int index) {
-        StockTicker ticker = StockTicker.valueOf(tickersWithOutOneAnalysed.get(index).name());
-        double[] closePricesToCompare = getClosePrices(getContent(ticker, period));
-        Double correlation = 0.00;
-        if(closePricesToCompare.length == closePricesAnalysed.length){
-            correlation = pearsonsCorrelation.correlation(closePricesAnalysed, closePricesToCompare);
-        }
-        StockStatistic stockCorrelation = new StockStatistic(correlation, ticker);
-        correlationTreeSet.add(stockCorrelation);
-        increaseStep();
-    }
+	private List<StockDetails> getContent(StockTicker ticker, int size) {
+		return stockDetailsRepository.findByStockTickerOrderByDateDesc(ticker, new PageRequest(1, size)).getContent();
+	}
 
-    private List<StockDetails> getContent(StockTicker ticker, int size) {
-        return stockDetailsRepository.findByStockTickerOrderByDateDesc(ticker, new PageRequest(1, size)).getContent();
-    }
+	private synchronized void increaseStep() {
+		step++;
+	}
 
-    private double[] getClosePrices(List<StockDetails> stockDetails) {
-        double[] closePrices = new double[stockDetails.size()];
+	public int getStep() {
+		return step;
+	}
 
-        int index = 0;
-        for (StockDetails stds : stockDetails) {
-            closePrices[index++] = stds.getClosePrice().doubleValue();
-        }
+	public boolean isComputing() {
+		return isComputing;
+	}
 
-        return closePrices;
-    }
+	class CorrelationStock implements Runnable {
+		StockTicker analysedTicker;
 
-    private synchronized void increaseStep(){
-        step++;
-    }
+		public CorrelationStock(StockTicker analysedTicker) {
+			this.analysedTicker = analysedTicker;
+		}
 
-    public int getStep() {
-        return step;
-    }
-
-    public boolean isComputing() {
-        return isComputing;
-    }
+		@Override
+		public void run() {
+			calculateCorrelation(analysedTicker);
+		}
+	}
 }
