@@ -32,8 +32,6 @@ import com.gpw.radar.service.StockDetailsService;
 @RequestMapping("/api")
 public class AutoUpdateDb {
 
-	// TODO: CLEAN THE CODE! in final code delete request mapping, removed unused method
-	// consider the way of calculate slope simple regression
 	@Inject
 	private StockRepository stockRepository;
 
@@ -49,28 +47,18 @@ public class AutoUpdateDb {
 	private boolean updating = false;
 	private int step = 0;
 
-	class ApplicationStatus {
-		public boolean updating;
-		public int step;
-
-		public ApplicationStatus(boolean updating, int step) {
-			this.updating = updating;
-			this.step = step;
-		}
-	}
-
 	@RequestMapping(value = "/is/updating", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ApplicationStatus updatingStatus() {
 		return new ApplicationStatus(isUpdating() ,getStep());
 	}
 
-    @Transactional
+    
     @RequestMapping(value = "/update/db", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public void updateData() throws IOException, InterruptedException {
+	public void updateStockDetails() throws IOException, InterruptedException {
 		updating = true;
 		step = 0;
 		LocalDate date = stockDetailsService.findTopByDate().getDate();
-		LocalDate stooqDate = stockDetailsService.getLastDateWig20FromStooq();
+		LocalDate stooqDate = stockDetailsService.getLastDateWig20FromStooqWebsite();
 
 		if (!date.isEqual(stooqDate)) {
 			updateDailyStockDetails(stooqDate);
@@ -79,6 +67,7 @@ public class AutoUpdateDb {
 		updating = false;
 	}
 
+    @Transactional
 	private void updateDailyStockDetails(LocalDate wig20Date) throws IOException, InterruptedException {
 		for (StockTicker element : StockTicker.values()) {
 			Stock stock = stockRepository.findByTicker(element);
@@ -88,6 +77,7 @@ public class AutoUpdateDb {
 		}
 	}
 
+    @Transactional
 	private void updateDailyStockIndicators() {
 		for (StockTicker element : StockTicker.values()) {
 			Stock stock = stockRepository.findByTicker(element);
@@ -128,7 +118,6 @@ public class AutoUpdateDb {
 			stockIndicators.setStock(stock);
 			
 			stockIndicatorsRepository.save(stockIndicators);
-//			stockRepository.save(stock);
 			step++;
 		}
 	}
@@ -139,18 +128,17 @@ public class AutoUpdateDb {
         double min = StatUtils.min(input);
 
         for(int i = 0; i < input.length; i++){
-            normalized[i] = normalizeNumber(input[i], max, min);
+            normalized[i] = normalizeData(input[i], max, min);
         }
         ArrayUtils.reverse(normalized);
         return normalized;
     }
 
-    private double normalizeNumber(double number, double max, double min) {
-        return (number-min)/(max-min);
+    private double normalizeData(double number, double max, double min) {
+        return (number-min)/(max-min)*100;
     }
 
-    private void getDetails(Page<StockDetails> stockDetails, int size, double[] openPrice, double[] minPrice, double[] maxPrice, double[] closePrice,
-			double[] volume) {
+    private void getDetails(Page<StockDetails> stockDetails, int size, double[] openPrice, double[] minPrice, double[] maxPrice, double[] closePrice, double[] volume) {
 		for (int i = 0; i < size; i++) {
 			StockDetails stockDetailsContent = stockDetails.getContent().get(i);
 			openPrice[i] = stockDetailsContent.getOpenPrice().doubleValue();
@@ -202,5 +190,15 @@ public class AutoUpdateDb {
 
 	public void setStep(int step) {
 		this.step = step;
+	}
+	
+	class ApplicationStatus {
+		public boolean updating;
+		public int step;
+
+		public ApplicationStatus(boolean updating, int step) {
+			this.updating = updating;
+			this.step = step;
+		}
 	}
 }

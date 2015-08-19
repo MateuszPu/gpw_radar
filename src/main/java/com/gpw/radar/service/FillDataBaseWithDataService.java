@@ -1,6 +1,5 @@
 package com.gpw.radar.service;
 
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -46,22 +45,23 @@ public class FillDataBaseWithDataService {
 		}
 	}
 
-	public Set<StockDetails> dataStockDetailsParserByTickerFromFile(Stock stock) {
+	public Set<StockDetails> parseStockDetailsByTickerFromFile(Stock stock) {
 		String line = "";
 		String cvsSplitBy = ",";
 		Set<StockDetails> stockDetailList = new HashSet<StockDetails>();
-		
-		try {
-			FileReader fileIn = new FileReader("C:/Users/ppp/Desktop/data/daily/pl/wse stocks/" + stock.getTicker().name() + ".txt");
+		BufferedReader in = null;
 
-			BufferedReader in = new BufferedReader(fileIn);
+		try {
+			ClassLoader classLoader = getClass().getClassLoader();
+			String filePath = "stocks_data/daily/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
+			FileReader fileIn = new FileReader(classLoader.getResource(filePath).getFile());
+
+			in = new BufferedReader(fileIn);
 
 			in.readLine();
 			while ((line = in.readLine()) != null) {
 				StockDetails stockDetails = new StockDetails();
 				String[] stockdetails = line.split(cvsSplitBy);
-
-				// setting stock to stockdetails
 				stockDetails.setStock(stock);
 
 				stockDetails.setDate(parserService.parseLocalDateFromString(stockdetails[0]));
@@ -74,15 +74,19 @@ public class FillDataBaseWithDataService {
 				} catch (ArrayIndexOutOfBoundsException exc) {
 					stockDetails.setVolume(0l);
 				}
-
 				stockDetailList.add(stockDetails);
 			}
-			in.close();
 
 		} catch (MalformedURLException e1) {
 			e1.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				in.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		return stockDetailList;
 	}

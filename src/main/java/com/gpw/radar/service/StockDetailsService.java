@@ -115,7 +115,7 @@ public class StockDetailsService {
 		stockDetails.setVolume(0l);
 	}
 
-	public LocalDate getLastDateWig20FromStooq() {
+	public LocalDate getLastDateWig20FromStooqWebsite() {
 		String line = "";
 		String cvsSplitBy = ",";
 		LocalDate date = null;

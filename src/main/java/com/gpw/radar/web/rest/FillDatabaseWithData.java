@@ -47,8 +47,8 @@ public class FillDatabaseWithData {
 
     @RequestMapping(value = "/2")
     public void fillDataBaseWithStocksDetails() {
-        long start = System.currentTimeMillis();
-        Thread threadOne = new Thread(new Runnable() {
+
+    	Thread threadOne = new Thread(new Runnable() {
             public void run() {
                 parseFromTxtFile(0, 4);
             }
@@ -85,16 +85,13 @@ public class FillDatabaseWithData {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        long end = System.currentTimeMillis();
-        System.out.println("czas potrzebny: 239.246: " + (end - start) / 1000.0);
     }
 
     private void parseFromTxtFile(int start, int increment) {
         for (int index = start; index < gpwStockTickers.size(); index += increment) {
         	StockTicker ticker = StockTicker.valueOf(gpwStockTickers.get(index).name());
         	Stock stock = stockRepository.findByTicker(ticker);
-        	Set<StockDetails> stockDetails = fillDataBaseWithDataService.dataStockDetailsParserByTickerFromFile(stock);
+        	Set<StockDetails> stockDetails = fillDataBaseWithDataService.parseStockDetailsByTickerFromFile(stock);
         	stockDetailsRepository.save(stockDetails);
         }
     }
