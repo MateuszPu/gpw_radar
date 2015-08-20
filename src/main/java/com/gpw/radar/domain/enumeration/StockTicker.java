@@ -3,7 +3,7 @@ package com.gpw.radar.domain.enumeration;
 /**
  * The GpwStockTicker enumeration.
  */
-public enum StockTicker implements Tickers {
+public enum StockTicker implements Ticker {
 	abc, abe, acp, act, ago, alc, ali, alr, amc, aml, apt, arr, asb, ase, ast, atc,
 	atd, att, bbd, bdx, bft, bhw, bio, bmc, brs, bsc, btm, bzw, car, ccc, cdr,
 	cez, chs, cie, cig, cmp, cmr, col, cps, crm, czt, dbc, dom, dud, duo, eat, ech,

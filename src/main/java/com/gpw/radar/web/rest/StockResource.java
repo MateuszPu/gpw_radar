@@ -115,11 +115,13 @@ public class StockResource {
 	}
 
 	@RequestMapping(value = "/stocks/get/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RolesAllowed(AuthoritiesConstants.USER)
 	public List<Stock> gettAllWithOutPagination() {
 		return stockRepository.findAll();
 	}
 
 	@RequestMapping(value = "/stocks/trends/{direction}/days", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RolesAllowed(AuthoritiesConstants.USER)
 	public ResponseEntity<List<Stock>> getStocksTrend(@PathVariable String direction, @RequestParam int days, @RequestParam(value = "page") Integer offset,
       @RequestParam(value = "per_page") Integer limit) throws URISyntaxException {
 		TrendDirection trendDirection = TrendDirection.valueOf(direction.toUpperCase());
@@ -173,6 +175,7 @@ public class StockResource {
 	}
 
 	@RequestMapping(value = "/stock/follow/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RolesAllowed(AuthoritiesConstants.USER)
 	public void followStock(@PathVariable Long id, Principal principal) {
         Stock stock = stockRepository.findOne(id);
         String name = principal.getName();
@@ -183,6 +186,7 @@ public class StockResource {
     }
 
 	@RequestMapping(value = "/stock/stop/follow/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RolesAllowed(AuthoritiesConstants.USER)
 	public void stopFollowStock(@PathVariable Long id, Principal principal) {
 		Stock stock = stockRepository.findOne(id);
 		String name = principal.getName();

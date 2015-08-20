@@ -1,5 +1,5 @@
 package com.gpw.radar.domain.enumeration;
 
-public interface Tickers {
+public interface Ticker {
 
 }

@@ -59,7 +59,7 @@
     </contextListener>
 
     <root level="${logback.loglevel}">
-        <appender-ref ref="WARN"/>
+        <appender-ref ref="CONSOLE"/>
     </root>
 
 </configuration>

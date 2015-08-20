@@ -1,10 +1,13 @@
 package com.gpw.radar.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import com.gpw.radar.domain.StockDetails;
-import com.gpw.radar.repository.StockDetailsRepository;
-import com.gpw.radar.security.AuthoritiesConstants;
-import com.gpw.radar.web.rest.util.PaginationUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+
+import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,16 +16,18 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Inject;
-import javax.validation.Valid;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import com.codahale.metrics.annotation.Timed;
+import com.gpw.radar.domain.StockDetails;
+import com.gpw.radar.repository.StockDetailsRepository;
+import com.gpw.radar.security.AuthoritiesConstants;
+import com.gpw.radar.web.rest.util.PaginationUtil;
 
 /**
  * REST controller for managing StockDetails.
@@ -41,7 +46,7 @@ public class StockDetailsResource {
 	 */
 	@RequestMapping(value = "/stockDetailss", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
-	@PreAuthorize("hasRole('" + AuthoritiesConstants.ADMIN + "')")
+	@RolesAllowed(AuthoritiesConstants.ADMIN)
 	public ResponseEntity<StockDetails> create(@Valid @RequestBody StockDetails stockDetails) throws URISyntaxException {
 		log.debug("REST request to save StockDetails : {}", stockDetails);
 		if (stockDetails.getId() != null) {
@@ -92,7 +97,7 @@ public class StockDetailsResource {
 	 */
 	@RequestMapping(value = "/stockDetailss/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
-	@PreAuthorize("hasRole('" + AuthoritiesConstants.ADMIN + "')")
+	@RolesAllowed(AuthoritiesConstants.ADMIN)
 	public void delete(@PathVariable Long id) {
 		log.debug("REST request to delete StockDetails : {}", id);
 		stockDetailsRepository.delete(id);

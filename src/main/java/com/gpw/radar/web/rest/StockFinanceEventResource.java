@@ -76,7 +76,7 @@ public class StockFinanceEventResource {
 	 */
 	@RequestMapping(value = "/stockFinanceEvents", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
-	@PreAuthorize("hasRole('" + AuthoritiesConstants.ADMIN + "')")
+	@RolesAllowed(AuthoritiesConstants.ADMIN)
 	public ResponseEntity<List<StockFinanceEvent>> getAll(@RequestParam(value = "page", required = false) Integer offset, @RequestParam(value = "per_page", required = false) Integer limit) throws URISyntaxException {
 		Page<StockFinanceEvent> page = stockFinanceEventRepository.findAll(PaginationUtil.generatePageRequest(offset, limit));
 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/stockFinanceEvents", offset, limit);

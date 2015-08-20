@@ -9,18 +9,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.gpw.radar.domain.Stock;
 import com.gpw.radar.domain.StockDetails;
-import com.gpw.radar.domain.enumeration.Tickers;
+import com.gpw.radar.domain.enumeration.Ticker;
 
 /**
  * Spring Data JPA repository for the StockDetails entity.
  */
 public interface StockDetailsRepository extends JpaRepository<StockDetails,Long> {
-	List<StockDetails> findByStockTickerOrderByDateDesc(Tickers ticker);
-	List<StockDetails> findByStockTickerOrderByDateAsc(Tickers ticker);
-    Page<StockDetails> findByStockTickerOrderByDateDesc(Tickers ticker, Pageable pageable);
+	List<StockDetails> findByStockTickerOrderByDateDesc(Ticker ticker);
+	List<StockDetails> findByStockTickerOrderByDateAsc(Ticker ticker);
+    Page<StockDetails> findByStockTickerOrderByDateDesc(Ticker ticker, Pageable pageable);
 	StockDetails findTopByOrderByDateDesc();
 	StockDetails findTopByStockOrderByDateDesc(Stock stock);
-	List<StockDetails> findByStockTicker(Tickers ticker);
+	List<StockDetails> findByStockTicker(Ticker ticker);
 	List<StockDetails> findByStock(Stock stock);
 	Page<StockDetails> findByStockAndDateBeforeOrderByDateDesc(Stock stock, LocalDate date, Pageable pageable);
 	Page<StockDetails> findByStockOrderByDateDesc(Stock stock, Pageable pageable);

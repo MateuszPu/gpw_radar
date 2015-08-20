@@ -9,14 +9,14 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.gpw.radar.domain.Stock;
 import com.gpw.radar.domain.StockStatistic;
-import com.gpw.radar.domain.enumeration.Tickers;
+import com.gpw.radar.domain.enumeration.Ticker;
 
 /**
  * Spring Data JPA repository for the Stock entity.
  */
 public interface StockRepository extends JpaRepository<Stock, Long> {
 
-	Stock findByTicker(Tickers ticker);
+	Stock findByTicker(Ticker ticker);
 	List<Stock> findAllByOrderByTickerAsc();
 
 	@Query(value = "SELECT s.ticker, COUNT(s.ticker)\n"
