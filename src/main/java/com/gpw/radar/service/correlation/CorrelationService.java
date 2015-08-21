@@ -14,6 +14,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ import com.gpw.radar.repository.StockDetailsRepository;
 public class CorrelationService {
 
 	private final Logger log = LoggerFactory.getLogger(CorrelationService.class);
-	
+
 	@Inject
 	private StockDetailsRepository stockDetailsRepository;
 
@@ -36,17 +37,18 @@ public class CorrelationService {
 	private TreeSet<StockStatistic> correlationTreeSet;
 
 	public TreeSet<StockStatistic> computeCorrelation(StockTicker correlationForTicker, int period, CorrelationType correlationType) {
-		if(period != 10 && period != 30 && period != 60 && period != 90){
+
+		if (period != 10 && period != 30 && period != 60 && period != 90) {
 			throw new IllegalArgumentException("Wrong period");
 		}
 		Objects.requireNonNull(correlationForTicker);
 		Objects.requireNonNull(correlationType);
-		
-		correlator = getCorrelatorImpl(correlationType, correlationForTicker, period, stockDetailsRepository);
+
+		correlator = getCorrelatorImpl(correlationType);
 		correlationTreeSet = new TreeSet<StockStatistic>();
 		final EnumSet<StockTicker> tickersToScan = complementOf(EnumSet.of(correlationForTicker));
 		final double[] sourceClosePrices = getClosePrices(getContent(correlationForTicker, period));
-		
+
 		ExecutorService executor = Executors.newFixedThreadPool(2);
 
 		for (StockTicker ticker : tickersToScan) {
@@ -65,7 +67,7 @@ public class CorrelationService {
 		this.isComputing = false;
 		return correlationTreeSet;
 	}
-	
+
 	private double[] getClosePrices(List<StockDetails> stockDetails) {
 		double[] closePrices = new double[stockDetails.size()];
 
@@ -78,11 +80,13 @@ public class CorrelationService {
 	}
 
 	private List<StockDetails> getContent(StockTicker ticker, int period) {
-		List<StockDetails> sd = stockDetailsRepository.findByStockTickerOrderByDateDesc(ticker, new PageRequest(0, period)).getContent();
-		return sd;
+		PageRequest pageable = new PageRequest(0, period);
+		Page<StockDetails> stockDetailsPaged = stockDetailsRepository.findByStockTickerOrderByDateDesc(ticker, pageable);
+		List<StockDetails> stockDetails = stockDetailsPaged.getContent();
+		return stockDetails;
 	}
 
-	private Correlator getCorrelatorImpl(CorrelationType correlationType, StockTicker correlationForTicker, int period, StockDetailsRepository stockDetailsRepository2) {
+	private Correlator getCorrelatorImpl(CorrelationType correlationType) {
 		switch (correlationType) {
 		case KENDALLS:
 			return new KendallsCorrelator();
@@ -101,13 +105,13 @@ public class CorrelationService {
 	public boolean isComputing() {
 		return isComputing;
 	}
-	
-	private synchronized void increaseStep(){
+
+	private synchronized void increaseStep() {
 		step++;
 	}
 
 	class CorrelationUtil implements Runnable {
-		
+
 		StockTicker analysedTicker;
 		double[] sourceClosePrices;
 		int period;
@@ -121,7 +125,8 @@ public class CorrelationService {
 		@Override
 		public void run() {
 			double[] targetClosePrices = getClosePrices(getContent(analysedTicker, period));
-			StockStatistic statistic = new StockStatistic(correlator.correlate(sourceClosePrices,targetClosePrices), analysedTicker);
+			double correlation = correlator.correlate(sourceClosePrices, targetClosePrices);
+			StockStatistic statistic = new StockStatistic(correlation, analysedTicker);
 			correlationTreeSet.add(statistic);
 			increaseStep();
 		}

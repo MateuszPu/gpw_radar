@@ -1,14 +1,15 @@
 package com.gpw.radar.web.rest;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.EnumSet;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +24,7 @@ import com.gpw.radar.service.WebParserService;
 
 @RestController
 @RequestMapping("/api/prepare/app")
-@PreAuthorize("hasRole('" + AuthoritiesConstants.ADMIN + "')")
+@RolesAllowed(AuthoritiesConstants.ADMIN)
 public class FillDatabaseWithData {
 
     @Inject
@@ -38,7 +39,7 @@ public class FillDatabaseWithData {
     @Inject
     private StockDetailsRepository stockDetailsRepository;
 
-    private List<StockTicker> gpwStockTickers = new ArrayList<StockTicker>(Arrays.asList(StockTicker.values()));
+    private final EnumSet<StockTicker> tickers = EnumSet.allOf(StockTicker.class);
 
     @RequestMapping(value = "/1")
     public void fillDataBaseWithStocks() throws IOException {
@@ -47,53 +48,66 @@ public class FillDatabaseWithData {
 
     @RequestMapping(value = "/2")
     public void fillDataBaseWithStocksDetails() {
+    	
+    	
+    	ExecutorService executor = Executors.newFixedThreadPool(4);
+    	
+    	for(StockTicker ticker: tickers){
+    		executor.execute(new Runnable() {
+				
+				@Override
+				public void run() {
+					Stock stock = stockRepository.findByTicker(ticker);
+		        	Set<StockDetails> stockDetails = fillDataBaseWithDataService.parseStockDetailsByStockFromFile(stock);
+		        	stockDetailsRepository.save(stockDetails);
+				}
+			});
+    	}
+    	
+		executor.shutdown();
+		try {
+			executor.awaitTermination(5, TimeUnit.MINUTES);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
-    	Thread threadOne = new Thread(new Runnable() {
-            public void run() {
-                parseFromTxtFile(0, 4);
-            }
-        });
-
-        Thread threadTwo = new Thread(new Runnable() {
-            public void run() {
-                parseFromTxtFile(1, 4);
-            }
-        });
-
-        Thread threadThree = new Thread(new Runnable() {
-            public void run() {
-                parseFromTxtFile(2, 4);
-            }
-        });
-
-        Thread threadFour = new Thread(new Runnable() {
-            public void run() {
-                parseFromTxtFile(3, 4);
-            }
-        });
-
-        threadOne.start();
-        threadTwo.start();
-        threadThree.start();
-        threadFour.start();
-
-        try {
-            threadOne.join();
-            threadTwo.join();
-            threadThree.join();
-            threadFour.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void parseFromTxtFile(int start, int increment) {
-        for (int index = start; index < gpwStockTickers.size(); index += increment) {
-        	StockTicker ticker = StockTicker.valueOf(gpwStockTickers.get(index).name());
-        	Stock stock = stockRepository.findByTicker(ticker);
-        	Set<StockDetails> stockDetails = fillDataBaseWithDataService.parseStockDetailsByTickerFromFile(stock);
-        	stockDetailsRepository.save(stockDetails);
-        }
+//    	Thread threadOne = new Thread(new Runnable() {
+//            public void run() {
+//                parseFromTxtFile(0, 4);
+//            }
+//        });
+//
+//        Thread threadTwo = new Thread(new Runnable() {
+//            public void run() {
+//                parseFromTxtFile(1, 4);
+//            }
+//        });
+//
+//        Thread threadThree = new Thread(new Runnable() {
+//            public void run() {
+//                parseFromTxtFile(2, 4);
+//            }
+//        });
+//
+//        Thread threadFour = new Thread(new Runnable() {
+//            public void run() {
+//                parseFromTxtFile(3, 4);
+//            }
+//        });
+//
+//        threadOne.start();
+//        threadTwo.start();
+//        threadThree.start();
+//        threadFour.start();
+//
+//        try {
+//            threadOne.join();
+//            threadTwo.join();
+//            threadThree.join();
+//            threadFour.join();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @RequestMapping(value = "/3")

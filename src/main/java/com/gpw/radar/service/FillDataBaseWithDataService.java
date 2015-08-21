@@ -45,7 +45,7 @@ public class FillDataBaseWithDataService {
 		}
 	}
 
-	public Set<StockDetails> parseStockDetailsByTickerFromFile(Stock stock) {
+	public Set<StockDetails> parseStockDetailsByStockFromFile(Stock stock) {
 		String line = "";
 		String cvsSplitBy = ",";
 		Set<StockDetails> stockDetailList = new HashSet<StockDetails>();
