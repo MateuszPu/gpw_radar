@@ -1,9 +1,5 @@
 package com.gpw.radar.service.correlation;
 
-import static java.util.EnumSet.complementOf;
-
-import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -14,26 +10,19 @@ import com.gpw.radar.domain.StockStatistic;
 import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.repository.StockDetailsRepository;
 
-public abstract class CorrelationVariables {
+public abstract class Correlator {
 
 	protected StockDetailsRepository stockDetailsRepository;
-	protected List<StockTicker> tickersWithOutOneAnalysed;
 	protected TreeSet<StockStatistic> correlationTreeSet;
 	protected double[] sourceClosePrices;
 	protected final int period;
 
-	public CorrelationVariables(StockTicker correlationForTicker, int period, StockDetailsRepository stockDetailsRepository) {
+	public Correlator(StockTicker correlationForTicker, int period, StockDetailsRepository stockDetailsRepository) {
 		this.stockDetailsRepository = stockDetailsRepository;
 		this.period = period;
 		this.correlationTreeSet = new TreeSet<>();
 		List<StockDetails> stockDetailsToAnalysed = getContent(correlationForTicker);
 		this.sourceClosePrices = getClosePrices(stockDetailsToAnalysed);
-		EnumSet<StockTicker> tickersToScan = complementOf(EnumSet.of(correlationForTicker));
-		this.tickersWithOutOneAnalysed = new ArrayList<StockTicker>(tickersToScan);
-	}
-
-	public List<StockTicker> getTickersWithOutOneAnalysed() {
-		return tickersWithOutOneAnalysed;
 	}
 
 	public TreeSet<StockStatistic> getCorrelationTreeSet() {
@@ -62,4 +51,6 @@ public abstract class CorrelationVariables {
 	protected List<StockDetails> getContent(StockTicker ticker) {
 		return stockDetailsRepository.findByStockTickerOrderByDateDesc(ticker, new PageRequest(1, period)).getContent();
 	}
+	
+	abstract void compute(StockTicker ticker);
 }

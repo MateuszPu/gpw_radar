@@ -6,18 +6,18 @@ import com.gpw.radar.domain.StockStatistic;
 import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.repository.StockDetailsRepository;
 
-public class SpearmansCorrelationImpl extends CorrelationVariables implements Correlation {
+public class SpearmansCorrelator extends Correlator {
 
 	private SpearmansCorrelation spearmansCorrelation;
 
-	public SpearmansCorrelationImpl(StockTicker correlationForTicker, int period, StockDetailsRepository stockDetailsRepository) {
+	public SpearmansCorrelator(StockTicker correlationForTicker, int period, StockDetailsRepository stockDetailsRepository) {
 		super(correlationForTicker, period, stockDetailsRepository);
 		spearmansCorrelation = new SpearmansCorrelation();
 	}
 
 	public void compute(StockTicker ticker) {
 		double[] closePricesToCompare = getClosePrices(getContent(ticker));
-		Double correlation = 0.0;
+		double correlation = 0.0;
 		if (closePricesToCompare.length == sourceClosePrices.length) {
 			correlation = spearmansCorrelation.correlation(sourceClosePrices, closePricesToCompare);
 		}

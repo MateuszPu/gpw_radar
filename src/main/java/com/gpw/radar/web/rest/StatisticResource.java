@@ -38,7 +38,7 @@ public class StatisticResource {
 
     @RequestMapping(value = "/stock/correlation", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @RolesAllowed(AuthoritiesConstants.USER)
-    public TreeSet<StockStatistic> getCorrelationForSelectedTicker(@RequestParam(value = "correlation_type", required = true) CorrelationType correlationType, @RequestParam(value = "ticker", required = true) StockTicker ticker, @RequestParam(value = "period", required = true) Integer period) {
+    public TreeSet<StockStatistic> getCorrelationForSelectedTicker(@RequestParam(value = "correlation_type", required = true) CorrelationType correlationType, @RequestParam(value = "ticker", required = true) StockTicker ticker, @RequestParam(value = "period", required = true) int period) {
         return statisticService.computeCorrelation(ticker, period, correlationType);
     }
 
