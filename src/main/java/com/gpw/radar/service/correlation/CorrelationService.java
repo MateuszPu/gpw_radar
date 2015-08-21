@@ -3,6 +3,8 @@ package com.gpw.radar.service.correlation;
 import static java.util.EnumSet.complementOf;
 
 import java.util.EnumSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -12,8 +14,10 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.gpw.radar.domain.StockDetails;
 import com.gpw.radar.domain.StockStatistic;
 import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.repository.StockDetailsRepository;
@@ -29,38 +33,63 @@ public class CorrelationService {
 	private Correlator correlator;
 	private int step;
 	private boolean isComputing;
+	private TreeSet<StockStatistic> correlationTreeSet;
 
 	public TreeSet<StockStatistic> computeCorrelation(StockTicker correlationForTicker, int period, CorrelationType correlationType) {
-		correlator = getCorrelatorImpl(correlationType, correlationForTicker, period, stockDetailsRepository);
-		EnumSet<StockTicker> tickersToScan = complementOf(EnumSet.of(correlationForTicker));
+		if(period != 10 && period != 30 && period != 60 && period != 90){
+			throw new IllegalArgumentException("Wrong period");
+		}
+		Objects.requireNonNull(correlationForTicker);
+		Objects.requireNonNull(correlationType);
 		
-		ExecutorService executor = Executors.newFixedThreadPool(5);
+		correlator = getCorrelatorImpl(correlationType, correlationForTicker, period, stockDetailsRepository);
+		correlationTreeSet = new TreeSet<StockStatistic>();
+		final EnumSet<StockTicker> tickersToScan = complementOf(EnumSet.of(correlationForTicker));
+		final double[] sourceClosePrices = getClosePrices(getContent(correlationForTicker, period));
+		
+		ExecutorService executor = Executors.newFixedThreadPool(2);
 
 		for (StockTicker ticker : tickersToScan) {
-			executor.submit(new CorrelationStock(ticker));
+			executor.submit(new CorrelationUtil(ticker, sourceClosePrices, period));
 		}
 
 		executor.shutdown();
 
 		try {
-			executor.awaitTermination(2, TimeUnit.MINUTES);
+			executor.awaitTermination(1, TimeUnit.MINUTES);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 
 		this.step = 0;
 		this.isComputing = false;
-		return correlator.getCorrelationTreeSet();
+		return correlationTreeSet;
+	}
+	
+	private double[] getClosePrices(List<StockDetails> stockDetails) {
+		double[] closePrices = new double[stockDetails.size()];
+
+		int index = 0;
+		for (StockDetails stds : stockDetails) {
+			closePrices[index++] = stds.getClosePrice().doubleValue();
+		}
+
+		return closePrices;
+	}
+
+	private List<StockDetails> getContent(StockTicker ticker, int period) {
+		List<StockDetails> sd = stockDetailsRepository.findByStockTickerOrderByDateDesc(ticker, new PageRequest(0, period)).getContent();
+		return sd;
 	}
 
 	private Correlator getCorrelatorImpl(CorrelationType correlationType, StockTicker correlationForTicker, int period, StockDetailsRepository stockDetailsRepository2) {
 		switch (correlationType) {
 		case KENDALLS:
-			return new KendallsCorrelator(correlationForTicker, period, stockDetailsRepository);
+			return new KendallsCorrelator();
 		case PEARSONS:
-			return new PearsonCorrelator(correlationForTicker, period, stockDetailsRepository);
+			return new PearsonCorrelator();
 		case SPEARMANS:
-			return new SpearmansCorrelator(correlationForTicker, period, stockDetailsRepository);
+			return new SpearmansCorrelator();
 		}
 		return null;
 	}
@@ -72,17 +101,29 @@ public class CorrelationService {
 	public boolean isComputing() {
 		return isComputing;
 	}
+	
+	private synchronized void increaseStep(){
+		step++;
+	}
 
-	class CorrelationStock implements Runnable {
+	class CorrelationUtil implements Runnable {
+		
 		StockTicker analysedTicker;
+		double[] sourceClosePrices;
+		int period;
 
-		public CorrelationStock(StockTicker analysedTicker) {
+		public CorrelationUtil(StockTicker analysedTicker, double[] sourceClosePrices, int period) {
 			this.analysedTicker = analysedTicker;
+			this.sourceClosePrices = sourceClosePrices;
+			this.period = period;
 		}
 
 		@Override
 		public void run() {
-			correlator.compute(analysedTicker);
+			double[] targetClosePrices = getClosePrices(getContent(analysedTicker, period));
+			StockStatistic statistic = new StockStatistic(correlator.correlate(sourceClosePrices,targetClosePrices), analysedTicker);
+			correlationTreeSet.add(statistic);
+			increaseStep();
 		}
 	}
 }

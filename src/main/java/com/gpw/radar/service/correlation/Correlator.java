@@ -1,56 +1,6 @@
 package com.gpw.radar.service.correlation;
 
-import java.util.List;
-import java.util.TreeSet;
 
-import org.springframework.data.domain.PageRequest;
-
-import com.gpw.radar.domain.StockDetails;
-import com.gpw.radar.domain.StockStatistic;
-import com.gpw.radar.domain.enumeration.StockTicker;
-import com.gpw.radar.repository.StockDetailsRepository;
-
-public abstract class Correlator {
-
-	protected StockDetailsRepository stockDetailsRepository;
-	protected TreeSet<StockStatistic> correlationTreeSet;
-	protected double[] sourceClosePrices;
-	protected final int period;
-
-	public Correlator(StockTicker correlationForTicker, int period, StockDetailsRepository stockDetailsRepository) {
-		this.stockDetailsRepository = stockDetailsRepository;
-		this.period = period;
-		this.correlationTreeSet = new TreeSet<>();
-		List<StockDetails> stockDetailsToAnalysed = getContent(correlationForTicker);
-		this.sourceClosePrices = getClosePrices(stockDetailsToAnalysed);
-	}
-
-	public TreeSet<StockStatistic> getCorrelationTreeSet() {
-		return correlationTreeSet;
-	}
-
-	public void setCorrelationTreeSet(TreeSet<StockStatistic> correlationTreeSet) {
-		this.correlationTreeSet = correlationTreeSet;
-	}
-
-	public double[] getClosePricesToAnalysed() {
-		return sourceClosePrices;
-	}
-
-	protected double[] getClosePrices(List<StockDetails> stockDetails) {
-		double[] closePrices = new double[stockDetails.size()];
-
-		int index = 0;
-		for (StockDetails stds : stockDetails) {
-			closePrices[index++] = stds.getClosePrice().doubleValue();
-		}
-
-		return closePrices;
-	}
-
-	protected List<StockDetails> getContent(StockTicker ticker) {
-		return stockDetailsRepository.findByStockTickerOrderByDateDesc(ticker, new PageRequest(1, period)).getContent();
-	}
-	
-	abstract void compute(StockTicker ticker);
+public interface Correlator {
+	double correlate(final double[] sourceClosePrices, final double[] targetClosePrices);
 }
