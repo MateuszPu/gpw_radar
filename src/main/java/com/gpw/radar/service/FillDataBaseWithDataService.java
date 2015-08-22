@@ -34,6 +34,7 @@ public class FillDataBaseWithDataService {
 
 	public void fillDataBaseWithStocks() throws IOException {
 		for (StockTicker element : StockTicker.values()) {
+			log.debug("Parsing stock for: " + element);
 			Stock stock = new Stock();
 			String stockTicker = element.name();
 			stock.setTicker(element);
@@ -46,6 +47,7 @@ public class FillDataBaseWithDataService {
 	}
 
 	public Set<StockDetails> parseStockDetailsByStockFromFile(Stock stock) {
+		log.debug("Parsing stock details for: " + stock.getStockName());
 		String line = "";
 		String cvsSplitBy = ",";
 		Set<StockDetails> stockDetailList = new HashSet<StockDetails>();

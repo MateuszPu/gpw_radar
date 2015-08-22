@@ -48,19 +48,13 @@ public class FillDatabaseWithData {
 
     @RequestMapping(value = "/2")
     public void fillDataBaseWithStocksDetails() {
-    	
-    	
     	ExecutorService executor = Executors.newFixedThreadPool(4);
     	
     	for(StockTicker ticker: tickers){
-    		executor.execute(new Runnable() {
-				
-				@Override
-				public void run() {
-					Stock stock = stockRepository.findByTicker(ticker);
-		        	Set<StockDetails> stockDetails = fillDataBaseWithDataService.parseStockDetailsByStockFromFile(stock);
-		        	stockDetailsRepository.save(stockDetails);
-				}
+    		executor.execute(() -> {
+				Stock stock = stockRepository.findByTicker(ticker);
+				Set<StockDetails> stockDetails = fillDataBaseWithDataService.parseStockDetailsByStockFromFile(stock);
+				stockDetailsRepository.save(stockDetails);
 			});
     	}
     	
@@ -70,44 +64,6 @@ public class FillDatabaseWithData {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-
-//    	Thread threadOne = new Thread(new Runnable() {
-//            public void run() {
-//                parseFromTxtFile(0, 4);
-//            }
-//        });
-//
-//        Thread threadTwo = new Thread(new Runnable() {
-//            public void run() {
-//                parseFromTxtFile(1, 4);
-//            }
-//        });
-//
-//        Thread threadThree = new Thread(new Runnable() {
-//            public void run() {
-//                parseFromTxtFile(2, 4);
-//            }
-//        });
-//
-//        Thread threadFour = new Thread(new Runnable() {
-//            public void run() {
-//                parseFromTxtFile(3, 4);
-//            }
-//        });
-//
-//        threadOne.start();
-//        threadTwo.start();
-//        threadThree.start();
-//        threadFour.start();
-//
-//        try {
-//            threadOne.join();
-//            threadTwo.join();
-//            threadThree.join();
-//            threadFour.join();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
     }
 
     @RequestMapping(value = "/3")

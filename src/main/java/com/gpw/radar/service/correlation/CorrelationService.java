@@ -31,28 +31,35 @@ public class CorrelationService {
 	@Inject
 	private StockDetailsRepository stockDetailsRepository;
 
-	private Correlator correlator;
 	private int step;
 	private boolean isComputing;
-	private TreeSet<StockStatistic> correlationTreeSet;
 
 	public TreeSet<StockStatistic> computeCorrelation(StockTicker correlationForTicker, int period, CorrelationType correlationType) {
-
+		log.debug("Finding most correlated stocks for: " + correlationForTicker);
 		if (period != 10 && period != 30 && period != 60 && period != 90) {
 			throw new IllegalArgumentException("Wrong period");
 		}
 		Objects.requireNonNull(correlationForTicker);
 		Objects.requireNonNull(correlationType);
+		
+		step = 0;
+		isComputing = true;
 
-		correlator = getCorrelatorImpl(correlationType);
-		correlationTreeSet = new TreeSet<StockStatistic>();
+		Correlator correlator = getCorrelatorImpl(correlationType);
+		TreeSet<StockStatistic> correlationTreeSet = new TreeSet<StockStatistic>();
 		final EnumSet<StockTicker> tickersToScan = complementOf(EnumSet.of(correlationForTicker));
 		final double[] sourceClosePrices = getClosePrices(getContent(correlationForTicker, period));
 
 		ExecutorService executor = Executors.newFixedThreadPool(2);
 
 		for (StockTicker ticker : tickersToScan) {
-			executor.submit(new CorrelationUtil(ticker, sourceClosePrices, period));
+			executor.submit(() -> {
+				double[] targetClosePrices = getClosePrices(getContent(ticker, period));
+				double correlation = correlator.correlate(sourceClosePrices, targetClosePrices);
+				StockStatistic statistic = new StockStatistic(correlation, ticker);
+				correlationTreeSet.add(statistic);
+				increaseStep();
+			});
 		}
 
 		executor.shutdown();
@@ -110,25 +117,25 @@ public class CorrelationService {
 		step++;
 	}
 
-	class CorrelationUtil implements Runnable {
-
-		StockTicker analysedTicker;
-		double[] sourceClosePrices;
-		int period;
-
-		public CorrelationUtil(StockTicker analysedTicker, double[] sourceClosePrices, int period) {
-			this.analysedTicker = analysedTicker;
-			this.sourceClosePrices = sourceClosePrices;
-			this.period = period;
-		}
-
-		@Override
-		public void run() {
-			double[] targetClosePrices = getClosePrices(getContent(analysedTicker, period));
-			double correlation = correlator.correlate(sourceClosePrices, targetClosePrices);
-			StockStatistic statistic = new StockStatistic(correlation, analysedTicker);
-			correlationTreeSet.add(statistic);
-			increaseStep();
-		}
-	}
+//	class CorrelationUtil implements Runnable {
+//
+//		StockTicker analysedTicker;
+//		double[] sourceClosePrices;
+//		int period;
+//
+//		public CorrelationUtil(StockTicker analysedTicker, double[] sourceClosePrices, int period) {
+//			this.analysedTicker = analysedTicker;
+//			this.sourceClosePrices = sourceClosePrices;
+//			this.period = period;
+//		}
+//
+//		@Override
+//		public void run() {
+//			double[] targetClosePrices = getClosePrices(getContent(analysedTicker, period));
+//			double correlation = correlator.correlate(sourceClosePrices, targetClosePrices);
+//			StockStatistic statistic = new StockStatistic(correlation, analysedTicker);
+//			correlationTreeSet.add(statistic);
+//			increaseStep();
+//		}
+//	}
 }

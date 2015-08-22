@@ -29,15 +29,15 @@ public class WebParserService {
 	private StockFinanceEventRepository stockFinanceEventRepository;
 
 	private final Logger log = LoggerFactory.getLogger(WebParserService.class);
-	final DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd");
-	final DateTimeFormatter dtf2 = DateTimeFormat.forPattern("yyyyMMdd");
+	final DateTimeFormatter dtfTypeOne = DateTimeFormat.forPattern("yyyy-MM-dd");
+	final DateTimeFormatter dtfTypeTwo = DateTimeFormat.forPattern("yyyyMMdd");
 	private LocalDate dt;
 
 	public LocalDate parseLocalDateFromString(String date) {
 		if (date.contains("-")) {
-			dt = dtf.parseLocalDate(date);
+			dt = dtfTypeOne.parseLocalDate(date);
 		} else {
-			dt = dtf2.parseLocalDate(date);
+			dt = dtfTypeTwo.parseLocalDate(date);
 		}
 		return dt;
 	}
