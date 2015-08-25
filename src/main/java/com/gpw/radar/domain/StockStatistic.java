@@ -3,7 +3,7 @@ package com.gpw.radar.domain;
 import com.gpw.radar.domain.enumeration.Ticker;
 
 
-public final class StockStatistic implements Comparable{
+public final class StockStatistic implements Comparable<Object>{
 
     private Ticker gpwStockTicker;
     private double statisticValue;

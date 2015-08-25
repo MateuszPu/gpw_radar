@@ -16,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.gpw.radar.domain.StockDetails;
@@ -34,10 +36,10 @@ public class CorrelationService {
 	private int step;
 	private boolean isComputing;
 
-	public TreeSet<StockStatistic> computeCorrelation(StockTicker correlationForTicker, int period, CorrelationType correlationType) {
+	public ResponseEntity<TreeSet<StockStatistic>> computeCorrelation(StockTicker correlationForTicker, int period, CorrelationType correlationType) {
 		log.debug("Finding most correlated stocks for: " + correlationForTicker);
 		if (period != 10 && period != 30 && period != 60 && period != 90) {
-			throw new IllegalArgumentException("Wrong period");
+			return new ResponseEntity<>(new TreeSet<StockStatistic>() , HttpStatus.BAD_REQUEST);
 		}
 		Objects.requireNonNull(correlationForTicker);
 		Objects.requireNonNull(correlationType);
@@ -72,7 +74,7 @@ public class CorrelationService {
 
 		this.step = 0;
 		this.isComputing = false;
-		return correlationTreeSet;
+		return new ResponseEntity<>(correlationTreeSet, HttpStatus.OK);
 	}
 
 	private double[] getClosePrices(List<StockDetails> stockDetails) {
