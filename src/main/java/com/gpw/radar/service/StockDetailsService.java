@@ -27,15 +27,6 @@ public class StockDetailsService {
 	@Autowired
 	private WebParserService parserService;
 
-//	public ResponseEntity<StockDetails> save(StockDetails stockDetails) throws URISyntaxException{
-//		log.debug("REST request to save StockDetails : {}", stockDetails);
-//		if (stockDetails.getId() != null) {
-//			return ResponseEntity.badRequest().header("Failure", "A new stockDetails cannot already have an ID").body(null);
-//		}
-//		StockDetails result = stockDetailsRepository.save(stockDetails);
-//		return ResponseEntity.created(new URI("/api/stockDetailss/" + stockDetails.getId())).body(result);
-//	}
-	
 	public StockDetails findTopByDate() {
 		return stockDetailsRepository.findTopByOrderByDateDesc();
 	}
@@ -44,22 +35,22 @@ public class StockDetailsService {
 		String line = "";
 		String cvsSplitBy = ",";
 		try {
-			URLConnection yc = null;
+			URLConnection stooqConnection = null;
 			URL urlStooq = new URL("http://stooq.pl/q/l/?s=" + stock.getTicker() + "&f=sd2t2ohlcv&h&e=csv");
-			yc = urlStooq.openConnection();
+			stooqConnection = urlStooq.openConnection();
 
-			BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
+			BufferedReader in = new BufferedReader(new InputStreamReader(stooqConnection.getInputStream()));
 			in.readLine();
 			while ((line = in.readLine()) != null) {
 				StockDetails stockDetails = new StockDetails();
-				stockDetails.setStock(stock);
 				String[] stockDetailsFromCsv = line.split(cvsSplitBy);
-
-				if (isQuotesToUpdate(wig20Date, stockDetailsFromCsv)) {
-					setNewValuesOfStockDetails(stockDetails, stockDetailsFromCsv);
+				
+				if (isQuotesUpToDate(wig20Date, stockDetailsFromCsv)) {
+					stockDetails = getNewValuesOfStockDetails(stockDetails, stockDetailsFromCsv);
 				} else {
-					setLastValuesOfStockDetails(stock, wig20Date, stockDetails);
+					stockDetails = getLastValuesOfStockDetails(stock, wig20Date, stockDetails);
 				}
+				stockDetails.setStock(stock);
 				stockDetailsRepository.save(stockDetails);
 			}
 
@@ -70,11 +61,11 @@ public class StockDetailsService {
 		}
 	}
 
-	private boolean isQuotesToUpdate(LocalDate wig20Date, String[] stockDetailsFromCsv) {
+	private boolean isQuotesUpToDate(LocalDate wig20Date, String[] stockDetailsFromCsv) {
 		return wig20Date.isEqual(parserService.parseLocalDateFromString(stockDetailsFromCsv[1]));
 	}
 
-	private void setNewValuesOfStockDetails(StockDetails stockDetails, String[] stockDetailsFromCsv) {
+	private StockDetails getNewValuesOfStockDetails(StockDetails stockDetails, String[] stockDetailsFromCsv) {
 		stockDetails.setDate(parserService.parseLocalDateFromString(stockDetailsFromCsv[1]));
 		stockDetails.setOpenPrice(new BigDecimal(stockDetailsFromCsv[3]));
 		stockDetails.setMaxPrice(new BigDecimal(stockDetailsFromCsv[4]));
@@ -85,10 +76,11 @@ public class StockDetailsService {
 		} catch (ArrayIndexOutOfBoundsException exc) {
 			stockDetails.setVolume(0l);
 		}
+		return stockDetails;
 	}
 
 	//use this method while stock was not quoted on market 
-	private void setLastValuesOfStockDetails(Stock stock, LocalDate wig20Date, StockDetails stockDetails) {
+	private StockDetails getLastValuesOfStockDetails(Stock stock, LocalDate wig20Date, StockDetails stockDetails) {
 		stockDetails.setDate(wig20Date);
 		StockDetails lastStockDetails = stockDetailsRepository.findTopByStockOrderByDateDesc(stock);
 		stockDetails.setOpenPrice(lastStockDetails.getClosePrice());
@@ -96,6 +88,8 @@ public class StockDetailsService {
 		stockDetails.setMinPrice(lastStockDetails.getClosePrice());
 		stockDetails.setClosePrice(lastStockDetails.getClosePrice());
 		stockDetails.setVolume(0l);
+		
+		return stockDetails;
 	}
 
 	public LocalDate getLastDateWig20FromStooqWebsite() {
@@ -104,9 +98,10 @@ public class StockDetailsService {
 		LocalDate date = null;
 		try {
 			URL urlStooq = new URL("http://stooq.pl/q/l/?s=wig20&f=sd2t2ohlcv&h&e=csv");
-			URLConnection yc = urlStooq.openConnection();
+			URLConnection stooqConnection = urlStooq.openConnection();
 
-			BufferedReader in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
+			BufferedReader in = new BufferedReader(new InputStreamReader(stooqConnection.getInputStream()));
+			//skip first line as there are a headers
 			in.readLine();
 			line = in.readLine();
 			String[] stockDetailsFromCsv = line.split(cvsSplitBy);
