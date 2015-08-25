@@ -11,8 +11,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,15 +18,12 @@ import com.gpw.radar.domain.Stock;
 import com.gpw.radar.domain.StockFinanceEvent;
 import com.gpw.radar.repository.StockFinanceEventRepository;
 
-
 @Service
-@Transactional
 public class WebParserService {
 
 	@Inject
 	private StockFinanceEventRepository stockFinanceEventRepository;
 
-	private final Logger log = LoggerFactory.getLogger(WebParserService.class);
 	final DateTimeFormatter dtfTypeOne = DateTimeFormat.forPattern("yyyy-MM-dd");
 	final DateTimeFormatter dtfTypeTwo = DateTimeFormat.forPattern("yyyyMMdd");
 	private LocalDate dt;
@@ -42,49 +37,71 @@ public class WebParserService {
 		return dt;
 	}
 
-	public String getNameOfStock(String ticker) throws IOException {
-		Document doc = getDocumentFromStooq(ticker);
-		String title = doc.title();
-		String nameOfStock = title.substring(title.indexOf("- ") + 2, title.indexOf("- Stooq"));
-		return nameOfStock;
+	public Stock setNameAndShortName(Stock stock) throws IOException {
+		Document doc = getDocumentFromStooqWeb(stock.getTicker().toString());
+
+		String stockName = getStockNameFromWeb(doc);
+		stock.setStockName(stockName);
+
+		String stockShortName = getStockShortNameFromWeb(doc);
+		stock.setStockShortName(stockShortName);
+
+		return stock;
 	}
 
-	public String getShortNameOfStock(String ticker) throws IOException {
-		Document doc = getDocumentFromStooq(ticker);
+	private String getStockNameFromWeb(Document doc) {
+		String title = doc.title();
+		String stockName = title.substring(title.indexOf("- ") + 2, title.indexOf("- Stooq"));
+		return stockName;
+	}
+
+	private String getStockShortNameFromWeb(Document doc) {
 		Elements links = doc.select("meta");
 		Element table = links.get(1);
 		String attr = table.attr("content");
-		String shortNameOfStock = attr.substring(0, attr.indexOf(","));
-		return shortNameOfStock;
+		String stockShortName = attr.substring(0, attr.indexOf(","));
+		return stockShortName;
 	}
 
-	private Document getDocumentFromStooq(String ticker) throws IOException {
+	private Document getDocumentFromStooqWeb(String ticker) throws IOException {
 		Document doc = Jsoup.connect("http://stooq.pl/q/?s=" + ticker).get();
 		return doc;
 	}
 
+	@Transactional
 	public void getStockFinanceEvent(Stock stock) throws IOException {
-		String stockShortName = stock.getStockShortName();
-		String url = "http://www.stockwatch.pl/gpw/" + stockShortName + ",wykres-swiece,wskazniki.aspx";
-		Document doc = Jsoup.connect(url).get();
-		Elements test = doc.select("div[class=CASld roundAll]");
-		if (test.size() == 3) {
-		Elements table = doc.select("table[class=cctabdt]");
-		int indexOfCorrectTable = table.size() - 2;
-		Element correctTable = table.get(indexOfCorrectTable);
-		Elements tr = correctTable.select("tr");
+		Document doc = getDocumentFromStockWatchWeb(stock.getStockShortName());
+		Elements elements = doc.select("div[class=CASld roundAll]");
+		//if elements.size == 3 means that stock has any finance event otherwise there is no finance event for stock
+		if (elements.size() == 3) {
+			Elements table = doc.select("table[class=cctabdt]");
+			int indexOfCorrectTable = table.size() - 2;
+			Element correctTable = table.get(indexOfCorrectTable);
+			Elements tr = correctTable.select("tr");
 
 			for (int i = 0; i < tr.size(); i++) {
-				Elements select = tr.get(i).select("td");
-				LocalDate date = parseLocalDateFromString(select.get(0).text());
-				String message = select.get(1).text();
-
-				StockFinanceEvent stockFinanceEvent = new StockFinanceEvent();
-				stockFinanceEvent.setStock(stock);
-				stockFinanceEvent.setDate(date);
-				stockFinanceEvent.setMessage(message);
-				stockFinanceEventRepository.save(stockFinanceEvent);
+				stockFinanceEventRepository.save(prepareStockFinanceEvent(stock, tr, i));
 			}
 		}
+	}
+
+	private StockFinanceEvent prepareStockFinanceEvent(Stock stock, Elements tr, int i) {
+		final int positionOfDate = 0;
+		final int positionOfMessage = 1;
+		Elements select = tr.get(i).select("td");
+		LocalDate date = parseLocalDateFromString(select.get(positionOfDate).text());
+		String message = select.get(positionOfMessage).text();
+
+		StockFinanceEvent stockFinanceEvent = new StockFinanceEvent();
+		stockFinanceEvent.setStock(stock);
+		stockFinanceEvent.setDate(date);
+		stockFinanceEvent.setMessage(message);
+		return stockFinanceEvent;
+	}
+
+	private Document getDocumentFromStockWatchWeb(String stockShortName) throws IOException {
+		String url = "http://www.stockwatch.pl/gpw/" + stockShortName + ",wykres-swiece,wskazniki.aspx";
+		Document doc = Jsoup.connect(url).get();
+		return doc;
 	}
 }

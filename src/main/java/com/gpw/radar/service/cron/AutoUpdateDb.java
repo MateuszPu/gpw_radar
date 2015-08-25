@@ -37,7 +37,7 @@ public class AutoUpdateDb {
 
 	@Inject
 	private StockDetailsService stockDetailsService;
-	
+
 	@Inject
 	private StockIndicatorsRepository stockIndicatorsRepository;
 
@@ -49,11 +49,10 @@ public class AutoUpdateDb {
 
 	@RequestMapping(value = "/is/updating", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ApplicationStatus updatingStatus() {
-		return new ApplicationStatus(isUpdating() ,getStep());
+		return new ApplicationStatus(isUpdating(), getStep());
 	}
 
-    
-    @RequestMapping(value = "/update/db", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/update/db", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void updateStockDetails() throws IOException, InterruptedException {
 		updating = true;
 		step = 0;
@@ -67,7 +66,7 @@ public class AutoUpdateDb {
 		updating = false;
 	}
 
-    @Transactional
+	@Transactional
 	private void updateDailyStockDetails(LocalDate wig20Date) throws IOException, InterruptedException {
 		for (StockTicker element : StockTicker.values()) {
 			Stock stock = stockRepository.findByTicker(element);
@@ -77,12 +76,12 @@ public class AutoUpdateDb {
 		}
 	}
 
-    @Transactional
+	@Transactional
 	private void updateDailyStockIndicators() {
 		for (StockTicker element : StockTicker.values()) {
 			Stock stock = stockRepository.findByTicker(element);
 			StockIndicators stockIndicators = stockIndicatorsRepository.findByStock(stock);
-			if(stockIndicators == null){
+			if (stockIndicators == null) {
 				stockIndicators = new StockIndicators();
 			}
 			Pageable top100th = new PageRequest(0, 100);
@@ -109,36 +108,36 @@ public class AutoUpdateDb {
 			double slopeSimpleRegression30 = calculateSlopeSimpleRegression(dataFor30DaysTrend);
 			double slopeSimpleRegression60 = calculateSlopeSimpleRegression(dataFor60DaysTrend);
 			double slopeSimpleRegression90 = calculateSlopeSimpleRegression(dataFor90DaysTrend);
-			
+
 			stockIndicators.setSlopeSimpleRegression10Days(slopeSimpleRegression10);
 			stockIndicators.setSlopeSimpleRegression30Days(slopeSimpleRegression30);
 			stockIndicators.setSlopeSimpleRegression60Days(slopeSimpleRegression60);
 			stockIndicators.setSlopeSimpleRegression90Days(slopeSimpleRegression90);
 			stockIndicators.setPercentReturn(new BigDecimal(percentReturn[0]));
 			stockIndicators.setStock(stock);
-			
+
 			stockIndicatorsRepository.save(stockIndicators);
 			step++;
 		}
 	}
 
-    private double[] normalizeArray(double[] input){
-        double[] normalized = new double[input.length];
-        double max = StatUtils.max(input);
-        double min = StatUtils.min(input);
+	private double[] normalizeArray(double[] input) {
+		double[] normalized = new double[input.length];
+		double max = StatUtils.max(input);
+		double min = StatUtils.min(input);
 
-        for(int i = 0; i < input.length; i++){
-            normalized[i] = normalizeData(input[i], max, min);
-        }
-        ArrayUtils.reverse(normalized);
-        return normalized;
-    }
+		for (int i = 0; i < input.length; i++) {
+			normalized[i] = normalizeData(input[i], max, min);
+		}
+		ArrayUtils.reverse(normalized);
+		return normalized;
+	}
 
-    private double normalizeData(double number, double max, double min) {
-        return (number-min)/(max-min)*100;
-    }
+	private double normalizeData(double number, double max, double min) {
+		return (number - min) / (max - min) * 100;
+	}
 
-    private void getDetails(Page<StockDetails> stockDetails, int size, double[] openPrice, double[] minPrice, double[] maxPrice, double[] closePrice, double[] volume) {
+	private void getDetails(Page<StockDetails> stockDetails, int size, double[] openPrice, double[] minPrice, double[] maxPrice, double[] closePrice, double[] volume) {
 		for (int i = 0; i < size; i++) {
 			StockDetails stockDetailsContent = stockDetails.getContent().get(i);
 			openPrice[i] = stockDetailsContent.getOpenPrice().doubleValue();
@@ -150,7 +149,7 @@ public class AutoUpdateDb {
 	}
 
 	private double[] calculatePercentReturn(double[] closePrice) {
-		int size = closePrice.length-1;
+		int size = closePrice.length - 1;
 
 		double[] percentReturn = new double[size];
 		for (int i = 0; i < size; i++) {
@@ -175,7 +174,7 @@ public class AutoUpdateDb {
 		}
 		return simpleRegerssion.getSlope();
 	}
-	
+
 	public boolean isUpdating() {
 		return updating;
 	}
@@ -191,7 +190,7 @@ public class AutoUpdateDb {
 	public void setStep(int step) {
 		this.step = step;
 	}
-	
+
 	class ApplicationStatus {
 		public boolean updating;
 		public int step;

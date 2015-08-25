@@ -7,25 +7,19 @@ import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.List;
 
 import org.joda.time.LocalDate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gpw.radar.domain.Stock;
 import com.gpw.radar.domain.StockDetails;
-import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.repository.StockDetailsRepository;
 
 @Service
 @Transactional
 public class StockDetailsService {
-
-	private final Logger log = LoggerFactory.getLogger(StockDetailsService.class);
 
 	@Autowired
 	private StockDetailsRepository stockDetailsRepository;
@@ -33,28 +27,17 @@ public class StockDetailsService {
 	@Autowired
 	private WebParserService parserService;
 
-	public void saveOrUpdate(StockDetails stockDetails) {
-		stockDetailsRepository.save(stockDetails);
-	}
-
-	public List<StockDetails> getByStockTickerOrderByDateDesc(StockTicker ticker) {
-		return stockDetailsRepository.findByStockTickerOrderByDateDesc(ticker);
-	}
-
-	public List<StockDetails> getByStocTickerkOrderByDateAsc(StockTicker ticker) {
-		return stockDetailsRepository.findByStockTickerOrderByDateAsc(ticker);
-	}
-
+//	public ResponseEntity<StockDetails> save(StockDetails stockDetails) throws URISyntaxException{
+//		log.debug("REST request to save StockDetails : {}", stockDetails);
+//		if (stockDetails.getId() != null) {
+//			return ResponseEntity.badRequest().header("Failure", "A new stockDetails cannot already have an ID").body(null);
+//		}
+//		StockDetails result = stockDetailsRepository.save(stockDetails);
+//		return ResponseEntity.created(new URI("/api/stockDetailss/" + stockDetails.getId())).body(result);
+//	}
+	
 	public StockDetails findTopByDate() {
 		return stockDetailsRepository.findTopByOrderByDateDesc();
-	}
-
-	public List<StockDetails> getByTicker(StockTicker ticker) {
-		return stockDetailsRepository.findByStockTicker(ticker);
-	}
-
-	public List<StockDetails> findByStock(Stock stock) {
-		return stockDetailsRepository.findByStock(stock);
 	}
 
 	public void updateStockDetails(Stock stock, LocalDate wig20Date) {
@@ -71,14 +54,13 @@ public class StockDetailsService {
 				StockDetails stockDetails = new StockDetails();
 				stockDetails.setStock(stock);
 				String[] stockDetailsFromCsv = line.split(cvsSplitBy);
-				
-				if(isQuotesToUpdate(wig20Date, stockDetailsFromCsv)){
+
+				if (isQuotesToUpdate(wig20Date, stockDetailsFromCsv)) {
 					setNewValuesOfStockDetails(stockDetails, stockDetailsFromCsv);
-				}
-				else{
+				} else {
 					setLastValuesOfStockDetails(stock, wig20Date, stockDetails);
 				}
-				saveOrUpdate(stockDetails);
+				stockDetailsRepository.save(stockDetails);
 			}
 
 		} catch (MalformedURLException e1) {
@@ -105,6 +87,7 @@ public class StockDetailsService {
 		}
 	}
 
+	//use this method while stock was not quoted on market 
 	private void setLastValuesOfStockDetails(Stock stock, LocalDate wig20Date, StockDetails stockDetails) {
 		stockDetails.setDate(wig20Date);
 		StockDetails lastStockDetails = stockDetailsRepository.findTopByStockOrderByDateDesc(stock);
