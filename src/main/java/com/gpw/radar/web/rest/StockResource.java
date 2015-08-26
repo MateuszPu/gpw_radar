@@ -1,25 +1,22 @@
 package com.gpw.radar.web.rest;
 
 import java.net.URISyntaxException;
-import java.security.Principal;
 import java.util.EnumSet;
 import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
-import javax.validation.Valid;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.codahale.metrics.annotation.Timed;
 import com.gpw.radar.domain.Stock;
+import com.gpw.radar.domain.StockIndicators;
 import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.enumeration.TrendDirection;
 import com.gpw.radar.security.AuthoritiesConstants;
@@ -35,36 +32,36 @@ public class StockResource {
 	@Inject
 	private StockService stockService;
 
-	/**
-	 * POST /stocks -> Create a new stock.
-	 */
-	@RequestMapping(value = "/stocks", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@Timed
-	@RolesAllowed(AuthoritiesConstants.ADMIN)
-	public ResponseEntity<Void> create(@Valid @RequestBody Stock stock) throws URISyntaxException {
-		return stockService.create(stock);
-	}
-
-	/**
-	 * PUT /stocks -> Updates an existing stock.
-	 */
-	@RequestMapping(value = "/stocks", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	@Timed
-	@RolesAllowed(AuthoritiesConstants.ADMIN)
-	public ResponseEntity<Void> update(@Valid @RequestBody Stock stock) throws URISyntaxException {
-		return stockService.update(stock);
-	}
-
-	/**
-	 * GET /stocks -> get all the stocks.
-	 */
-	@RequestMapping(value = "/stocks", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@Timed
-	public ResponseEntity<List<Stock>> getAll(@RequestParam(value = "page", required = false) Integer offset,
-			@RequestParam(value = "per_page", required = false) Integer limit) throws URISyntaxException {
-		return stockService.getAllWithPagination(offset, limit);
-	}
-
+//	/**
+//	 * POST /stocks -> Create a new stock.
+//	 */
+//	@RequestMapping(value = "/stocks", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+//	@Timed
+//	@RolesAllowed(AuthoritiesConstants.ADMIN)
+//	public ResponseEntity<Void> create(@Valid @RequestBody Stock stock) throws URISyntaxException {
+//		return stockService.create(stock);
+//	}
+//
+//	/**
+//	 * PUT /stocks -> Updates an existing stock.
+//	 */
+//	@RequestMapping(value = "/stocks", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+//	@Timed
+//	@RolesAllowed(AuthoritiesConstants.ADMIN)
+//	public ResponseEntity<Void> update(@Valid @RequestBody Stock stock) throws URISyntaxException {
+//		return stockService.update(stock);
+//	}
+//
+//	/**
+//	 * GET /stocks -> get all the stocks.
+//	 */
+//	@RequestMapping(value = "/stocks", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//	@Timed
+//	public ResponseEntity<List<Stock>> getAll(@RequestParam(value = "page", required = false) Integer offset,
+//			@RequestParam(value = "per_page", required = false) Integer limit) throws URISyntaxException {
+//		return stockService.getAllWithPagination(offset, limit);
+//	}
+//
 //	/**
 //	 * GET /stocks/:id -> get the "id" stock.
 //	 */
@@ -89,8 +86,8 @@ public class StockResource {
 
 	@RequestMapping(value = "/stocks/get/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RolesAllowed(AuthoritiesConstants.USER)
-	public ResponseEntity<List<Stock>> getAllWithOutPagination() throws URISyntaxException {
-		return stockService.getAllWithOutPagination();
+	public ResponseEntity<List<StockIndicators>> getAllWithOutPagination() throws URISyntaxException {
+		return stockService.getAllStocksFetchStockIndicators();
 	}
 
 	@RequestMapping(value = "/stocks/trends/{direction}/days", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

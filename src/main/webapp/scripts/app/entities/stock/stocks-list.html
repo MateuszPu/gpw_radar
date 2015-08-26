@@ -5,12 +5,9 @@
                 <div class="ibox-title">
                     <h1><span translate="stock.list.title">Stocks analyzed on the website</span>
                     </h1>
-                    <!--<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#saveStockModal" ng-click="clear()">-->
-                    <!--<span class="glyphicon glyphicon-flash"></span> <span translate="stock.home.createLabel">Create a new Stock</span>-->
-                    <!--</button>-->
                 </div>
                 <div class="ibox-content">
-                    <table st-table="stocksList" st-safe-src="smartTableSafeCopy"
+                    <table st-table="stocksIndicatorsWithStocks" st-safe-src="smartTableSafeCopy"
                            class="table table-striped">
                         <thead>
                         <tr>
@@ -30,20 +27,20 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="stock in stocksList">
-                            <td>{{stock.ticker}}</td>
-                            <td>{{stock.stockName}}</td>
-                            <td>{{stock.percentReturn | number:2}}%</td>
+                        <tr ng-repeat="stockIndicators in stocksIndicatorsWithStocks">
+                            <td>{{stockIndicators.stock.ticker}}</td>
+                            <td>{{stockIndicators.stock.stockName}}</td>
+                            <td>{{stockIndicators.percentReturn | number:2}}%</td>
                             <td>
-                                <a class="btn btn-primary" href="" ng-click="followStock(stock.id)"
-                                   ng-hide="isFollowed(stock.id)"><i class="fa fa-plus-square"></i></a>
-                                <a class="btn btn-danger" href="" ng-click="stopFollowStock(stock.id)"
-                                   ng-show="isFollowed(stock.id)"><i class="fa fa-minus-square"></i></a>
+                                <a class="btn btn-primary" href="" ng-click="followStock(stockIndicators.stock.id)"
+                                   ng-hide="isFollowed(stockIndicators.stock.id)"><i class="fa fa-plus-square"></i></a>
+                                <a class="btn btn-danger" href="" ng-click="stopFollowStock(stockIndicators.stock.id)"
+                                   ng-show="isFollowed(stockIndicators.stock.id)"><i class="fa fa-minus-square"></i></a>
                             </td>
                             <td>
-                            	<a href="http://stooq.pl/q/a/?s={{stock.ticker}}"
+                            	<a href="http://stooq.pl/q/a/?s={{stockIndicators.stock.ticker}}"
                                    target="_blank" translate="stock.list.technical">A. technical</a> <br>
-                                <a href="http://www.stockwatch.pl/gpw/{{stock.stockShortName}},komunikaty,wyniki.aspx"
+                                <a href="http://www.stockwatch.pl/gpw/{{stockIndicators.stock.stockShortName}},komunikaty,wyniki.aspx"
                                     target="_blank" translate="stock.list.fundamental">A. fundamental</a>
                             </td>
 

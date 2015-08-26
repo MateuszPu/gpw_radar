@@ -1,5 +1,6 @@
 {
     "panel": {
+    	"title": "Panel administracyjny",
     	"show": "Pokaż szczegóły",
     	"hide": "Ukryj szczegóły",
     	"upToDate": "Spółki są aktualne na dzień: ",

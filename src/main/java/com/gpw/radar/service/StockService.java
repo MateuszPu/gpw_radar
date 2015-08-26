@@ -17,8 +17,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.gpw.radar.domain.Stock;
+import com.gpw.radar.domain.StockIndicators;
 import com.gpw.radar.domain.User;
 import com.gpw.radar.domain.enumeration.TrendDirection;
+import com.gpw.radar.repository.StockIndicatorsRepository;
 import com.gpw.radar.repository.StockRepository;
 import com.gpw.radar.repository.UserRepository;
 import com.gpw.radar.web.rest.util.PaginationUtil;
@@ -30,6 +32,9 @@ public class StockService {
 
 	@Inject
 	private StockRepository stockRepository;
+	
+	@Inject
+	private StockIndicatorsRepository stockIndicatorsRepository;
 
 	@Inject
 	private UserService userService;
@@ -61,12 +66,12 @@ public class StockService {
 		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
 	}
 
-	public ResponseEntity<List<Stock>> getAllWithOutPagination() throws URISyntaxException {
-		List<Stock> stocks = stockRepository.findAll();
+	public ResponseEntity<List<StockIndicators>> getAllStocksFetchStockIndicators() throws URISyntaxException {
+		List<StockIndicators> stocks = stockIndicatorsRepository.findAllStocksFetchStockIndicators();
 		if (stocks == null) {
-			return new ResponseEntity<List<Stock>>(new ArrayList<Stock>(), HttpStatus.NO_CONTENT);
+			return new ResponseEntity<List<StockIndicators>>(new ArrayList<StockIndicators>(), HttpStatus.NO_CONTENT);
 		}
-		return new ResponseEntity<List<Stock>>(stocks, HttpStatus.OK);
+		return new ResponseEntity<List<StockIndicators>>(stocks, HttpStatus.OK);
 	}
 	
 	public ResponseEntity<List<Stock>> getTrendingStocks(TrendDirection trendDirection, int days, int offset, int limit) throws URISyntaxException {

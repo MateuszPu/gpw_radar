@@ -1,5 +1,6 @@
 {
     "panel": {
+    	"title": "Administration panel",
     	"show": "Show details",
     	"hide": "Hide details",
     	"upToDate": "Stocks are up to date: ",

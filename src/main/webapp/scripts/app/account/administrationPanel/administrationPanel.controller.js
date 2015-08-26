@@ -55,10 +55,9 @@ angular.module('gpwradarApp')
                 $scope.data = ApplicationStatus.isUpdating(function(response){
                 	$scope.timeInMiliSeconds = 1000;
                     $scope.promiseTimeout = $timeout(tick, $scope.timeInMiliSeconds);
-                    $scope.stepOfUpdate = result.step;
-                    console.log($scope.stepOfUpdate);
+                    $scope.stepOfUpdate = response.step;
 
-                    if(!result.updating) {
+                    if(!response.updating) {
                         $timeout.cancel($scope.promiseTimeout);
                         $scope.isApplicationUpdating = false;
                     }

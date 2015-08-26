@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.gpw.radar.domain.Stock;
+import com.gpw.radar.domain.StockIndicators;
 import com.gpw.radar.domain.StockStatistic;
 import com.gpw.radar.domain.enumeration.Ticker;
 
@@ -18,7 +19,7 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
 
 	Stock findByTicker(Ticker ticker);
 	List<Stock> findAllByOrderByTickerAsc();
-
+	
 	@Query(value = "SELECT s.ticker, COUNT(s.ticker)\n"
 			+ "FROM t_stock s INNER JOIN t_user_stocks us ON s.id = us.stock_id \n"
 			+ "INNER JOIN t_user u on us.user_id = u.id GROUP BY s.ticker ORDER BY count(*) DESC LIMIT 5", nativeQuery = true)
