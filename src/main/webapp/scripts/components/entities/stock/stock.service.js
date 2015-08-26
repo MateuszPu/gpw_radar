@@ -11,6 +11,7 @@ angular.module('gpwradarApp')
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method: 'PUT' },
+            'getAll': { method: 'GET', url: 'api/stocks/get/all', isArray: true}
         });
     });

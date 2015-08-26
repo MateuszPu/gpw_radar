@@ -1,0 +1,64 @@
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h1><span translate="stock.list.title">Stocks analyzed on the website</span>
+                    </h1>
+                    <!--<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#saveStockModal" ng-click="clear()">-->
+                    <!--<span class="glyphicon glyphicon-flash"></span> <span translate="stock.home.createLabel">Create a new Stock</span>-->
+                    <!--</button>-->
+                </div>
+                <div class="ibox-content">
+                    <table st-table="stocksList" st-safe-src="smartTableSafeCopy"
+                           class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th st-sort="ticker" st-skip-natural="true" class="col-xs-2"><a href=""><span
+                                translate="stock.ticker">Ticker</span></a></th>
+                            <th st-sort="stockName" st-skip-natural="true" class="col-xs-4"><a href=""><span
+                                translate="stock.stockName">Name</span></a></th>
+                            <th st-sort="percentReturn" st-skip-natural="true" class="col-xs-2"><a href=""><span
+                                translate="stock.change">Percent return</span></a></th>
+                            <th class="col-xs-2"><span translate="stock.list.follow">Follow</span></th>
+                            <th class="col-xs-2"><span translate="stock.list.externalwebsites">External websites</span>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th colspan="5"><input st-search="" class="form-control"
+                                                   placeholder="{{'stock.list.search' | translate}}" type="text"/></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="stock in stocksList">
+                            <td>{{stock.ticker}}</td>
+                            <td>{{stock.stockName}}</td>
+                            <td>{{stock.percentReturn | number:2}}%</td>
+                            <td>
+                                <a class="btn btn-primary" href="" ng-click="followStock(stock.id)"
+                                   ng-hide="isFollowed(stock.id)"><i class="fa fa-plus-square"></i></a>
+                                <a class="btn btn-danger" href="" ng-click="stopFollowStock(stock.id)"
+                                   ng-show="isFollowed(stock.id)"><i class="fa fa-minus-square"></i></a>
+                            </td>
+                            <td>
+                            	<a href="http://stooq.pl/q/a/?s={{stock.ticker}}"
+                                   target="_blank" translate="stock.list.technical">A. technical</a> <br>
+                                <a href="http://www.stockwatch.pl/gpw/{{stock.stockShortName}},komunikaty,wyniki.aspx"
+                                    target="_blank" translate="stock.list.fundamental">A. fundamental</a>
+                            </td>
+
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="5" class="text-center">
+                                <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="5"></div>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

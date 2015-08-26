@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,7 +116,8 @@ public class StockService {
 		return new ResponseEntity<List<Stock>>(new ArrayList<Stock>(), HttpStatus.NO_CONTENT);
 	}
 	
-	public ResponseEntity<Void> followStock(Long stockId) throws URISyntaxException {
+	@Transactional
+	public ResponseEntity<Void> followStock(long stockId) throws URISyntaxException {
 		Stock stock = stockRepository.findOne(stockId);
 		User user = userService.getUserWithAuthorities();
 		user.getStocks().add(stock);
@@ -123,7 +125,8 @@ public class StockService {
 		return ResponseEntity.ok().build();
 	}
 	
-	public ResponseEntity<Void> stopFollowStock(Long stockId) throws URISyntaxException {
+	@Transactional
+	public ResponseEntity<Void> stopFollowStock(long stockId) throws URISyntaxException {
 		Stock stock = stockRepository.findOne(stockId);
 		User user = userService.getUserWithAuthorities();
 		user.getStocks().remove(stock);

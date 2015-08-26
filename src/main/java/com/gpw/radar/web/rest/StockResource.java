@@ -102,7 +102,7 @@ public class StockResource {
 
 	@RequestMapping(value = "/stock/follow/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RolesAllowed(AuthoritiesConstants.USER)
-	public ResponseEntity<Void> followStock(@RequestParam Long id, Principal principal) throws URISyntaxException {
+	public ResponseEntity<Void> followStock(@PathVariable long id) throws URISyntaxException {
 //        String name = principal.getName();
 //        Optional<User> user = userRepository.findOneByLogin(name);
 //        User activeUser = user.get();
@@ -113,7 +113,7 @@ public class StockResource {
 
 	@RequestMapping(value = "/stock/stop/follow/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RolesAllowed(AuthoritiesConstants.USER)
-	public ResponseEntity<Void> stopFollowStock(@PathVariable Long id, Principal principal) throws URISyntaxException {
+	public ResponseEntity<Void> stopFollowStock(@PathVariable long id) throws URISyntaxException {
 //		Stock stock = stockRepository.findOne(id);
 //		String name = principal.getName();
 //		Optional<User> user = userRepository.findOneByLogin(name);
