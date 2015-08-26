@@ -1,0 +1,15 @@
+{
+    "correlation": {
+        "title": "Korelacja",
+        "compute": "Oblicz",
+        "search": {
+            "ticker": "Wybierz spółkę...",
+            "period": "Wybierz okres..."
+        },
+        "table":{
+            "search": "Szukaj...",
+            "ticker": "Ticker",
+            "value": "Wartość"
+        }
+    }
+}

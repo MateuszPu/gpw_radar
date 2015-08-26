@@ -1,0 +1,22 @@
+{
+    "stockDetails" : {
+        "home": {
+            "title": "Szczegóły spółek",
+            "createLabel": "Dodaj nowe szczegóły spółki",
+            "createOrEditLabel": "Dodaj lub edytuj szczegóły spółki"
+        },
+        "delete": {
+            "question": "Jesteś pewien, że chcesz usunąć szczegóły spółki {{ id }}?"
+        },
+        "detail": {
+            "title": "Szczegóły spółki"
+        },
+        "date": "Data",
+        "openPrice": "Cena otwarcia",
+        "maxPrice": "Cena maksmyalna",
+        "minPrice": "Cena minimalna",
+        "closePrice": "Cena zamknięcia",
+        "volume": "Wolumen",
+        "Stock": "Spółka"
+    }
+}

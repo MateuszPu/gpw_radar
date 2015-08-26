@@ -67,11 +67,15 @@ public class AutoUpdateDb {
 	}
 
 	@Transactional
-	private void updateDailyStockDetails(LocalDate wig20Date) throws IOException, InterruptedException {
+	private void updateDailyStockDetails(LocalDate wig20Date) throws IOException {
 		for (StockTicker element : StockTicker.values()) {
 			Stock stock = stockRepository.findByTicker(element);
 			stockDetailsService.updateStockDetails(stock, wig20Date);
-			Thread.sleep(100);
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			step++;
 		}
 	}

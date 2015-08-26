@@ -1,7 +1,22 @@
 {
     "global": {
-        "title": "gpwRadar",
+        "title": "GpwRadar",
         "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
+        "leftsidemenu": {
+			"stockList": "Stocks list",
+            "technicalAnalysis": {
+                "title": "Technical analysis",
+                "trends": {
+                    "title": "Trends",
+                    "trendUp": "Up trend",
+                    "trendDown": "Down trend"
+                }
+            },
+            "statisticalAnalysis": {
+                "title": "Statistical analysis",
+                "correlation": "Correlation"
+            }
+        },
         "menu": {
             "home": "Home",
             "entities": {
@@ -9,14 +24,16 @@
                 "stock": "Stock",
                 "stockDetails": "StockDetails",
                 "stockFinanceEvent": "StockFinanceEvent",
-                "additionalEntity": "JHipster will add additional entities here (do not translate!)"
+                "additionalEntity": "JHipster will add addtional entities"
             },
             "account": {
                 "main": "Account",
                 "settings": "Settings",
                 "password": "Password",
                 "sessions": "Sessions",
-                "login": "Authenticate",
+                "administrationPanel": "Administration panel",
+                "followedStocks": "Followed stocks",
+                "login": "Log in",
                 "logout": "Log out",
                 "register": "Register"
             },
@@ -36,10 +53,10 @@
         "form": {
             "username": "Login",
             "username.placeholder": "Your login",
-            "newpassword": "New password",
-            "newpassword.placeholder": "New password",
-            "confirmpassword": "New password confirmation",
-            "confirmpassword.placeholder": "Confirm the new password",
+            "newpassword": "Password",
+            "newpassword.placeholder": "Password",
+            "confirmpassword": "Password confirmation",
+            "confirmpassword.placeholder": "Confirm the password",
             "email": "E-mail",
             "email.placeholder": "Your e-mail"
         },
@@ -70,9 +87,6 @@
                     "maxlength": "Your e-mail cannot be longer than 50 characters."
                 }
             }
-        },
-        "field": {
-            "id" : "ID"
         }
     },
     "entity": {

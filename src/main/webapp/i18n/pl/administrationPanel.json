@@ -1,0 +1,25 @@
+{
+    "panel": {
+    	"show": "Pokaż szczegóły",
+    	"hide": "Ukryj szczegóły",
+    	"upToDate": "Spółki są aktualne na dzień: ",
+    	"updating": "Aplikacja jest aktualizowana",
+    	"followedStocks": {
+    		"title": "Obserwowane spółki",
+    		"ticker": "Ticker",
+    		"action": "Akcja",
+    		"externalwebsites": "Zewnętrzne strony",
+    		"technical": "A. techniczna",
+    		"fundamental": "A. fundamentalna",
+    		"stockName": "Nazwa spółki"
+    	},
+    	"calendar": {
+	        "title": "Mój kalendarz",
+    		"clickDate": "Kliknij na datę aby zobaczyć szczegóły",
+    		"noFinanceEvent": "W wybranym dniu <b>{{date}}</b> nie ma wydarzeń finansowych spółek które śledzisz",
+            "financeEvent": "Dnia: {{date}} Ticker: <b>{{ticker}}</b> Wiadomość: <b>{{message}}</b>"
+    	},
+        "title": "Panel administracyjny",
+        "appStatus": "Status aplikacji"
+    }
+}

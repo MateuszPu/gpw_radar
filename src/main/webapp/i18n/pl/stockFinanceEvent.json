@@ -1,0 +1,18 @@
+{
+    "stockFinanceEvent" : {
+        "home": {
+            "title": "Wydarzenia finansowe spółek",
+            "createLabel": "Dodaj nowe wydarzenie finansowe spółki",
+            "createOrEditLabel": "Dodaj lub edytuj wydarzenie finansowe spółki"
+        },
+        "delete": {
+            "question": "Jesteś pewien, że chcesz usunąć wydarzenie finansowe spółki {{ id }}?"
+        },
+        "detail": {
+            "title": "Wydarzenie finansowe spółki"
+        },
+        "Message": "Wiadomość",
+        "Date": "Data",
+        "stock": "Spółka"
+    }
+}

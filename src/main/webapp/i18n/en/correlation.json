@@ -1,0 +1,15 @@
+{
+    "correlation": {
+        "title": "Correlation",
+        "compute": "Compute",
+        "search": {
+            "ticker": "Select stock...",
+            "period": "Select period..."
+        },
+        "table":{
+            "search": "Search...",
+            "ticker": "Ticker",
+            "value": "Value"
+        }
+    }
+}

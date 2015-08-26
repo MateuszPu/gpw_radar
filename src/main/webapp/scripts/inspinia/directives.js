@@ -369,7 +369,7 @@ function fullScroll($timeout){
  * Pass all functions into module
  */
 angular
-    .module('gpwanalysisApp')
+    .module('gpwradarApp')
     .directive('pageTitle', pageTitle)
     .directive('sideNavigation', sideNavigation)
     .directive('iboxTools', iboxTools)

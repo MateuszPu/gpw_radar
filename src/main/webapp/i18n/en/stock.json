@@ -1,20 +1,52 @@
 {
-    "gpwradarApp": {
-        "stock" : {
-            "home": {
-                "title": "Stocks",
-                "createLabel": "Create a new Stock",
-                "createOrEditLabel": "Create or edit a Stock"
-            },
-            "delete": {
-                "question": "Are you sure you want to delete Stock {{ id }}?"
-            },
-            "detail": {
-                "title": "Stock"
-            },
-            "ticker": "ticker",
-            "stockName": "StockName",
-            "stockShortName": "StockShortName"
-        }
+    "stock" : {
+        "home": {
+            "title": "Stocks",
+            "createLabel": "Create a new Stock",
+            "createOrEditLabel": "Create or edit a Stock"
+        },
+        "trend": {
+    		"10days": "for last 10 days:",
+    		"30days": "for last 30 days:",
+    		"60days": "for last 60 days:",
+			"90days": "for last 90 days:",
+        	"up": {
+        		"title": "Stocks in up trend"
+        	},
+        	"down": {
+        		"title": "Stocks in down trend"
+        	},
+        	"detail": {
+        		"title": "Stocks in trends"
+        	}
+        },
+        "delete": {
+            "question": "Are you sure you want to delete Stock {{ id }}?"
+        },
+        "detail": {
+            "title": "Stock"
+        },
+        "followed":{
+        	"title": "Followed stocks"
+        },
+        "list": {
+        	"stockList": "Stocks list",
+        	"title": "Stocks analyzed on the website",
+        	"technical": "A. technical",
+        	"fundamental": "A. fundamental",
+        	"externalwebsites": "External websites",
+    		"follow": "Follow",
+    		"stopFollow": "Stop follow",
+            "search": "Search..."
+        },
+        "ticker": "Ticker",
+        "stockName": "Stock name",
+        "averageVolume30Days": "Average volume (30days)",
+        "averageVolume10Days": "Average volume (10days)",
+        "volumeRatio10": "Volume ratio (10days)",
+        "volumeRatio30": "Volume ratio (30days)",
+        "change": "Change",
+        "stockShortName": "Short name",
+        "StockDetails": "Details"
     }
 }

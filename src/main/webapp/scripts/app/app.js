@@ -1,8 +1,7 @@
 'use strict';
 
-angular.module('gpwradarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pascalprecht.translate', 
-               'ui.bootstrap', // for modal dialogs
-    'ngResource', 'ui.router', 'ngCookies', 'ngCacheBuster', 'infinite-scroll'])
+angular.module('gpwradarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'oc.lazyLoad', 'ngResource', 'ui.router', 'ngCookies', 
+         'pascalprecht.translate', 'ngCacheBuster', 'infinite-scroll', 'smart-table', 'ui.bootstrap', 'ui.select'])
 
     .run(function ($rootScope, $location, $window, $http, $state, $translate, Language, Auth, Principal, ENV, VERSION) {
         $rootScope.ENV = ENV;
@@ -81,9 +80,12 @@ angular.module('gpwradarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pasca
         $stateProvider.state('site', {
             'abstract': true,
             views: {
-                'navbar@': {
-                    templateUrl: 'scripts/components/navbar/navbar.html',
+                'topNavbar@':{
+                    templateUrl: 'scripts/components/navbars/top/top-navbar.html',
                     controller: 'NavbarController'
+                },
+                'leftNavbar@':{
+                    templateUrl: 'scripts/components/navbars/left/left-navbar.html'
                 }
             },
             resolve: {

@@ -1,0 +1,25 @@
+{
+    "panel": {
+    	"show": "Show details",
+    	"hide": "Hide details",
+    	"upToDate": "Stocks are up to date: ",
+    	"updating": "Application is updating",
+    	"followedStocks": {
+    		"title": "Followed stocks",
+    		"ticker": "Ticker",
+    		"action": "Action",
+    		"externalwebsites": "External websites",
+    		"technical": "A. technical",
+    		"fundamental": "A. fundamental",
+    		"stockName": "Stock name"
+    	},
+    	"calendar": {
+    		"title": "My calendar",
+    		"clickDate": "Click on date to see details",
+    		"noFinanceEvent": "On selected day <b>{{date}}</b> there is no finance event for stocks which you followed",
+    		"financeEvent": "Day: {{date}} Ticker: <b>{{ticker}}</b> Message: <b>{{message}}</b>"
+    	},
+        "title": "Administration Panel",
+        "appStatus": "Application status"
+    }
+}

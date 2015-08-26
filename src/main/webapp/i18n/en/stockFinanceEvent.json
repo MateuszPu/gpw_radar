@@ -1,19 +1,18 @@
 {
-    "gpwradarApp": {
-        "stockFinanceEvent" : {
-            "home": {
-                "title": "StockFinanceEvents",
-                "createLabel": "Create a new StockFinanceEvent",
-                "createOrEditLabel": "Create or edit a StockFinanceEvent"
-            },
-            "delete": {
-                "question": "Are you sure you want to delete StockFinanceEvent {{ id }}?"
-            },
-            "detail": {
-                "title": "StockFinanceEvent"
-            },
-            "date": "Date",
-            "message": "Message"
-        }
+    "stockFinanceEvent" : {
+        "home": {
+            "title": "Stock Finance Events",
+            "createLabel": "Create a new stock finance event",
+            "createOrEditLabel": "Create or edit a stock finance event"
+        },
+        "delete": {
+            "question": "Are you sure you want to delete StockFinanceEvent {{ id }}?"
+        },
+        "detail": {
+            "title": "Stock Finance Event"
+        },
+        "Message": "Message",
+        "Date": "Date",
+        "stock": "Stock"
     }
 }

@@ -5,15 +5,13 @@
             "password": "Password",
             "password.placeholder": "Your password",
             "rememberme": "Automatic Login",
+            "forgot": "Did you forget your password?",
             "button": "Authenticate"
         },
         "messages": {
             "error": {
                 "authentication": "<strong>Authentication failed!</strong> Please check your credentials and try again."
             }
-        },
-        "password" : {
-            "forgot": "Did you forget your password?"
         }
     }
 }

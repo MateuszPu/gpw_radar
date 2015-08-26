@@ -1,0 +1,52 @@
+{
+    "stock" : {
+        "home": {
+            "title": "Spółki",
+            "createLabel": "Dodaj nową spółkę",
+            "createOrEditLabel": "Dodaj lub edytuj spółkę"
+        },
+        "trend": {
+    		"10days": "w ostatnich 10 dniach:",
+    		"30days": "w ostatnich 30 dniach:",
+    		"60days": "w ostatnich 60 dniach:",
+			"90days": "w ostatnich 90 dniach:",
+        	"up": {
+        		"title": "Spółki w trendzie wzrostowym"
+        	},
+        	"down": {
+        		"title": "Spółki w trendzie spadkowym"
+        	},
+        	"detail": {
+        		"title": "Spółki w trendzie"
+        	}
+        },
+        "delete": {
+            "question": "Jesteś pewien, że chcesz usunąc spółkę {{ id }}?"
+        },
+        "detail": {
+            "title": "Spółka"
+        },
+        "followed":{
+        	"title": "Śledzone spółki"
+        },
+        "list": {
+        	"stockList": "Lista spółek",
+        	"title": "Spółki poddawane analizie w serwisie",
+        	"technical": "A. techniczna",
+        	"fundamental": "A. fundamentalna",
+        	"externalwebsites": "Zewnętrzne strony",
+        	"follow": "Obserwuj",
+        	"stopFollow": "Przestań obserwować",
+            "search": "Wyszukaj..."
+        },
+        "ticker": "Ticker",
+        "stockName": "Nazwa spółki",
+        "averageVolume30Days": "Średni wolumen (30dni)",
+        "averageVolume10Days": "Średni wolumen (10dni)",
+        "volumeRatio10": "Ratio wolumen (10dni)",
+        "volumeRatio30": "Ratio wolumen (30dni)",
+        "change": "Zmiana",
+        "stockShortName": "Skrócona nazwa ",
+        "StockDetails": "Detale"
+    }
+}
