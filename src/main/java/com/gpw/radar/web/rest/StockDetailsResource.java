@@ -1,41 +1,34 @@
-//package com.gpw.radar.web.rest;
-//
-//import java.net.URI;
-//import java.net.URISyntaxException;
-//import java.util.List;
-//import java.util.Optional;
-//
-//import javax.annotation.security.RolesAllowed;
-//import javax.inject.Inject;
-//import javax.validation.Valid;
-//
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.data.domain.Page;
-//import org.springframework.http.HttpHeaders;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.MediaType;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.PathVariable;
-//import org.springframework.web.bind.annotation.RequestBody;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestMethod;
-//import org.springframework.web.bind.annotation.RequestParam;
-//import org.springframework.web.bind.annotation.RestController;
-//
-//import com.codahale.metrics.annotation.Timed;
-//import com.gpw.radar.domain.StockDetails;
-//import com.gpw.radar.repository.StockDetailsRepository;
-//import com.gpw.radar.security.AuthoritiesConstants;
-//import com.gpw.radar.service.StockDetailsService;
-//import com.gpw.radar.web.rest.util.PaginationUtil;
-//
-///**
-// * REST controller for managing StockDetails.
-// */
-//@RestController
-//@RequestMapping("/api")
-//public class StockDetailsResource {
+package com.gpw.radar.web.rest;
+
+import java.io.IOException;
+
+import javax.inject.Inject;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.gpw.radar.domain.StockDetails;
+import com.gpw.radar.service.StockDetailsService;
+
+/**
+ * REST controller for managing StockDetails.
+ */
+@RestController
+@RequestMapping("/api")
+public class StockDetailsResource {
+	
+	@Inject
+	private StockDetailsService stockDetailsService;
+	
+	@RequestMapping(value = "/get/top/by/date", method = RequestMethod.GET)
+	public ResponseEntity<StockDetails> getTopStockDetailsByDate() throws IOException
+	{
+		return stockDetailsService.findTopByDate();
+	}	
+
+}
 //
 //	@Inject
 //	private StockDetailsService stockDetailsService;

@@ -56,7 +56,7 @@ public class AutoUpdateDb {
 	public void updateStockDetails() throws IOException, InterruptedException {
 		updating = true;
 		step = 0;
-		LocalDate date = stockDetailsService.findTopByDate().getDate();
+		LocalDate date = stockDetailsService.findTopByDate().getBody().getDate();
 		LocalDate stooqDate = stockDetailsService.getLastDateWig20FromStooqWebsite();
 
 		if (!date.isEqual(stooqDate)) {

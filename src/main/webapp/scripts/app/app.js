@@ -96,6 +96,7 @@ angular.module('gpwradarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'oc.la
                 ],
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('global');
+                    $translatePartialLoader.addPart('language');
                 }]
             }
         });
@@ -108,7 +109,7 @@ angular.module('gpwradarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'oc.la
             urlTemplate: 'i18n/{lang}/{part}.json'
         });
 
-        $translateProvider.preferredLanguage('en');
+        $translateProvider.preferredLanguage('pl');
         $translateProvider.useCookieStorage();
         $translateProvider.useSanitizeValueStrategy('escaped');
 

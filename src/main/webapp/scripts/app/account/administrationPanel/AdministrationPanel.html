@@ -1,0 +1,134 @@
+<style>
+  .full button span {
+    background-color: red;
+    border-radius: 32px;
+    color: black;
+  }
+</style>
+<div ng-cloak>
+<br>
+    <div class="row" >
+        <div class="col-md-12">
+			<div class="panel panel-success">
+			  <div class="panel-heading">
+ 			  	<div class="row">
+			  		<div class="col-xs-12 col-md-9">
+			  			<h4><span class="fa fa-heartbeat"></span>
+	             		&#xA0;<span translate="panel.appStatus">Application status</span></h4>
+			  		</div>
+					<div class="col-xs-6 col-md-3 text-right">
+               			<span ng-show='showStatus' translate="panel.hide">Hide</span>
+               			<span ng-hide='showStatus' translate="panel.show">Show</span>
+						<input type="checkbox" ng-model="showStatus" ng-change='showApplicationStatus()' aria-label="Toggle ngHide">
+					</div>
+			  </div>
+			 </div>
+			  <div class="panel-body" ng-show='showStatus'>
+			   	<div ng-show='isApplicationUpdating'>
+			   		<span class="label label-info" style='font-size: 100%' translate="panel.updating">Application is updating</span>
+			   		<hr/>
+			   		<progressbar animate="true" class="progress-striped" value='stepOfUpdate/358*100' type="info">{{stepOfUpdate/358*100 | number:0}}%</progressbar>
+			   	</div>
+			   	<div ng-hide='isApplicationUpdating'>
+			   		<p ng-switch="differenceBetweenDaysAndDB">
+					    <span ng-switch-when="0">
+					       <span class="label label-success" style='font-size: 100%' translate="panel.upToDate">Stocks are up to:</span>
+					        {{topDateOfStock | date}}
+					    </span>
+					    <span ng-switch-when="3">
+					       <span class="label label-danger" style='font-size: 100%' translate="panel.upToDate">Stocks are up to:</span>
+					        {{topDateOfStock | date}}
+					    </span>
+					</p>
+			   	</div>
+			  </div>
+			</div>
+
+        	<div class="panel panel-success">
+			  <div class="panel-heading">
+			  	<div class="row">
+			  		<div class="col-xs-12 col-md-9">
+			  			<h4><span class="fa fa-eye"></span>
+	             		&#xA0;<span translate="panel.followedStocks.title">Followed Stocks</span></h4>
+			  		</div>
+					<div class="col-xs-6 col-md-3 text-right">
+               			<span ng-show='showFollowedStocks' translate="panel.hide">Hide</span>
+               			<span ng-hide='showFollowedStocks' translate="panel.show">Show</span>
+						<input type="checkbox" ng-model="showFollowedStocks" ng-change='showDetailsOfStocksFollowed()' aria-label="Toggle ngHide">
+					</div>
+              	</div>
+			  </div>
+
+			  <div class="panel-body" ng-show='showFollowedStocks'>
+			    <div class="panel panel-default">
+					<table st-table="stocksFollowedByUserList" st-safe-src="smartTableSafeCopy"
+						class="table table-striped">
+						<thead>
+							<tr>
+								<th st-sort="ticker" class="col-xs-1"><a href=""><span translate="panel.followedStocks.ticker">Ticker</span></a></th>
+								<th st-sort="stockName" class="col-xs-2"><a href=""><span translate="panel.followedStocks.stockName">Name</span></a></th>
+								<th class="col-xs-1"><span translate="panel.followedStocks.action">Follow</span></th>
+								<th class="col-xs-1"><span translate="panel.followedStocks.externalwebsites">External websites</span></th>
+							</tr>
+							<tr>
+								<th colspan="5"><input st-search="" class="form-control"
+									placeholder="wyszukaj..." type="text" /></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="stock in stocksFollowedByUserList">
+								<td>{{stock.ticker}}</td>
+								<td>{{stock.stockName}}</td>
+								<td>
+									<a class="btn btn-danger" href="" ng-click="stopFollowStock(stock.id)"><i class="fa fa-minus-square"></i></a>
+								</td>
+								<td>
+									<a href="http://stooq.pl/q/a/?s={{stock.ticker}}"
+										target="_blank" translate="panel.followedStocks.technical">A. technical</a> <br>
+									<a href="http://www.stockwatch.pl/gpw/{{stock.stockShortName}},komunikaty,wyniki.aspx"
+										target="_blank" translate="panel.followedStocks.fundamental">A. fundamental</a>
+								</td>
+
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="5" class="text-center">
+									<div st-pagination="" st-items-by-page="5"
+										st-displayed-pages="3"></div>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			  </div>
+			</div>
+
+			<div class="panel panel-success">
+				<div class="panel-heading">
+ 			  		<div class="row">
+				  		<div class="col-xs-12 col-md-9">
+				  			<h4><span class="fa fa-calendar"></span>
+		             		&#xA0;<span translate="panel.calendar.title">Calendar</span></h4>
+				  		</div>
+						<div class="col-xs-6 col-md-3 text-right">
+	               			<span ng-show='showCalendar' translate="panel.hide">Hide</span>
+	               			<span ng-hide='showCalendar' translate="panel.show">Show</span>
+							<input type="checkbox" ng-model="showCalendar" ng-change='showFinanceEventCalendar()' aria-label="Toggle ngHide">
+						</div>
+					</div>
+				</div>
+				<div class="panel-body" ng-show='showCalendar' ng-if="financeEventsLoaded">
+						<pre ng-hide='clickedDate' translate="panel.calendar.clickDate"></pre>
+						<div ng-show='clickedDate'>
+					    	<pre ng-hide='financeEventFounded' ><em translate="panel.calendar.noFinanceEvent" translate-values="{date: '{{calendarDay | date: 'dd/M/yyyy'}}'}">No finance event message</em></pre>
+					    	<pre ng-show='financeEventFounded' ng-repeat='event in financeEvents track by $index'><em translate="panel.calendar.financeEvent" translate-values="{date: '{{calendarDay | date: 'dd/M/yyyy'}}', ticker: '{{event.ticker}}', message: '{{event.event}}'}">Finance event message</em> </pre>
+					    </div>
+					    <div>
+					      <datepicker ng-click="clickOnDate(calendarDay)" ng-model="calendarDay" min-date="minDate" show-weeks="true" class="well well-sm" custom-class="getDayClass(date, mode)" starting-day="1"></datepicker>
+					    </div>
+				</div>
+			</div>
+        </div>
+    </div>
+</div>
