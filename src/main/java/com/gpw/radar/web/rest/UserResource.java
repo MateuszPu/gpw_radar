@@ -1,9 +1,7 @@
 package com.gpw.radar.web.rest;
 
 import java.security.Principal;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import javax.annotation.security.RolesAllowed;
@@ -23,9 +21,9 @@ import com.codahale.metrics.annotation.Timed;
 import com.gpw.radar.domain.Stock;
 import com.gpw.radar.domain.StockFinanceEvent;
 import com.gpw.radar.domain.User;
-import com.gpw.radar.repository.StockFinanceEventRepository;
 import com.gpw.radar.repository.UserRepository;
 import com.gpw.radar.security.AuthoritiesConstants;
+import com.gpw.radar.service.UserService;
 
 /**
  * REST controller for managing users.
@@ -40,7 +38,7 @@ public class UserResource {
 	private UserRepository userRepository;
 
 	@Inject
-	private StockFinanceEventRepository stockFinanceEventRepository;
+	private UserService userService;
 
 	/**
 	 * GET /users -> get all users.
@@ -58,30 +56,20 @@ public class UserResource {
 	@RequestMapping(value = "/users/{login}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Timed
 	@RolesAllowed(AuthoritiesConstants.ADMIN)
-	ResponseEntity<User> getUser(@PathVariable String login) {
+	public ResponseEntity<User> getUser(@PathVariable String login) {
 		log.debug("REST request to get User : {}", login);
 		return userRepository.findOneByLogin(login).map(user -> new ResponseEntity<>(user, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 
 	@RequestMapping(value = "/users/stocks/followed", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RolesAllowed(AuthoritiesConstants.USER)
-	Set<Stock> getListStocksFollowedByUser(Principal principal) {
-		String name = principal.getName();
-		Optional<User> user = userRepository.findOneByLogin(name);
-		User activeUser = user.get();
-		return activeUser.getStocks();
+	public ResponseEntity<Set<Stock>> getListStocksFollowedByUser(Principal principal) {
+		return userService.getStocksFollowedByUser();
 	}
 
 	@RequestMapping(value = "/users/stocks/followed/finance/event", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RolesAllowed(AuthoritiesConstants.USER)
-	Set<StockFinanceEvent> getListFinanceEventsStocksFollowedByUser(Principal principal) {
-		Set<StockFinanceEvent> stockFinanveEvents = new HashSet<StockFinanceEvent>();
-		String name = principal.getName();
-		Optional<User> user = userRepository.findOneByLogin(name);
-		User activeUser = user.get();
-		for (Stock element : activeUser.getStocks()) {
-			stockFinanveEvents.addAll(stockFinanceEventRepository.findByStock(element));
-		}
-		return stockFinanveEvents;
+	public ResponseEntity<List<StockFinanceEvent>> getListFinanceEventsStocksFollowedByUser(Principal principal) {
+		return userService.getStocksFinanceEventFollowedByUser();
 	}
 }

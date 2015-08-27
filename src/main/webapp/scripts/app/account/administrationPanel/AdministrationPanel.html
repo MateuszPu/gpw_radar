@@ -79,7 +79,7 @@
 											</tr>
 											<tr>
 												<th colspan="5"><input st-search="" class="form-control"
-													placeholder="wyszukaj..." type="text" /></th>
+                                                   placeholder="{{'panel.search' | translate}}" type="text"/></th>
 											</tr>
 										</thead>
 										<tbody>
@@ -125,15 +125,15 @@
 										</div>
 									</div>
 								</div>
-								<div class="panel-body" ng-show='showCalendar' ng-if="financeEventsLoaded">
+								<div class="panel-body" ng-show='showCalendar'>
 									<pre ng-hide='clickedDate' translate="panel.calendar.clickDate"></pre>
 									<div ng-show='clickedDate'>
-								    	<pre ng-hide='financeEventFounded' ><em translate="panel.calendar.noFinanceEvent" translate-values="{date: '{{calendarDay | date: 'dd/M/yyyy'}}'}">No finance event message</em></pre>
-								    	<pre ng-show='financeEventFounded' ng-repeat='event in financeEvents track by $index'><em translate="panel.calendar.financeEvent" translate-values="{date: '{{calendarDay | date: 'dd/M/yyyy'}}', ticker: '{{event.ticker}}', message: '{{event.event}}'}">Finance event message</em> </pre>
+									{{clicedEvent}}
+								    	<pre><em translate="panel.calendar.financeEvent" translate-values="{date: '{{event.date | date: 'dd/M/yyyy'}}', ticker: '{{event.ticker}}', message: '{{event.message}}'}">Finance event message</em> </pre>
 								    </div>
-								    <div>
-								      <datepicker ng-click="clickOnDate(calendarDay)" ng-model="calendarDay" min-date="minDate" show-weeks="true" class="well well-sm" custom-class="getDayClass(date, mode)" starting-day="1"></datepicker>
-								    </div>
+								    <button class="btn btn-success" ng-click="loadAll()">loadall</button>
+								    <button class="btn btn-success" ng-click="loadAll2()">loadall2</button>
+								    <div ng-if="financeEventsLoaded" ui-calendar="uiConfig.calendar" ng-model="eventSources"></div>
 								</div>
 							</div>
 				        </div>

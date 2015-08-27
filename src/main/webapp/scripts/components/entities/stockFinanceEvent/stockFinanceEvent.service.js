@@ -12,6 +12,7 @@ angular.module('gpwradarApp')
                 }
             },
             'update': { method:'PUT' },
-            'getStockFinanceEvents' : { method:'GET', url:'api/users/stocks/followed/finance/event', isArray: true}
+            'getFollowedStockFinanceEvents' : { method:'GET', url:'api/users/stocks/followed/finance/event', isArray: true},
+            'getAllStockFinanceEvents' : { method:'GET', url:'api/all/finance/event', isArray: true}
         });
     });

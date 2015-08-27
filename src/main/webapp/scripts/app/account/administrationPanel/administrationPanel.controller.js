@@ -1,5 +1,6 @@
 angular.module('gpwradarApp')
-    .controller('AdministrationPanelController', function ($scope, $http, $timeout, $filter, StocksFollowed, ApplicationStatus, StockFinanceEvent) {
+.controller('AdministrationPanelController', function ($scope, $http, $timeout, $filter, 
+    		StocksFollowed, ApplicationStatus, StockFinanceEvent) {
         //scope for app status
     	$scope.isApplicationUpdating = false;
         $scope.today = new Date();
@@ -64,7 +65,7 @@ angular.module('gpwradarApp')
                 });
             })();
         }
-
+        
         //followed stocks part
         $scope.showDetailsOfStocksFollowed = function(){
         	$scope.getAllStocksFollowed();
@@ -78,58 +79,86 @@ angular.module('gpwradarApp')
         };
 
         //calendar part
-        $scope.showFinanceEventCalendar = function(){
-        	$scope.getStockFinanceEvents();
-        };
+        
+//        $scope.showFinanceEventCalendar = function(){
+////        	$scope.getStockFinanceEvents();
+//        };
+        $scope.financeEvents = [];
         $scope.financeEventsLoaded = false;
         $scope.clickedDate = false;
-
-        $scope.getStockFinanceEvents = function(){
-        	StockFinanceEvent.getStockFinanceEvents(function(response){
+        
+        $scope.loadAll = function() {
+        	$scope.financeEventsLoaded = false;
+//        	$scope.financeEvents = [];
+        	$scope.getStockFinanceEvents();
+        }
+        
+        $scope.loadAll2 = function() {
+        	$scope.financeEventsLoaded = false;
+//        	$scope.financeEvents = [];
+        	$scope.getStockFinanceEvents2();
+        }
+        
+        $scope.getStockFinanceEvents2 = function(){
+        	StockFinanceEvent.getAllStockFinanceEvents(function(response){
 				$scope.finance = response;
+				for(var i = 0; i < response.length; i++){
+					$scope.event = {};
+					$scope.event.start = response[i].date;
+					$scope.event.title = '[' + response[i].stock.ticker.toUpperCase() + '] ' + response[i].stock.stockName;
+					$scope.event.message = response[i].message;
+					$scope.financeEvents.push($scope.event);
+				}
+				$scope.financeEventsLoaded = true;
+    	});
+
+    }
+        
+        
+        $scope.getStockFinanceEvents = function(){
+        	StockFinanceEvent.getFollowedStockFinanceEvents(function(response){
+				$scope.finance = response;
+				for(var i = 0; i < response.length; i++){
+					$scope.event = {};
+					$scope.event.start = response[i].date;
+					$scope.event.title = '[' + response[i].stock.ticker.toUpperCase() + '] ' + response[i].stock.stockName;
+					$scope.event.message = response[i].message;
+					$scope.financeEvents.push($scope.event);
+				}
 				$scope.financeEventsLoaded = true;
         	});
 
         }
-
-        $scope.getDayClass = function(date, mode) {
-        	if($scope.financeEventsLoaded === true){
-		        if (mode === 'day') {
-		          var dayToCheck = new Date(date).setHours(0,0,0,0);
-
-		          for (var i=0;i<$scope.finance.length;i++){
-		            var currentDay = new Date($scope.finance[i].date).setHours(0,0,0,0);
-
-		            if (dayToCheck === currentDay) {
-		              return 'full';
-		            }
-		          }
-		        }
-	        return '';
-        	}
-        };
-
-        $scope.clickOnDate = function(calendarDay){
-        	$scope.financeEventFounded = false;
-        	if($scope.financeEventsLoaded === true && !(typeof calendarDay === 'undefined')){
-        		$scope.clickedDate = true;
-		    	$scope.financeEvents = [];
-		    	for (var i=0;i<$scope.finance.length;i++){
-		    		var financeEventDate = new Date($scope.finance[i].date);
-	    			financeEventDate.setHours(0,0,0,0)
-
-			    		if(calendarDay.getTime() === financeEventDate.getTime()){
-			    			var ticker = $scope.finance[i].stock.ticker;
-			    			var financeEvent = $scope.finance[i].message;
-
-			    			$scope.merged = [];
-			    			$scope.merged.ticker = ticker.toUpperCase();
-			    			$scope.merged.event = financeEvent;
-
-			    			$scope.financeEvents.push($scope.merged);
-			    			$scope.financeEventFounded = true;
-				    	}
-		    		}
-		    	}
-		    }
-    	});
+        
+        $scope.eventSources = [$scope.financeEvents];
+        
+        $scope.clickEvent = function(date, jsEvent, view){
+        	$scope.clickedDate = true;
+        	$scope.event.message = date.message;
+        	$scope.event.date = date.start._i;
+        	$scope.event.ticker = date.title;
+        }
+        
+        $scope.uiConfig = {
+      	      calendar:{
+      	        height: 450,
+      	        editable: false,
+      	        eventColor: '#FF0000',
+      	        eventBorderColor:'#000000',
+      	      	customButtons: {
+      	      		gotoDates: {
+	      	            text: 'custom!',
+	      	            click: function() {
+	      	                console.log('clicked the custom button!');
+	      	            }
+	      	        }
+	      	    },
+      	        header:{
+      	          left: 'gotoDates',
+      	          center: 'title',
+      	          right: 'today prev,next'
+      	        },
+      	        eventClick: $scope.clickEvent,
+      	      }
+      };
+});

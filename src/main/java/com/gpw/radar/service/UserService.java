@@ -11,15 +11,20 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gpw.radar.domain.Authority;
+import com.gpw.radar.domain.Stock;
+import com.gpw.radar.domain.StockFinanceEvent;
 import com.gpw.radar.domain.User;
 import com.gpw.radar.repository.AuthorityRepository;
 import com.gpw.radar.repository.PersistentTokenRepository;
+import com.gpw.radar.repository.StockFinanceEventRepository;
 import com.gpw.radar.repository.UserRepository;
 import com.gpw.radar.security.SecurityUtils;
 import com.gpw.radar.service.util.RandomUtil;
@@ -44,6 +49,9 @@ public class UserService {
 
     @Inject
     private AuthorityRepository authorityRepository;
+    
+    @Inject
+    private StockFinanceEventRepository stockFinanceEventRepository;
 
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
@@ -174,4 +182,15 @@ public class UserService {
             userRepository.delete(user);
         }
     }
+
+	public ResponseEntity<List<StockFinanceEvent>> getStocksFinanceEventFollowedByUser() {
+		User user = getUserWithAuthorities();
+		List<StockFinanceEvent> stockFinanceEventsFollowedByUser = stockFinanceEventRepository.getFollowedStockFinanceEvent(user.getId());
+		return new ResponseEntity<List<StockFinanceEvent>>(stockFinanceEventsFollowedByUser, HttpStatus.OK);
+	}
+
+	public ResponseEntity<Set<Stock>> getStocksFollowedByUser() {
+		User user = getUserWithAuthorities();
+		return new ResponseEntity<Set<Stock>>(user.getStocks(), HttpStatus.OK);
+	}
 }

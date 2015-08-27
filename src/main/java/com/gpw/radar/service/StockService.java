@@ -17,9 +17,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.gpw.radar.domain.Stock;
+import com.gpw.radar.domain.StockFinanceEvent;
 import com.gpw.radar.domain.StockIndicators;
 import com.gpw.radar.domain.User;
 import com.gpw.radar.domain.enumeration.TrendDirection;
+import com.gpw.radar.repository.StockFinanceEventRepository;
 import com.gpw.radar.repository.StockIndicatorsRepository;
 import com.gpw.radar.repository.StockRepository;
 import com.gpw.radar.repository.UserRepository;
@@ -35,6 +37,9 @@ public class StockService {
 	
 	@Inject
 	private StockIndicatorsRepository stockIndicatorsRepository;
+	
+	@Inject
+	private StockFinanceEventRepository stockFinanceEventRepository;
 
 	@Inject
 	private UserService userService;
@@ -137,6 +142,11 @@ public class StockService {
 		user.getStocks().remove(stock);
 		userRepository.save(user);
 		return ResponseEntity.ok().build();
+	}
+
+	public ResponseEntity<List<StockFinanceEvent>> getAllStockFinanceEvent() {
+		List<StockFinanceEvent> list = stockFinanceEventRepository.getAllFetchStock();
+		return new ResponseEntity<List<StockFinanceEvent>>(list, HttpStatus.OK);
 	}
 
 }
