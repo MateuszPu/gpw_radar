@@ -79,55 +79,45 @@ angular.module('gpwradarApp')
         };
 
         //calendar part
-        
-//        $scope.showFinanceEventCalendar = function(){
-////        	$scope.getStockFinanceEvents();
-//        };
         $scope.financeEvents = [];
         $scope.financeEventsLoaded = false;
         $scope.clickedDate = false;
         
-        $scope.loadAll = function() {
+        $scope.getFollowedStockFinanceEvent = function() {
         	$scope.financeEventsLoaded = false;
-//        	$scope.financeEvents = [];
-        	$scope.getStockFinanceEvents();
+        	$scope.clickedDate = false;
+        	$scope.getFollowedStockFinanceEvent();
         }
         
-        $scope.loadAll2 = function() {
+        $scope.getAllStockFinanceEvent = function() {
         	$scope.financeEventsLoaded = false;
-//        	$scope.financeEvents = [];
-        	$scope.getStockFinanceEvents2();
+        	$scope.clickedDate = false;
+        	$scope.getAllStockFinanceEvents();
         }
         
-        $scope.getStockFinanceEvents2 = function(){
+        $scope.getAllStockFinanceEvents = function(){
         	StockFinanceEvent.getAllStockFinanceEvents(function(response){
-				$scope.finance = response;
-				for(var i = 0; i < response.length; i++){
-					$scope.event = {};
-					$scope.event.start = response[i].date;
-					$scope.event.title = '[' + response[i].stock.ticker.toUpperCase() + '] ' + response[i].stock.stockName;
-					$scope.event.message = response[i].message;
-					$scope.financeEvents.push($scope.event);
-				}
-				$scope.financeEventsLoaded = true;
-    	});
-
-    }
+				$scope.prepareEvents(response);
+    		});
+        }
         
         
-        $scope.getStockFinanceEvents = function(){
+        $scope.getFollowedStockFinanceEvent = function(){
         	StockFinanceEvent.getFollowedStockFinanceEvents(function(response){
-				$scope.finance = response;
-				for(var i = 0; i < response.length; i++){
-					$scope.event = {};
-					$scope.event.start = response[i].date;
-					$scope.event.title = '[' + response[i].stock.ticker.toUpperCase() + '] ' + response[i].stock.stockName;
-					$scope.event.message = response[i].message;
-					$scope.financeEvents.push($scope.event);
-				}
-				$scope.financeEventsLoaded = true;
+				$scope.prepareEvents(response);
         	});
 
+        }
+        
+        $scope.prepareEvents = function (stockFinanceEvents){
+        	for(var i = 0; i < stockFinanceEvents.length; i++){
+				$scope.event = {};
+				$scope.event.start = stockFinanceEvents[i].date;
+				$scope.event.title = '[' + stockFinanceEvents[i].stock.ticker.toUpperCase() + '] ' + stockFinanceEvents[i].stock.stockName;
+				$scope.event.message = stockFinanceEvents[i].message;
+				$scope.financeEvents.push($scope.event);
+			}
+        	$scope.financeEventsLoaded = true;
         }
         
         $scope.eventSources = [$scope.financeEvents];
@@ -145,16 +135,8 @@ angular.module('gpwradarApp')
       	        editable: false,
       	        eventColor: '#FF0000',
       	        eventBorderColor:'#000000',
-      	      	customButtons: {
-      	      		gotoDates: {
-	      	            text: 'custom!',
-	      	            click: function() {
-	      	                console.log('clicked the custom button!');
-	      	            }
-	      	        }
-	      	    },
       	        header:{
-      	          left: 'gotoDates',
+      	          left: '',
       	          center: 'title',
       	          right: 'today prev,next'
       	        },

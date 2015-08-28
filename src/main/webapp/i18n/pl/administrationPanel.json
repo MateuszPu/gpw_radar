@@ -6,6 +6,8 @@
     	"hide": "Ukryj szczegóły",
     	"upToDate": "Spółki są aktualne na dzień: ",
     	"updating": "Aplikacja jest aktualizowana",
+    	"getFollowed": "Pobierz obserwowane",
+    	"getAll": "Pobierz wszystkie",
     	"followedStocks": {
     		"title": "Obserwowane spółki",
     		"ticker": "Ticker",

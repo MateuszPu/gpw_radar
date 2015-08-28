@@ -6,6 +6,8 @@
     	"hide": "Hide details",
     	"upToDate": "Stocks are up to date: ",
     	"updating": "Application is updating",
+    	"getFollowed": "Get followed",
+    	"getAll": "Get all",
     	"followedStocks": {
     		"title": "Followed stocks",
     		"ticker": "Ticker",

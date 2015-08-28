@@ -29,6 +29,7 @@
     "json3": "3.3.2",
     "metisMenu": "~2.1.0",
     "modernizr": "2.8.3",
+    "ng-switchery": "1.0.0-alpha7",
     "ngInfiniteScroll": "1.2.0",
     "oclazyload": "~1.0.4",
     "PACE": "pace#~1.0.2",

@@ -24,9 +24,7 @@
 					             		&#xA0;<span translate="panel.appStatus">Application status</span></h4>
 							  		</div>
 									<div class="col-xs-6 col-md-3 text-right">
-				               			<span ng-show='showStatus' translate="panel.hide">Hide</span>
-				               			<span ng-hide='showStatus' translate="panel.show">Show</span>
-										<input type="checkbox" ng-model="showStatus" ng-change='showApplicationStatus()' aria-label="Toggle ngHide">
+										<input type="checkbox" ng-change='showApplicationStatus()' ng-model="showStatus" class="js-switch" ui-switch="{color: '#E43B11', secondaryColor: '#2AFA31', size: 'small' }" />
 									</div>
 							  </div>
 							 </div>
@@ -59,9 +57,7 @@
 					             		&#xA0;<span translate="panel.followedStocks.title">Followed Stocks</span></h4>
 							  		</div>
 									<div class="col-xs-6 col-md-3 text-right">
-				               			<span ng-show='showFollowedStocks' translate="panel.hide">Hide</span>
-				               			<span ng-hide='showFollowedStocks' translate="panel.show">Show</span>
-										<input type="checkbox" ng-model="showFollowedStocks" ng-change='showDetailsOfStocksFollowed()' aria-label="Toggle ngHide">
+										<input type="checkbox" ng-change="showDetailsOfStocksFollowed()" ng-model="showFollowedStocks" class="js-switch" ui-switch="{color: '#E43B11', secondaryColor: '#2AFA31', size: 'small' }" />
 									</div>
 				              	</div>
 							  </div>
@@ -119,21 +115,20 @@
 						             		&#xA0;<span translate="panel.calendar.title">Calendar</span></h4>
 								  		</div>
 										<div class="col-xs-6 col-md-3 text-right">
-					               			<span ng-show='showCalendar' translate="panel.hide">Hide</span>
-					               			<span ng-hide='showCalendar' translate="panel.show">Show</span>
-											<input type="checkbox" ng-model="showCalendar" ng-change='showFinanceEventCalendar()' aria-label="Toggle ngHide">
+					               			<input type="checkbox" ng-model="showCalendar" class="js-switch" ui-switch="{color: '#E43B11', secondaryColor: '#2AFA31', size: 'small' }" />
 										</div>
 									</div>
 								</div>
 								<div class="panel-body" ng-show='showCalendar'>
-									<pre ng-hide='clickedDate' translate="panel.calendar.clickDate"></pre>
-									<div ng-show='clickedDate'>
-									{{clicedEvent}}
-								    	<pre><em translate="panel.calendar.financeEvent" translate-values="{date: '{{event.date | date: 'dd/M/yyyy'}}', ticker: '{{event.ticker}}', message: '{{event.message}}'}">Finance event message</em> </pre>
-								    </div>
-								    <button class="btn btn-success" ng-click="loadAll()">loadall</button>
-								    <button class="btn btn-success" ng-click="loadAll2()">loadall2</button>
-								    <div ng-if="financeEventsLoaded" ui-calendar="uiConfig.calendar" ng-model="eventSources"></div>
+								    <button class="btn btn-success btn-xs" ng-click="getFollowedStockFinanceEvent()" translate="panel.getFollowed">Get followed</button>
+								    <button class="btn btn-success btn-xs" ng-click="getAllStockFinanceEvent()" translate="panel.getAll">Get all</button>
+									<div ng-if="financeEventsLoaded">
+										<pre ng-hide='clickedDate' translate="panel.calendar.clickDate"></pre>
+										<div ng-show='clickedDate'>
+									    	<pre><em translate="panel.calendar.financeEvent" translate-values="{date: '{{event.date | date: 'dd/M/yyyy'}}', ticker: '{{event.ticker}}', message: '{{event.message}}'}">Finance event message</em> </pre>
+									    </div>
+									    <div ui-calendar="uiConfig.calendar" ng-model="eventSources"></div>
+									</div>
 								</div>
 							</div>
 				        </div>
