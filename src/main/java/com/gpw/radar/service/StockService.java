@@ -39,9 +39,6 @@ public class StockService {
 	private StockIndicatorsRepository stockIndicatorsRepository;
 	
 	@Inject
-	private StockFinanceEventRepository stockFinanceEventRepository;
-
-	@Inject
 	private UserService userService;
 	
 	@Inject
@@ -143,10 +140,4 @@ public class StockService {
 		userRepository.save(user);
 		return ResponseEntity.ok().build();
 	}
-
-	public ResponseEntity<List<StockFinanceEvent>> getAllStockFinanceEvent() {
-		List<StockFinanceEvent> list = stockFinanceEventRepository.getAllFetchStock();
-		return new ResponseEntity<List<StockFinanceEvent>>(list, HttpStatus.OK);
-	}
-
 }
