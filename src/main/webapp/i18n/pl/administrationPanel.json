@@ -4,7 +4,7 @@
     	"search": "Szukaj...",
     	"show": "Pokaż szczegóły",
     	"hide": "Ukryj szczegóły",
-    	"upToDate": "Spółki są aktualne na dzień: ",
+    	"upToDate": "Spółki są aktualne na dzień: <b>{{date}}</b>",
     	"updating": "Aplikacja jest aktualizowana",
     	"getFollowed": "Pobierz obserwowane",
     	"getAll": "Pobierz wszystkie",

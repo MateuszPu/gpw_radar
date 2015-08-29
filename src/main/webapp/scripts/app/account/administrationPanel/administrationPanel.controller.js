@@ -83,33 +83,27 @@ angular.module('gpwradarApp')
         $scope.financeEventsLoaded = false;
         $scope.clickedDate = false;
         
-        $scope.getFollowedStockFinanceEvent = function() {
-        	$scope.financeEventsLoaded = false;
-        	$scope.clickedDate = false;
-        	$scope.getFollowedStockFinanceEvent();
-        }
-        
-        $scope.getAllStockFinanceEvent = function() {
-        	$scope.financeEventsLoaded = false;
-        	$scope.clickedDate = false;
-        	$scope.getAllStockFinanceEvents();
-        }
-        
-        $scope.getAllStockFinanceEvents = function(){
+        $scope.getAllStockFinanceEvents = function() {
+        	$scope.clearData();
         	StockFinanceEvent.getAllStockFinanceEvents(function(response){
 				$scope.prepareEvents(response);
     		});
         }
         
-        
-        $scope.getFollowedStockFinanceEvent = function(){
+        $scope.getFollowedStockFinanceEvents = function() {
+        	$scope.clearData();
         	StockFinanceEvent.getFollowedStockFinanceEvents(function(response){
 				$scope.prepareEvents(response);
         	});
-
         }
         
-        $scope.prepareEvents = function (stockFinanceEvents){
+        $scope.clearData = function() {
+        	$scope.financeEvents.length = 0;
+        	$scope.financeEventsLoaded = false;
+        	$scope.clickedDate = false;
+        }
+        
+        $scope.prepareEvents = function (stockFinanceEvents) {
         	for(var i = 0; i < stockFinanceEvents.length; i++){
 				$scope.event = {};
 				$scope.event.start = stockFinanceEvents[i].date;

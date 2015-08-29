@@ -6315,6 +6315,13 @@ body.skin-3 {
 .skin-3 .nav.nav-tabs > li.active {
     background: transparent;
 }
+ .st-sort-ascent:before{
+    content: '\25B2';
+}
+
+.st-sort-descent:before{
+    content: '\25BC';
+}
 @media (min-width: 768px) {
     #page-wrapper {
         position: inherit;

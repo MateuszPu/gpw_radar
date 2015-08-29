@@ -4,7 +4,7 @@
     	"search": "Search...",
     	"show": "Show details",
     	"hide": "Hide details",
-    	"upToDate": "Stocks are up to date: ",
+    	"upToDate": "Stocks are up to date: <b>{{date}}</b>",
     	"updating": "Application is updating",
     	"getFollowed": "Get followed",
     	"getAll": "Get all",

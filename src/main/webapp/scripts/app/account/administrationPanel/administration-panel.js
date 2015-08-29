@@ -12,7 +12,7 @@ angular.module('gpwradarApp')
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/account/administrationPanel/AdministrationPanel.html',
+                        templateUrl: 'scripts/app/account/administrationPanel/administrationPanel.html',
                         controller: 'AdministrationPanelController'
                     }
                 },
