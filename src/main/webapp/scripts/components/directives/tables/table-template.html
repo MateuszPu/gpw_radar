@@ -1,28 +1,28 @@
 <table class="table table-striped ">
     <thead>
     <tr>
-        <th><span translate="gpwanalysisApp.stock.ticker">Ticker</span></th>
-        <th><span translate="gpwanalysisApp.stock.change">Percent return</span></th>
-        <th><span translate="gpwanalysisApp.stock.list.follow">Follow</span></th>
-        <th><span translate="gpwanalysisApp.stock.list.externalwebsites">External websites</span>
+        <th><span translate="stock.ticker">Ticker</span></th>
+        <th><span translate="stock.change">Percent return</span></th>
+        <th><span translate="stock.list.follow">Follow</span></th>
+        <th><span translate="stock.list.externalwebsites">External websites</span>
         </th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="stock in trendingStocks">
-        <td>{{stock.ticker}}</td>
-        <td>{{stock.percentReturn | number:2}}%</td>
+        <td>{{stock[0].ticker}}</td>
+        <td>{{stock[1] | number:2}}%</td>
         <td>
-            <a class="btn btn-success" href="" ng-click="startFollow({id: stock.id})"
-               ng-hide="isFollowed({id: stock.id})"><i class="fa fa-plus-square"></i></a>
-            <a class="btn btn-danger" href="" ng-click="stopFollow({id: stock.id})"
-               ng-show="isFollowed({id: stock.id})"><i class="fa fa-minus-square"></i></a>
+            <a class="btn btn-success" href="" ng-click="startFollow({id: stock[0].id})"
+               ng-hide="isFollowed({id: stock[0].id})"><i class="fa fa-plus-square"></i></a>
+            <a class="btn btn-danger" href="" ng-click="stopFollow({id: stock[0].id})"
+               ng-show="isFollowed({id: stock[0].id})"><i class="fa fa-minus-square"></i></a>
         </td>
-        <td><a href="http://stooq.pl/q/a/?s={{stock.ticker}}"
-               target="_blank" translate="gpwanalysisApp.stock.list.technical">A. technical</a> <br>
+        <td><a href="http://stooq.pl/q/a/?s={{stock[0].ticker}}"
+               target="_blank" translate="stock.list.technical">A. technical</a> <br>
             <a
-                href="http://www.stockwatch.pl/gpw/{{stock.stockShortName}},komunikaty,wyniki.aspx"
-                target="_blank" translate="gpwanalysisApp.stock.list.fundamental">A. fundamental</a>
+                href="http://www.stockwatch.pl/gpw/{{stock[0].stockShortName}},komunikaty,wyniki.aspx"
+                target="_blank" translate="stock.list.fundamental">A. fundamental</a>
         </td>
     </tr>
     </tbody>

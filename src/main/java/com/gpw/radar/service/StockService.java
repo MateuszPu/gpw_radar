@@ -17,11 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.gpw.radar.domain.Stock;
-import com.gpw.radar.domain.StockFinanceEvent;
 import com.gpw.radar.domain.StockIndicators;
 import com.gpw.radar.domain.User;
 import com.gpw.radar.domain.enumeration.TrendDirection;
-import com.gpw.radar.repository.StockFinanceEventRepository;
 import com.gpw.radar.repository.StockIndicatorsRepository;
 import com.gpw.radar.repository.StockRepository;
 import com.gpw.radar.repository.UserRepository;
@@ -77,7 +75,6 @@ public class StockService {
 	}
 	
 	public ResponseEntity<List<Stock>> getTrendingStocks(TrendDirection trendDirection, int days, int offset, int limit) throws URISyntaxException {
-//		TrendDirection trendDirection = TrendDirection.valueOf(direction.toUpperCase());
 		switch (trendDirection) {
 		case UP:
 			switch (days) {
