@@ -8,7 +8,7 @@
             "button": "Unieważnij"
         },
         "messages": {
-            "success": "<strong>Session invalidated!</strong>",
+            "success": "<strong>Sesja unieważniona!</strong>",
             "error": "<strong>Wystąpił błąd!</strong> Sesja nie mogła być unieważniona."
         }
     }

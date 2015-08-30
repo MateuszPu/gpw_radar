@@ -12,7 +12,7 @@ angular.module('gpwradarApp')
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/entities/stock/stocks-list.html',
+                        templateUrl: 'scripts/app/entities/stock/list/stocks-list.html',
                         controller: 'StockController'
                     }
                 },
