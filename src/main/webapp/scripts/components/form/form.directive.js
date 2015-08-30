@@ -1,6 +1,3 @@
-/* globals $ */
-'use strict';
-
 angular.module('gpwradarApp')
     .directive('showValidation', function() {
         return {

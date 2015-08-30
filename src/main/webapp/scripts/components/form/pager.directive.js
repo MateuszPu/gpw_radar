@@ -1,6 +1,3 @@
-/* globals $ */
-'use strict';
-
 angular.module('gpwradarApp')
     .directive('gpwradarAppPager', function() {
         return {

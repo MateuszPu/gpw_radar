@@ -1,8 +1,15 @@
 {
     "health": {
-        "title": "Heath checks",
+        "title": "Kontrola kondycji",
         "refresh.button": "Odśwież",
         "stacktrace": "Stos wywołań",
+        "details": {
+            "details": "Szczegóły",
+            "properties": "Właściwości",
+            "name": "Nazwa",
+            "value": "Wartość",
+            "error": "Błąd"
+        },
         "indicator": {
             "diskSpace": "Disk space",
             "mail": "Email",

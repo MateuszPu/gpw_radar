@@ -1,0 +1,29 @@
+<table class="table table-striped ">
+    <thead>
+    <tr>
+        <th><span translate="gpwanalysisApp.stock.ticker">Ticker</span></th>
+        <th><span translate="gpwanalysisApp.stock.change">Percent return</span></th>
+        <th><span translate="gpwanalysisApp.stock.list.follow">Follow</span></th>
+        <th><span translate="gpwanalysisApp.stock.list.externalwebsites">External websites</span>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="stock in trendingStocks">
+        <td>{{stock.ticker}}</td>
+        <td>{{stock.percentReturn | number:2}}%</td>
+        <td>
+            <a class="btn btn-success" href="" ng-click="startFollow({id: stock.id})"
+               ng-hide="isFollowed({id: stock.id})"><i class="fa fa-plus-square"></i></a>
+            <a class="btn btn-danger" href="" ng-click="stopFollow({id: stock.id})"
+               ng-show="isFollowed({id: stock.id})"><i class="fa fa-minus-square"></i></a>
+        </td>
+        <td><a href="http://stooq.pl/q/a/?s={{stock.ticker}}"
+               target="_blank" translate="gpwanalysisApp.stock.list.technical">A. technical</a> <br>
+            <a
+                href="http://www.stockwatch.pl/gpw/{{stock.stockShortName}},komunikaty,wyniki.aspx"
+                target="_blank" translate="gpwanalysisApp.stock.list.fundamental">A. fundamental</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
