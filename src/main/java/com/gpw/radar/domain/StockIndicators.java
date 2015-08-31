@@ -12,6 +12,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.gpw.radar.jackson.View;
+
 @Entity
 @Table(name = "STOCK_INDICATORS")
 public class StockIndicators {
@@ -45,10 +48,12 @@ public class StockIndicators {
     private BigDecimal volumeRatio30;
 
     @Column(name = "percent_return", precision=10, scale=2, nullable = false)
+    @JsonView(View.StockIndicators.StockAndPercentReturn.class)
     private BigDecimal percentReturn;
     
     @OneToOne
     @JoinColumn(name="stock_id", foreignKey = @ForeignKey(name="FK_indicators_to_stock"))
+    @JsonView(View.StockIndicators.StockAndPercentReturn.class)
     private Stock stock;
 
 	public Long getId() {

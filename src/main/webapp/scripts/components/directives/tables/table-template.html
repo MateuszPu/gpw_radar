@@ -9,19 +9,19 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="stock in trendingStocks">
-        <td>{{stock[0].ticker}}</td>
-        <td>{{stock[1] | number:2}}%</td>
+    <tr ng-repeat="stockIndicators in trendingStocks">
+        <td>{{stockIndicators.stock.ticker}}</td>
+        <td>{{stockIndicators.percentReturn | number:2}}%</td>
         <td>
-            <a class="btn btn-success" href="" ng-click="startFollow({id: stock[0].id})"
-               ng-hide="isFollowed({id: stock[0].id})"><i class="fa fa-plus-square"></i></a>
-            <a class="btn btn-danger" href="" ng-click="stopFollow({id: stock[0].id})"
-               ng-show="isFollowed({id: stock[0].id})"><i class="fa fa-minus-square"></i></a>
+            <a class="btn btn-success" href="" ng-click="startFollow({id: stockIndicators.stock.id})"
+               ng-hide="isFollowed({id: stockIndicators.stock.id})"><i class="fa fa-plus-square"></i></a>
+            <a class="btn btn-danger" href="" ng-click="stopFollow({id: stockIndicators.stock.id})"
+               ng-show="isFollowed({id: stockIndicators.stock.id})"><i class="fa fa-minus-square"></i></a>
         </td>
-        <td><a href="http://stooq.pl/q/a/?s={{stock[0].ticker}}"
+        <td><a href="http://stooq.pl/q/a/?s={{stockIndicators.stock.ticker}}"
                target="_blank" translate="stock.list.technical">A. technical</a> <br>
             <a
-                href="http://www.stockwatch.pl/gpw/{{stock[0].stockShortName}},komunikaty,wyniki.aspx"
+                href="http://www.stockwatch.pl/gpw/{{stockIndicators.stock.stockShortName}},komunikaty,wyniki.aspx"
                 target="_blank" translate="stock.list.fundamental">A. fundamental</a>
         </td>
     </tr>

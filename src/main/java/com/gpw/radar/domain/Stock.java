@@ -17,7 +17,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.gpw.radar.domain.enumeration.StockTicker;
+import com.gpw.radar.jackson.View;
 
 /**
  * A Stock.
@@ -28,17 +30,21 @@ public class Stock implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonView(View.StockIndicators.StockAndPercentReturn.class)
     private Long id;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "ticker", nullable = false)
+    @JsonView(View.StockIndicators.StockAndPercentReturn.class)
     private StockTicker ticker;
 
     @Column(name = "stock_name")
+    @JsonView(View.StockIndicators.StockAndPercentReturn.class)
     private String stockName;
 
     @Column(name = "stock_short_name")
+    @JsonView(View.StockIndicators.StockAndPercentReturn.class)
     private String stockShortName;
     
     @JsonIgnore
