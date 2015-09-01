@@ -4,7 +4,8 @@
         "compute": "Oblicz",
         "search": {
             "ticker": "Wybierz spółkę...",
-            "period": "Wybierz okres..."
+            "period": "Wybierz okres...",
+            "type": "Wybierz typ..."
         },
         "table":{
             "search": "Szukaj...",

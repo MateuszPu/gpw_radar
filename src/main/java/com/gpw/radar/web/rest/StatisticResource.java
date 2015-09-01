@@ -1,5 +1,6 @@
 package com.gpw.radar.web.rest;
 
+import java.util.EnumSet;
 import java.util.TreeSet;
 
 import javax.annotation.security.RolesAllowed;
@@ -39,7 +40,8 @@ public class StatisticResource {
 	@RequestMapping(value = "/stock/correlation/step", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RolesAllowed(AuthoritiesConstants.USER)
 	public ResponseEntity<Integer> getStep() {
-		return new ResponseEntity<>(correlationService.getStep(), HttpStatus.OK);
+		System.out.println("_______" + correlationService.getStep());
+		return new ResponseEntity<Integer>(correlationService.getStep(), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/stocks/up", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -56,4 +58,10 @@ public class StatisticResource {
 	public ResponseEntity<Long> getStocksNoChange() {
 		return statisticService.countStocksNoChange();
 	}
+	
+	@RequestMapping(value = "all/type/correlation", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<EnumSet<CorrelationType>> getAllCorrelationTypes() {
+        return new ResponseEntity<EnumSet<CorrelationType>>(EnumSet.allOf(CorrelationType.class), HttpStatus.OK);
+    }
+	
 }

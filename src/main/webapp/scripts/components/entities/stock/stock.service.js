@@ -12,6 +12,7 @@ angular.module('gpwradarApp')
                 }
             },
             'update': { method: 'PUT' },
+            'getAllStockTickers': { method: 'GET', url: 'api/get/tickers', isArray:true},
             'getAllFetchStockIndicators': { method: 'GET', url: 'api/stocks/get/all', isArray: true}
         });
     });

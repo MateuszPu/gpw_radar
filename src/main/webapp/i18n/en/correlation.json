@@ -4,7 +4,8 @@
         "compute": "Compute",
         "search": {
             "ticker": "Select stock...",
-            "period": "Select period..."
+            "period": "Select period...",
+            "type": "Select type..."
         },
         "table":{
             "search": "Search...",

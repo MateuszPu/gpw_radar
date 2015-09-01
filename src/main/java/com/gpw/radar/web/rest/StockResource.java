@@ -6,6 +6,7 @@ import java.util.EnumSet;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,7 +56,7 @@ public class StockResource {
 	}
 
     @RequestMapping(value = "/get/tickers", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public EnumSet<StockTicker> getAllTickers() {
-        return EnumSet.allOf(StockTicker.class);
+    public ResponseEntity<EnumSet<StockTicker>> getAllTickers() {
+        return new ResponseEntity<EnumSet<StockTicker>>(EnumSet.allOf(StockTicker.class), HttpStatus.OK);
     }
 }

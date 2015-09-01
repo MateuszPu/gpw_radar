@@ -4,7 +4,6 @@ import static java.util.EnumSet.complementOf;
 
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -38,13 +37,13 @@ public class CorrelationService {
 
 	public ResponseEntity<TreeSet<StockStatistic>> computeCorrelation(StockTicker correlationForTicker, int period, CorrelationType correlationType) {
 		log.debug("Finding most correlated stocks for: " + correlationForTicker);
-		if (period != 10 && period != 30 && period != 60 && period != 90) {
-			return new ResponseEntity<>(new TreeSet<StockStatistic>() , HttpStatus.BAD_REQUEST);
-		}
-		Objects.requireNonNull(correlationForTicker);
-		Objects.requireNonNull(correlationType);
+//		if (period != 10 && period != 20 && period != 30 && period != 60 && period != 90) {
+//			return new ResponseEntity<>(new TreeSet<StockStatistic>() , HttpStatus.BAD_REQUEST);
+//		}
+//		Objects.requireNonNull(correlationForTicker);
+//		Objects.requireNonNull(correlationType);
 		
-		step = 0;
+		this.step = 0;
 		isComputing = true;
 
 		Correlator correlator = getCorrelatorImpl(correlationType);
