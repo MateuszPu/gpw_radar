@@ -40,7 +40,6 @@ public class StatisticResource {
 	@RequestMapping(value = "/stock/correlation/step", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RolesAllowed(AuthoritiesConstants.USER)
 	public ResponseEntity<Integer> getStep() {
-		System.out.println("_______" + correlationService.getStep());
 		return new ResponseEntity<Integer>(correlationService.getStep(), HttpStatus.OK);
 	}
 

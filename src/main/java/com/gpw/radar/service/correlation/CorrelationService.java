@@ -4,6 +4,7 @@ import static java.util.EnumSet.complementOf;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -37,11 +38,11 @@ public class CorrelationService {
 
 	public ResponseEntity<TreeSet<StockStatistic>> computeCorrelation(StockTicker correlationForTicker, int period, CorrelationType correlationType) {
 		log.debug("Finding most correlated stocks for: " + correlationForTicker);
-//		if (period != 10 && period != 20 && period != 30 && period != 60 && period != 90) {
-//			return new ResponseEntity<>(new TreeSet<StockStatistic>() , HttpStatus.BAD_REQUEST);
-//		}
-//		Objects.requireNonNull(correlationForTicker);
-//		Objects.requireNonNull(correlationType);
+		if (period != 10 && period != 20 && period != 30 && period != 60 && period != 90) {
+			return new ResponseEntity<>(new TreeSet<StockStatistic>() , HttpStatus.BAD_REQUEST);
+		}
+		Objects.requireNonNull(correlationForTicker);
+		Objects.requireNonNull(correlationType);
 		
 		this.step = 0;
 		isComputing = true;
@@ -117,26 +118,4 @@ public class CorrelationService {
 	private synchronized void increaseStep() {
 		step++;
 	}
-
-//	class CorrelationUtil implements Runnable {
-//
-//		StockTicker analysedTicker;
-//		double[] sourceClosePrices;
-//		int period;
-//
-//		public CorrelationUtil(StockTicker analysedTicker, double[] sourceClosePrices, int period) {
-//			this.analysedTicker = analysedTicker;
-//			this.sourceClosePrices = sourceClosePrices;
-//			this.period = period;
-//		}
-//
-//		@Override
-//		public void run() {
-//			double[] targetClosePrices = getClosePrices(getContent(analysedTicker, period));
-//			double correlation = correlator.correlate(sourceClosePrices, targetClosePrices);
-//			StockStatistic statistic = new StockStatistic(correlation, analysedTicker);
-//			correlationTreeSet.add(statistic);
-//			increaseStep();
-//		}
-//	}
 }

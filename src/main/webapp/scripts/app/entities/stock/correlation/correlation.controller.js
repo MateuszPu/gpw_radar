@@ -7,19 +7,9 @@ angular.module('gpwradarApp')
         $scope.selected.ticker = '';
         $scope.selected.period = '';
 
-//        $scope.getAllTickers = function() {
-//            Stock.getAllStockTickers(function(result) {
-//                $scope.tickers = result;
-//            })
-//        };
-        
         $scope.tickers = Stock.getAllStockTickers();
-//        $scope.getAllTickers();
-        
         $scope.correlationTypes = Correlation.getCorrelationTypes();
         
-        console.log($scope.correlationTypes);
-
         $scope.computeCorrelation = function (){
             $scope.isComputing = true;
             $scope.pollingData();
@@ -27,8 +17,6 @@ angular.module('gpwradarApp')
                 $scope.smartTableSafeCopy = result;
                 $scope.correlationList = [].concat($scope.smartTableSafeCopy);
                 $scope.isComputing = false;
-                //$scope.selected.ticker = '';
-                //$scope.selected.period = '';
             });
         };
 
