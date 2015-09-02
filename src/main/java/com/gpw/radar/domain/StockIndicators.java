@@ -51,6 +51,9 @@ public class StockIndicators {
     @JsonView(View.StockIndicators.StockAndPercentReturn.class)
     private BigDecimal percentReturn;
     
+    @Column(name = "volume_value_30_days", precision=25, scale=2)
+    private BigDecimal volumeValue30Days;
+    
     @OneToOne
     @JoinColumn(name="stock_id", foreignKey = @ForeignKey(name="FK_indicators_to_stock"))
     @JsonView(View.StockIndicators.StockAndPercentReturn.class)
@@ -135,6 +138,14 @@ public class StockIndicators {
 
 	public void setPercentReturn(BigDecimal percentReturn) {
 		this.percentReturn = percentReturn;
+	}
+
+	public BigDecimal getVolumeValue30Days() {
+		return volumeValue30Days;
+	}
+
+	public void setVolumeValue30Days(BigDecimal volumeValue30Days) {
+		this.volumeValue30Days = volumeValue30Days;
 	}
 
 	public Stock getStock() {

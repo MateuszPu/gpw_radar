@@ -113,4 +113,10 @@
    <changeSet author="ppp (generated)" id="1439832268539-15">
       <dropColumn columnName="volume_ratio_30" tableName="stock_details"/>
    </changeSet>
+   <changeSet author="ppp (generated)" id="1441214072163-1">
+      <addColumn tableName="STOCK_INDICATORS">
+         <column name="volume_value_30_days" type="numeric(25, 2)">
+         </column>
+      </addColumn>
+   </changeSet>
 </databaseChangeLog>

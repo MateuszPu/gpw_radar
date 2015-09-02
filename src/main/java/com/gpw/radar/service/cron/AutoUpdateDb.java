@@ -31,6 +31,8 @@ import com.gpw.radar.service.StockDetailsService;
 @RestController
 @RequestMapping("/api")
 public class AutoUpdateDb {
+	
+	//TODO: remove controller from here
 
 	@Inject
 	private StockRepository stockRepository;
@@ -102,6 +104,8 @@ public class AutoUpdateDb {
 			double[] percentReturn = calculatePercentReturn(closePrice);
 
 			calculateVolumeIndicators(stockIndicators, volume);
+			double volumeValue = stockIndicators.getAverageVolume30Days().doubleValue() * closePrice[0];
+			stockIndicators.setVolumeValue30Days(new BigDecimal(volumeValue));
 
 			double[] dataFor10DaysTrend = normalizeArray(Arrays.copyOfRange(closePrice, 0, 10));
 			double[] dataFor30DaysTrend = normalizeArray(Arrays.copyOfRange(closePrice, 0, 30));
