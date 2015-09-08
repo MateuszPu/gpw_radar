@@ -1,6 +1,11 @@
 package com.gpw.radar.service;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 
 import javax.inject.Inject;
 
@@ -24,8 +29,8 @@ public class WebParserService {
 	@Inject
 	private StockFinanceEventRepository stockFinanceEventRepository;
 
-	final DateTimeFormatter dtfTypeOne = DateTimeFormat.forPattern("yyyy-MM-dd");
-	final DateTimeFormatter dtfTypeTwo = DateTimeFormat.forPattern("yyyyMMdd");
+	private final DateTimeFormatter dtfTypeOne = DateTimeFormat.forPattern("yyyy-MM-dd");
+	private final DateTimeFormatter dtfTypeTwo = DateTimeFormat.forPattern("yyyyMMdd");
 	private LocalDate dt;
 
 	public LocalDate parseLocalDateFromString(String date) {
@@ -83,6 +88,28 @@ public class WebParserService {
 				stockFinanceEventRepository.save(prepareStockFinanceEvent(stock, tr, i));
 			}
 		}
+	}
+	
+	public LocalDate getLastDateWig20FromStooqWebsite() {
+		String line = "";
+		String cvsSplitBy = ",";
+		LocalDate date = null;
+		try {
+			URL urlStooq = new URL("http://stooq.pl/q/l/?s=wig20&f=sd2t2ohlcv&h&e=csv");
+			URLConnection stooqConnection = urlStooq.openConnection();
+
+			BufferedReader in = new BufferedReader(new InputStreamReader(stooqConnection.getInputStream()));
+			// skip first line as there are a headers
+			in.readLine();
+			line = in.readLine();
+			String[] stockDetailsFromCsv = line.split(cvsSplitBy);
+			date = parseLocalDateFromString(stockDetailsFromCsv[1]);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return date;
 	}
 
 	private StockFinanceEvent prepareStockFinanceEvent(Stock stock, Elements tr, int i) {

@@ -4,12 +4,12 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
+import org.joda.time.LocalDate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gpw.radar.domain.StockDetails;
 import com.gpw.radar.service.StockDetailsService;
 
 /**
@@ -23,9 +23,9 @@ public class StockDetailsResource {
 	private StockDetailsService stockDetailsService;
 	
 	@RequestMapping(value = "/get/top/by/date", method = RequestMethod.GET)
-	public ResponseEntity<StockDetails> getTopStockDetailsByDate() throws IOException
+	public ResponseEntity<LocalDate> getTopStockDetailsByDate() throws IOException
 	{
-		return stockDetailsService.findTopByDate();
+		return stockDetailsService.findLastTopDate();
 	}	
 
 }

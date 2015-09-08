@@ -12,8 +12,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Page;
@@ -30,8 +28,6 @@ import com.gpw.radar.repository.StockDetailsRepository;
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS, value = "session")
 public class CorrelationService {
-
-	private final Logger log = LoggerFactory.getLogger(CorrelationService.class);
 
 	@Inject
 	private StockDetailsRepository stockDetailsRepository;

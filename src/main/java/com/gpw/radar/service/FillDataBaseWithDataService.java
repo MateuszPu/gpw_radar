@@ -14,8 +14,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -30,8 +28,6 @@ import com.gpw.radar.repository.StockRepository;
 @Service
 public class FillDataBaseWithDataService {
 
-	private final Logger log = LoggerFactory.getLogger(FillDataBaseWithDataService.class);
-
 	private final EnumSet<StockTicker> tickers = EnumSet.allOf(StockTicker.class);
 
 	@Inject
@@ -43,10 +39,11 @@ public class FillDataBaseWithDataService {
 	@Inject
 	private StockDetailsRepository stockDetailsRepository;
 
+	private final String cvsSplitBy = ",";
+
 	@Transactional
 	public ResponseEntity<Void> fillDataBaseWithStocks() throws IOException {
 		for (StockTicker element : StockTicker.values()) {
-			log.debug("Parsing stock for: " + element);
 			Stock stock = new Stock();
 			stock.setTicker(element);
 			stock = webParserService.setNameAndShortName(stock);
@@ -62,7 +59,7 @@ public class FillDataBaseWithDataService {
 		for (StockTicker ticker : tickers) {
 			executor.execute(() -> {
 				Stock stock = stockRepository.findByTicker(ticker);
-				Set<StockDetails> stockDetails = parseStockDetailsByStockFromFile(stock);
+				Set<StockDetails> stockDetails = parseStockDetailsByStockFromTxtFile(stock);
 				stockDetailsRepository.save(stockDetails);
 			});
 		}
@@ -86,10 +83,8 @@ public class FillDataBaseWithDataService {
 	}
 
 	@Transactional
-	private Set<StockDetails> parseStockDetailsByStockFromFile(Stock stock) {
-		log.debug("Parsing stock details for: " + stock.getStockName());
+	private Set<StockDetails> parseStockDetailsByStockFromTxtFile(Stock stock) {
 		String line = "";
-		String cvsSplitBy = ",";
 		Set<StockDetails> stockDetailList = new HashSet<StockDetails>();
 		BufferedReader in = null;
 
