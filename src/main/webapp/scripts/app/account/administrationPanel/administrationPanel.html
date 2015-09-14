@@ -32,10 +32,10 @@
 								   	<div ng-hide='isApplicationUpdating'>
 								   		<p>
 										    <span ng-if = "differenceBetweenDaysAndDB === 0">
-										       <span class="label label-success" style='font-size: 100%' translate="panel.upToDate" translate-values="{date: '{{topDateOfStock | date: 'dd/M/yyyy'}}'}">Stocks are up to:</span>
+										       <span class="label label-success" style='font-size: 100%' translate="panel.upToDate" translate-values="{date: '{{topDateOfStock | date: 'dd/MM/yyyy'}}'}">Stocks are up to:</span>
 										    </span>
 										    <span ng-if="differenceBetweenDaysAndDB > 0">
-										       <span class="label label-danger" style='font-size: 100%' translate="panel.upToDate" translate-values="{date: '{{topDateOfStock | date: 'dd/M/yyyy'}}'}">Stocks are up to:</span>
+										       <span class="label label-danger" style='font-size: 100%' translate="panel.upToDate" translate-values="{date: '{{topDateOfStock | date: 'dd/MM/yyyy'}}'}">Stocks are up to:</span>
 										    </span>
 										</p>
 							   		</div>

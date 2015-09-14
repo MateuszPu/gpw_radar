@@ -173,4 +173,13 @@
                                  referencedTableName="JHI_PERSISTENT_AUDIT_EVENT"/>
     </changeSet>
     
+    <changeSet id="00000000000002" author="ppp">
+    	<createTable tableName="stock_details_parser_method">
+    		<column name="method" type="varchar(255)"></column>
+    	</createTable>
+    	<sql>
+    	 insert into stock_details_parser_method values('GPW')
+    	</sql>
+    </changeSet>
+    
 </databaseChangeLog>

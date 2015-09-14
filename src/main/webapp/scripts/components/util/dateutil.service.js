@@ -14,11 +14,7 @@ angular.module('gpwradarApp')
         }
       };
       this.convertLocaleDateFromServer = function(date) {
-        if (date) {
-          var dateString = date.split("-");
-          return new Date(dateString[0], dateString[1] - 1, dateString[2]);
-        }
-        return null;
+          return new Date(date[0], date[1] - 1, date[2]);
       };
       this.convertDateTimeFromServer = function(date) {
         if (date) {

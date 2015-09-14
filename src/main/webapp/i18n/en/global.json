@@ -39,6 +39,7 @@
             },
             "admin": {
                 "main": "Administration",
+                "configurator": "Configurator",
                 "tracker": "User tracker",
                 "metrics": "Metrics",
                 "health": "Health",

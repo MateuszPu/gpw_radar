@@ -1,6 +1,6 @@
 angular.module('gpwradarApp')
 .controller('AdministrationPanelController', function ($scope, $http, $timeout, $filter, 
-    		StocksFollowed, ApplicationStatus, StockFinanceEvent) {
+    		StocksFollowed, ApplicationStatus, StockFinanceEvent, DateUtils) {
         //scope for app status
     	$scope.isApplicationUpdating = false;
         $scope.today = new Date();
@@ -35,7 +35,7 @@ angular.module('gpwradarApp')
 
     	$scope.getStatusOfStocksDates = function(){
     		ApplicationStatus.getStatusOfStocks(function(response){
-    			$scope.topDateOfStock = new Date(response.date);
+    			$scope.topDateOfStock = DateUtils.convertLocaleDateFromServer(response);
     			$scope.differenceBetweenDaysAndDB =  Math.floor(($scope.today- $scope.topDateOfStock) / (1000 * 3600 * 24));
     		});
     	};
