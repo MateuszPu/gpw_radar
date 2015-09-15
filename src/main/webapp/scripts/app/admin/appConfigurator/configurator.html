@@ -5,15 +5,25 @@
 	    <div class="col-lg-6">
 	        <div class="ibox float-e-margins">
 	            <div class="ibox-title">
-	                <h5>Bar Chart Example <small>With custom colors.</small></h5>
+	                <h5 translate="configurator.parser.method">parser method</h5>
 	                <div ibox-tools></div>
 	            </div>
 	            <div class="ibox-content">
-	            	<div>Select method</div>
-	                <div>
-                       	<select class="form-control m-b" ng-model="selectedMethod" ng-options="method for method in allMethods"></select>
-	                </div>
-	                <button class="btn btn-success">Save</button>
+	            	<form method="get" class="form-horizontal">
+		            	<div class="form-group">
+		            		<label class="col-lg-2" translate="configurator.parser.select">Select method</label>
+		            		<div class="col-lg-10">
+		            			<select class="form-control m-b" ng-model="selectedMethod" ng-options="method for method in allMethods"></select>
+		            		</div>
+			            	<h4 class="col-lg-12" translate="configurator.parser.selectInfo"></h4>
+			            	<div class="col-lg-12" ng-switch="selectedMethod">
+			            		<div ng-switch-when="GPW" translate="configurator.parser.gpwMethod">GPW</div>
+			            		<div ng-switch-when="STOOQ" translate="configurator.parser.stooqMethod">STOOQ</div>
+			            	</div>
+		            	</div>
+	            	<div class="hr-line-dashed"></div>
+	                <button class="btn btn-success" ng-click="setMethod()">Save</button>
+	            	</form>
 	            </div>
 	        </div>
 	    </div>

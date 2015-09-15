@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gpw.radar.service.ConfiguratorService;
@@ -30,6 +31,11 @@ public class ConfiguratorResource {
 	public ResponseEntity<ParserMethodTemp> getCurrentMethod() {
 		ParserMethod currentMethod = configuratorService.getCurrentStockDetailsParserMethod();
 		return new ResponseEntity<ParserMethodTemp>(new ParserMethodTemp(currentMethod), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "set/stock/details/parser/method", method = RequestMethod.GET)
+	public ResponseEntity<Void> setParserMethod(@RequestParam ParserMethod parserMethod){
+		return configuratorService.setParserMethod(parserMethod);
 	}
 	
 	private class ParserMethodTemp {
