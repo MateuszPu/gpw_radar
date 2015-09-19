@@ -4,6 +4,7 @@
 	    "parser": {
 	    	"method": "Metoda parsowania <small>detali spółek</small>",
 	    	"select": "Wybierz metodę",
+	    	"save": "Wybierz",
 	    	"selectInfo": "Infomarcję na temat wybranej metody:",
 	    	"gpwMethod": "Dane pobierane ze strony \"http://www.gpw.pl/akcje_i_pda_notowania_ciagle_pelna_wersja#all\"",
 	    	"stooqMethod": "Dane pobierane ze strony http://stooq.pl/q/l/?s=wig20&f=sd2t2ohlcv&h&e=csv"

@@ -78,7 +78,7 @@
                                deferrable="false"
                                initiallyDeferred="false"
                                referencedColumnNames="id"
-                               referencedTableName="JHI_USER"/>
+                               referencedTableName="USERS"/>
    </changeSet>
    <changeSet author="ppp (generated)" id="1439832268539-9">
       <addForeignKeyConstraint baseColumnNames="stock_id"

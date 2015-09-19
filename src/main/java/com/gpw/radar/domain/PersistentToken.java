@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @see com.gpw.radar.security.CustomPersistentRememberMeServices
  */
 @Entity
-@Table(name = "JHI_PERSISTENT_TOKEN")
+@Table(name = "PERSISTENT_TOKEN")
 public class PersistentToken implements Serializable {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("d MMMM yyyy");

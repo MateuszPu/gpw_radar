@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
  * An authority (a security role) used by Spring Security.
  */
 @Entity
-@Table(name = "JHI_AUTHORITY")
+@Table(name = "AUTHORITY")
 public class Authority implements Serializable {
 
     @NotNull

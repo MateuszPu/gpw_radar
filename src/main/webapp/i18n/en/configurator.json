@@ -4,9 +4,10 @@
 	    "parser": {
 	    	"method": "Parser method <small> for stock details</small>",
 	    	"select": "Select method",
+	    	"save": "Select",
 	    	"selectInfo": "Information regards to selected method:",
-	    	"gpwMethod": "Dane pobierane ze strony \"http://www.gpw.pl/akcje_i_pda_notowania_ciagle_pelna_wersja#all\"",
-	    	"stooqMethod": "Dane pobierane ze strony \"http://stooq.pl/q/l/?s=wig20&f=sd2t2ohlcv&h&e=csv\""
+	    	"gpwMethod": "Data downloaded from: \"http://www.gpw.pl/akcje_i_pda_notowania_ciagle_pelna_wersja#all\"",
+	    	"stooqMethod": "Data downloaded from: \"http://stooq.pl/q/l/?s=wig20&f=sd2t2ohlcv&h&e=csv\""
 	    }
     }
 }
