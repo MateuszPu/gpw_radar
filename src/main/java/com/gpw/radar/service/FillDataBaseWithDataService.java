@@ -21,14 +21,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.gpw.radar.domain.Stock;
 import com.gpw.radar.domain.StockDetails;
+import com.gpw.radar.domain.database.Type;
 import com.gpw.radar.domain.enumeration.StockTicker;
+import com.gpw.radar.repository.FillDataStatusRepository;
 import com.gpw.radar.repository.StockDetailsRepository;
 import com.gpw.radar.repository.StockRepository;
 
 @Service
 public class FillDataBaseWithDataService {
-
-	private final EnumSet<StockTicker> tickers = EnumSet.allOf(StockTicker.class);
 
 	@Inject
 	private StockRepository stockRepository;
@@ -38,6 +38,9 @@ public class FillDataBaseWithDataService {
 
 	@Inject
 	private StockDetailsRepository stockDetailsRepository;
+
+	@Inject
+	private FillDataStatusRepository fillDataStatusRepository;
 
 	private final String cvsSplitBy = ",";
 
@@ -49,11 +52,13 @@ public class FillDataBaseWithDataService {
 			stock = webParserService.setNameAndShortName(stock);
 			stockRepository.save(stock);
 		}
+		fillDataStatusRepository.updateType(Type.STOCK.toString());
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
-	
+
 	@Transactional
 	public ResponseEntity<Void> fillDataBaseWithStockDetails() {
+		EnumSet<StockTicker> tickers = EnumSet.allOf(StockTicker.class);
 		ExecutorService executor = Executors.newFixedThreadPool(4);
 
 		for (StockTicker ticker : tickers) {
@@ -70,16 +75,18 @@ public class FillDataBaseWithDataService {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		fillDataStatusRepository.updateType(Type.STOCK_DETAILS.toString());
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
-	
+
 	@Transactional
 	public ResponseEntity<Void> fillDataBaseWithStockFinanceEvent() throws IOException {
-        for (StockTicker element : StockTicker.values()) {
-            Stock stock = stockRepository.findByTicker(element);
-            webParserService.getStockFinanceEvent(stock);
-        }
-        return new ResponseEntity<Void>(HttpStatus.OK);
+		for (StockTicker element : StockTicker.values()) {
+			Stock stock = stockRepository.findByTicker(element);
+			webParserService.getStockFinanceEvent(stock);
+		}
+		fillDataStatusRepository.updateType(Type.STOCK_FINANCE_EVENTS.toString());
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 	@Transactional

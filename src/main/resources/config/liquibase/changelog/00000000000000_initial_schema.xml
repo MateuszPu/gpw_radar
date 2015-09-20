@@ -182,4 +182,20 @@
     	</sql>
     </changeSet>
     
+  	<changeSet id="00000000000003" author="ppp">
+		<createTable tableName="FILLED_DATA_STATUS">
+			<column name="data_type" type="varchar(255)">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="filled" type="boolean" defaultValue="false">
+                <constraints nullable="false" />
+            </column>
+		</createTable>
+		<sql>
+		 insert into FILLED_DATA_STATUS values('STOCK');
+		 insert into FILLED_DATA_STATUS values('STOCK_DETAILS');
+		 insert into FILLED_DATA_STATUS values('STOCK_FINANCE_EVENTS');
+		</sql>
+	</changeSet>
+    
 </databaseChangeLog>

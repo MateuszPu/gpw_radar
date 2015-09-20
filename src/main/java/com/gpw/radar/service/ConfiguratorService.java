@@ -1,5 +1,7 @@
 package com.gpw.radar.service;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
@@ -7,16 +9,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.gpw.radar.domain.database.FillDataStatus;
+import com.gpw.radar.repository.FillDataStatusRepository;
 import com.gpw.radar.repository.StockDetailsRepository;
 import com.gpw.radar.service.auto.update.stockDetails.ParserMethod;
 
 @Service
 public class ConfiguratorService {
-	
+
 	@Inject
 	private StockDetailsRepository configuratorRepository;
-	
-	public void changeStockDetailsParserMethod(ParserMethod stockDetailsParserMethod){
+
+	@Inject
+	private FillDataStatusRepository fillDataStatusRepository;
+
+	public void changeStockDetailsParserMethod(ParserMethod stockDetailsParserMethod) {
 		configuratorRepository.setStockDetailsParserMethod(stockDetailsParserMethod.toString());
 	}
 
@@ -29,5 +36,10 @@ public class ConfiguratorService {
 	public ResponseEntity<Void> setParserMethod(ParserMethod parserMethod) {
 		configuratorRepository.setStockDetailsParserMethod(parserMethod.toString());
 		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+
+	public ResponseEntity<List<FillDataStatus>> getFillDataStatus() {
+		List<FillDataStatus> list = fillDataStatusRepository.findAll();
+		return new ResponseEntity<List<FillDataStatus>>(list, HttpStatus.OK);
 	}
 }

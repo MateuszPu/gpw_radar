@@ -21,9 +21,24 @@
 			            		<div ng-switch-when="STOOQ" translate="configurator.parser.stooqMethod">STOOQ</div>
 			            	</div>
 		            	</div>
-	            	<div class="hr-line-dashed"></div>
-	                <button class="btn btn-success" ng-click="setMethod()" translate="configurator.parser.save">Save</button>
+	            		<div class="hr-line-dashed"></div>
+	                	<button class="btn btn-success" ng-click="setMethod()" translate="configurator.parser.save">Save</button>
 	            	</form>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="col-lg-6">
+	        <div class="ibox float-e-margins">
+	            <div class="ibox-title">
+	                <h5>Title fill data base</h5>
+	                <div ibox-tools></div>
+	            </div>
+	            <div class="ibox-content">
+					{{dupa}}
+					<div ng-repeat="data in fillDataStatus track by data.type">
+					  <button class="btn btn-success" ng-disabled="isButtonDisabled('{{data.type}}')" translate="configurator.fillData.button.{{data.type}}">{{data.type}}</button>
+					</div>
 	            </div>
 	        </div>
 	    </div>
