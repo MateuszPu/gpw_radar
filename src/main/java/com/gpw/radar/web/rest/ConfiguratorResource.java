@@ -15,9 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gpw.radar.domain.database.FillDataStatus;
-import com.gpw.radar.repository.FillDataStatusRepository;
+import com.gpw.radar.domain.database.Type;
 import com.gpw.radar.security.AuthoritiesConstants;
 import com.gpw.radar.service.ConfiguratorService;
+import com.gpw.radar.service.FillDataBaseWithDataService;
 import com.gpw.radar.service.auto.update.stockDetails.ParserMethod;
 
 @RestController
@@ -27,6 +28,9 @@ public class ConfiguratorResource {
 
 	@Inject
 	private ConfiguratorService configuratorService;
+	
+	@Inject
+	private FillDataBaseWithDataService fillDataBaseWithDataService;
 
 	@RequestMapping(value = "all/stock/details/parser/methods", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<EnumSet<ParserMethod>> getAllMethods() {
@@ -47,6 +51,16 @@ public class ConfiguratorResource {
 	@RequestMapping(value = "get/fill/data/status", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<FillDataStatus>> getFillDataStatus(){
 		return configuratorService.getFillDataStatus();
+	}
+	
+	@RequestMapping(value = "fill/database", method = RequestMethod.GET)
+	public ResponseEntity<Void> fillDatabaseWithData(@RequestParam Type type){
+		return configuratorService.fillDatabaseWithData(type);
+	}
+	
+	@RequestMapping(value = "get/step/of/fill", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Integer getStepOfFill(){
+		return fillDataBaseWithDataService.getStep();
 	}
 
 	private class ParserMethodTemp {

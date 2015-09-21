@@ -22,7 +22,7 @@
 			            	</div>
 		            	</div>
 	            		<div class="hr-line-dashed"></div>
-	                	<button class="btn btn-success" ng-click="setMethod()" translate="configurator.parser.save">Save</button>
+	                	<button class="btn btn-success btn-sm" ng-click="setMethod()" translate="configurator.parser.save">Save</button>
 	            	</form>
 	            </div>
 	        </div>
@@ -34,12 +34,13 @@
 	                <h5>Title fill data base</h5>
 	                <div ibox-tools></div>
 	            </div>
-	            <div class="ibox-content">
-					{{dupa}}
+				<div class="ibox-content">
 					<div ng-repeat="data in fillDataStatus track by data.type">
-					  <button class="btn btn-success" ng-disabled="isButtonDisabled('{{data.type}}')" translate="configurator.fillData.button.{{data.type}}">{{data.type}}</button>
+						<button class="btn btn-success btn-sm" ng-disabled="isDisabled('{{data.type}}')" translate="configurator.fillData.button.{{data.type}}" ng-click="fillDatabase(data.type)">Step</button>
+						<span translate="configurator.fillData.info.{{data.type}}">Data type info</span>
+						<div class="hr-line-dashed"></div>
 					</div>
-	            </div>
+				</div>
 	        </div>
 	    </div>
 	</div>

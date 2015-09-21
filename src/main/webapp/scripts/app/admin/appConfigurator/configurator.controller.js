@@ -4,13 +4,23 @@ angular.module('gpwradarApp')
 		$scope.allMethods = AppConfigurator.getAllMethods();
     	$scope.fillDataStatus = AppConfigurator.getFillDataStatus();
     	
-    	$scope.isButtonDisabled = function(name) {
-    		for(var i = 0; i<$scope.fillDataStatus.length; i++) {
-    			if($scope.fillDataStatus[i].type === name){
-    				console.log(name);
-    				return $scope.fillDataStatus[i].filled;
-    			}
+    	$scope.isDisabled = function(name) {
+    		if(name === 'STOCK_DETAILS') {
+    			return (!$scope.isDisabled('STOCK') || $filter('getByType')($scope.fillDataStatus, name));
     		}
+    		if(name === 'STOCK_FINANCE_EVENTS') {
+//    			console.log(!$scope.isDisabled('STOCK_DETAILS'));
+//    			console.log($filter('getByType')($scope.fillDataStatus, name));
+//    			return ($scope.isDisabled('STOCK_DETAILS') || $filter('getByType')($scope.fillDataStatus, name));
+    			return !$scope.isDisabled('STOCK_DETAILS') && !$filter('getByType')($scope.fillDataStatus, name);
+    		}
+    		return $filter('getByType')($scope.fillDataStatus, name);
+    	};
+    	
+    	$scope.fillDatabase = function(name) {
+    		AppConfigurator.fillDatabaseWithData({type: name}, function(result) {
+    			console.log(result);
+    		});
     	}
 	    
 		AppConfigurator.getCurrentMethod(function(response) {
@@ -21,3 +31,15 @@ angular.module('gpwradarApp')
     		AppConfigurator.setMethod({parserMethod: $scope.selectedMethod});
     	};
 	});
+
+angular.module('gpwradarApp').filter('getByType', function() {
+	return function(input, type) {
+		var len=input.length;
+			for (var i=0; i<len; i++) {
+				if (input[i].type == type) {
+					return input[i].filled;
+				}
+			}	
+		return null;
+	}
+});

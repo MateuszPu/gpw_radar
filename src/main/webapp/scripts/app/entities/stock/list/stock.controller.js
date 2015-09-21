@@ -37,5 +37,4 @@ angular.module('gpwradarApp')
     		var found = $filter('getById')($scope.stocksFollowedByUser, id);
     		return found;
     	};
-
     });

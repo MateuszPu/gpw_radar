@@ -16,6 +16,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,8 @@ import com.gpw.radar.repository.StockFinanceEventRepository;
 
 @Service
 public class WebParserService {
+
+	private final Logger logger = LoggerFactory.getLogger(WebParserService.class);
 
 	@Inject
 	private StockFinanceEventRepository stockFinanceEventRepository;
@@ -42,8 +46,13 @@ public class WebParserService {
 		return dt;
 	}
 
-	public Stock setNameAndShortName(Stock stock) throws IOException {
-		Document doc = getDocumentFromStooqWeb(stock.getTicker().toString());
+	public Stock setNameAndShortName(Stock stock) {
+		Document doc = null;
+		try {
+			doc = getDocumentFromStooqWeb(stock.getTicker().toString());
+		} catch (IOException e) {
+			logger.error("Error ocurs: " + e.getMessage());
+		}
 
 		String stockName = getStockNameFromWeb(doc);
 		stock.setStockName(stockName);
@@ -74,22 +83,27 @@ public class WebParserService {
 	}
 
 	@Transactional
-	public void getStockFinanceEvent(Stock stock) throws IOException {
-		Document doc = getDocumentFromStockWatchWeb(stock.getStockShortName());
+	public void getStockFinanceEvent(Stock stock) {
+		Document doc = null;
+		try {
+			doc = getDocumentFromStockWatchWeb(stock.getStockShortName());
+		} catch (IOException e) {
+			logger.error("Error ocurs: " + e.getMessage());
+		}
 		Elements elements = doc.select("div[class=CASld roundAll]");
-		//if elements.size == 3 means that stock has any finance event otherwise there is no finance event for stock
+		// if elements.size == 3 means that stock has any finance event
+		// otherwise there is no finance event for stock
 		if (elements.size() == 3) {
 			Elements table = doc.select("table[class=cctabdt]");
 			int indexOfCorrectTable = table.size() - 2;
 			Element correctTable = table.get(indexOfCorrectTable);
 			Elements tr = correctTable.select("tr");
-
 			for (int i = 0; i < tr.size(); i++) {
 				stockFinanceEventRepository.save(prepareStockFinanceEvent(stock, tr, i));
 			}
 		}
 	}
-	
+
 	public LocalDate getLastDateWig20FromStooqWebsite() {
 		String line = "";
 		String cvsSplitBy = ",";
@@ -105,9 +119,9 @@ public class WebParserService {
 			String[] stockDetailsFromCsv = line.split(cvsSplitBy);
 			date = parseLocalDateFromString(stockDetailsFromCsv[1]);
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			logger.error("Error ocurs: " + e.getMessage());
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("Error ocurs: " + e.getMessage());
 		}
 		return date;
 	}

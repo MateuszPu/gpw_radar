@@ -117,5 +117,4 @@ angular.module('gpwradarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'oc.la
         tmhDynamicLocaleProvider.localeLocationPattern('bower_components/angular-i18n/angular-locale_{{locale}}.js');
         tmhDynamicLocaleProvider.useCookieStorage();
         tmhDynamicLocaleProvider.storageKey('NG_TRANSLATE_LANG_KEY');
-        
     });

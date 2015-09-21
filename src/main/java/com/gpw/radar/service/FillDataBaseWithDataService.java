@@ -43,14 +43,18 @@ public class FillDataBaseWithDataService {
 	private FillDataStatusRepository fillDataStatusRepository;
 
 	private final String cvsSplitBy = ",";
+	
+	private int step;
 
 	@Transactional
-	public ResponseEntity<Void> fillDataBaseWithStocks() throws IOException {
+	public ResponseEntity<Void> fillDataBaseWithStocks() {
+		step = 0;
 		for (StockTicker element : StockTicker.values()) {
 			Stock stock = new Stock();
 			stock.setTicker(element);
 			stock = webParserService.setNameAndShortName(stock);
 			stockRepository.save(stock);
+			increaseStep();
 		}
 		fillDataStatusRepository.updateType(Type.STOCK.toString());
 		return new ResponseEntity<Void>(HttpStatus.OK);
@@ -58,6 +62,7 @@ public class FillDataBaseWithDataService {
 
 	@Transactional
 	public ResponseEntity<Void> fillDataBaseWithStockDetails() {
+		step = 0;
 		EnumSet<StockTicker> tickers = EnumSet.allOf(StockTicker.class);
 		ExecutorService executor = Executors.newFixedThreadPool(4);
 
@@ -66,6 +71,7 @@ public class FillDataBaseWithDataService {
 				Stock stock = stockRepository.findByTicker(ticker);
 				Set<StockDetails> stockDetails = parseStockDetailsByStockFromTxtFile(stock);
 				stockDetailsRepository.save(stockDetails);
+				increaseStep();
 			});
 		}
 
@@ -79,11 +85,17 @@ public class FillDataBaseWithDataService {
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
+	private synchronized void increaseStep() {
+		step++;
+	}
+
 	@Transactional
-	public ResponseEntity<Void> fillDataBaseWithStockFinanceEvent() throws IOException {
+	public ResponseEntity<Void> fillDataBaseWithStockFinanceEvent() {
+		step = 0;
 		for (StockTicker element : StockTicker.values()) {
 			Stock stock = stockRepository.findByTicker(element);
 			webParserService.getStockFinanceEvent(stock);
+			increaseStep();
 		}
 		fillDataStatusRepository.updateType(Type.STOCK_FINANCE_EVENTS.toString());
 		return new ResponseEntity<Void>(HttpStatus.OK);
@@ -133,5 +145,13 @@ public class FillDataBaseWithDataService {
 			}
 		}
 		return stockDetailList;
+	}
+
+	public int getStep() {
+		return step;
+	}
+
+	public void setStep(int step) {
+		this.step = step;
 	}
 }
