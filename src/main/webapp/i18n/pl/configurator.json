@@ -2,7 +2,7 @@
     "configurator": {
         "title": "Konfigurator",
 	    "parser": {
-	    	"method": "Metoda parsowania <small>detali spółek</small>",
+	    	"title": "Metoda parsowania <small>detali spółek</small>",
 	    	"select": "Wybierz metodę",
 	    	"save": "Wybierz",
 	    	"selectInfo": "Infomarcję na temat wybranej metody:",
@@ -10,6 +10,7 @@
 	    	"stooqMethod": "Dane pobierane ze strony http://stooq.pl/q/l/?s=wig20&f=sd2t2ohlcv&h&e=csv"
 	    },
 	    "fillData" : {
+	    	"title": "Wypełnij bazę danych <small>spółkami, szczegółami spółek i wydarzeniami finansowymi</small>",
 	    	"button": {
 	    		"STOCK": "1. Krok",
 	    		"STOCK_DETAILS" : "2. Krok",

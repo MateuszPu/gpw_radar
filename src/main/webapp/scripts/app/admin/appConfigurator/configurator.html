@@ -5,7 +5,7 @@
 	    <div class="col-lg-6">
 	        <div class="ibox float-e-margins">
 	            <div class="ibox-title">
-	                <h5 translate="configurator.parser.method">parser method</h5>
+	                <h5 translate="configurator.parser.title">parser method</h5>
 	                <div ibox-tools></div>
 	            </div>
 	            <div class="ibox-content">
@@ -31,13 +31,16 @@
 	    <div class="col-lg-6">
 	        <div class="ibox float-e-margins">
 	            <div class="ibox-title">
-	                <h5>Title fill data base</h5>
+	                <h5 translate="configurator.fillData.title">Fill database</h5>
 	                <div ibox-tools></div>
 	            </div>
 				<div class="ibox-content">
 					<div ng-repeat="data in fillDataStatus track by data.type">
 						<button class="btn btn-success btn-sm" ng-disabled="isDisabled('{{data.type}}')" translate="configurator.fillData.button.{{data.type}}" ng-click="fillDatabase(data.type)">Step</button>
-						<span translate="configurator.fillData.info.{{data.type}}">Data type info</span>
+						<span ng-hide="updatingDB && data.type == typeName" translate="configurator.fillData.info.{{data.type}}">Data type info</span>
+						<span ng-show="updatingDB && data.type == typeName">
+							<progressbar animate="true" class="progress-striped" value='step/stockTickersCount*100' type="success">{{step/stockTickersCount*100 | number:0}}% completed</progressbar>
+						</span>
 						<div class="hr-line-dashed"></div>
 					</div>
 				</div>

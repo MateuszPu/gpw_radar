@@ -2,7 +2,7 @@
     "configurator": {
         "title": "Configurator",
 	    "parser": {
-	    	"method": "Parser method <small> for stock details</small>",
+	    	"title": "Parser method <small> for stock details</small>",
 	    	"select": "Select method",
 	    	"save": "Select",
 	    	"selectInfo": "Information regards to selected method:",
@@ -10,6 +10,7 @@
 	    	"stooqMethod": "Data downloaded from: \"http://stooq.pl/q/l/?s=wig20&f=sd2t2ohlcv&h&e=csv\""
 	    },
 	    "fillData" : {
+	    	"title": "Fill database with <small>stocks, stock details and stock finance events</small>",
 	    	"button": {
 	    		"STOCK": "1. Step",
 	    		"STOCK_DETAILS" : "2. Step",

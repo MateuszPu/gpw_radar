@@ -28,7 +28,7 @@ public class ConfiguratorResource {
 
 	@Inject
 	private ConfiguratorService configuratorService;
-	
+
 	@Inject
 	private FillDataBaseWithDataService fillDataBaseWithDataService;
 
@@ -47,20 +47,20 @@ public class ConfiguratorResource {
 	public ResponseEntity<Void> setParserMethod(@RequestParam ParserMethod parserMethod) {
 		return configuratorService.setParserMethod(parserMethod);
 	}
-	
+
 	@RequestMapping(value = "get/fill/data/status", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<FillDataStatus>> getFillDataStatus(){
+	public ResponseEntity<List<FillDataStatus>> getFillDataStatus() {
 		return configuratorService.getFillDataStatus();
 	}
-	
+
 	@RequestMapping(value = "fill/database", method = RequestMethod.GET)
-	public ResponseEntity<Void> fillDatabaseWithData(@RequestParam Type type){
+	public ResponseEntity<Void> fillDatabaseWithData(@RequestParam Type type) {
 		return configuratorService.fillDatabaseWithData(type);
 	}
-	
+
 	@RequestMapping(value = "get/step/of/fill", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Integer getStepOfFill(){
-		return fillDataBaseWithDataService.getStep();
+	public ResponseEntity<Integer> getStepOfFill() {
+		return new ResponseEntity<Integer>(fillDataBaseWithDataService.getStep(), HttpStatus.OK);
 	}
 
 	private class ParserMethodTemp {

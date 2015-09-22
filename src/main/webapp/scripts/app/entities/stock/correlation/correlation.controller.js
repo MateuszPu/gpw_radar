@@ -23,7 +23,6 @@ angular.module('gpwradarApp')
         $scope.pollingData = function(){
             (function tick() {
             	CorrelationStep.getStep().then(function(result) {
-                    console.log(result);
                     $scope.promiseTimeout = $timeout(tick, 1000);
                     $scope.stepOfCorrelation = result;
 

@@ -1,8 +1,33 @@
 angular.module('gpwradarApp')
-	.controller('ConfiguratorController', function ($scope, $filter, AppConfigurator) {
+	.controller('ConfiguratorController', function ($scope, $filter, $timeout, AppConfigurator, StatusConfigurator, Stock) {
 
+		//Method of stock details parser
 		$scope.allMethods = AppConfigurator.getAllMethods();
-    	$scope.fillDataStatus = AppConfigurator.getFillDataStatus();
+
+		AppConfigurator.getCurrentMethod(function(response) {
+    		$scope.selectedMethod = response.parserMethod;
+    	});
+    	
+    	$scope.setMethod = function() {
+    		AppConfigurator.setMethod({parserMethod: $scope.selectedMethod});
+    	};
+    	
+		
+		//Fill database with data
+    	$scope.getStockTickersCount = function() {
+    		Stock.getAllStockTickers(function(response) {
+    			$scope.stockTickersCount = response.length;
+    		});
+    	}
+    	
+    	$scope.getFillDataStatus = function() {
+    		AppConfigurator.getFillDataStatus(function(response){
+    			$scope.fillDataStatus = response;
+    		});
+    	}
+    	$scope.getStockTickersCount();
+    	$scope.getFillDataStatus();
+    	$scope.step = 0;
     	
     	$scope.isDisabled = function(name) {
     		if(name === 'STOCK_DETAILS') {
@@ -18,18 +43,28 @@ angular.module('gpwradarApp')
     	};
     	
     	$scope.fillDatabase = function(name) {
-    		AppConfigurator.fillDatabaseWithData({type: name}, function(result) {
-    			console.log(result);
+    		$scope.getFillStep();
+    		$scope.typeName = name;
+    		AppConfigurator.fillDatabaseWithData({type: name}, function(response) {
+    			$scope.updatingDB = false;
+    			$scope.getFillDataStatus();
     		});
     	}
 	    
-		AppConfigurator.getCurrentMethod(function(response) {
-    		$scope.selectedMethod = response.parserMethod;
-    	});
-    	
-    	$scope.setMethod = function() {
-    		AppConfigurator.setMethod({parserMethod: $scope.selectedMethod});
-    	};
+    	$scope.getFillStep = function() {
+    		$scope.updatingDB = true;
+    	    (function tick() {
+    	    	StatusConfigurator.getStep().then(function(response){
+	    			  $scope.timeInMiliSeconds = 1000;
+		              $scope.promiseTimeout = $timeout(tick, $scope.timeInMiliSeconds);
+		              $scope.step = response;
+		  
+		              if(!$scope.updatingDB) {
+		                  $timeout.cancel($scope.promiseTimeout);
+		              }
+    	    	});
+    	    })();
+    	}
 	});
 
 angular.module('gpwradarApp').filter('getByType', function() {
