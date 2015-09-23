@@ -34,10 +34,7 @@ angular.module('gpwradarApp')
     			return (!$scope.isDisabled('STOCK') || $filter('getByType')($scope.fillDataStatus, name));
     		}
     		if(name === 'STOCK_FINANCE_EVENTS') {
-//    			console.log(!$scope.isDisabled('STOCK_DETAILS'));
-//    			console.log($filter('getByType')($scope.fillDataStatus, name));
-//    			return ($scope.isDisabled('STOCK_DETAILS') || $filter('getByType')($scope.fillDataStatus, name));
-    			return !$scope.isDisabled('STOCK_DETAILS') && !$filter('getByType')($scope.fillDataStatus, name);
+    			return !($scope.isDisabled('STOCK') && $filter('getByType')($scope.fillDataStatus, 'STOCK_DETAILS') && !$filter('getByType')($scope.fillDataStatus, name));
     		}
     		return $filter('getByType')($scope.fillDataStatus, name);
     	};
