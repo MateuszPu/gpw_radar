@@ -11,15 +11,15 @@ import org.springframework.stereotype.Service;
 
 import com.gpw.radar.domain.database.FillDataStatus;
 import com.gpw.radar.domain.database.Type;
+import com.gpw.radar.repository.DailyStockDetailsParserRepository;
 import com.gpw.radar.repository.FillDataStatusRepository;
-import com.gpw.radar.repository.StockDetailsRepository;
 import com.gpw.radar.service.auto.update.stockDetails.ParserMethod;
 
 @Service
 public class ConfiguratorService {
 
 	@Inject
-	private StockDetailsRepository configuratorRepository;
+	private DailyStockDetailsParserRepository dailyStockDetailsParserRepository;
 
 	@Inject
 	private FillDataStatusRepository fillDataStatusRepository;
@@ -28,17 +28,17 @@ public class ConfiguratorService {
 	private FillDataBaseWithDataService fillDataBaseWithDataService;
 
 	public void changeStockDetailsParserMethod(ParserMethod stockDetailsParserMethod) {
-		configuratorRepository.setStockDetailsParserMethod(stockDetailsParserMethod.toString());
+		dailyStockDetailsParserRepository.setStockDetailsParserMethod(stockDetailsParserMethod.toString());
 	}
 
 	public ParserMethod getCurrentStockDetailsParserMethod() {
-		ParserMethod currentMethod = configuratorRepository.findMethod();
+		ParserMethod currentMethod = dailyStockDetailsParserRepository.findMethod();
 		return currentMethod;
 	}
 
 	@Transactional
 	public ResponseEntity<Void> setParserMethod(ParserMethod parserMethod) {
-		configuratorRepository.setStockDetailsParserMethod(parserMethod.toString());
+		dailyStockDetailsParserRepository.setStockDetailsParserMethod(parserMethod.toString());
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
