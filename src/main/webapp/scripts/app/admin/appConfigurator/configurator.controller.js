@@ -2,8 +2,6 @@ angular.module('gpwradarApp')
 	.controller('ConfiguratorController', function ($scope, $filter, $timeout, AppConfigurator, StatusConfigurator, Stock) {
 
 		
-		$scope.ws = new WebSocket("ws://localhost:8080/api/configurator/get/step/of/fill");
-		
 		//Method of stock details parser
 		$scope.allMethods = AppConfigurator.getAllMethods();
 

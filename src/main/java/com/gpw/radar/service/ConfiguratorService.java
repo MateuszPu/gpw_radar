@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.gpw.radar.domain.database.DailyStockDetailsParser;
 import com.gpw.radar.domain.database.FillDataStatus;
 import com.gpw.radar.domain.database.Type;
 import com.gpw.radar.repository.DailyStockDetailsParserRepository;
@@ -31,8 +32,8 @@ public class ConfiguratorService {
 		dailyStockDetailsParserRepository.setStockDetailsParserMethod(stockDetailsParserMethod.toString());
 	}
 
-	public ParserMethod getCurrentStockDetailsParserMethod() {
-		ParserMethod currentMethod = dailyStockDetailsParserRepository.findMethod();
+	public DailyStockDetailsParser getCurrentStockDetailsParserMethod() {
+		DailyStockDetailsParser currentMethod = dailyStockDetailsParserRepository.findMethod();
 		return currentMethod;
 	}
 

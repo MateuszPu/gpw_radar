@@ -12,7 +12,7 @@ import com.gpw.radar.service.auto.update.stockDetails.ParserMethod;
 public class DailyStockDetailsParser {
 
 	@Id
-	@Column(name = "data_type")
+	@Column(name = "method")
 	@Enumerated(EnumType.STRING)
 	private ParserMethod parserMethod;
 

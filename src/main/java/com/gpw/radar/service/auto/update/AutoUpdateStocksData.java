@@ -63,7 +63,7 @@ public class AutoUpdateStocksData {
 		LocalDate lastQuotedDateFromDataBase = stockDetailsService.findLastTopDate().getBody();
 		LocalDate lastQuotedDateFromStooqWeb = webParserService.getLastDateWig20FromStooqWebsite();
 
-		switch (configuratorRepository.findMethod()) {
+		switch (configuratorRepository.findMethod().getParserMethod()) {
 		case GPW:
 			stockDetailsParser = beanFactory.getBean("gpwParser", StockDetailsParser.class);
 			break;

@@ -11,7 +11,7 @@ import com.gpw.radar.service.auto.update.stockDetails.ParserMethod;
 public interface DailyStockDetailsParserRepository extends JpaRepository<DailyStockDetailsParser, ParserMethod> {
 
 	@Query(value="select * from stock_details_parser_method limit 1", nativeQuery = true)
-	ParserMethod findMethod();
+	DailyStockDetailsParser findMethod();
 	
 	@Modifying
 	@Query(value="update stock_details_parser_method set method = :method", nativeQuery = true)

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gpw.radar.domain.database.DailyStockDetailsParser;
 import com.gpw.radar.domain.database.FillDataStatus;
 import com.gpw.radar.domain.database.Type;
 import com.gpw.radar.security.AuthoritiesConstants;
@@ -38,9 +39,9 @@ public class ConfiguratorResource {
 	}
 
 	@RequestMapping(value = "current/stock/details/parser/method", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ParserMethodTemp> getCurrentMethod() {
-		ParserMethod currentMethod = configuratorService.getCurrentStockDetailsParserMethod();
-		return new ResponseEntity<ParserMethodTemp>(new ParserMethodTemp(currentMethod), HttpStatus.OK);
+	public ResponseEntity<DailyStockDetailsParser> getCurrentMethod() {
+		DailyStockDetailsParser currentMethod = configuratorService.getCurrentStockDetailsParserMethod();
+		return new ResponseEntity<DailyStockDetailsParser>(currentMethod, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "set/stock/details/parser/method", method = RequestMethod.GET)
@@ -61,21 +62,5 @@ public class ConfiguratorResource {
 	@RequestMapping(value = "get/step/of/fill", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Integer> getStepOfFill() {
 		return new ResponseEntity<Integer>(fillDataBaseWithDataService.getStep(), HttpStatus.OK);
-	}
-
-	private class ParserMethodTemp {
-		private ParserMethod parserMethod;
-
-		public ParserMethodTemp(ParserMethod parserMethod) {
-			this.parserMethod = parserMethod;
-		}
-
-		public ParserMethod getParserMethod() {
-			return parserMethod;
-		}
-
-		public void setParserMethod(ParserMethod parserMethod) {
-			this.parserMethod = parserMethod;
-		}
 	}
 }
