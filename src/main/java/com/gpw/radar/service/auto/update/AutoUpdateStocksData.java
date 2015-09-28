@@ -9,17 +9,19 @@ import javax.transaction.Transactional;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gpw.radar.repository.DailyStockDetailsParserRepository;
 import com.gpw.radar.repository.StockDetailsRepository;
+import com.gpw.radar.repository.StockIndicatorsRepository;
 import com.gpw.radar.security.AuthoritiesConstants;
 import com.gpw.radar.service.StockDetailsService;
 import com.gpw.radar.service.WebParserService;
-import com.gpw.radar.service.auto.update.status.ApplicationStatus;
 import com.gpw.radar.service.auto.update.stockDetails.StockDetailsParser;
+import com.gpw.radar.service.auto.update.stockIndicators.StockIndicatorsCalculator;
 
 @RestController
 @RequestMapping("/api")
@@ -32,36 +34,43 @@ public class AutoUpdateStocksData {
 	@Inject
 	private WebParserService webParserService;
 
-	@Inject
-	private ApplicationStatus applicationStatus;
-	
+	// @Inject
+	// private ApplicationStatus applicationStatus;
+
 	@Inject
 	private DailyStockDetailsParserRepository configuratorRepository;
-	
+
 	@Inject
 	private StockDetailsRepository stockDetailsRepository;
+
+	@Inject
+	private StockIndicatorsRepository stockIndicatorsRepository;
 
 	@Inject
 	private BeanFactory beanFactory;
 
 	private StockDetailsParser stockDetailsParser;
+	private StockIndicatorsCalculator stockIndicatorsCalculator;
 
 	// @RequestMapping(value = "/status/step", method = RequestMethod.GET,
 	// produces = MediaType.APPLICATION_JSON_VALUE)
 	// public int getStepStatus() {
 	// return applicationStatus.getStep();
 	// }
-	
-	@RequestMapping(value = "/is/updating", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public boolean isApplicationUpdating() {
-		return applicationStatus.isUpdating();
-	}
+	//
+	// @RequestMapping(value = "/is/updating", method = RequestMethod.GET,
+	// produces = MediaType.APPLICATION_JSON_VALUE)
+	// public boolean isApplicationUpdating() {
+	// return applicationStatus.isUpdating();
+	// }
 
 	@RequestMapping(value = "/update/db", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
+	@Scheduled(cron = "* 17.30 * * MON-FRI")
 	public void updateStockDetails() throws IOException, InterruptedException {
 		LocalDate lastQuotedDateFromDataBase = stockDetailsService.findLastTopDate().getBody();
 		LocalDate lastQuotedDateFromStooqWeb = webParserService.getLastDateWig20FromStooqWebsite();
+		stockIndicatorsCalculator = beanFactory.getBean("standardStockIndicatorsCalculator", StockIndicatorsCalculator.class);
 
 		switch (configuratorRepository.findMethod().getParserMethod()) {
 		case GPW:
@@ -72,10 +81,10 @@ public class AutoUpdateStocksData {
 			stockDetailsParser.setQutesDate(lastQuotedDateFromStooqWeb);
 			break;
 		}
-		
+
 		if (!lastQuotedDateFromDataBase.isEqual(lastQuotedDateFromStooqWeb)) {
-			 stockDetailsRepository.save(stockDetailsParser.getCurrentStockDetails());
-			// updateDailyStockIndicators();
+			stockDetailsRepository.save(stockDetailsParser.getCurrentStockDetails());
+			stockIndicatorsRepository.save(stockIndicatorsCalculator.calculateCurrentStockIndicators());
 		}
 	}
 }

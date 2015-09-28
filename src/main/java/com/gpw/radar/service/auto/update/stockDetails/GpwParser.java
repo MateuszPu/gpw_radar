@@ -71,23 +71,27 @@ public class GpwParser implements StockDetailsParser {
 
 			std.setDate(date);
 			try {
-				std.setOpenPrice(new BigDecimal(select.get(indexOfOpenPrice).text().replace(",", ".").replace("\u00a0", "")));
-				std.setMaxPrice(new BigDecimal(select.get(indexOfMaxPrice).text().replace(",", ".").replace("\u00a0", "")));
-				std.setMinPrice(new BigDecimal(select.get(indexOfMinPrice).text().replace(",", ".").replace("\u00a0", "")));
-				std.setClosePrice(new BigDecimal(select.get(indexOfClosePrice).text().replace(",", ".").replace("\u00a0", "")));
-				std.setVolume(Long.valueOf(select.get(indexOfVolume).text().replace("\u00a0", "")));
+				std.setOpenPrice(new BigDecimal(getElement(select, indexOfOpenPrice)));
+				std.setMaxPrice(new BigDecimal(getElement(select, indexOfMaxPrice)));
+				std.setMinPrice(new BigDecimal(getElement(select, indexOfMinPrice)));
+				std.setClosePrice(new BigDecimal(getElement(select, indexOfClosePrice)));
+				std.setVolume(Long.valueOf(getElement(select, indexOfVolume)));
 			} catch (NumberFormatException ex) {
 				// if string is not a valid presentation of number that means
 				// the stockdetails was not qouted
-				std.setOpenPrice(new BigDecimal(select.get(indexOfLastClosePrice).text().replace(",", ".").replace("\u00a0", "")));
-				std.setMaxPrice(new BigDecimal(select.get(indexOfLastClosePrice).text().replace(",", ".").replace("\u00a0", "")));
-				std.setMinPrice(new BigDecimal(select.get(indexOfLastClosePrice).text().replace(",", ".").replace("\u00a0", "")));
-				std.setClosePrice(new BigDecimal(select.get(indexOfLastClosePrice).text().replace(",", ".").replace("\u00a0", "")));
+				std.setOpenPrice(new BigDecimal(getElement(select, indexOfLastClosePrice)));
+				std.setMaxPrice(new BigDecimal(getElement(select, indexOfLastClosePrice)));
+				std.setMinPrice(new BigDecimal(getElement(select, indexOfLastClosePrice)));
+				std.setClosePrice(new BigDecimal(getElement(select, indexOfLastClosePrice)));
 				std.setVolume(0l);
 			}
 			stockDetails.add(std);
 		}
 		return stockDetails;
+	}
+
+	private String getElement(Elements select, int indexOfElement) {
+		return select.get(indexOfElement).text().replace(",", ".").replace("\u00a0", "");
 	}
 
 	private Elements getTableRowsContentFromWeb() {
