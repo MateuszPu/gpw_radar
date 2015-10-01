@@ -9,7 +9,6 @@ import javax.transaction.Transactional;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.http.MediaType;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -66,7 +65,7 @@ public class AutoUpdateStocksData {
 
 	@RequestMapping(value = "/update/db", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
-	@Scheduled(cron = "* 17.30 * * MON-FRI")
+//	@Scheduled(cron = "0 30 17 ? * MON-FRI")
 	public void updateStockDetails() throws IOException, InterruptedException {
 		LocalDate lastQuotedDateFromDataBase = stockDetailsService.findLastTopDate().getBody();
 		LocalDate lastQuotedDateFromStooqWeb = webParserService.getLastDateWig20FromStooqWebsite();
