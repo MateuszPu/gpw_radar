@@ -4467,13 +4467,9 @@ dd.project-people {
     border-radius: 4px;
     margin-top: 1px;
 }
-.chat-discussion .chat-message:nth-child(2n+1) .message-avatar {
+.chat-discussion .chat-message .message-avatar {
     float: left;
     margin-right: 10px;
-}
-.chat-discussion .chat-message:nth-child(2n) .message-avatar {
-    float: right;
-    margin-left: 10px;
 }
 .message {
     background-color: #fff;
@@ -4484,19 +4480,12 @@ dd.project-people {
     position: relative;
     border-radius: 4px;
 }
-.chat-discussion .chat-message:nth-child(2n+1) .message-date {
+.chat-discussion .chat-message .message-date {
     float: right;
 }
-.chat-discussion .chat-message:nth-child(2n) .message-date {
-    float: left;
-}
-.chat-discussion .chat-message:nth-child(2n+1) .message {
+.chat-discussion .chat-message .message {
     text-align: left;
     margin-left: 55px;
-}
-.chat-discussion .chat-message:nth-child(2n) .message {
-    text-align: right;
-    margin-right: 55px;
 }
 .message-date {
     font-size: 10px;

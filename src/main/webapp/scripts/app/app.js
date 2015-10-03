@@ -2,8 +2,7 @@
 
 angular.module('gpwradarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'oc.lazyLoad', 'ngResource', 'ui.router', 'ngCookies', 
          'pascalprecht.translate', 'ngCacheBuster', 'infinite-scroll', 'smart-table', 'ui.bootstrap', 'ui.select', 'ui.calendar',
-         'NgSwitchery'])
-
+         'NgSwitchery', 'AngularStompDK', 'luegg.directives'])
     .run(function ($rootScope, $location, $window, $http, $state, $translate, Language, Auth, Principal, ENV, VERSION) {
         $rootScope.ENV = ENV;
         $rootScope.VERSION = VERSION;

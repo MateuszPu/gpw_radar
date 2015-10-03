@@ -1,61 +1,57 @@
-    <script src="http://cdn.sockjs.org/sockjs-0.3.4.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
-    <script type="text/javascript">
-        var stompClient = null;
-
-        function setConnected(connected) {
-            document.getElementById('connect').disabled = connected;
-            document.getElementById('disconnect').disabled = !connected;
-            document.getElementById('conversationDiv').style.visibility = connected ? 'visible' : 'hidden';
-            document.getElementById('response').innerHTML = '';
-        }
-
-        function connect() {
-            var socket = new SockJS('/webchat');
-            stompClient = Stomp.over(socket);
-            stompClient.connect({}, function(frame) {
-                setConnected(true);
-                console.log('Connected: ' + frame);
-                 stompClient.subscribe('/chat/send/message', function(greeting){
-                	 console.log(greeting);
-                    showGreeting(greeting.body);
-                });
-            });
-        }
-
-        function disconnect() {
-            if (stompClient != null) {
-                stompClient.disconnect();
-            }
-            setConnected(false);
-            console.log("Disconnected");
-        }
-
-        function sendName() {
-            var name = document.getElementById('name').value;
-            stompClient.send("/app/webchat", {}, name);
-        }
-
-        function showGreeting(message) {
-        	console.log(message);
-            var response = document.getElementById('response');
-            var p = document.createElement('p');
-            p.style.wordWrap = 'break-word';
-            p.appendChild(document.createTextNode(message));
-            response.appendChild(p);
-        }
-    </script>
-
 <div>
-<div>
-    <div>
-        <button id="connect" onclick="connect();">Connect</button>
-        <button id="disconnect" disabled="disabled" onclick="disconnect();">Disconnect</button>
-    </div>
-    <div id="conversationDiv">
-        <label>What is your name?</label><input type="text" id="name" />
-        <button id="sendName" onclick="sendName();">Send</button>
-        <p id="response"></p>
-    </div>
+	<div id="conversationDiv">
+	    <label>What is your name?</label><input type="text" id="name" ng-model="msg"/>
+	    <button id="sendName" ng-click="sendDataToWS(msg);">Send</button>
+	</div>
 </div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox chat-view">
+                <div class="ibox-title">
+                    Chat room panel
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-md-9 ">
+                            <div class="chat-discussion" scroll-glue>
+                                <div class="chat-message" ng-repeat="message in messages track by $index">
+                                    <img class="message-avatar" src="assets/images/default-user.png" alt="" >
+                                    <div class="message">
+                                        <a class="message-author" href="#"> Michael Smith </a>
+                                        <span class="message-date"> Mon Jan 26 2015 - 18:39:23 </span>
+                                            <span class="message-content">
+												{{message}}
+                                            </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="chat-users">
+                                <div class="users-list">
+                                    <div class="chat-user" ng-repeat="user in users track by $index">
+                                        <img class="chat-avatar" src="assets/images/default-user.png" alt="" >
+                                        <div class="chat-user-name">
+                                            <a href="#">{{user}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="chat-message-form">
+                                <div class="form-group">
+                                    <textarea class="form-control message-input" name="message" placeholder="Enter message text"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

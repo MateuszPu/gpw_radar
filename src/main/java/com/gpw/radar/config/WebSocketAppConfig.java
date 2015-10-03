@@ -12,12 +12,12 @@ public class WebSocketAppConfig extends AbstractWebSocketMessageBrokerConfigurer
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry config) {
-		config.enableSimpleBroker("/chat");
+		config.enableSimpleBroker("/webchat");
 		config.setApplicationDestinationPrefixes("/app");
 	}
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/webchat").withSockJS();
+		registry.addEndpoint("/socket").withSockJS();
 	}
 }

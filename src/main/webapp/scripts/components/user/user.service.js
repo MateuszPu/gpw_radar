@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('gpwradarApp')
     .factory('User', function ($resource) {
         return $resource('api/users/:login', {}, {

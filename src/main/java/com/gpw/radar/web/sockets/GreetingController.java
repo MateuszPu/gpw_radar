@@ -1,33 +1,50 @@
 package com.gpw.radar.web.sockets;
 
-import java.util.Date;
+import java.security.Principal;
+import java.util.HashSet;
+import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
+
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 
 @Controller
 public class GreetingController {
 
-	@Autowired 
-	private SimpMessagingTemplate template; 
+	@Inject
+	private SimpMessagingTemplate template;
+	
+	private Set<String> users = new HashSet<String>();
 
-    @MessageMapping("/webchat")
-    @SendTo("/chat/send/message")
-    public String greeting(String message) throws Exception {
-        Thread.sleep(3000); // simulated delay
-        String a = message;
-        System.out.println(a);
-        return "Hello, " + message + "!";
-    }
-    
-//    @Scheduled(cron="*/5 * * * * ?")
-//    public void test() throws Exception {
-//    	Date ad = new Date();
-//    	template.convertAndSend("/topic/dupa", "Data: " + ad.toString());
-//    }
+	@MessageMapping("/webchat/send/message")
+	@SendTo("/webchat/recive")
+	public String sendChatMessage(String message) {
+		return message;
+	}
+
+	@MessageMapping("/webchat/user/login")
+	@SendTo("/webchat/user")
+	public void userLogin(Principal principal) throws InterruptedException {
+		Thread.sleep(200);
+		String login = principal.getName();
+		users.add(login);
+		template.convertAndSend("/webchat/user", users);
+	}
+	
+	@MessageMapping("/webchat/user/logout")
+	public void userLogout(Principal principal) {
+		String login = principal.getName();
+		users.remove(login);
+		template.convertAndSend("/webchat/user", users);
+	}
+
+	// @Scheduled(cron="*/5 * * * * ?")
+	// public void test() throws Exception {
+	// Date ad = new Date();
+	// template.convertAndSend("/webchat/user", "Data: " + ad.toString());
+	// }
 
 }
