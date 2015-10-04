@@ -1,13 +1,15 @@
 package com.gpw.radar.web.rest;
 
 import com.gpw.radar.Application;
-import com.gpw.radar.domain.Stock;
-import com.gpw.radar.repository.StockRepository;
+import com.gpw.radar.repository.stock.StockRepository;
+import com.gpw.radar.web.rest.stock.StockResource;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import static org.hamcrest.Matchers.hasItem;
+
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,6 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.gpw.radar.domain.enumeration.StockTicker;
+import com.gpw.radar.domain.stock.Stock;
 
 /**
  * Test class for the StockResource REST controller.

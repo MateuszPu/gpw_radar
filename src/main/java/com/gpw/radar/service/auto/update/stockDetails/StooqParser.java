@@ -14,12 +14,12 @@ import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.gpw.radar.domain.Stock;
-import com.gpw.radar.domain.StockDetails;
 import com.gpw.radar.domain.enumeration.StockTicker;
-import com.gpw.radar.repository.StockDetailsRepository;
-import com.gpw.radar.repository.StockRepository;
-import com.gpw.radar.service.WebParserService;
+import com.gpw.radar.domain.stock.Stock;
+import com.gpw.radar.domain.stock.StockDetails;
+import com.gpw.radar.repository.stock.StockDetailsRepository;
+import com.gpw.radar.repository.stock.StockRepository;
+import com.gpw.radar.service.database.WebParserService;
 
 // getting data from http://stooq.pl/
 @Component("stooqParser")

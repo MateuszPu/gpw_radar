@@ -19,10 +19,10 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.gpw.radar.domain.Stock;
-import com.gpw.radar.domain.StockDetails;
 import com.gpw.radar.domain.enumeration.StockTicker;
-import com.gpw.radar.repository.StockRepository;
+import com.gpw.radar.domain.stock.Stock;
+import com.gpw.radar.domain.stock.StockDetails;
+import com.gpw.radar.repository.stock.StockRepository;
 
 //getting data from http://www.gpw.pl/akcje_i_pda_notowania_ciagle_pelna_wersja#all
 @Component("gpwParser")

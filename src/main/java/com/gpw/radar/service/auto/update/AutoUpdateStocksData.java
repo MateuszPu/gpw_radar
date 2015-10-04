@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gpw.radar.repository.DailyStockDetailsParserRepository;
-import com.gpw.radar.repository.StockDetailsRepository;
-import com.gpw.radar.repository.StockIndicatorsRepository;
+import com.gpw.radar.repository.auto.update.DailyStockDetailsParserRepository;
+import com.gpw.radar.repository.stock.StockDetailsRepository;
+import com.gpw.radar.repository.stock.StockIndicatorsRepository;
 import com.gpw.radar.security.AuthoritiesConstants;
-import com.gpw.radar.service.StockDetailsService;
-import com.gpw.radar.service.WebParserService;
 import com.gpw.radar.service.auto.update.stockDetails.StockDetailsParser;
 import com.gpw.radar.service.auto.update.stockIndicators.StockIndicatorsCalculator;
+import com.gpw.radar.service.database.WebParserService;
+import com.gpw.radar.service.stock.StockDetailsService;
 
 @RestController
 @RequestMapping("/api")

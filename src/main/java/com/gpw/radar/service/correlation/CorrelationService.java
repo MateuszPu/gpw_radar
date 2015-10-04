@@ -20,10 +20,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.gpw.radar.domain.StockDetails;
-import com.gpw.radar.domain.StockStatistic;
 import com.gpw.radar.domain.enumeration.StockTicker;
-import com.gpw.radar.repository.StockDetailsRepository;
+import com.gpw.radar.domain.stock.StockDetails;
+import com.gpw.radar.domain.stock.StockStatistic;
+import com.gpw.radar.repository.stock.StockDetailsRepository;
 
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS, value = "session")

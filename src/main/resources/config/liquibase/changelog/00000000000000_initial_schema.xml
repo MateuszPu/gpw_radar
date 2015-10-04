@@ -187,7 +187,7 @@
 			<column name="data_type" type="varchar(255)">
 				<constraints primaryKey="true" nullable="false"/>
 			</column>
-			<column name="filled" type="boolean" defaultValue="false">
+			<column name="filled" type="boolean" defaultValueBoolean="false">
                 <constraints nullable="false" />
             </column>
 		</createTable>
@@ -197,5 +197,14 @@
 		 insert into FILLED_DATA_STATUS values('STOCK_FINANCE_EVENTS');
 		</sql>
 	</changeSet>
-    
+	<changeSet author="ppp" id="00000000000004">
+      <addPrimaryKey columnNames="method"
+                     constraintName="STOCK_DETAILS_PARSER_METHODPK"
+                     tableName="STOCK_DETAILS_PARSER_METHOD"/>
+   	</changeSet>
+	<changeSet author="ppp" id="00000000000005">
+	   <addNotNullConstraint columnDataType="varchar(255)"
+	                         columnName="method"
+	                         tableName="STOCK_DETAILS_PARSER_METHOD"/>
+	</changeSet>
 </databaseChangeLog>

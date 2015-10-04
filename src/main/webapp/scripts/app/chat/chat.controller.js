@@ -2,13 +2,11 @@
 
 angular.module('gpwradarApp')
     .config(function(ngstompProvider){
-            ngstompProvider
-                .url('/socket')
-                .class(SockJS);
+            ngstompProvider.url('/socket').class(SockJS);
 	})
-    .controller('ChatController', function ($scope, $window, ngstomp) {
+    .controller('ChatController', function ($scope, $window, ngstomp, ChatMessage) {
     	
-        $scope.messages = [];
+        $scope.messages = ChatMessage.getMessages({page: 0}); 
         
         ngstomp.send('/app/webchat/user/login');
         ngstomp.subscribe('/webchat/user',  newUserConnected);
@@ -22,7 +20,7 @@ angular.module('gpwradarApp')
 	    
 	    ngstomp.subscribe('/webchat/recive',  messageFromServer);
         function messageFromServer(message) {
-        	$scope.messages.push(message.body);
+        	$scope.messages.push(JSON.parse(message.body));
         	if($scope.messages.length > 10) {
         		$scope.messages.splice(0, 1);
         	}

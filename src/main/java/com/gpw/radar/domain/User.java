@@ -26,6 +26,7 @@ import org.hibernate.validator.constraints.Email;
 import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gpw.radar.domain.stock.Stock;
 
 /**
  * A user.

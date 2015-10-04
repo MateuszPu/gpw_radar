@@ -19,13 +19,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gpw.radar.domain.Authority;
-import com.gpw.radar.domain.Stock;
-import com.gpw.radar.domain.StockFinanceEvent;
 import com.gpw.radar.domain.User;
+import com.gpw.radar.domain.stock.Stock;
+import com.gpw.radar.domain.stock.StockFinanceEvent;
 import com.gpw.radar.repository.AuthorityRepository;
 import com.gpw.radar.repository.PersistentTokenRepository;
-import com.gpw.radar.repository.StockFinanceEventRepository;
 import com.gpw.radar.repository.UserRepository;
+import com.gpw.radar.repository.stock.StockFinanceEventRepository;
 import com.gpw.radar.security.SecurityUtils;
 import com.gpw.radar.service.util.RandomUtil;
 

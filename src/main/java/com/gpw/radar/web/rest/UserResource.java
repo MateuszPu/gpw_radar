@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
-import com.gpw.radar.domain.Stock;
-import com.gpw.radar.domain.StockFinanceEvent;
 import com.gpw.radar.domain.User;
+import com.gpw.radar.domain.stock.Stock;
+import com.gpw.radar.domain.stock.StockFinanceEvent;
 import com.gpw.radar.repository.UserRepository;
 import com.gpw.radar.security.AuthoritiesConstants;
 import com.gpw.radar.service.UserService;
