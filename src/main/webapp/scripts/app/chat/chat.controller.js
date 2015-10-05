@@ -4,26 +4,44 @@ angular.module('gpwradarApp')
     .config(function(ngstompProvider){
             ngstompProvider.url('/socket').class(SockJS);
 	})
-    .controller('ChatController', function ($scope, $window, ngstomp, ChatMessage) {
+    .controller('ChatController', function ($scope, $window, $http, ngstomp, ChatMessage) {
     	
         $scope.messages = ChatMessage.getMessages({page: 0}); 
+        
+        var counter = 1;
+        $scope.loadOlder = function() {
+        	var promise = $http({
+        	    url: 'api/chat/older/messages', 
+        	    method: "GET",
+        	    params: {page: counter}
+        	 });
+        	promise.then(
+			  function(response) {
+				  $scope.olderMessages = response.data;
+				  for (var i = 0; i < $scope.olderMessages.length ; i++) {
+		    			$scope.messages.unshift($scope.olderMessages[i]);
+		    		}
+			  });
+            counter++;
+        };
         
         ngstomp.send('/app/webchat/user/login');
         ngstomp.subscribe('/webchat/user',  newUserConnected);
         function newUserConnected(user) {
         	$scope.users = JSON.parse(user.body);
         };
-	    
-	    $scope.sendDataToWS = function(message) {
-	        ngstomp.send('/app/webchat/send/message', message);
+        
+	    $scope.sendMessage = function() {
+	        ngstomp.send('/app/webchat/send/message', $scope.message);
+	        if($scope.messages.length > 15){
+	        	$scope.messages.splice(0, $scope.messages.length-15);
+	        }
+	        $scope.message = "";
 	    };
 	    
 	    ngstomp.subscribe('/webchat/recive',  messageFromServer);
         function messageFromServer(message) {
         	$scope.messages.push(JSON.parse(message.body));
-        	if($scope.messages.length > 10) {
-        		$scope.messages.splice(0, 1);
-        	}
         };
         
         $window.onbeforeunload = function (evt) {
@@ -41,6 +59,5 @@ angular.module('gpwradarApp')
 	    }
     	
     	function unsubscribe() {
-    		console.log('test');
  	    }
     });

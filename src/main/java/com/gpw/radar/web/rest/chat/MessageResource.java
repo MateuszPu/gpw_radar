@@ -21,14 +21,19 @@ import com.gpw.radar.service.chat.MessageService;
  */
 @RestController
 @RequestMapping("/api")
+@RolesAllowed(AuthoritiesConstants.USER)
 public class MessageResource {
 
 	@Inject
 	private MessageService messageService;
 	
 	@RequestMapping(value = "/chat/last/10/messages", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@RolesAllowed(AuthoritiesConstants.USER)
 	public ResponseEntity<List<Message>> getLastMessages(@RequestParam int page) {
 		return messageService.getLastMessages(page);
+	}
+	
+	@RequestMapping(value = "/chat/older/messages", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Message>> getOlderMessages(@RequestParam int page) {
+		return messageService.getOlderMessages(page);
 	}
 }

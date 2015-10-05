@@ -7,7 +7,7 @@ angular.module('gpwradarApp')
                 parent: 'site',
                 url: '/chat',
                 data: {
-                    roles: []
+                	roles: ['ROLE_USER'],
                 },
                 views: {
                     'content@': {
