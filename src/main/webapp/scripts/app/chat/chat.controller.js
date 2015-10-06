@@ -1,5 +1,3 @@
-'use strict';
-
 angular.module('gpwradarApp')
     .config(function(ngstompProvider){
             ngstompProvider.url('/socket').class(SockJS);
@@ -60,4 +58,13 @@ angular.module('gpwradarApp')
     	
     	function unsubscribe() {
  	    }
+    	
+    	$scope.$watch('message', function (newValue, oldValue) {
+			if (newValue) {
+				if (newValue.length > 90) {
+				  $scope.message = oldValue;
+				}
+				$scope.commentLength = 90 - newValue.length;
+			}
+		});
     });

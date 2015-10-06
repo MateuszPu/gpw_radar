@@ -212,6 +212,13 @@ h5 {
     right: 6px;
     top: 12px;
 }
+.count-info-msg .label {
+    line-height: 12px;
+    padding: 2px 5px;
+    position: absolute;
+    left: 19px;
+    top: 12px;
+}
 .arrow {
     float: right;
 }

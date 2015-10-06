@@ -49,6 +49,7 @@ public class ChatController {
 		Thread.sleep(200);
 		String login = principal.getName();
 		users.add(login);
+		usersCount();
 		template.convertAndSend("/webchat/user", users);
 	}
 	
@@ -56,7 +57,17 @@ public class ChatController {
 	public void userLogout(Principal principal) {
 		String login = principal.getName();
 		users.remove(login);
+		usersCount();
 		template.convertAndSend("/webchat/user", users);
+	}
+	
+	@MessageMapping("/webchat/user/app/on")
+	public void applicationOn() {
+		usersCount();
+	}
+	
+	public void usersCount() {
+		template.convertAndSend("/webchat/count", users.size());
 	}
 
 	// @Scheduled(cron="*/5 * * * * ?")

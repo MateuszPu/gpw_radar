@@ -19,6 +19,7 @@
         },
         "menu": {
             "home": "Strona domowa",
+            "chat": "Chat",
             "entities": {
                 "main": "Entities",
                 "stock": "Spółki",

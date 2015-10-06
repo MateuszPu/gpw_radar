@@ -17,7 +17,7 @@ angular.module('gpwradarApp')
                 },
                 resolve: {
                     mainTranslatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate,$translatePartialLoader) {
-                        $translatePartialLoader.addPart('main');
+                        $translatePartialLoader.addPart('chat');
                         return $translate.refresh();
                     }]
                 }

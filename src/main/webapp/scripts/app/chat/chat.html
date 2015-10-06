@@ -1,10 +1,10 @@
+<breadcrumbs translate-path="chat.title"></breadcrumbs>
+
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox chat-view">
-                <div class="ibox-title">
-                    Chat room panel
-                </div>
+                <div class="ibox-title"></div>
                 <div class="ibox-content">
                     <div class="row">
                         <div class="col-md-9 ">
@@ -39,7 +39,7 @@
                             <div class="chat-message-form">
                                 <div class="input-group">
 								    <textarea ng-model="message" ng-enter="sendMessage()" class="form-control custom-control" rows="3" style="resize:none"></textarea>     
-								    <span class="input-group-addon btn btn-primary" ng-click="sendMessage()">Send</span>
+								    <span class="input-group-addon btn btn-primary" ng-click="sendMessage()" translate="chat.send">Send</span>
 								</div>
                             </div>
                         </div>

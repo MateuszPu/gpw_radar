@@ -3,8 +3,17 @@
 angular.module('gpwradarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'oc.lazyLoad', 'ngResource', 'ui.router', 'ngCookies', 
          'pascalprecht.translate', 'ngCacheBuster', 'infinite-scroll', 'smart-table', 'ui.bootstrap', 'ui.select', 'ui.calendar',
          'NgSwitchery', 'AngularStompDK', 'luegg.directives'])
-    .run(function ($rootScope, $location, $window, $http, $state, $translate, Language, Auth, Principal, ENV, VERSION) {
-        $rootScope.ENV = ENV;
+     .config(function(ngstompProvider){
+        ngstompProvider.url('/socket').class(SockJS);
+	})
+    .run(function ($rootScope, $location, $window, $http, $state, $translate, ngstomp, Language, Auth, Principal, ENV, VERSION) {
+        ngstomp.subscribe('/webchat/count',  messageFromServer);
+    	function messageFromServer(count) {
+        	$rootScope.countUsers = count.body;
+        };
+        ngstomp.send('/app/webchat/user/app/on');
+    	
+    	$rootScope.ENV = ENV;
         $rootScope.VERSION = VERSION;
         $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
             $rootScope.toState = toState;
@@ -38,7 +47,7 @@ angular.module('gpwradarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'oc.la
             });
             
         });
-
+        
         $rootScope.back = function() {
             // If previous state is 'activate' or do not exist go to 'home'
             if ($rootScope.previousStateName === 'activate' || $state.get($rootScope.previousStateName) === null) {
