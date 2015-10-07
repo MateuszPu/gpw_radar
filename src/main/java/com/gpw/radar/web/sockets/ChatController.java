@@ -36,13 +36,13 @@ public class ChatController {
 		String userLogin = principal.getName();
 		User currentUser = userRepository.findOneByLogin(userLogin).get();
 		Message msg = new Message();
-		msg.setMessage(message);
+		msg.setMessage(convertMessage(message));
 		msg.setUser(currentUser);
 		msg.setUserLogin(userLogin);
 		messageRepository.save(msg);
 		return msg;
 	}
-
+	
 	@MessageMapping("/webchat/user/login")
 	@SendTo("/webchat/user")
 	public void userLogin(Principal principal) throws InterruptedException {
@@ -68,6 +68,13 @@ public class ChatController {
 	
 	public void usersCount() {
 		template.convertAndSend("/webchat/count", users.size());
+	}
+	
+
+	private String convertMessage(String message) {
+		String firstConvert = message.substring(1,  message.length()-1);
+		String secondConver = firstConvert.replace("\\\"", "\"");
+		return secondConver;
 	}
 
 	// @Scheduled(cron="*/5 * * * * ?")
