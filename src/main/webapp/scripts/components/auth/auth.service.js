@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('gpwradarApp')
-    .factory('Auth', function Auth($rootScope, $state, $q, $translate, Principal, AuthServerProvider, Account, Register, Activate, Password, PasswordResetInit, PasswordResetFinish) {
+    .factory('Auth', function Auth($rootScope, $state, $q, $translate, Principal, AuthServerProvider, amMoment, Account, Register, Activate, Password, PasswordResetInit, PasswordResetFinish) {
         return {
             login: function (credentials, callback) {
                 var cb = callback || angular.noop;
@@ -10,9 +10,9 @@ angular.module('gpwradarApp')
                 AuthServerProvider.login(credentials).then(function (data) {
                     // retrieve the logged account information
                     Principal.identity(true).then(function(account) {
-                      
                         // After the login the language will be changed to
                         // the language selected by the user during his registration
+                    	amMoment.changeLocale(account.langKey);
                         $translate.use(account.langKey);
                         $translate.refresh();
                         deferred.resolve(data);

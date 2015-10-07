@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('gpwradarApp')
-    .controller('LanguageController', function ($scope, $translate, Language, tmhDynamicLocale) {
+    .controller('LanguageController', function ($scope, $translate, Language, tmhDynamicLocale, amMoment) {
         $scope.changeLanguage = function (languageKey) {
+        	amMoment.changeLocale(languageKey);
             $translate.use(languageKey);
             tmhDynamicLocale.set(languageKey);
         };

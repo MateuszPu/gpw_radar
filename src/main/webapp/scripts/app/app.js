@@ -2,12 +2,12 @@
 
 angular.module('gpwradarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'oc.lazyLoad', 'ngResource', 'ui.router', 'ngCookies', 
          'pascalprecht.translate', 'ngCacheBuster', 'infinite-scroll', 'smart-table', 'ui.bootstrap', 'ui.select', 'ui.calendar',
-         'NgSwitchery', 'AngularStompDK', 'luegg.directives'])
+         'NgSwitchery', 'AngularStompDK', 'luegg.directives', 'angularMoment'])
     .config(function(ngstompProvider){
         ngstompProvider.url('/socket').class(SockJS);
 	})
-    .run(function ($rootScope, $location, $window, $http, $state, $translate, ngstomp, Language, Auth, Principal, ENV, VERSION) {
-    	
+    .run(function ($rootScope, $location, $window, $http, $state, $translate, ngstomp, Language, Auth, Principal, amMoment, ENV, VERSION) {
+    	amMoment.changeLocale('pl');
     	ngstomp.subscribe('/webchat/count',  messageFromServer);
     	function messageFromServer(count) {
         	$rootScope.countUsers = count.body;
