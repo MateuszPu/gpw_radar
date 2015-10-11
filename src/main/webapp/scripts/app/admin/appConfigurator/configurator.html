@@ -18,7 +18,16 @@
 			            	<h4 class="col-lg-12" translate="configurator.parser.selectInfo"></h4>
 			            	<div class="col-lg-12" ng-switch="selectedMethod">
 			            		<div ng-switch-when="GPW" translate="configurator.parser.gpwMethod">GPW</div>
-			            		<div ng-switch-when="STOOQ" translate="configurator.parser.stooqMethod">STOOQ</div>
+			            		<div ng-switch-when="STOOQ"> <span translate="configurator.parser.stooqMethod.info"> STOOQ </span>
+				            		<div class="panel panel-warning">
+		                                <div class="panel-heading">
+		                                    <i class="fa fa-warning"></i> <span translate="configurator.parser.stooqMethod.warning.title">Warning!</span>
+		                                </div>
+		                                <div class="panel-body">
+		                                    <p translate="configurator.parser.stooqMethod.warning.content">Content</p>
+		                                </div>
+	                            	</div>
+                            	</div>
 			            	</div>
 		            	</div>
 	            		<div class="hr-line-dashed"></div>
