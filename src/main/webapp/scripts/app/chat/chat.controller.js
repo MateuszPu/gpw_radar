@@ -23,11 +23,17 @@ angular.module('gpwradarApp')
             counter++;
         };
         
-        ngstomp.send('/app/webchat/user/login');
         ngstomp.subscribe('/webchat/user',  newUserConnected);
         function newUserConnected(user) {
         	$scope.users = JSON.parse(user.body);
         };
+        
+        ngstomp.subscribe('/webchat/recive',  messageFromServer);
+        function messageFromServer(message) {
+        	$scope.messages.push(JSON.parse(message.body));
+        };
+        
+        ngstomp.send('/app/webchat/user/login');
         
 	    $scope.sendMessage = function() {
 	        ngstomp.send('/app/webchat/send/message', $scope.message);
@@ -36,11 +42,6 @@ angular.module('gpwradarApp')
 	        }
 	        $scope.message = "";
 	    };
-	    
-	    ngstomp.subscribe('/webchat/recive',  messageFromServer);
-        function messageFromServer(message) {
-        	$scope.messages.push(JSON.parse(message.body));
-        };
         
         $window.onbeforeunload = function (evt) {
         	$scope.logout();
