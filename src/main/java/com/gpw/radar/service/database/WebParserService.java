@@ -66,7 +66,8 @@ public class WebParserService {
 	private String getStockNameFromWeb(Document doc) {
 		String title = doc.title();
 		String stockName = title.substring(title.indexOf("- ") + 2, title.indexOf("- Stooq"));
-		return stockName;
+		String stockNameOutOfSpacesAndUpperCase = stockName.trim().toUpperCase();
+		return stockNameOutOfSpacesAndUpperCase;
 	}
 
 	private String getStockShortNameFromWeb(Document doc) {

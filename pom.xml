@@ -363,6 +363,11 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-messaging</artifactId>
         </dependency>
+        <dependency>
+			<groupId>com.rometools</groupId>
+			<artifactId>rome-fetcher</artifactId>
+			<version>1.5.0</version>
+		</dependency>
     </dependencies>
     <build>
         <resources>

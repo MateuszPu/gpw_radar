@@ -68,4 +68,9 @@ angular.module('gpwradarApp')
 				$scope.commentLength = 90 - newValue.length;
 			}
 		});
-    });
+    })
+    .filter("htmlConvert", ['$sce', function($sce) {
+	  return function(htmlCode){
+	    return $sce.trustAsHtml(htmlCode);
+	  }
+	}]);

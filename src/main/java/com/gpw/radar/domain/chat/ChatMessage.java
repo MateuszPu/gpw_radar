@@ -6,11 +6,11 @@ import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
@@ -20,16 +20,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gpw.radar.domain.User;
 
 @Entity
-@Table(name = "MESSAGE")
-public class Message {
+@Inheritance( strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class ChatMessage {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	@NotNull
-	@Size(min = 1, max = 128)
-    @Column(length = 128, nullable = false)
-	private String message;
 	
 	@ManyToOne
 	@NotNull
@@ -40,27 +36,21 @@ public class Message {
 	@NotNull
 	@Column(name = "user_login", nullable = false)
 	private String userLogin;
-	
-    @CreatedDate
+
+	@CreatedDate
     @NotNull
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @Column(name = "created_date", nullable = false)
     private DateTime createdDate = DateTime.now();
-    
+	
+	public abstract String getChatMessage();
+
 	public long getId() {
 		return id;
 	}
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
 	}
 
 	public User getUser() {

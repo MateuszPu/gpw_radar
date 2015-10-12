@@ -1,5 +1,5 @@
 <breadcrumbs translate-path="chat.title"></breadcrumbs>
-
+<a ng-href=http://biznes.pap.pl/pl/news/espi/info/1428714,wojas-sa-zwolanie-nadzwyczajnego-walnego-zgromadzenia-wojas-s-a->Click!</a>
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-lg-12">
@@ -15,7 +15,7 @@
                                         <a class="message-author" href="#"> {{item.userLogin}} </a>
                                         <span class="message-date" am-time-ago="item.createdDate"></span>
                                             <span class="message-content">
-												{{item.message}}
+												<p ng-bind-html="item.message | htmlConvert"></p>
                                             </span>
                                     </div>
                                 </div>
