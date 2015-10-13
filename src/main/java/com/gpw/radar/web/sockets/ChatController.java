@@ -11,11 +11,8 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
-import com.gpw.radar.domain.User;
 import com.gpw.radar.domain.chat.ChatMessage;
-import com.gpw.radar.domain.chat.UserMessage;
-import com.gpw.radar.repository.UserRepository;
-import com.gpw.radar.repository.chat.MessageRepository;
+import com.gpw.radar.service.chat.MessageService;
 
 @Controller
 public class ChatController {
@@ -24,30 +21,20 @@ public class ChatController {
 	private SimpMessagingTemplate template;
 
 	@Inject
-	private MessageRepository messageRepository;
-
-	@Inject
-	private UserRepository userRepository;
+	private MessageService messageService;
 
 	private Set<String> users = new HashSet<String>();
 
 	@MessageMapping("/webchat/send/message")
 	@SendTo("/webchat/recive")
 	public ChatMessage sendChatMessage(String message, Principal principal) {
-		String userLogin = principal.getName();
-		User currentUser = userRepository.findOneByLogin(userLogin).get();
-		UserMessage msg = new UserMessage();
-		msg.setMessage(convertMessage(message));
-		msg.setUser(currentUser);
-		msg.setUserLogin(userLogin);
-		messageRepository.save(msg);
+		ChatMessage msg = messageService.createUserMessage(message, principal);
 		return msg;
 	}
 
 	@MessageMapping("/webchat/user/login")
-	@SendTo("/webchat/user")
 	public void userLogin(Principal principal) throws InterruptedException {
-		Thread.sleep(200);
+		Thread.sleep(300);
 		String login = principal.getName();
 		users.add(login);
 		usersCount();
@@ -67,29 +54,7 @@ public class ChatController {
 		usersCount();
 	}
 
-	public void sendSystemMessage(ChatMessage message) {
-		UserMessage msg = new UserMessage();
-		msg.setCreatedDate(message.getCreatedDate());
-		msg.setMessage(message.getChatMessage());
-		msg.setUser(userRepository.findOneByLogin("system").get());
-		msg.setUserLogin("system");
-		messageRepository.save(msg);
-		template.convertAndSend("/webchat/recive", message);
-	}
-
 	public void usersCount() {
 		template.convertAndSend("/webchat/count", users.size());
 	}
-
-	private String convertMessage(String message) {
-		String firstConvert = message.substring(1, message.length() - 1);
-		String secondConver = firstConvert.replace("\\\"", "\"");
-		return secondConver;
-	}
-
-	// @Scheduled(cron="*/5 * * * * ?")
-	// public void test() throws Exception {
-	// Date ad = new Date();
-	// template.convertAndSend("/webchat/user", "Data: " + ad.toString());
-	// }
 }

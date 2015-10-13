@@ -24,7 +24,7 @@ import com.gpw.radar.domain.User;
 public abstract class ChatMessage {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	private long id;
 	
 	@ManyToOne

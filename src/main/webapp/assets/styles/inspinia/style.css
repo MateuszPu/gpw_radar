@@ -4480,7 +4480,6 @@ dd.project-people {
 }
 .message {
     background-color: #fff;
-    border: 1px solid #e7eaec;
     text-align: left;
     display: block;
     padding: 10px 20px;
@@ -4502,7 +4501,7 @@ dd.project-people {
     display: block;
 }
 .chat-discussion {
-    background: #eee;
+    background: #E0E0E0;
     padding: 15px;
     height: 400px;
     overflow-y: auto;
