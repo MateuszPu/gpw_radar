@@ -2,16 +2,17 @@ package com.gpw.radar.service.rss;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,56 +50,66 @@ public class RssParserService {
 
 	@Inject
 	private SimpMessagingTemplate template;
-
-	private LocalDateTime dateOfLastRssMessage = new LocalDateTime(2014, 1, 1, 12, 12);
-
-	@Scheduled(cron = "*/15 * * * * ?")
-	public void tat() {
-		getMessagesFromUrl("http://biznes.pap.pl/pl/rss/8659");
-//		getMessagesFromUrl("http://biznes.pap.pl/pl/rss/6614");
-//		getMessagesFromUrl("http://biznes.pap.pl/pl/rss/6614");
-//		getMessagesFromUrl("http://biznes.pap.pl/pl/rss/6614");
-		
+	
+	private final String RESULTS = "http://biznes.pap.pl/pl/rss/6639";
+	private final String CHALLENGE = "http://biznes.pap.pl/pl/rss/6638";
+	private final String RECOMMENDATIONS = "http://biznes.pap.pl/pl/rss/6634";
+	private final String PAP = "http://biznes.pap.pl/pl/rss/6608";
+	private final String EBI = "http://biznes.pap.pl/pl/rss/6612";
+	private final String ESPI = "http://biznes.pap.pl/pl/rss/6614";
+	private Map<String, LocalDateTime> rssLinks;
+	
+	@Scheduled(cron = "*/3 * 8-17 * * MON-FRI")
+	public void fireDuringWeekDuringGpwSession() {
+		runRssParser();
+	}
+	
+	@Scheduled(cron = "0 */5 18-23 * * MON-FRI")
+	public void fireDuringWeekToMidnghit() {
+		runRssParser();
+	}
+	
+	@Scheduled(cron = "0 */15 0-7 * * MON-FRI")
+	public void fireDuringWeek() {
+		runRssParser();
+	}
+	
+	@Scheduled(cron = "0 */15 * * * SAT,SUN")
+	public void fireDuringWeekend() {
+		runRssParser();
+	}
+	
+	private void runRssParser() {
+		for (Map.Entry<String, LocalDateTime> entry : rssLinks.entrySet()) {
+			getMessagesFromUrl(entry.getKey(), entry.getValue());
+		}
 	}
 
-	private void getMessagesFromUrl(String url) {
+	private void getMessagesFromUrl(String url, LocalDateTime date) {
 		SyndFeed feed = null;
 		try {
 			feed = feedFetcher.retrieveFeed(new URL(url));
 			List<SyndEntry> syndFeedItems = feed.getEntries();
 
 			LocalDateTime dt = new LocalDateTime(syndFeedItems.get(0).getPublishedDate());
-			System.out.println("Ostatnia data: " + dateOfLastRssMessage + " data wiadomosci: " + dt);
 
 			for (Object syndFeedEntry : syndFeedItems) {
 				SyndEntry syndEntry = (SyndEntry) syndFeedEntry;
 				LocalDateTime syndEntryPublishDate = new LocalDateTime(syndEntry.getPublishedDate());
-				if (syndEntryPublishDate.isAfter(dateOfLastRssMessage)) {
+				if (syndEntryPublishDate.isAfter(date)) {
 					parseMessageFrom(syndEntry);
 				} 
 				else {
 					break;
 				}
+				rssLinks.put(url, dt);
 			}
-			dateOfLastRssMessage = dt;
 		} catch (IllegalArgumentException | IOException | FeedException | FetcherException e) {
 			logger.error("error occurs", e.getMessage());
 		}
 	}
 
 	public void parseMessageFrom(SyndEntry syndEntry) {
-		// List<StockNewsMessage> stockNewsMessages = new
-		// ArrayList<StockNewsMessage>();
-		// SyndFeed feed = null;
-		// try {
-		// feed = feedFetcher.retrieveFeed(new URL(url));
-		// } catch (IllegalArgumentException | IOException | FeedException |
-		// FetcherException e) {
-		// logger.error("error occurs", e.getMessage());
-		// }
-		// List<SyndEntry> syndFeedItems = feed.getEntries();
-		// for (Object syndFeedEntry : syndFeedItems) {
-		// SyndEntry syndEntry = (SyndEntry) syndFeedEntry;
 		String message = syndEntry.getTitle();
 		String link = syndEntry.getLink();
 		Date date = syndEntry.getPublishedDate();
@@ -121,5 +132,16 @@ public class RssParserService {
 			return stockRepository.findByStockName(matcher.group(0).substring(0, matcher.group(0).length() - 1).trim());
 		}
 		return null;
+	}
+	
+	@PostConstruct
+	private void prepareMapWithLinks() {
+		rssLinks = new HashMap<String, LocalDateTime>();
+		rssLinks.put(CHALLENGE, new LocalDateTime());
+		rssLinks.put(EBI, new LocalDateTime());
+		rssLinks.put(ESPI, new LocalDateTime());
+		rssLinks.put(PAP, new LocalDateTime());
+		rssLinks.put(RECOMMENDATIONS, new LocalDateTime());
+		rssLinks.put(RESULTS, new LocalDateTime());
 	}
 }

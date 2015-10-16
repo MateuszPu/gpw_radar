@@ -4,7 +4,7 @@ angular.module('gpwradarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'oc.la
          'pascalprecht.translate', 'ngCacheBuster', 'infinite-scroll', 'smart-table', 'ui.bootstrap', 'ui.select', 'ui.calendar',
          'NgSwitchery', 'AngularStompDK', 'luegg.directives', 'angularMoment'])
     .config(function(ngstompProvider){
-        ngstompProvider.url('/socket').class(SockJS);
+            ngstompProvider.url('/socket').class(SockJS);
 	})
     .run(function ($rootScope, $location, $window, $http, $state, $translate, ngstomp, Language, Auth, Principal, amMoment, ENV, VERSION) {
     	amMoment.changeLocale('pl');

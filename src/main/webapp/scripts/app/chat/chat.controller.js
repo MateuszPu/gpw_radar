@@ -1,8 +1,10 @@
 angular.module('gpwradarApp')
-    .config(function(ngstompProvider){
-            ngstompProvider.url('/socket').class(SockJS);
-	})
-    .controller('ChatController', function ($scope, $window, $http, ngstomp, ChatMessage) {
+    .controller('ChatController', function ($scope, $window, $http, ngstomp, ChatMessage, Principal) {
+    	
+    	Principal.identity().then(function(account){
+    		ngstomp.send('/app/webchat/user/login', account.login);
+    		$scope.login = account.login;
+    	});
     	
         $scope.messages = ChatMessage.getMessages({page: 0}); 
         
@@ -33,8 +35,6 @@ angular.module('gpwradarApp')
         	$scope.messages.push(JSON.parse(message.body));
         };
         
-        ngstomp.send('/app/webchat/user/login');
-        
 	    $scope.sendMessage = function() {
 	        ngstomp.send('/app/webchat/send/message', $scope.message);
 	        if($scope.messages.length > 15){
@@ -52,7 +52,7 @@ angular.module('gpwradarApp')
 	    });
 	    
 	    $scope.logout = function() {
-	    	ngstomp.send('/app/webchat/user/logout');
+	    	ngstomp.send('/app/webchat/user/logout', $scope.login);
 	    	ngstomp.unsubscribe('/webchat/recive', unsubscribe);
 	    	ngstomp.unsubscribe('/webchat/user', unsubscribe);
 	    }

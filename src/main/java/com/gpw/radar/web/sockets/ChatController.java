@@ -12,6 +12,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import com.gpw.radar.domain.chat.ChatMessage;
+import com.gpw.radar.repository.UserRepository;
 import com.gpw.radar.service.chat.MessageService;
 
 @Controller
@@ -22,6 +23,9 @@ public class ChatController {
 
 	@Inject
 	private MessageService messageService;
+	
+	@Inject
+	private UserRepository userRepository;
 
 	private Set<String> users = new HashSet<String>();
 
@@ -33,17 +37,17 @@ public class ChatController {
 	}
 
 	@MessageMapping("/webchat/user/login")
-	public void userLogin(Principal principal) throws InterruptedException {
-		Thread.sleep(300);
-		String login = principal.getName();
+	public void userLogin(String login) throws InterruptedException {
 		users.add(login);
+		if(userRepository.findOneByLogin(login) == null){
+			throw new IllegalAccessError();
+		}
 		usersCount();
 		template.convertAndSend("/webchat/user", users);
 	}
 
 	@MessageMapping("/webchat/user/logout")
-	public void userLogout(Principal principal) {
-		String login = principal.getName();
+	public void userLogout(String login) {
 		users.remove(login);
 		usersCount();
 		template.convertAndSend("/webchat/user", users);
