@@ -1,6 +1,9 @@
 package com.gpw.radar.service;
 
 import com.gpw.radar.domain.User;
+import com.gpw.radar.domain.rss.StockNewsMessage;
+import com.gpw.radar.repository.UserRepository;
+
 import org.apache.commons.lang.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +19,8 @@ import org.thymeleaf.spring4.SpringTemplateEngine;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.mail.internet.MimeMessage;
+
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -41,6 +46,9 @@ public class MailService {
 
     @Inject
     private SpringTemplateEngine templateEngine;
+    
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * System default email address that sends the e-mails.
@@ -95,4 +103,12 @@ public class MailService {
         String subject = messageSource.getMessage("email.reset.title", null, locale);
         sendEmail(user.getEmail(), subject, content, false, true);
     }
+
+	public void informUserAboutStockNewsByEmail(StockNewsMessage message) {
+		List<User> usersToSendEmail = userRepository.findAllByStocks(message.getStock());
+		String mailTopic = "[" + message.getStock().getTicker().toString().toUpperCase() + "] ["+message.getType().toString()+"] " + message.getMessage();
+		for(User user: usersToSendEmail) {
+			sendEmail(user.getEmail(), mailTopic, message.getChatMessage(), false, true);
+		}
+	}
 }

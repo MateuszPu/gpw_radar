@@ -29,7 +29,7 @@ public class StockResource {
 
 	@Inject
 	private StockService stockService;
-
+	
 	@RequestMapping(value = "/stocks/get/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RolesAllowed(AuthoritiesConstants.USER)
 	public ResponseEntity<String> getAllWithOutPagination() throws URISyntaxException {

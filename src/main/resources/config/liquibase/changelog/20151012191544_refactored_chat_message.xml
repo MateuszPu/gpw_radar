@@ -93,4 +93,9 @@
    <changeSet author="ppp" id="1444671502281-10">
       <dropTable tableName="message"/>
    </changeSet>
+   <changeSet author="ppp" id="1445077597618-1">
+      <addColumn tableName="STOCK_NEWS_MESSAGE">
+         <column name="type" type="varchar(255)"/>
+      </addColumn>
+   </changeSet>
 </databaseChangeLog>

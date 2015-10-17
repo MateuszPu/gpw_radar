@@ -2,6 +2,8 @@ package com.gpw.radar.domain.rss;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -11,6 +13,7 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gpw.radar.domain.chat.ChatMessage;
+import com.gpw.radar.domain.enumeration.RssType;
 import com.gpw.radar.domain.stock.Stock;
 
 @Entity
@@ -31,6 +34,10 @@ public class StockNewsMessage extends ChatMessage{
 	@NotNull
 	@JsonIgnore
 	private String link;
+	
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private RssType type;
 
 	public String getMessage() {
 		return message;
@@ -54,6 +61,14 @@ public class StockNewsMessage extends ChatMessage{
 
 	public void setLink(String link) {
 		this.link = link;
+	}
+	
+	public RssType getType() {
+		return type;
+	}
+
+	public void setType(RssType type) {
+		this.type = type;
 	}
 
 	@Override

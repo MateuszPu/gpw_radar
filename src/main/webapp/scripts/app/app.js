@@ -8,6 +8,7 @@ angular.module('gpwradarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'oc.la
 	})
     .run(function ($rootScope, $location, $window, $http, $state, $translate, ngstomp, Language, Auth, Principal, amMoment, ENV, VERSION) {
     	amMoment.changeLocale('pl');
+    	
     	ngstomp.subscribe('/webchat/count',  messageFromServer);
     	function messageFromServer(count) {
         	$rootScope.countUsers = count.body;

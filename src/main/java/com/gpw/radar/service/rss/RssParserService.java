@@ -21,11 +21,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.gpw.radar.domain.chat.ChatMessage;
+import com.gpw.radar.domain.enumeration.RssType;
 import com.gpw.radar.domain.rss.StockNewsMessage;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.repository.UserRepository;
 import com.gpw.radar.repository.chat.ChatMessageRepository;
 import com.gpw.radar.repository.stock.StockRepository;
+import com.gpw.radar.service.MailService;
 import com.rometools.fetcher.FeedFetcher;
 import com.rometools.fetcher.FetcherException;
 import com.rometools.fetcher.impl.HttpURLFeedFetcher;
@@ -47,48 +49,45 @@ public class RssParserService {
 
 	@Inject
 	private UserRepository userRepository;
+	
+	@Inject
+	private MailService mailService;
 
 	@Inject
 	private SimpMessagingTemplate template;
-	
-	private final String RESULTS = "http://biznes.pap.pl/pl/rss/6639";
-	private final String CHALLENGE = "http://biznes.pap.pl/pl/rss/6638";
-	private final String RECOMMENDATIONS = "http://biznes.pap.pl/pl/rss/6634";
-	private final String PAP = "http://biznes.pap.pl/pl/rss/6608";
-	private final String EBI = "http://biznes.pap.pl/pl/rss/6612";
-	private final String ESPI = "http://biznes.pap.pl/pl/rss/6614";
-	private Map<String, LocalDateTime> rssLinks;
-	
+
+	private Map<RssType, LocalDateTime> rssLinks;
+
 	@Scheduled(cron = "*/3 * 8-17 * * MON-FRI")
 	public void fireDuringWeekDuringGpwSession() {
 		runRssParser();
 	}
-	
+
 	@Scheduled(cron = "0 */5 18-23 * * MON-FRI")
 	public void fireDuringWeekToMidnghit() {
 		runRssParser();
 	}
-	
+
 	@Scheduled(cron = "0 */15 0-7 * * MON-FRI")
 	public void fireDuringWeek() {
 		runRssParser();
 	}
-	
+
 	@Scheduled(cron = "0 */15 * * * SAT,SUN")
 	public void fireDuringWeekend() {
 		runRssParser();
 	}
-	
+
 	private void runRssParser() {
-		for (Map.Entry<String, LocalDateTime> entry : rssLinks.entrySet()) {
-			getMessagesFromUrl(entry.getKey(), entry.getValue());
+		for (Map.Entry<RssType, LocalDateTime> entry : rssLinks.entrySet()) {
+			getNewsMessagesFromUrl(entry.getKey(), entry.getValue());
 		}
 	}
 
-	private void getMessagesFromUrl(String url, LocalDateTime date) {
+	private void getNewsMessagesFromUrl(RssType rssType, LocalDateTime date) {
 		SyndFeed feed = null;
 		try {
-			feed = feedFetcher.retrieveFeed(new URL(url));
+			feed = feedFetcher.retrieveFeed(new URL(rssType.getUrl()));
 			List<SyndEntry> syndFeedItems = feed.getEntries();
 
 			LocalDateTime dt = new LocalDateTime(syndFeedItems.get(0).getPublishedDate());
@@ -97,24 +96,28 @@ public class RssParserService {
 				SyndEntry syndEntry = (SyndEntry) syndFeedEntry;
 				LocalDateTime syndEntryPublishDate = new LocalDateTime(syndEntry.getPublishedDate());
 				if (syndEntryPublishDate.isAfter(date)) {
-					parseMessageFrom(syndEntry);
-				} 
-				else {
+					StockNewsMessage message = parseMessageFrom(syndEntry, rssType);
+					if(message.getStock() != null){
+						mailService.informUserAboutStockNewsByEmail(message);
+					}
+					template.convertAndSend("/webchat/recive", (ChatMessage) message);
+				} else {
 					break;
 				}
-				rssLinks.put(url, dt);
+				rssLinks.put(rssType, dt);
 			}
 		} catch (IllegalArgumentException | IOException | FeedException | FetcherException e) {
 			logger.error("error occurs", e.getMessage());
 		}
 	}
 
-	public void parseMessageFrom(SyndEntry syndEntry) {
+	public StockNewsMessage parseMessageFrom(SyndEntry syndEntry, RssType type) {
 		String message = syndEntry.getTitle();
 		String link = syndEntry.getLink();
 		Date date = syndEntry.getPublishedDate();
 
 		StockNewsMessage stNwMsg = new StockNewsMessage();
+		stNwMsg.setType(type);
 		stNwMsg.setMessage(message);
 		stNwMsg.setLink(link);
 		stNwMsg.setCreatedDate(new DateTime(date));
@@ -122,7 +125,7 @@ public class RssParserService {
 		stNwMsg.setUserLogin("system");
 		stNwMsg.setUser(userRepository.findOneByLogin("system").get());
 		chatMessageRepository.save(stNwMsg);
-		template.convertAndSend("/webchat/recive", (ChatMessage) stNwMsg);
+		return stNwMsg;
 	}
 
 	private Stock getStockFromTitle(String message) {
@@ -133,15 +136,15 @@ public class RssParserService {
 		}
 		return null;
 	}
-	
+
 	@PostConstruct
 	private void prepareMapWithLinks() {
-		rssLinks = new HashMap<String, LocalDateTime>();
-		rssLinks.put(CHALLENGE, new LocalDateTime());
-		rssLinks.put(EBI, new LocalDateTime());
-		rssLinks.put(ESPI, new LocalDateTime());
-		rssLinks.put(PAP, new LocalDateTime());
-		rssLinks.put(RECOMMENDATIONS, new LocalDateTime());
-		rssLinks.put(RESULTS, new LocalDateTime());
+		rssLinks = new HashMap<RssType, LocalDateTime>();
+		rssLinks.put(RssType.CHALLENGE, new LocalDateTime());
+		rssLinks.put(RssType.EBI, new LocalDateTime(2014,1,1,1,1));
+		rssLinks.put(RssType.ESPI, new LocalDateTime(2014,1,1,1,1));
+		rssLinks.put(RssType.PAP, new LocalDateTime());
+		rssLinks.put(RssType.RECOMMENDATIONS, new LocalDateTime());
+		rssLinks.put(RssType.RESULTS, new LocalDateTime());
 	}
 }
