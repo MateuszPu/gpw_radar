@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 
 import com.gpw.radar.domain.chat.ChatMessage;
 import com.gpw.radar.domain.enumeration.RssType;
-import com.gpw.radar.domain.rss.StockNewsMessage;
+import com.gpw.radar.domain.rss.NewsMessage;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.repository.UserRepository;
 import com.gpw.radar.repository.chat.ChatMessageRepository;
@@ -49,7 +49,7 @@ public class RssParserService {
 
 	@Inject
 	private UserRepository userRepository;
-	
+
 	@Inject
 	private MailService mailService;
 
@@ -73,7 +73,7 @@ public class RssParserService {
 		runRssParser();
 	}
 
-	@Scheduled(cron = "0 */15 * * * SAT,SUN")
+	@Scheduled(cron = "0 0 1 * * SAT,SUN")
 	public void fireDuringWeekend() {
 		runRssParser();
 	}
@@ -96,8 +96,8 @@ public class RssParserService {
 				SyndEntry syndEntry = (SyndEntry) syndFeedEntry;
 				LocalDateTime syndEntryPublishDate = new LocalDateTime(syndEntry.getPublishedDate());
 				if (syndEntryPublishDate.isAfter(date)) {
-					StockNewsMessage message = parseMessageFrom(syndEntry, rssType);
-					if(message.getStock() != null){
+					NewsMessage message = parseMessageFrom(syndEntry, rssType);
+					if (message.getStock() != null) {
 						mailService.informUserAboutStockNewsByEmail(message);
 					}
 					template.convertAndSend("/webchat/recive", (ChatMessage) message);
@@ -111,12 +111,12 @@ public class RssParserService {
 		}
 	}
 
-	public StockNewsMessage parseMessageFrom(SyndEntry syndEntry, RssType type) {
+	public NewsMessage parseMessageFrom(SyndEntry syndEntry, RssType type) {
 		String message = syndEntry.getTitle();
 		String link = syndEntry.getLink();
 		Date date = syndEntry.getPublishedDate();
 
-		StockNewsMessage stNwMsg = new StockNewsMessage();
+		NewsMessage stNwMsg = new NewsMessage();
 		stNwMsg.setType(type);
 		stNwMsg.setMessage(message);
 		stNwMsg.setLink(link);
@@ -140,11 +140,12 @@ public class RssParserService {
 	@PostConstruct
 	private void prepareMapWithLinks() {
 		rssLinks = new HashMap<RssType, LocalDateTime>();
-		rssLinks.put(RssType.CHALLENGE, new LocalDateTime());
-		rssLinks.put(RssType.EBI, new LocalDateTime(2014,1,1,1,1));
-		rssLinks.put(RssType.ESPI, new LocalDateTime(2014,1,1,1,1));
-		rssLinks.put(RssType.PAP, new LocalDateTime());
-		rssLinks.put(RssType.RECOMMENDATIONS, new LocalDateTime());
-		rssLinks.put(RssType.RESULTS, new LocalDateTime());
+		LocalDateTime date = new LocalDateTime();
+		rssLinks.put(RssType.CHALLENGE, new LocalDateTime(date));
+		rssLinks.put(RssType.EBI, new LocalDateTime(date));
+		rssLinks.put(RssType.ESPI, new LocalDateTime(date));
+		rssLinks.put(RssType.PAP, new LocalDateTime(date));
+		rssLinks.put(RssType.RECOMMENDATIONS, new LocalDateTime(date));
+		rssLinks.put(RssType.RESULTS, new LocalDateTime(date));
 	}
 }

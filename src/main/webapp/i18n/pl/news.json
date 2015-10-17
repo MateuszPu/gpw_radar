@@ -1,0 +1,13 @@
+{
+    "news": {
+        "title": "Wiadomości",
+        "type": {
+        	"results": "Wyniki",
+        	"ebi": "EBI",
+        	"espi": "ESPI",
+        	"pap": "PAP",
+        	"recommendations": "Rekomendacje",
+        	"challenge": "Wezwania"
+        }
+    }
+}

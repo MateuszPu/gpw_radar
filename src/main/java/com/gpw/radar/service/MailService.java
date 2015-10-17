@@ -1,7 +1,7 @@
 package com.gpw.radar.service;
 
 import com.gpw.radar.domain.User;
-import com.gpw.radar.domain.rss.StockNewsMessage;
+import com.gpw.radar.domain.rss.NewsMessage;
 import com.gpw.radar.repository.UserRepository;
 
 import org.apache.commons.lang.CharEncoding;
@@ -104,7 +104,7 @@ public class MailService {
         sendEmail(user.getEmail(), subject, content, false, true);
     }
 
-	public void informUserAboutStockNewsByEmail(StockNewsMessage message) {
+	public void informUserAboutStockNewsByEmail(NewsMessage message) {
 		List<User> usersToSendEmail = userRepository.findAllByStocks(message.getStock());
 		String mailTopic = "[" + message.getStock().getTicker().toString().toUpperCase() + "] ["+message.getType().toString()+"] " + message.getMessage();
 		for(User user: usersToSendEmail) {

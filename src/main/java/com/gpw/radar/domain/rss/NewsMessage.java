@@ -17,24 +17,24 @@ import com.gpw.radar.domain.enumeration.RssType;
 import com.gpw.radar.domain.stock.Stock;
 
 @Entity
-@Table(name = "STOCK_NEWS_MESSAGE")
-public class StockNewsMessage extends ChatMessage{
-	
+@Table(name = "NEWS_MESSAGE")
+public class NewsMessage extends ChatMessage {
+
 	@NotNull
 	@Size(min = 1, max = 1000)
-    @Column(length = 1000, nullable = false)
+	@Column(length = 1000, nullable = false)
 	@JsonIgnore
 	private String message;
-	
+
 	@ManyToOne
-    @JoinColumn(name="stock_id", foreignKey = @ForeignKey(name="FK_stock"))
+	@JoinColumn(name = "stock_id", foreignKey = @ForeignKey(name = "FK_stock"))
 	@JsonIgnore
 	private Stock stock;
-	
+
 	@NotNull
 	@JsonIgnore
 	private String link;
-	
+
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private RssType type;
@@ -62,7 +62,7 @@ public class StockNewsMessage extends ChatMessage{
 	public void setLink(String link) {
 		this.link = link;
 	}
-	
+
 	public RssType getType() {
 		return type;
 	}
@@ -70,7 +70,7 @@ public class StockNewsMessage extends ChatMessage{
 	public void setType(RssType type) {
 		this.type = type;
 	}
-
+	
 	@Override
 	public String getChatMessage() {
 		StringBuilder str = new StringBuilder();

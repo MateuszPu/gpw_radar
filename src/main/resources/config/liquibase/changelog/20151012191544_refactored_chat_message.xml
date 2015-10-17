@@ -98,4 +98,7 @@
          <column name="type" type="varchar(255)"/>
       </addColumn>
    </changeSet>
+   <changeSet author="ppp" id="1743077597618-1">
+		<renameTable newTableName="NEWS_MESSAGE" oldTableName="STOCK_NEWS_MESSAGE"/>
+   </changeSet>
 </databaseChangeLog>

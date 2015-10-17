@@ -1,7 +1,7 @@
 angular.module('gpwradarApp')
     .config(function ($stateProvider) {
         $stateProvider
-            .state('entity', {
+            .state('dashboard', {
                 abstract: true,
                 parent: 'site'
             });
