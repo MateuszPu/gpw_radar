@@ -68,12 +68,12 @@ public class RssParserService {
 		runRssParser();
 	}
 
-	@Scheduled(cron = "0 */15 0-7 * * MON-FRI")
+	@Scheduled(cron = "0 */30 0-7 * * MON-FRI")
 	public void fireDuringWeek() {
 		runRssParser();
 	}
 
-	@Scheduled(cron = "0 0 1 * * SAT,SUN")
+	@Scheduled(cron = "0 */30 * * * SAT,SUN")
 	public void fireDuringWeekend() {
 		runRssParser();
 	}
@@ -90,14 +90,15 @@ public class RssParserService {
 			feed = feedFetcher.retrieveFeed(new URL(rssType.getUrl()));
 			List<SyndEntry> syndFeedItems = feed.getEntries();
 
-			LocalDateTime dt = new LocalDateTime(syndFeedItems.get(0).getPublishedDate());
+			int indexOfLatestItem = 0;
+			LocalDateTime dt = new LocalDateTime(syndFeedItems.get(indexOfLatestItem).getPublishedDate());
 
 			for (Object syndFeedEntry : syndFeedItems) {
 				SyndEntry syndEntry = (SyndEntry) syndFeedEntry;
 				LocalDateTime syndEntryPublishDate = new LocalDateTime(syndEntry.getPublishedDate());
 				if (syndEntryPublishDate.isAfter(date)) {
 					NewsMessage message = parseMessageFrom(syndEntry, rssType);
-					if (message.getStock() != null) {
+					if (rssType.equals(RssType.EBI) || rssType.equals(RssType.ESPI)) {
 						mailService.informUserAboutStockNewsByEmail(message);
 					}
 					template.convertAndSend("/webchat/recive", (ChatMessage) message);

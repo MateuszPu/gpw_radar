@@ -37,6 +37,7 @@ module.exports = function (config) {
             'main/webapp/bower_components/stomp-websocket/lib/stomp.min.js',
             'main/webapp/bower_components/AngularStompDK/dist/angular-stomp.min.js',
             'main/webapp/bower_components/bootstrap/dist/js/bootstrap.js',
+            'main/webapp/bower_components/iCheck/icheck.min.js',
             'main/webapp/bower_components/jquery-flot/jquery.flot.js',
             'main/webapp/bower_components/jquery-ui/jquery-ui.js',
             'main/webapp/bower_components/json3/lib/json3.js',

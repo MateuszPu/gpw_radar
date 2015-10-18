@@ -1,6 +1,17 @@
 angular.module('gpwradarApp')
     .controller('ChatController', function ($scope, $window, $http, ngstomp, ChatMessage, Principal) {
     	
+    	$scope.showSystemMessage = true;
+    	
+    	$scope.showMessage = function(login) {
+    		if ($scope.showSystemMessage) {
+    			return true;
+    		}
+    		else {
+    			return login != 'system';
+    		}
+    	}
+    	
     	Principal.identity().then(function(account){
     		ngstomp.send('/app/webchat/user/login', account.login);
     		$scope.login = account.login;
