@@ -10,11 +10,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "USER_MESSAGE")
-public class UserMessage extends ChatMessage{
-	
+public class UserMessage extends ChatMessage {
+
 	@NotNull
 	@Size(min = 1, max = 128)
-    @Column(length = 128, nullable = false)
+	@Column(length = 128, nullable = false)
 	@JsonIgnore
 	private String message;
 

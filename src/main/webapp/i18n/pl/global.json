@@ -20,6 +20,9 @@
         "menu": {
             "home": "Strona domowa",
             "chat": "Chat",
+            "dashboards": {
+            	"news": "Wiadomości"
+            },
             "entities": {
                 "main": "Entities",
                 "stock": "Spółki",

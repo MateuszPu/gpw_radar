@@ -70,12 +70,12 @@ public class NewsMessage extends ChatMessage {
 	public void setType(RssType type) {
 		this.type = type;
 	}
-	
+
 	@Override
 	public String getChatMessage() {
 		StringBuilder str = new StringBuilder();
-		str.append("<a href=\"" + getLink() + "\" target=\"_blank\">Click!</a> ");
-		str.append(getMessage());
+		str.append("<a href=\"" + getLink() + "\" target=\"_blank\">" + getMessage() + "</a> ");
+		// str.append(getMessage());
 		return str.toString();
 	}
 }

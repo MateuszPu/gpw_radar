@@ -14,19 +14,19 @@ import com.gpw.radar.domain.stock.Stock;
  */
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findOneByActivationKey(String activationKey);
+	Optional<User> findOneByActivationKey(String activationKey);
 
-    List<User> findAllByActivatedIsFalseAndCreatedDateBefore(DateTime dateTime);
-    
-    List<User> findAllByStocks(Stock stock);
+	List<User> findAllByActivatedIsFalseAndCreatedDateBefore(DateTime dateTime);
 
-    Optional<User> findOneByResetKey(String resetKey);
+	List<User> findAllByStocks(Stock stock);
 
-    Optional<User> findOneByEmail(String email);
+	Optional<User> findOneByResetKey(String resetKey);
 
-    Optional<User> findOneByLogin(String login);
+	Optional<User> findOneByEmail(String email);
 
-    @Override
-    void delete(User t);
+	Optional<User> findOneByLogin(String login);
+
+	@Override
+	void delete(User t);
 
 }

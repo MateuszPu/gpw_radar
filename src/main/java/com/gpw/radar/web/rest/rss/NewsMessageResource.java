@@ -18,12 +18,12 @@ import com.gpw.radar.service.rss.NewsMessageService;
 @RestController
 @RequestMapping("/api/news/message")
 public class NewsMessageResource {
-	
+
 	@Inject
 	private NewsMessageService newsMessageService;
-	
+
 	@RequestMapping(value = "/get/latest/by/type", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<NewsMessage>> getTop10NewsMessageByType(@RequestParam RssType type){
+	public ResponseEntity<List<NewsMessage>> getTop10NewsMessageByType(@RequestParam RssType type) {
 		return newsMessageService.getLatestNewsMessageByType(type);
 	}
 

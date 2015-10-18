@@ -20,6 +20,9 @@
         "menu": {
             "home": "Home",
             "chat": "Chat",
+            "dashboards": {
+            	"news": "News"
+            },
             "entities": {
                 "main": "Entities",
                 "stock": "Stock",

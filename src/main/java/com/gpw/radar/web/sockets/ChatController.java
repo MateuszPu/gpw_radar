@@ -23,7 +23,7 @@ public class ChatController {
 
 	@Inject
 	private MessageService messageService;
-	
+
 	@Inject
 	private UserRepository userRepository;
 
@@ -39,7 +39,7 @@ public class ChatController {
 	@MessageMapping("/webchat/user/login")
 	public void userLogin(String login) throws InterruptedException {
 		users.add(login);
-		if(userRepository.findOneByLogin(login) == null){
+		if (userRepository.findOneByLogin(login) == null) {
 			throw new IllegalAccessError();
 		}
 		usersCount();

@@ -19,10 +19,10 @@ import com.gpw.radar.repository.chat.ChatMessageRepository;
 
 @Service
 public class ChatMessageService {
-	
+
 	@Inject
 	private ChatMessageRepository chatMessageRepository;
-	
+
 	public ResponseEntity<List<ChatMessage>> getLastMessages(int page) {
 		List<ChatMessage> reverse = getMessages(page);
 		Collections.reverse(reverse);
@@ -33,7 +33,7 @@ public class ChatMessageService {
 		List<ChatMessage> messages = getMessages(page);
 		return new ResponseEntity<List<ChatMessage>>(messages, HttpStatus.OK);
 	}
-	
+
 	private List<ChatMessage> getMessages(int page) {
 		Pageable pageRequest = new PageRequest(page, 10, Sort.Direction.DESC, "createdDate");
 		Page<ChatMessage> messages = chatMessageRepository.findAll(pageRequest);

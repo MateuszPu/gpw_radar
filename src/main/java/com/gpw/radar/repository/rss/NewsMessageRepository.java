@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.gpw.radar.domain.enumeration.RssType;
 import com.gpw.radar.domain.rss.NewsMessage;
 
-public interface NewsMessageRepository extends JpaRepository<NewsMessage, Long>{
+public interface NewsMessageRepository extends JpaRepository<NewsMessage, Long> {
 
 	Page<NewsMessage> findByType(RssType type, Pageable pageable);
 }
