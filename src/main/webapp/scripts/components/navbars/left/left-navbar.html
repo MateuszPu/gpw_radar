@@ -25,7 +25,7 @@
                 </div>
             </li>
             <li ng-class="{active: $state.includes('dashboards')}">
-                <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">{{ 'DASHBOARD' | translate }}</span>
+                <a ui-sref="home"><i class="fa fa-th-large"></i> <span class="nav-label">{{ 'DASHBOARD' | translate }}</span>
                     <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level" ng-class="{in: $state.includes('dashboards')}">
                     <li ui-sref-active="active"><a ui-sref="dashboards.dashboard_1">{{ 'DASHBOARD' | translate }}
@@ -39,35 +39,40 @@
                 </ul>
             </li>
             <li ui-sref-active="stockslist">
-                <a ui-sref="administrationPanel"><i class="fa fa-briefcase">
-                </i><span translate="global.menu.account.administrationPanel"> Administration Panel</span>
+                <a ui-sref="administrationPanel">
+	                <i class="fa fa-briefcase"></i>
+	                <span translate="global.menu.account.administrationPanel"> Administration Panel</span>
                 </a>
             </li>
             <li ui-sref-active="stockslist">
-                <a ui-sref="stockslist"><i class="fa fa-database">
-                </i><span translate="global.leftsidemenu.stockList"> Stocks List</span>
+                <a ui-sref="stockslist">
+                	<i class="fa fa-database"></i>
+                	<span translate="global.leftsidemenu.stockList"> Stocks List</span>
                 </a>
             </li>
             <li>
-                <a href=""><i class="fa fa-area-chart"></i> <span class="nav-label"
-                                                                  translate="global.leftsidemenu.technicalAnalysis.title">Technical analysis</span>
-                    <span class="fa arrow"></span></a>
+                <a href=""><i class="fa fa-area-chart"></i> 
+                	<span class="nav-label" translate="global.leftsidemenu.technicalAnalysis.title">Technical analysis</span>
+                    <span class="fa arrow"></span>
+                </a>
                 <ul class="nav nav-second-level">
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href=""><i class="fa fa-line-chart"></i><span translate="global.leftsidemenu.technicalAnalysis.trends.title">Trends</span> <span
-                                class="fa arrow"></span></a>
+                            <a href=""><i class="fa fa-line-chart"></i>
+                            	<span translate="global.leftsidemenu.technicalAnalysis.trends.title">Trends</span> 
+                                <span class="fa arrow"></span>
+                            </a>
                             <ul class="nav nav-third-level">
                                 <li>
-                                    <a ui-sref="stocksTrendUp"><span class="fa fa-arrow-up fa-fw">
-                    		            </span><span
-                                        translate="global.leftsidemenu.technicalAnalysis.trends.trendUp">Stocks trend up</span>
+                                    <a ui-sref="stocksTrendUp">
+                                    	<span class="fa fa-arrow-up fa-fw"></span>
+                                        <span translate="global.leftsidemenu.technicalAnalysis.trends.trendUp">Stocks trend up</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a ui-sref="stocksTrendDown"><span class="fa fa-arrow-down fa-fw">
-                    		            </span><span
-                                        translate="global.leftsidemenu.technicalAnalysis.trends.trendDown">Stocks trend down</span>
+                                    <a ui-sref="stocksTrendDown">
+                                    	<span class="fa fa-arrow-down fa-fw"></span>
+                                        <span translate="global.leftsidemenu.technicalAnalysis.trends.trendDown">Stocks trend down</span>
                                     </a>
                                 </li>
                             </ul>
@@ -86,9 +91,10 @@
             </li>
 
             <li>
-                <a href=""><i class="fa fa-calculator"></i> <span class="nav-label"
-                                                                  translate="global.leftsidemenu.statisticalAnalysis.title">Statistical analysis</span>
-                    <span class="fa arrow"></span></a>
+                <a href=""><i class="fa fa-calculator"></i> 
+                	<span class="nav-label" translate="global.leftsidemenu.statisticalAnalysis.title">Statistical analysis</span>
+                    <span class="fa arrow"></span>
+                </a>
                 <ul class="nav nav-second-level">
                     <ul class="nav nav-second-level">
                         <li>
