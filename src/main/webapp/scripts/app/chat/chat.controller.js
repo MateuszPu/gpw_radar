@@ -1,5 +1,5 @@
 angular.module('gpwradarApp')
-    .controller('ChatController', function ($scope, $window, $http, ngstomp, ChatMessage, Principal) {
+    .controller('ChatController', function ($scope, $window, $http, ngstomp, ChatMessage, Principal, Auth) {
     	
     	$scope.showSystemMessage = true;
     	
@@ -12,7 +12,7 @@ angular.module('gpwradarApp')
     		}
     	}
     	
-    	Principal.identity().then(function(account){
+    	Principal.identity().then(function(account) {
     		ngstomp.send('/app/webchat/user/login', account.login);
     		$scope.login = account.login;
     	});
@@ -55,22 +55,13 @@ angular.module('gpwradarApp')
 	    };
         
         $window.onbeforeunload = function (evt) {
-        	$scope.logout();
+        	Auth.logout(false);
         }
         
 	    $scope.$on('$destroy', function() {
-	    	$scope.logout();
+	    	Auth.logout(false);
 	    });
 	    
-	    $scope.logout = function() {
-	    	ngstomp.send('/app/webchat/user/logout', $scope.login);
-	    	ngstomp.unsubscribe('/webchat/recive', unsubscribe);
-	    	ngstomp.unsubscribe('/webchat/user', unsubscribe);
-	    }
-    	
-    	function unsubscribe() {
- 	    }
-    	
     	$scope.$watch('message', function (newValue, oldValue) {
 			if (newValue) {
 				if (newValue.length > 90) {

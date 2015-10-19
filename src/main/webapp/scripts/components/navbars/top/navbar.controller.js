@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('gpwradarApp')
-    .controller('NavbarController', function ($scope, $location, $state, Auth, Principal) {
+    .controller('NavbarController', function ($scope, $location, $state, Auth, Principal, ngstomp) {
         $scope.isAuthenticated = Principal.isAuthenticated;
         $scope.isInRole = Principal.isInRole;
         $scope.$state = $state;
         
         $scope.logout = function () {
-            Auth.logout();
+            Auth.logout(true);
             $state.go('home');
         };
     });

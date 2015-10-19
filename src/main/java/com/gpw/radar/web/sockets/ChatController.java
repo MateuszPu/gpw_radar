@@ -38,7 +38,7 @@ public class ChatController {
 
 	@MessageMapping("/webchat/user/login")
 	public void userLogin(String login) throws InterruptedException {
-		users.add(login);
+		users.add(login.substring(1, login.length()-1));
 		if (userRepository.findOneByLogin(login) == null) {
 			throw new IllegalAccessError();
 		}
@@ -47,7 +47,8 @@ public class ChatController {
 	}
 
 	@MessageMapping("/webchat/user/logout")
-	public void userLogout(String login) {
+	public void userLogout(Principal principal) {
+		String login = principal.getName();
 		users.remove(login);
 		usersCount();
 		template.convertAndSend("/webchat/user", users);

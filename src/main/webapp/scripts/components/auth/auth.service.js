@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('gpwradarApp')
-    .factory('Auth', function Auth($rootScope, $state, $q, $translate, Principal, AuthServerProvider, amMoment, Account, Register, Activate, Password, PasswordResetInit, PasswordResetFinish) {
+    .factory('Auth', function Auth($rootScope, $state, $q, $translate, Principal, AuthServerProvider, amMoment, Account, Register, Activate, Password, PasswordResetInit, PasswordResetFinish, ngstomp) {
         return {
             login: function (credentials, callback) {
                 var cb = callback || angular.noop;
@@ -26,10 +26,15 @@ angular.module('gpwradarApp')
 
                 return deferred.promise;
             },
-
-            logout: function () {
-                AuthServerProvider.logout();
-                Principal.authenticate(null);
+            
+            logout: function (force) {
+            	ngstomp.send('/app/webchat/user/logout');
+    	    	ngstomp.unsubscribe('/webchat/recive');
+    	    	ngstomp.unsubscribe('/webchat/user');
+    	    	if(force) {
+		    		AuthServerProvider.logout();
+		    		Principal.authenticate(null);
+    	    	}
             },
 
             authorize: function(force) {
