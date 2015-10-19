@@ -34,11 +34,15 @@
                         v.2</a></li>
                     <li ui-sref-active="active"><a ui-sref="dashboards.dashboard_3">{{ 'DASHBOARD' | translate }}
                         v.3</a></li>
-                    <li ui-sref-active="active"><a ui-sref="news"><i class="fa fa-newspaper-o">
-                </i><span translate="global.menu.dashboards.news"> News</span></a></li>
+                    <li ui-sref-active="active">
+                    	<a ui-sref="news">
+	                    	<i class="fa fa-newspaper-o"></i>
+	                    	<span translate="global.menu.dashboards.news"> News</span>
+                    	</a>
+                	</li>
                 </ul>
             </li>
-            <li ui-sref-active="stockslist">
+            <li ui-sref-active="administrationPanel">
                 <a ui-sref="administrationPanel">
 	                <i class="fa fa-briefcase"></i>
 	                <span translate="global.menu.account.administrationPanel"> Administration Panel</span>
@@ -96,17 +100,15 @@
                     <span class="fa arrow"></span>
                 </a>
                 <ul class="nav nav-second-level">
-                    <ul class="nav nav-second-level">
-                        <li>
-                            <a  ui-sref="correlation"><i class="fa fa-random"></i><span translate="global.leftsidemenu.statisticalAnalysis.correlation">Correlation</span></a>
-                        </li>
-                        <li>
-                            <a href="">Second Level Item</a>
-                        </li>
-                        <li>
-                            <a href="">Second Level Item</a>
-                        </li>
-                    </ul>
+                    <li>
+                        <a  ui-sref="correlation"><i class="fa fa-random"></i><span translate="global.leftsidemenu.statisticalAnalysis.correlation">Correlation</span></a>
+                    </li>
+                    <li>
+                        <a href="">Second Level Item</a>
+                    </li>
+                    <li>
+                        <a href="">Second Level Item</a>
+                    </li>
                 </ul>
             </li>
         </ul>
