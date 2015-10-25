@@ -16,6 +16,7 @@ angular.module('gpwradarApp')
                         $translate.use(account.langKey);
                         $translate.refresh();
                         deferred.resolve(data);
+                        ngstomp.connect();
                     });
                     return cb();
                 }).catch(function (err) {
@@ -31,10 +32,10 @@ angular.module('gpwradarApp')
             	ngstomp.send('/app/webchat/user/logout');
     	    	ngstomp.unsubscribe('/webchat/recive');
     	    	ngstomp.unsubscribe('/webchat/user');
-    	    	if(force) {
+            	if(force) {
 		    		AuthServerProvider.logout();
 		    		Principal.authenticate(null);
-    	    	}
+            	}
             },
 
             authorize: function(force) {

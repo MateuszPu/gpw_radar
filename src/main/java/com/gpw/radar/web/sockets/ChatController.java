@@ -8,24 +8,20 @@ import javax.inject.Inject;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 
 import com.gpw.radar.domain.chat.ChatMessage;
-import com.gpw.radar.repository.UserRepository;
 import com.gpw.radar.service.chat.MessageService;
 
 @Controller
 public class ChatController {
 
 	@Inject
-	private SimpMessagingTemplate template;
+	private SimpMessageSendingOperations messagingTemplate;
 
 	@Inject
 	private MessageService messageService;
-
-	@Inject
-	private UserRepository userRepository;
 
 	private Set<String> users = new HashSet<String>();
 
@@ -37,13 +33,10 @@ public class ChatController {
 	}
 
 	@MessageMapping("/webchat/user/login")
-	public void userLogin(String login) throws InterruptedException {
-		users.add(login.substring(1, login.length()-1));
-		if (userRepository.findOneByLogin(login) == null) {
-			throw new IllegalAccessError();
-		}
+	public void userLogin(Principal principal) throws InterruptedException {
+		users.add(principal.getName());
 		usersCount();
-		template.convertAndSend("/webchat/user", users);
+		messagingTemplate.convertAndSend("/webchat/user", users);
 	}
 
 	@MessageMapping("/webchat/user/logout")
@@ -51,7 +44,7 @@ public class ChatController {
 		String login = principal.getName();
 		users.remove(login);
 		usersCount();
-		template.convertAndSend("/webchat/user", users);
+		messagingTemplate.convertAndSend("/webchat/user", users);
 	}
 
 	@MessageMapping("/webchat/user/app/on")
@@ -60,6 +53,6 @@ public class ChatController {
 	}
 
 	public void usersCount() {
-		template.convertAndSend("/webchat/count", users.size());
+		messagingTemplate.convertAndSend("/webchat/count", users.size());
 	}
 }

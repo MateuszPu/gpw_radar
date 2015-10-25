@@ -1,5 +1,5 @@
 angular.module('gpwradarApp')
-    .controller('ChatController', function ($scope, $window, $http, ngstomp, ChatMessage, Principal, Auth) {
+    .controller('ChatController', function ($scope, $window, $http, ngstomp, ChatMessage, Auth) {
     	
     	$scope.showSystemMessage = true;
     	
@@ -11,11 +11,6 @@ angular.module('gpwradarApp')
     			return login != 'system';
     		}
     	}
-    	
-    	Principal.identity().then(function(account) {
-    		ngstomp.send('/app/webchat/user/login', account.login);
-    		$scope.login = account.login;
-    	});
     	
         $scope.messages = ChatMessage.getMessages({page: 0}); 
         
@@ -53,6 +48,8 @@ angular.module('gpwradarApp')
 	        }
 	        $scope.message = "";
 	    };
+	    
+	    ngstomp.send('/app/webchat/user/login');
         
         $window.onbeforeunload = function (evt) {
         	Auth.logout(false);

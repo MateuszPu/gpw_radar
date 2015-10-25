@@ -16,7 +16,7 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -54,8 +54,8 @@ public class RssParserService {
 	private MailService mailService;
 
 	@Inject
-	private SimpMessagingTemplate template;
-
+    private SimpMessageSendingOperations messagingTemplate;
+	
 	private Map<RssType, LocalDateTime> rssLinks;
 
 	@Scheduled(cron = "*/3 * 8-17 * * MON-FRI")
@@ -101,7 +101,7 @@ public class RssParserService {
 					if (rssType.equals(RssType.EBI) || rssType.equals(RssType.ESPI)) {
 						mailService.informUserAboutStockNewsByEmail(message);
 					}
-					template.convertAndSend("/webchat/recive", (ChatMessage) message);
+					messagingTemplate.convertAndSend("/webchat/recive", (ChatMessage) message);
 				} else {
 					break;
 				}
@@ -130,7 +130,7 @@ public class RssParserService {
 	}
 
 	private Stock getStockFromTitle(String message) {
-		Pattern pattern = Pattern.compile("([£•” åØè∆—0-9A-Z-/.] *)*");
+		Pattern pattern = Pattern.compile("([ÔøΩÔøΩÔøΩ åÔøΩÔøΩÔøΩÔøΩ0-9A-Z-/.] *)*");
 		Matcher matcher = pattern.matcher(message);
 		if (matcher.find()) {
 			return stockRepository.findByStockName(matcher.group(0).substring(0, matcher.group(0).length() - 1).trim());
