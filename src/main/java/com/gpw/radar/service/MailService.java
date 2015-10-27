@@ -108,7 +108,7 @@ public class MailService {
 			return;
 		}
 		List<User> usersToSendEmail = userRepository.findAllByStocks(message.getStock());
-		String mailTopic = "[Kana³: " + message.getType().toString() + "] [" + message.getStock().getTicker().toString().toUpperCase() + "]" + message.getMessage();
+		String mailTopic = "[Kanal: " + message.getType().toString() + "] [" + message.getStock().getTicker().toString().toUpperCase() + "]" + message.getMessage();
 		for (User user : usersToSendEmail) {
 			sendEmail(user.getEmail(), mailTopic, message.getChatMessage(), false, true);
 		}
