@@ -2,7 +2,7 @@
 
 describe('Controllers Tests ', function () {
 
-    beforeEach(module('gpwradarApp'));
+    beforeEach(module('gpwRadarApp'));
 
     describe('LoginController', function () {
         var $scope;

@@ -7,12 +7,11 @@ import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -39,7 +38,7 @@ public class GpwParser implements StockDetailsParser {
 	// private final int indexOfTransactionCount = 20;
 	private static final int indexOfVolume = 21;
 	private static final int indexOfLastClosePrice = 6;
-	private static final DateTimeFormatter dtfType = DateTimeFormat.forPattern("dd-MM-yyyy");
+	private static final DateTimeFormatter dtfType = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
 	@Override
 	public List<StockDetails> getCurrentStockDetails() {
@@ -141,7 +140,7 @@ public class GpwParser implements StockDetailsParser {
 		}
 
 		Elements el = doc.select("div[class=\"colFL\"]");
-		LocalDate date = dtfType.parseLocalDate(el.first().text());
+		LocalDate date = LocalDate.parse(el.first().text(), dtfType);
 		return date;
 	}
 

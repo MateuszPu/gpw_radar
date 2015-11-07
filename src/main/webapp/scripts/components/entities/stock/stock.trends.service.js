@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .factory('StockTrends', function ($resource) {
         return $resource('', {}, {
             'getTrendsUp': { method: 'GET', url: 'api/stocks/trends/UP/days', isArray: true},

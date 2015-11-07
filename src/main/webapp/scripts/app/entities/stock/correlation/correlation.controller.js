@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .controller('CorrelationController', function ($scope, $sce, $timeout, Stock, Correlation, CorrelationStep) {
         $scope.periods = ['10', '20', '30', '60', '90'];
         $scope.selected = {};

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .controller('LogsController', function ($scope, LogsService) {
         $scope.loggers = LogsService.findAll();
 

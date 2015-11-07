@@ -1,4 +1,4 @@
-angular.module('gpwradarApp').directive('ngEnter', function() {
+angular.module('gpwRadarApp').directive('ngEnter', function() {
     return function(scope, element, attrs) {
         element.bind("keydown", function(e) {
             if(e.which === 13) {

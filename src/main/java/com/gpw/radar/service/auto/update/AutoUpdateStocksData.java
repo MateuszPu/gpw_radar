@@ -1,12 +1,12 @@
 package com.gpw.radar.service.auto.update;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,4 +1,4 @@
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .directive('trendingTable', function() {
         return {
             scope: {

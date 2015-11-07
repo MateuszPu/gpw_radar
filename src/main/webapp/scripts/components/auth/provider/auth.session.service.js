@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .factory('AuthServerProvider', function loginService($http, localStorageService, $window) {
         return {
             login: function(credentials) {

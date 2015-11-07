@@ -1,22 +1,16 @@
 package com.gpw.radar.domain;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.Type;
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
 
 /**
  * Persistent tokens are used by Spring Security to automatically log in users.
@@ -27,7 +21,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "PERSISTENT_TOKEN")
 public class PersistentToken implements Serializable {
 
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("d MMMM yyyy");
+    
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("d MMMM yyyy");
+    
+    
 
     private static final int MAX_USER_AGENT_LEN = 255;
 
@@ -41,7 +38,6 @@ public class PersistentToken implements Serializable {
 
     @JsonIgnore
     @Column(name = "token_date")
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
     private LocalDate tokenDate;
 
     //an IPV6 address max length is 39 characters
@@ -82,7 +78,7 @@ public class PersistentToken implements Serializable {
 
     @JsonGetter
     public String getFormattedTokenDate() {
-        return DATE_TIME_FORMATTER.print(this.tokenDate);
+        return DATE_TIME_FORMATTER.format(this.tokenDate);
     }
 
     public String getIpAddress() {
@@ -139,11 +135,11 @@ public class PersistentToken implements Serializable {
     @Override
     public String toString() {
         return "PersistentToken{" +
-                "series='" + series + '\'' +
-                ", tokenValue='" + tokenValue + '\'' +
-                ", tokenDate=" + tokenDate +
-                ", ipAddress='" + ipAddress + '\'' +
-                ", userAgent='" + userAgent + '\'' +
-                "}";
+            "series='" + series + '\'' +
+            ", tokenValue='" + tokenValue + '\'' +
+            ", tokenDate=" + tokenDate +
+            ", ipAddress='" + ipAddress + '\'' +
+            ", userAgent='" + userAgent + '\'' +
+            "}";
     }
 }

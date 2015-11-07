@@ -1,4 +1,4 @@
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .factory('StockFinanceEvent', function ($resource) {
         return $resource('api/stockFinanceEvents/:id', {}, {
             'query': { method: 'GET', isArray: true},

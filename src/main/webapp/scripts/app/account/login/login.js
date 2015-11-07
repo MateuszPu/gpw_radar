@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .config(function ($stateProvider) {
         $stateProvider
             .state('login', {
                 parent: 'account',
                 url: '/login',
                 data: {
-                    roles: [], 
+                    authorities: [], 
                     pageTitle: 'login.title'
                 },
                 views: {

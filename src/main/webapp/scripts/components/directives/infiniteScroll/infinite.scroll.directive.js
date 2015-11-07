@@ -1,4 +1,4 @@
-angular.module('gpwradarApp').directive('upwardsScoll', function ($timeout) {
+angular.module('gpwRadarApp').directive('upwardsScoll', function ($timeout) {
     return {
         link: function (scope, elem, attr, ctrl) {
             var raw = elem[0];

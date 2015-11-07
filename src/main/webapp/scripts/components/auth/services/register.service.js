@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .factory('Register', function ($resource) {
         return $resource('api/register', {}, {
         });

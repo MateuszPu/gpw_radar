@@ -6,9 +6,9 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 
 import com.gpw.radar.domain.chat.ChatMessage;
@@ -25,21 +25,21 @@ public class ChatController {
 
 	private Set<String> users = new HashSet<String>();
 
-	@MessageMapping("/webchat/send/message")
+	@SubscribeMapping("/webchat/send/message")
 	@SendTo("/webchat/recive")
-	public ChatMessage sendChatMessage(String message, Principal principal) {
-		ChatMessage msg = messageService.createUserMessage(message, principal);
+	public ChatMessage sendChatMessage(Message message, Principal principal) {
+		ChatMessage msg = messageService.createUserMessage(message.getMessage(), principal);
 		return msg;
 	}
 
-	@MessageMapping("/webchat/user/login")
+	@SubscribeMapping("/webchat/user/login")
 	public void userLogin(Principal principal) throws InterruptedException {
 		users.add(principal.getName());
 		usersCount();
 		messagingTemplate.convertAndSend("/webchat/user", users);
 	}
 
-	@MessageMapping("/webchat/user/logout")
+	@SubscribeMapping("/webchat/user/logout")
 	public void userLogout(Principal principal) {
 		String login = principal.getName();
 		users.remove(login);
@@ -47,12 +47,22 @@ public class ChatController {
 		messagingTemplate.convertAndSend("/webchat/user", users);
 	}
 
-	@MessageMapping("/webchat/user/app/on")
+	@SubscribeMapping("/webchat/user/app/on")
 	public void applicationOn() {
 		usersCount();
 	}
 
 	public void usersCount() {
 		messagingTemplate.convertAndSend("/webchat/count", users.size());
+	}
+	
+	static class Message {
+	    private String message;
+		public String getMessage() {
+			return message;
+		}
+		public void setMessage(String message) {
+			this.message = message;
+		}
 	}
 }

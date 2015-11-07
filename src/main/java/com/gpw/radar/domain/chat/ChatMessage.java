@@ -1,5 +1,7 @@
 package com.gpw.radar.domain.chat;
 
+import java.time.ZonedDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -11,10 +13,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
-import org.springframework.data.annotation.CreatedDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gpw.radar.domain.User;
@@ -37,11 +35,9 @@ public abstract class ChatMessage {
 	@Column(name = "user_login", nullable = false)
 	private String userLogin;
 
-	@CreatedDate
-    @NotNull
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@NotNull
     @Column(name = "created_date", nullable = false)
-    private DateTime createdDate = DateTime.now();
+    private ZonedDateTime createdDate = ZonedDateTime.now();
 	
 	public abstract String getChatMessage();
 
@@ -69,11 +65,12 @@ public abstract class ChatMessage {
 		this.userLogin = userLogin;
 	}
 
-	public DateTime getCreatedDate() {
+	public ZonedDateTime getCreatedDate() {
 		return createdDate;
 	}
 
-	public void setCreatedDate(DateTime createdDate) {
+	public void setCreatedDate(ZonedDateTime createdDate) {
 		this.createdDate = createdDate;
 	}
+
 }

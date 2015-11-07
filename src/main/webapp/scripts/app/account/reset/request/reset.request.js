@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .config(function ($stateProvider) {
         $stateProvider
             .state('requestReset', {
                 parent: 'account',
                 url: '/reset/request',
                 data: {
-                    roles: []
+                    authorities: []
                 },
                 views: {
                     'content@': {

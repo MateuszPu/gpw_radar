@@ -1,4 +1,4 @@
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
 .controller('AdministrationPanelController', function ($scope, $http, $timeout, $filter, 
     		StocksFollowed, ApplicationStatus, StockFinanceEvent, DateUtils) {
         //scope for app status

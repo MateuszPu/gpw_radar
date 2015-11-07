@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .controller('ActivationController', function ($scope, $stateParams, Auth) {
         Auth.activateAccount({key: $stateParams.key}).then(function () {
             $scope.error = null;

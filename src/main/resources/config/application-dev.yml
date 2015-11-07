@@ -1,49 +1,68 @@
-server:
-    port: 8080
+# ===================================================================
+# Spring Boot configuration for the "dev" profile.
+#
+# This configuration overrides the application.yml file.
+# ===================================================================
 
-liquibase:
-    context: dev
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
 
 spring:
     profiles:
         active: dev
+    devtools:
+        restart:
+            enabled: true
+        livereload:
+            enabled: false # we use Grunt + BrowserSync for livereload
     datasource:
-        dataSourceClassName: org.postgresql.ds.PGSimpleDataSource
-        url: 
-        databaseName: gpw_radar
-        serverName: localhost
+        driver-class-name: org.postgresql.ds.PGSimpleDataSource
+        url: jdbc:postgresql://localhost:5432/gpw_radar
+        name:
         username: postgres
         password: postgres
-
     jpa:
-        database-platform: org.hibernate.dialect.PostgreSQL82Dialect
+        database-platform: com.gpw.radar.domain.util.FixedPostgreSQL82Dialect
         database: POSTGRESQL
-        openInView: false
-        show_sql: false
-        generate-ddl: false
-        hibernate:
-            ddl-auto: none
-            naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
+        show_sql: true
         properties:
             hibernate.cache.use_second_level_cache: false
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
+    mail:
+        host: smtp.gmail.com
+        port: 587
+        username: gpw.radar@gmail.com
+        password: zaxscdvf89
     messages:
         cache-seconds: 1
     thymeleaf:
-        mode: XHTML
         cache: false
 
-metrics:
-    jmx.enabled: true
-    spark:
-        enabled: false
-        host: localhost
-        port: 9999
-    graphite:
-        enabled: false
-        host: localhost
-        port: 2003
-        prefix: gpwRadar
+liquibase:
+    contexts: dev
 
+server:
+    port: 8080
 
+# ===================================================================
+# JHipster specific properties
+# ===================================================================
+
+jhipster:
+    mail: # specific JHipster mail property, for standard properties see MailProperties
+        from: gpw.radar@gmail.com
+    metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
+        jmx.enabled: true
+        spark:
+            enabled: false
+            host: localhost
+            port: 9999
+        graphite:
+            enabled: false
+            host: localhost
+            port: 2003
+            prefix: gpw_radar

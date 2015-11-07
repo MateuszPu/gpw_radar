@@ -1,4 +1,4 @@
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
 .directive('icheck', function icheck($timeout) {
     return {
         restrict: 'A',

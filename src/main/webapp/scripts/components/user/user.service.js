@@ -1,4 +1,6 @@
-angular.module('gpwradarApp')
+'use strict';
+
+angular.module('gpwRadarApp')
     .factory('User', function ($resource) {
         return $resource('api/users/:login', {}, {
                 'query': {method: 'GET', isArray: true},
@@ -8,6 +10,7 @@ angular.module('gpwradarApp')
                         data = angular.fromJson(data);
                         return data;
                     }
-                }
+                },
+                'update': { method:'PUT' }
             });
         });

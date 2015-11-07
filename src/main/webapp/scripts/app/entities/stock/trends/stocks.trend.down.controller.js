@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .controller('StockTrendsDownController', function ($scope, $http, $filter, StockTrends, ParseLinks, StocksFollowed) {
         $scope.stocksTrendsDown10Days = [];
         $scope.stocksTrendsDown30Days = [];

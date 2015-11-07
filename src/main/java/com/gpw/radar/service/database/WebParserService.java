@@ -6,12 +6,11 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.inject.Inject;
 
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -33,15 +32,15 @@ public class WebParserService {
 	@Inject
 	private StockFinanceEventRepository stockFinanceEventRepository;
 
-	private final DateTimeFormatter dtfTypeOne = DateTimeFormat.forPattern("yyyy-MM-dd");
-	private final DateTimeFormatter dtfTypeTwo = DateTimeFormat.forPattern("yyyyMMdd");
+	private final DateTimeFormatter dtfTypeOne = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	private final DateTimeFormatter dtfTypeTwo = DateTimeFormatter.ofPattern("yyyyMMdd");
 	private LocalDate dt;
 
 	public LocalDate parseLocalDateFromString(String date) {
 		if (date.contains("-")) {
-			dt = dtfTypeOne.parseLocalDate(date);
+			dt = LocalDate.parse(date, dtfTypeOne);
 		} else {
-			dt = dtfTypeTwo.parseLocalDate(date);
+			dt = LocalDate.parse(date, dtfTypeTwo);
 		}
 		return dt;
 	}

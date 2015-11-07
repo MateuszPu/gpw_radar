@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .factory('ConfigurationService', function ($rootScope, $filter, $http) {
         return {
             get: function() {

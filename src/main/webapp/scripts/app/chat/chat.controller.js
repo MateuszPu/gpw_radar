@@ -1,5 +1,5 @@
-angular.module('gpwradarApp')
-    .controller('ChatController', function ($scope, $window, $http, ngstomp, ChatMessage, Auth) {
+angular.module('gpwRadarApp')
+    .controller('ChatController', function ($scope, $window, $http, ChatMessage, Websocket) {
     	
     	$scope.showSystemMessage = true;
     	
@@ -31,32 +31,36 @@ angular.module('gpwradarApp')
             counter++;
         };
         
-        ngstomp.subscribe('/webchat/user',  newUserConnected);
-        function newUserConnected(user) {
+        Websocket.subscribeUsersOnChat();
+        Websocket.receiveUsersOnChat().then(null, null, function(user) {
         	$scope.users = JSON.parse(user.body);
-        };
+        });
         
-        ngstomp.subscribe('/webchat/recive',  messageFromServer);
-        function messageFromServer(message) {
+        Websocket.subscribeChatMessages();
+        
+        Websocket.userLoginToChat();
+        Websocket.reciveChatMessages().then(null, null, function(message) {
         	$scope.messages.push(JSON.parse(message.body));
-        };
+        });
         
 	    $scope.sendMessage = function() {
-	        ngstomp.send('/app/webchat/send/message', $scope.message);
+//	        ngstomp.send('/app/webchat/send/message', $scope.message);
+	        Websocket.sendMessageToChat($scope.message);
 	        if($scope.messages.length > 15){
 	        	$scope.messages.splice(0, $scope.messages.length-15);
 	        }
 	        $scope.message = "";
 	    };
-	    
-	    ngstomp.send('/app/webchat/user/login');
-        
+
         $window.onbeforeunload = function (evt) {
-        	Auth.logout(false);
+        	Websocket.userLeaveChat();
+        	Websocket.unsubscribeChat();
+	    	
         }
         
 	    $scope.$on('$destroy', function() {
-	    	Auth.logout(false);
+	    	Websocket.userLeaveChat();
+	    	Websocket.unsubscribeChat();
 	    });
 	    
     	$scope.$watch('message', function (newValue, oldValue) {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .controller('PasswordController', function ($scope, Auth, Principal) {
         Principal.identity().then(function(account) {
             $scope.account = account;

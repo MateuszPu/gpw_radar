@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('gpwradarApp')
-    .factory('Auth', function Auth($rootScope, $state, $q, $translate, Principal, AuthServerProvider, amMoment, Account, Register, Activate, Password, PasswordResetInit, PasswordResetFinish, ngstomp) {
+angular.module('gpwRadarApp')
+    .factory('Auth', function Auth($rootScope, $state, $q, $translate, amMoment, Principal, AuthServerProvider, Account, Register, Activate, Password, PasswordResetInit, PasswordResetFinish, Websocket) {
         return {
             login: function (credentials, callback) {
                 var cb = callback || angular.noop;
@@ -13,10 +13,11 @@ angular.module('gpwradarApp')
                         // After the login the language will be changed to
                         // the language selected by the user during his registration
                     	amMoment.changeLocale(account.langKey);
-                        $translate.use(account.langKey);
-                        $translate.refresh();
+                    	Websocket.connect();
+                        $translate.use(account.langKey).then(function(){
+                            $translate.refresh();
+                        });
                         deferred.resolve(data);
-                        ngstomp.connect();
                     });
                     return cb();
                 }).catch(function (err) {
@@ -27,15 +28,13 @@ angular.module('gpwradarApp')
 
                 return deferred.promise;
             },
-            
-            logout: function (force) {
-            	ngstomp.send('/app/webchat/user/logout');
-    	    	ngstomp.unsubscribe('/webchat/recive');
-    	    	ngstomp.unsubscribe('/webchat/user');
-            	if(force) {
-		    		AuthServerProvider.logout();
-		    		Principal.authenticate(null);
-            	}
+
+            logout: function () {
+                AuthServerProvider.logout();
+                Principal.authenticate(null);
+                // Reset state memory
+                $rootScope.previousStateName = undefined;
+                $rootScope.previousStateNameParams = undefined;
             },
 
             authorize: function(force) {
@@ -43,7 +42,12 @@ angular.module('gpwradarApp')
                     .then(function() {
                         var isAuthenticated = Principal.isAuthenticated();
 
-                        if ($rootScope.toState.data.roles && $rootScope.toState.data.roles.length > 0 && !Principal.isInAnyRole($rootScope.toState.data.roles)) {
+                        // an authenticated user can't access to login and register pages
+                        if (isAuthenticated && $rootScope.toState.parent === 'account' && ($rootScope.toState.name === 'login' || $rootScope.toState.name === 'register')) {
+                            $state.go('home');
+                        }
+
+                        if ($rootScope.toState.data.authorities && $rootScope.toState.data.authorities.length > 0 && !Principal.hasAnyAuthority($rootScope.toState.data.authorities)) {
                             if (isAuthenticated) {
                                 // user is signed in but not authorized for desired state
                                 $state.go('accessdenied');
@@ -51,8 +55,8 @@ angular.module('gpwradarApp')
                             else {
                                 // user is not authenticated. stow the state they wanted before you
                                 // send them to the signin state, so you can return them when you're done
-                                $rootScope.returnToState = $rootScope.toState;
-                                $rootScope.returnToStateParams = $rootScope.toStateParams;
+                                $rootScope.previousStateName = $rootScope.toState;
+                                $rootScope.previousStateNameParams = $rootScope.toStateParams;
 
                                 // now, send them to the signin state so they can log in
                                 $state.go('login');
@@ -117,10 +121,10 @@ angular.module('gpwradarApp')
                 }).$promise;
             },
 
-            resetPasswordFinish: function(key, newPassword, callback) {
+            resetPasswordFinish: function(keyAndPassword, callback) {
                 var cb = callback || angular.noop;
 
-                return PasswordResetFinish.save(key, newPassword, function () {
+                return PasswordResetFinish.save(keyAndPassword, function () {
                     return cb();
                 }, function (err) {
                     return cb(err);

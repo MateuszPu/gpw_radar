@@ -2,8 +2,8 @@ package com.gpw.radar.domain.enumeration;
 
 public enum RssType {
 	RESULTS("http://biznes.pap.pl/pl/rss/6639"), CHALLENGE("http://biznes.pap.pl/pl/rss/6638"), 
-	RECOMMENDATIONS("http://biznes.pap.pl/pl/rss/6634"), PAP("http://biznes.pap.pl/pl/rss/6608"), 
-	EBI("http://biznes.pap.pl/pl/rss/6612"), ESPI("http://biznes.pap.pl/pl/rss/6614");
+	RECOMMENDATIONS("http://www.gpwinfostrefa.pl/GPWIS2/pl/rss/34"), PAP("http://biznes.pap.pl/pl/rss/6608"), 
+	EBI("http://www.gpwinfostrefa.pl/GPWIS2/pl/rss/10"), ESPI("http://www.gpwinfostrefa.pl/GPWIS2/pl/rss/9");
 
 	private String url;
 

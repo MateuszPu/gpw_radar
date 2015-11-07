@@ -1,7 +1,8 @@
 package com.gpw.radar.repository;
 
 import com.gpw.radar.domain.PersistentAuditEvent;
-import org.joda.time.LocalDateTime;
+
+import java.time.LocalDateTime;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * Spring Data JPA repository for the PersistentAuditEvent entity.
  */
-public interface PersistenceAuditEventRepository extends JpaRepository<PersistentAuditEvent, String> {
+public interface PersistenceAuditEventRepository extends JpaRepository<PersistentAuditEvent, Long> {
 
     List<PersistentAuditEvent> findByPrincipal(String principal);
 

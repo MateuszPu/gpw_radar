@@ -7,12 +7,9 @@
                 <h2 translate="audits.title">Audits</h2>
             </div>
             <div class="ibox-content">
-
-
                 <div class="row">
                     <div class="col-md-5">
                         <h4 translate="audits.filter.title">Filter by date</h4>
-
                         <p class="input-group">
                             <span class="input-group-addon" translate="audits.filter.from">from</span>
                             <input type="date" class="input-sm form-control" name="start" ng-model="fromDate"
@@ -23,7 +20,6 @@
                         </p>
                     </div>
                 </div>
-
 
                 <table class="table table-condensed table-striped table-bordered table-responsive">
                     <thead>
@@ -42,7 +38,6 @@
                         </th>
                     </tr>
                     </thead>
-
                     <tr ng-repeat="audit in audits | filter:filter | orderBy:predicate:reverse"
                         ng-hide="audit.filtered">
                         <td><span>{{audit.timestamp| date:'medium'}}</span></td>

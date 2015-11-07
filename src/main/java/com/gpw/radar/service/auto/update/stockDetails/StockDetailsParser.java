@@ -1,8 +1,7 @@
 package com.gpw.radar.service.auto.update.stockDetails;
 
+import java.time.LocalDate;
 import java.util.List;
-
-import org.joda.time.LocalDate;
 
 import com.gpw.radar.domain.stock.StockDetails;
 

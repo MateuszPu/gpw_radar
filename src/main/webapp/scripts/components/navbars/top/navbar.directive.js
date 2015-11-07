@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .directive('activeMenu', function($translate, $locale, tmhDynamicLocale) {
         return {
             restrict: 'A',

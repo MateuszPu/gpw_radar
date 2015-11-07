@@ -1,7 +1,4 @@
-/* globals $ */
-'use strict';
-
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .directive('simplePagination', function() {
         return {
             scope: {

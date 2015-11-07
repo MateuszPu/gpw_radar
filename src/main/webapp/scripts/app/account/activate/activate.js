@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .config(function ($stateProvider) {
         $stateProvider
             .state('activate', {
                 parent: 'account',
                 url: '/activate?key',
                 data: {
-                    roles: [],
+                    authorities: [],
                     pageTitle: 'activate.title'
                 },
                 views: {
@@ -24,4 +24,3 @@ angular.module('gpwradarApp')
                 }
             });
     });
-

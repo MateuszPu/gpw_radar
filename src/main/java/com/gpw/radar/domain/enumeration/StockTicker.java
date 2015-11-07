@@ -14,6 +14,6 @@ public enum StockTicker implements Ticker {
 	msz, mwt, net, neu, nwg, opl, orb, ovo, pcm, pcr, pek, pel, peo, pge, pgn, pgs,
 	phn, pjp, pkn, pko, pkp, pnd, prc, pwx, pzu, qmk, qrs, rbw, rdl, rdn, rfk, rmk,
 	rob, sel, sen, sfs, sgn, skh, skt, smt, snk, sns, sol, stf, stp, stx, swg, tar,
-	tfo, tlx, tor, tpe, trk, tvn, ucg, urs, vst, vtg, vtl, wlt, woj, wse, wwl, zap,
+	tfo, tlx, tor, tpe, trk, ucg, urs, vst, vtg, vtl, wlt, woj, wse, wwl, zap,
 	zep, zst, zuk
 }

@@ -1,4 +1,4 @@
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .controller('StockController', function ($scope, $http, $filter, Stock, StocksFollowed) {
         $scope.stocksIndicatorsWithStocks = [];
         $scope.stocksFollowedByUser = [];

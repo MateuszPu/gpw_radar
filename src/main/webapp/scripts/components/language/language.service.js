@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .factory('Language', function ($q, $http, $translate, LANGUAGES) {
         return {
             getCurrent: function () {
@@ -8,7 +8,7 @@ angular.module('gpwradarApp')
                 var language = $translate.storage().get('NG_TRANSLATE_LANG_KEY');
 
                 if (angular.isUndefined(language)) {
-                    language = 'en';
+                	language = 'pl';
                 }
 
                 deferred.resolve(language);

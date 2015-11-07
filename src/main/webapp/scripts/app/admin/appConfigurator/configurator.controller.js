@@ -1,4 +1,4 @@
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
 	.controller('ConfiguratorController', function ($scope, $filter, $timeout, AppConfigurator, StatusConfigurator, Stock) {
 
 		
@@ -64,7 +64,7 @@ angular.module('gpwradarApp')
     	}
 	});
 
-angular.module('gpwradarApp').filter('getByType', function() {
+angular.module('gpwRadarApp').filter('getByType', function() {
 	return function(input, type) {
 		var len=input.length;
 			for (var i=0; i<len; i++) {

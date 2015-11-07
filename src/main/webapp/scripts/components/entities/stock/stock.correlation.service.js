@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .factory('Correlation', function ($resource) {
         return $resource('api/statistic/stock/correlation', {}, {
             'computeCorrelation': { method: 'GET', isArray: true},

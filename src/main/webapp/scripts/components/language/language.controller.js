@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .controller('LanguageController', function ($scope, $translate, Language, tmhDynamicLocale, amMoment) {
         $scope.changeLanguage = function (languageKey) {
         	amMoment.changeLocale(languageKey);
@@ -15,24 +15,26 @@ angular.module('gpwradarApp')
     .filter('findLanguageFromKey', function () {
         return function (lang) {
             return {
-                "en": "English",
-                "fr": "Français",
-                "de": "Deutsch",
-                "it": "Italiano",
-                "ru": "Русский",
-                "tr": "Türkçe",
                 "ca": "Català",
                 "da": "Dansk",
+                "de": "Deutsch",
+                "en": "English",
                 "es": "Español",
+                "fr": "Français",
                 "hu": "Magyar",
+                "it": "Italiano",
                 "ja": "日本語",
-                "kr": "한국어",
+                "ko": "한국어",
+                "nl": "Nederlands",
                 "pl": "Polski",
                 "pt-br": "Português (Brasil)",
+                "pt-pt": "Português",
                 "ro": "Română",
+                "ru": "Русский",
                 "sv": "Svenska",
+                "tr": "Türkçe",
                 "zh-cn": "中文（简体）",
-                "zh-tw": "繁體中文",
+                "zh-tw": "繁體中文"
             }[lang];
         }
     });

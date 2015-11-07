@@ -25,17 +25,10 @@ public class MessageService {
 		String userLogin = principal.getName();
 		User currentUser = userRepository.findOneByLogin(userLogin).get();
 		UserMessage msg = new UserMessage();
-		msg.setMessage(convertMessage(message));
+		msg.setMessage(message);
 		msg.setUser(currentUser);
 		msg.setUserLogin(userLogin);
 		messageRepository.save(msg);
 		return msg;
 	}
-
-	private String convertMessage(String message) {
-		String firstConvert = message.substring(1, message.length() - 1);
-		String secondConver = firstConvert.replace("\\\"", "\"");
-		return secondConver;
-	}
-
 }

@@ -1,4 +1,4 @@
-angular.module('gpwradarApp').factory('StocksFollowed', function($http) {
+angular.module('gpwRadarApp').factory('StocksFollowed', function($http) {
 	var stocksFollowedByUser = {
 			 getStocksFollowed: function() {
 				 var promise =  $http.get('api/users/stocks/followed').then(function(response) {
@@ -23,7 +23,7 @@ angular.module('gpwradarApp').factory('StocksFollowed', function($http) {
 		  return stocksFollowedByUser;
 	});
 
-angular.module('gpwradarApp').filter('getById', function() {
+angular.module('gpwRadarApp').filter('getById', function() {
 	return function(input, id) {
 		var i=0, len=input.length;
 			for (; i<len; i++) {

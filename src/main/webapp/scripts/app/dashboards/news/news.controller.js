@@ -1,4 +1,4 @@
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .controller('NewsMessageController', function ($scope, NewsMessage) {
     
     	$scope.espiNewsMessages = NewsMessage.getLatestMessagesByType({type: 'ESPI'});

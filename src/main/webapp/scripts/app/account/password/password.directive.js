@@ -1,7 +1,7 @@
 /* globals $ */
 'use strict';
 
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .directive('passwordStrengthBar', function () {
         return {
             replace: true,

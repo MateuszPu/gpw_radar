@@ -2,6 +2,7 @@ package com.gpw.radar.domain.stock;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,12 +16,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Type;
-import org.joda.time.LocalDate;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.gpw.radar.domain.util.CustomLocalDateSerializer;
-import com.gpw.radar.domain.util.ISO8601LocalDateDeserializer;
 
 
 /**
@@ -35,9 +33,6 @@ public class StockDetails implements Serializable {
     private Long id;
 
     @NotNull
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
-    @JsonSerialize(using = CustomLocalDateSerializer.class)
-    @JsonDeserialize(using = ISO8601LocalDateDeserializer.class)
     @Column(name = "date", nullable = false)
     private LocalDate date;
 

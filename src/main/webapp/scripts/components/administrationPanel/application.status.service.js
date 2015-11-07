@@ -1,4 +1,4 @@
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .factory('ApplicationStatus', function ($resource) {
         return $resource('', {}, {
             'isUpdating': { method: 'GET', url: 'api/is/updating'},

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .controller('MainController', function ($scope, Principal) {
         Principal.identity().then(function(account) {
             $scope.account = account;

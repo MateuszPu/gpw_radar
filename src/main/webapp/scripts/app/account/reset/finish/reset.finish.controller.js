@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .controller('ResetFinishController', function ($scope, $stateParams, $timeout, Auth) {
 
         $scope.keyMissing = $stateParams.key === undefined;

@@ -2,6 +2,8 @@ package com.gpw.radar.service.rss;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +14,6 @@ import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
-import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -121,7 +122,7 @@ public class RssParserService {
 		stNwMsg.setType(type);
 		stNwMsg.setMessage(message);
 		stNwMsg.setLink(link);
-		stNwMsg.setCreatedDate(new DateTime(date));
+		stNwMsg.setCreatedDate(ZonedDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
 		stNwMsg.setStock(getStockFromTitle(message));
 		stNwMsg.setUserLogin("system");
 		stNwMsg.setUser(userRepository.findOneByLogin("system").get());
@@ -130,7 +131,7 @@ public class RssParserService {
 	}
 
 	private Stock getStockFromTitle(String message) {
-		Pattern pattern = Pattern.compile("([���ʌ����0-9A-Z-/.] *)*");
+		Pattern pattern = Pattern.compile("([ĄŻŹĆŃŁÓŚĘ0-9A-Z-/.] *)*");
 		Matcher matcher = pattern.matcher(message);
 		if (matcher.find()) {
 			return stockRepository.findByStockName(matcher.group(0).substring(0, matcher.group(0).length() - 1).trim());

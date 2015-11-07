@@ -1,4 +1,6 @@
-angular.module('gpwradarApp')
+'use strict';
+
+angular.module('gpwRadarApp')
     .config(function ($stateProvider) {
         $stateProvider
             .state('entity', {

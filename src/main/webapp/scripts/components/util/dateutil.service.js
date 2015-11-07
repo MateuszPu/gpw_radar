@@ -1,24 +1,24 @@
 'use strict';
 
-angular.module('gpwradarApp')
-    .service('DateUtils', function () {
+angular.module('gpwRadarApp')
+    .service('DateUtils', function ($filter) {
       this.convertLocaleDateToServer = function(date) {
         if (date) {
-          var utcDate = new Date();
-          utcDate.setUTCDate(date.getDate());
-          utcDate.setUTCMonth(date.getMonth());
-          utcDate.setUTCFullYear(date.getFullYear());
-          return utcDate;
+          return $filter('date')(date, 'yyyy-MM-dd');
         } else {
           return null;
         }
       };
       this.convertLocaleDateFromServer = function(date) {
-          return new Date(date[0], date[1] - 1, date[2]);
+        if (date) {
+          var dateString = date.split("-");
+          return new Date(dateString[0], dateString[1] - 1, dateString[2]);
+        }
+        return null;
       };
       this.convertDateTimeFromServer = function(date) {
         if (date) {
-          return new Date(date);   
+          return new Date(date);
         } else {
           return null;
         }

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('gpwradarApp')
+angular.module('gpwRadarApp')
     .filter('characters', function () {
         return function (input, chars, breakOnWord) {
             if (isNaN(chars)) {
