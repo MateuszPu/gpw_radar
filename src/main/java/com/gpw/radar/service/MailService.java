@@ -2,6 +2,7 @@ package com.gpw.radar.service;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Properties;
 
 import javax.inject.Inject;
 import javax.mail.internet.MimeMessage;
@@ -45,7 +46,7 @@ public class MailService {
 
     @Inject
     private SpringTemplateEngine templateEngine;
-    
+
     @Inject
 	private UserRepository userRepository;
 
@@ -108,5 +109,5 @@ public class MailService {
 			sendEmail(user.getEmail(), mailTopic, message.getChatMessage(), false, true);
 		}
 	}
-    
+
 }

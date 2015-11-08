@@ -32,11 +32,6 @@ spring:
             hibernate.cache.use_second_level_cache: false
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
-    mail:
-        host: localhost
-        port: 25
-        username:
-        password:
     messages:
         cache-seconds: 1
     thymeleaf:
