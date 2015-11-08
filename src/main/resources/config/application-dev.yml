@@ -35,8 +35,12 @@ spring:
     mail:
         host: smtp.gmail.com
         port: 587
-        username: gpw.radar@gmail.com
-        password: 
+        user: gpw.rsadar@gmail.com
+        password: zaxscdvf89
+        protocol: smtp
+        tls: true
+        auth: true
+        from: gpw.radar@gmail.com
     messages:
         cache-seconds: 1
     thymeleaf:

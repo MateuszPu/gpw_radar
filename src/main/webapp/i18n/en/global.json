@@ -43,6 +43,7 @@
             },
             "admin": {
                 "main": "Administration",
+                "user-management": "User management",
                 "configurator": "Configurator",
                 "tracker": "User tracker",
                 "metrics": "Metrics",

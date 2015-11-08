@@ -33,10 +33,10 @@ spring:
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: false
     mail:
-        host: smtp.gmail.com
-        port: 587
-        username: gpw.radar@gmail.com
-        password: 
+        host: localhost
+        port: 25
+        username:
+        password:
     thymeleaf:
         cache: true
 
@@ -58,7 +58,7 @@ jhipster:
         cache: # Used by the CachingHttpHeadersFilter
             timeToLiveInDays: 31
     mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: gpw.radar@gmail.com
+            from: jhipster@localhost
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         spark:

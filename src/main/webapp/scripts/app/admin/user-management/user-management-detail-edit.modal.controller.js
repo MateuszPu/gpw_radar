@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('gpwRadarApp')
-    .controller('UserDetailEditController', function($scope, $modalInstance, user, User) {
+    .controller('UserDetailEditController', function($scope, $modalInstance, user, User, Language) {
 
     	$scope.user = user;
     	console.log(user);
@@ -9,18 +9,12 @@ angular.module('gpwRadarApp')
         $scope.cancel = function() {
             $modalInstance.dismiss('cancel');
         };
-        
-//        $scope.clear = function () {
-//            $scope.user = {
-//                id: null, login: null, firstName: null, lastName: null, email: null,
-//                activated: null, langKey: null, createdBy: null, createdDate: null,
-//                lastModifiedBy: null, lastModifiedDate: null, resetDate: null,
-//                resetKey: null, authorities: null
-//            };
-//            $scope.editForm.$setPristine();
-//            $scope.editForm.$setUntouched();
-//        };
-        
+
+        $scope.authorities = ["ROLE_USER", "ROLE_ADMIN"];
+        Language.getAll().then(function (languages) {
+            $scope.languages = languages;
+        });
+
         $scope.save = function () {
             User.update($scope.user,
 	            function () {

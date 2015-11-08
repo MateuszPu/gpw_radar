@@ -3,10 +3,6 @@
 angular.module('gpwRadarApp')
     .controller('UserManagementController', function ($scope, $modal, User, ParseLinks, Language) {
         $scope.users = [];
-        $scope.authorities = ["ROLE_USER", "ROLE_ADMIN"];
-        Language.getAll().then(function (languages) {
-            $scope.languages = languages;
-        });
 
         $scope.page = 0;
         $scope.loadAll = function () {
@@ -29,7 +25,7 @@ angular.module('gpwRadarApp')
                 $scope.clear();
             });
         };
-        
+
         $scope.showUpdate = function(login) {
         	User.get({login: login}, function (result) {
                 var modalInstance = $modal.open({
@@ -47,5 +43,5 @@ angular.module('gpwRadarApp')
         	    });
         	});
         };
-        
+
     });

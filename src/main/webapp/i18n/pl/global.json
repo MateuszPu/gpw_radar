@@ -43,6 +43,7 @@
             },
             "admin": {
                 "main": "Administracja",
+                "user-management": "Zarządzanie użytkownikami",
                 "configurator": "Konfigurator",
                 "tracker": "Śledzenie użytkownika",
                 "metrics": "Metryki",
