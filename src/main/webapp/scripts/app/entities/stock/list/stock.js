@@ -8,7 +8,7 @@ angular.module('gpwRadarApp')
                 url: '/stocks/list',
                 data: {
                     roles: ['ROLE_USER'],
-                    pageTitle: 'gpwanalysisApp.stock.home.title'
+                    pageTitle: 'global.leftsidemenu.stockList'
                 },
                 views: {
                     'content@': {

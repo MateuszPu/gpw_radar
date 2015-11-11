@@ -8,7 +8,7 @@ angular.module('gpwRadarApp')
                 url: '/stocks/trend/up',
                 data: {
                     roles: ['ROLE_USER'],
-                    pageTitle: 'gpwanalysisApp.stock.trend.detail.title'
+                    pageTitle: 'global.leftsidemenu.technicalAnalysis.trends.trendUp'
                 },
                 views: {
                     'content@': {
@@ -28,7 +28,7 @@ angular.module('gpwRadarApp')
                 url: '/stocks/trend/down',
                 data: {
                     roles: ['ROLE_USER'],
-                    pageTitle: 'gpwanalysisApp.stock.trend.detail.title'
+                    pageTitle: 'global.leftsidemenu.technicalAnalysis.trends.trendDown'
                 },
                 views: {
                     'content@': {

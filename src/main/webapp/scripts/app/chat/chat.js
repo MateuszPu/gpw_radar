@@ -8,6 +8,7 @@ angular.module('gpwRadarApp')
                 url: '/chat',
                 data: {
                 	roles: ['ROLE_USER'],
+                    pageTitle: 'global.menu.chat'
                 },
                 views: {
                     'content@': {

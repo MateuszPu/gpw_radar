@@ -8,7 +8,7 @@ angular.module('gpwRadarApp')
                 url: '/user-management',
                 data: {
                     authorities: ['ROLE_ADMIN'],
-                    pageTitle: 'user-management.home.title'
+                    pageTitle: 'global.menu.admin.user-management'
                 },
                 views: {
                     'content@': {

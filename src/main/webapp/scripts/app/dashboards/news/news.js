@@ -6,6 +6,7 @@ angular.module('gpwRadarApp')
             url: '/news',
             data: {
             	roles: ['ROLE_USER'],
+                pageTitle: 'global.leftsidemenu.dashboards.news'
             },
             views: {
                 'content@': {

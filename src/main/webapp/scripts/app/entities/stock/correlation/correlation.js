@@ -8,7 +8,7 @@ angular.module('gpwRadarApp')
                 url: '/correlation',
                 data: {
                     roles: ['ROLE_USER'],
-                    pageTitle: 'gpwanalysisApp.correlation.title'
+                    pageTitle: 'global.leftsidemenu.statisticalAnalysis.correlation'
                 },
                 views: {
                     'content@': {
