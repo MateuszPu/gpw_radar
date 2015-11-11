@@ -3,6 +3,9 @@
         "title": "GpwRadar",
         "browsehappy": "Używasz <strong>przestarzałej</strong> przeglądarki. Proszę <a href=\"http://browsehappy.com/\">uaktualnij swoją przeglądarkę</a> aby polepszyć doświadczenie użytkownika.",
         "leftsidemenu": {
+            "dashboards": {
+                "news": "Wiadomości"
+            },
     		"stockList": "Lista spółek",
             "technicalAnalysis": {
                 "title": "Analiza techniczna",
@@ -20,9 +23,6 @@
         "menu": {
             "home": "Strona domowa",
             "chat": "Chat",
-            "dashboards": {
-            	"news": "Wiadomości"
-            },
             "entities": {
                 "main": "Entities",
                 "stock": "Spółki",

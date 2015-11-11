@@ -3,6 +3,9 @@
         "title": "GpwRadar",
         "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
         "leftsidemenu": {
+            "dashboards": {
+                "news": "News"
+            },
 			"stockList": "Stocks list",
             "technicalAnalysis": {
                 "title": "Technical analysis",
@@ -20,9 +23,6 @@
         "menu": {
             "home": "Home",
             "chat": "Chat",
-            "dashboards": {
-            	"news": "News"
-            },
             "entities": {
                 "main": "Entities",
                 "stock": "Stock",
