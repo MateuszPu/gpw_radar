@@ -2,13 +2,17 @@ package com.gpw.radar.service.auto.update;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 
+import com.gpw.radar.domain.stock.StockDetails;
+import com.gpw.radar.domain.stock.StockIndicators;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,9 +26,9 @@ import com.gpw.radar.service.auto.update.stockIndicators.StockIndicatorsCalculat
 import com.gpw.radar.service.database.WebParserService;
 import com.gpw.radar.service.stock.StockDetailsService;
 
-@RestController
-@RequestMapping("/api")
-@RolesAllowed(AuthoritiesConstants.ADMIN)
+//@RestController
+//@RequestMapping("/api")
+//@RolesAllowed(AuthoritiesConstants.ADMIN)
 public class AutoUpdateStocksData {
 
 	@Inject
@@ -32,9 +36,6 @@ public class AutoUpdateStocksData {
 
 	@Inject
 	private WebParserService webParserService;
-
-	// @Inject
-	// private ApplicationStatus applicationStatus;
 
 	@Inject
 	private DailyStockDetailsParserRepository configuratorRepository;
@@ -51,21 +52,10 @@ public class AutoUpdateStocksData {
 	private StockDetailsParser stockDetailsParser;
 	private StockIndicatorsCalculator stockIndicatorsCalculator;
 
-	// @RequestMapping(value = "/status/step", method = RequestMethod.GET,
-	// produces = MediaType.APPLICATION_JSON_VALUE)
-	// public int getStepStatus() {
-	// return applicationStatus.getStep();
-	// }
-	//
-	// @RequestMapping(value = "/is/updating", method = RequestMethod.GET,
-	// produces = MediaType.APPLICATION_JSON_VALUE)
-	// public boolean isApplicationUpdating() {
-	// return applicationStatus.isUpdating();
-	// }
 
-	@RequestMapping(value = "/update/db", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//	@RequestMapping(value = "/update/db", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
-//	@Scheduled(cron = "0 30 17 ? * MON-FRI")
+	@Scheduled(cron = "0 30 17 ? * MON-FRI")
 	public void updateStockDetails() throws IOException, InterruptedException {
 		LocalDate lastQuotedDateFromDataBase = stockDetailsService.findLastTopDate().getBody();
 		LocalDate lastQuotedDateFromStooqWeb = webParserService.getLastDateWig20FromStooqWebsite();
@@ -82,8 +72,10 @@ public class AutoUpdateStocksData {
 		}
 
 		if (!lastQuotedDateFromDataBase.isEqual(lastQuotedDateFromStooqWeb)) {
-			stockDetailsRepository.save(stockDetailsParser.getCurrentStockDetails());
-			stockIndicatorsRepository.save(stockIndicatorsCalculator.calculateCurrentStockIndicators());
+            List<StockDetails> currentStockDetails = stockDetailsParser.getCurrentStockDetails();
+            stockDetailsRepository.save(currentStockDetails);
+            List<StockIndicators> stockIndicators = stockIndicatorsCalculator.calculateCurrentStockIndicators();
+            stockIndicatorsRepository.save(stockIndicators);
 		}
 	}
 }
