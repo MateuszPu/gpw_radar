@@ -23,7 +23,7 @@ import javax.validation.constraints.NotNull;
 public class StockFinanceEvent implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -33,7 +33,7 @@ public class StockFinanceEvent implements Serializable {
     @NotNull
     @Column(name = "message", nullable = false)
     private String message;
-    
+
     @ManyToOne
     @JoinColumn(name="stock_id", foreignKey = @ForeignKey(name="FK_finance_event_to_stock"))
     private Stock stock;

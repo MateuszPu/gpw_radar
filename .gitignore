@@ -127,8 +127,3 @@ Desktop.ini
 ######################
 src/main/webapp/bower_components
 /target/
-
-######################
-# mail details
-######################
-src/main/resources/config/application.yml

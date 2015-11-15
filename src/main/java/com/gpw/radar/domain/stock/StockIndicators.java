@@ -20,7 +20,7 @@ import com.gpw.radar.jackson.View;
 public class StockIndicators {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "slope_simple_regression_10")
@@ -34,7 +34,7 @@ public class StockIndicators {
 
 	@Column(name = "slope_simple_regression_90")
 	private double slopeSimpleRegression90Days;
-	
+
     @Column(name = "average_volume_10_days", precision=10, scale=2, nullable = false)
     private BigDecimal averageVolume10Days;
 
@@ -50,10 +50,10 @@ public class StockIndicators {
     @Column(name = "percent_return", precision=10, scale=2, nullable = false)
     @JsonView(View.StockIndicators.StockAndPercentReturn.class)
     private BigDecimal percentReturn;
-    
+
     @Column(name = "volume_value_30_days", precision=25, scale=2)
     private BigDecimal volumeValue30Days;
-    
+
     @OneToOne
     @JoinColumn(name="stock_id", foreignKey = @ForeignKey(name="FK_indicators_to_stock"))
     @JsonView(View.StockIndicators.StockAndPercentReturn.class)
@@ -79,7 +79,7 @@ public class StockIndicators {
 		return slopeSimpleRegression30Days;
 	}
 
-	
+
 	public void setSlopeSimpleRegression30Days(double slopeSimpleRegression30Days) {
 		this.slopeSimpleRegression30Days = slopeSimpleRegression30Days;
 	}

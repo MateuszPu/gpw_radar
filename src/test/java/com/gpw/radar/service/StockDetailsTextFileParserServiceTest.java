@@ -33,12 +33,6 @@ public class StockDetailsTextFileParserServiceTest {
     @Inject
     private StockDetailsTextFileParserService stockDetailsTextFileParserService;
 
-    @Inject
-    private StockRepository stockRepository;
-
-    @Inject
-    private StockDetailsRepository stockDetailsRepository;
-
     private List<StockTicker> stockTickerList = new ArrayList<>();
     private Stock stock = new Stock();
 
@@ -48,7 +42,6 @@ public class StockDetailsTextFileParserServiceTest {
         stock.setTicker(StockTicker.cdr);
         stock.setStockName("CDR");
         stock.setStockShortName("CDR");
-        stockRepository.save(stock);
     }
 
     @Test

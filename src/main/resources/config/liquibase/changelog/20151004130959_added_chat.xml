@@ -31,7 +31,4 @@
                                referencedColumnNames="id"
                                referencedTableName="USERS"/>
    </changeSet>
-   <changeSet author="ppp" id="1443959373027-3">
-      <dropSequence sequenceName="message_id_seq"/>
-   </changeSet>
 </databaseChangeLog>

@@ -14,7 +14,7 @@ import java.time.LocalTime;
 public class StockFiveMinutesDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull

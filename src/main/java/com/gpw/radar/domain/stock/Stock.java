@@ -30,7 +30,7 @@ import com.gpw.radar.jackson.View;
 public class Stock implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonView(View.StockIndicators.StockAndPercentReturn.class)
     private Long id;
 
@@ -47,11 +47,11 @@ public class Stock implements Serializable {
     @Column(name = "stock_short_name")
     @JsonView(View.StockIndicators.StockAndPercentReturn.class)
     private String stockShortName;
-    
+
     @JsonIgnore
 	@ManyToMany(mappedBy = "stocks")
 	private Set<User> users = new HashSet<>();
-    
+
     public Long getId() {
         return id;
     }

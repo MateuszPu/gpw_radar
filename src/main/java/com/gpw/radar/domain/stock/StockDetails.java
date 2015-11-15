@@ -29,7 +29,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 public class StockDetails implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -55,7 +55,7 @@ public class StockDetails implements Serializable {
     @NotNull
     @Column(name = "volume", nullable = false)
     private Long volume;
-    
+
     @ManyToOne
     @JoinColumn(name="stock_id", foreignKey = @ForeignKey(name="FK_stock"))
     private Stock stock;
