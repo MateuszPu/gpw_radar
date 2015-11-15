@@ -7,6 +7,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import javax.inject.Inject;
@@ -34,16 +36,23 @@ public class WebParserService {
 
 	private final DateTimeFormatter dtfTypeOne = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	private final DateTimeFormatter dtfTypeTwo = DateTimeFormatter.ofPattern("yyyyMMdd");
-	private LocalDate dt;
+    private final DateTimeFormatter localTimeTyoe = DateTimeFormatter.ofPattern("HH:mm:ss");
+	private LocalDate date;
+    private LocalTime time;
 
 	public LocalDate parseLocalDateFromString(String date) {
 		if (date.contains("-")) {
-			dt = LocalDate.parse(date, dtfTypeOne);
+			this.date = LocalDate.parse(date, dtfTypeOne);
 		} else {
-			dt = LocalDate.parse(date, dtfTypeTwo);
+			this.date = LocalDate.parse(date, dtfTypeTwo);
 		}
-		return dt;
+		return this.date;
 	}
+
+    public LocalTime parseLocalTimeFromString(String time) {
+        this.time = LocalTime.parse(time, localTimeTyoe);
+        return this.time;
+    }
 
 	public Stock setNameAndShortName(Stock stock) {
 		Document doc = null;

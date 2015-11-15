@@ -24,7 +24,7 @@ public class ConfiguratorService {
 
 	@Inject
 	private FillDataStatusRepository fillDataStatusRepository;
-	
+
 	@Inject
 	private FillDataBaseWithDataService fillDataBaseWithDataService;
 
@@ -53,7 +53,7 @@ public class ConfiguratorService {
 		case STOCK:
 			return fillDataBaseWithDataService.fillDataBaseWithStocks();
 		case STOCK_DETAILS:
-			return fillDataBaseWithDataService.fillDataBaseWithStockDetails();
+			return fillDataBaseWithDataService.fillDataBaseWithStockFiveMinutesDetails();
 		case STOCK_FINANCE_EVENTS:
 			return fillDataBaseWithDataService.fillDataBaseWithStockFinanceEvent();
 		default:

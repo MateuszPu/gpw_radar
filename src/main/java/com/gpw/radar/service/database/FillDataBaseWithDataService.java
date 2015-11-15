@@ -5,8 +5,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,6 +18,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
+import com.gpw.radar.repository.stock.StockFiveMinutesDetailsRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -42,8 +48,12 @@ public class FillDataBaseWithDataService {
 	@Inject
 	private FillDataStatusRepository fillDataStatusRepository;
 
-	private final String cvsSplitBy = ",";
-	
+    @Inject
+    private StockFiveMinutesDetailsRepository stockFiveMinutesDetailsRepository;
+
+    @Inject
+    private StockDetailsTextFileParserService parseStockDetailsByStockFromTxtFile;
+
 	private int step;
 
 	@Transactional
@@ -69,7 +79,7 @@ public class FillDataBaseWithDataService {
 		for (StockTicker ticker : tickers) {
 			executor.execute(() -> {
 				Stock stock = stockRepository.findByTicker(ticker);
-				Set<StockDetails> stockDetails = parseStockDetailsByStockFromTxtFile(stock);
+				Set<StockDetails> stockDetails = parseStockDetailsByStockFromTxtFile.parseStockDetailsByStockFromTxtFile(stock);
 				stockDetailsRepository.save(stockDetails);
 				increaseStep();
 			});
@@ -85,6 +95,31 @@ public class FillDataBaseWithDataService {
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
+    @Transactional
+    public ResponseEntity<Void> fillDataBaseWithStockFiveMinutesDetails() {
+        step = 0;
+        EnumSet<StockTicker> tickers = EnumSet.allOf(StockTicker.class);
+        ExecutorService executor = Executors.newFixedThreadPool(4);
+
+        for (StockTicker ticker : tickers) {
+            executor.execute(() -> {
+                Stock stock = stockRepository.findByTicker(ticker);
+                List<StockFiveMinutesDetails> stockDetails = parseStockDetailsByStockFromTxtFile.parseStockFiveMinutesDetailsByStockFromTxtFile(stock, LocalDate.of(2015, 10, 28));
+                stockFiveMinutesDetailsRepository.save(stockDetails);
+                increaseStep();
+            });
+        }
+
+        executor.shutdown();
+        try {
+            executor.awaitTermination(5, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        fillDataStatusRepository.updateType(Type.STOCK_DETAILS.toString());
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
 	private synchronized void increaseStep() {
 		step++;
 	}
@@ -99,52 +134,6 @@ public class FillDataBaseWithDataService {
 		}
 		fillDataStatusRepository.updateType(Type.STOCK_FINANCE_EVENTS.toString());
 		return new ResponseEntity<Void>(HttpStatus.OK);
-	}
-
-	@Transactional
-	private Set<StockDetails> parseStockDetailsByStockFromTxtFile(Stock stock) {
-		String line = "";
-		Set<StockDetails> stockDetailList = new HashSet<StockDetails>();
-		BufferedReader in = null;
-
-		try {
-			ClassLoader classLoader = getClass().getClassLoader();
-			String filePath = "stocks_data/daily/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
-			FileReader fileIn = new FileReader(classLoader.getResource(filePath).getFile());
-
-			in = new BufferedReader(fileIn);
-
-			in.readLine();
-			while ((line = in.readLine()) != null) {
-				StockDetails stockDetails = new StockDetails();
-				String[] stockdetails = line.split(cvsSplitBy);
-				stockDetails.setStock(stock);
-
-				stockDetails.setDate(webParserService.parseLocalDateFromString(stockdetails[0]));
-				stockDetails.setOpenPrice(new BigDecimal(stockdetails[1]));
-				stockDetails.setMaxPrice(new BigDecimal(stockdetails[2]));
-				stockDetails.setMinPrice(new BigDecimal(stockdetails[3]));
-				stockDetails.setClosePrice(new BigDecimal(stockdetails[4]));
-				try {
-					stockDetails.setVolume(Long.valueOf(stockdetails[5]));
-				} catch (ArrayIndexOutOfBoundsException exc) {
-					stockDetails.setVolume(0l);
-				}
-				stockDetailList.add(stockDetails);
-			}
-
-		} catch (MalformedURLException e1) {
-			e1.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				in.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return stockDetailList;
 	}
 
 	public int getStep() {
