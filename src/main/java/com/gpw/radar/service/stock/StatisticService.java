@@ -1,12 +1,11 @@
 package com.gpw.radar.service.stock;
 
-import javax.inject.Inject;
-
+import com.gpw.radar.repository.stock.StockRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.gpw.radar.repository.stock.StockRepository;
+import javax.inject.Inject;
 
 @Service
 public class StatisticService {

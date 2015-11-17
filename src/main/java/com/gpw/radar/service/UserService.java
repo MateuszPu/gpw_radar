@@ -1,23 +1,5 @@
 package com.gpw.radar.service;
 
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import javax.inject.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.gpw.radar.domain.Authority;
 import com.gpw.radar.domain.User;
 import com.gpw.radar.domain.stock.Stock;
@@ -28,6 +10,22 @@ import com.gpw.radar.repository.UserRepository;
 import com.gpw.radar.repository.stock.StockFinanceEventRepository;
 import com.gpw.radar.security.SecurityUtils;
 import com.gpw.radar.service.util.RandomUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.inject.Inject;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Service class for managing users.
@@ -49,7 +47,7 @@ public class UserService {
 
     @Inject
     private AuthorityRepository authorityRepository;
-    
+
     @Inject
     private StockFinanceEventRepository stockFinanceEventRepository;
 
@@ -197,7 +195,7 @@ public class UserService {
             userRepository.delete(user);
         }
     }
-    
+
     public ResponseEntity<List<StockFinanceEvent>> getStocksFinanceEventFollowedByUser() {
 		User user = getUserWithAuthorities();
 		List<StockFinanceEvent> stockFinanceEventsFollowedByUser = stockFinanceEventRepository.getFollowedStockFinanceEvent(user.getId());

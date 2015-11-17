@@ -1,5 +1,15 @@
 package com.gpw.radar.service.auto.update.stockDetails;
 
+import com.gpw.radar.domain.enumeration.StockTicker;
+import com.gpw.radar.domain.stock.Stock;
+import com.gpw.radar.domain.stock.StockDetails;
+import com.gpw.radar.repository.stock.StockRepository;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,17 +21,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.gpw.radar.domain.enumeration.StockTicker;
-import com.gpw.radar.domain.stock.Stock;
-import com.gpw.radar.domain.stock.StockDetails;
-import com.gpw.radar.repository.stock.StockRepository;
 
 //getting data from http://www.gpw.pl/akcje_i_pda_notowania_ciagle_pelna_wersja#all
 @Component("gpwParser")

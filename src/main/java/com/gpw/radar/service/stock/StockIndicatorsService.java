@@ -1,7 +1,6 @@
 package com.gpw.radar.service.stock;
 
 import org.springframework.stereotype.Service;
-
 import technical.analysis.indicator.TechnicalAnalysisIndicators;
 
 @Service

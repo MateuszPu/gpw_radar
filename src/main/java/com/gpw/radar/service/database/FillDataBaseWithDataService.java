@@ -1,37 +1,28 @@
 package com.gpw.radar.service.database;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
-import javax.inject.Inject;
-
+import com.gpw.radar.domain.database.Type;
+import com.gpw.radar.domain.enumeration.StockTicker;
+import com.gpw.radar.domain.stock.Stock;
+import com.gpw.radar.domain.stock.StockDetails;
 import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
+import com.gpw.radar.repository.auto.update.FillDataStatusRepository;
+import com.gpw.radar.repository.stock.StockDetailsRepository;
 import com.gpw.radar.repository.stock.StockFiveMinutesDetailsRepository;
+import com.gpw.radar.repository.stock.StockRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.gpw.radar.domain.database.Type;
-import com.gpw.radar.domain.enumeration.StockTicker;
-import com.gpw.radar.domain.stock.Stock;
-import com.gpw.radar.domain.stock.StockDetails;
-import com.gpw.radar.repository.auto.update.FillDataStatusRepository;
-import com.gpw.radar.repository.stock.StockDetailsRepository;
-import com.gpw.radar.repository.stock.StockRepository;
+import javax.inject.Inject;
+import java.io.InputStream;
+import java.time.LocalDate;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class FillDataBaseWithDataService {
@@ -56,6 +47,8 @@ public class FillDataBaseWithDataService {
 
 	private int step;
 
+    private ClassLoader classLoader = getClass().getClassLoader();
+
 	@Transactional
 	public ResponseEntity<Void> fillDataBaseWithStocks() {
 		step = 0;
@@ -79,7 +72,9 @@ public class FillDataBaseWithDataService {
 		for (StockTicker ticker : tickers) {
 			executor.execute(() -> {
 				Stock stock = stockRepository.findByTicker(ticker);
-				Set<StockDetails> stockDetails = parseStockDetailsByStockFromTxtFile.parseStockDetailsByStockFromTxtFile(stock);
+                String filePath = "stocks_data/daily/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
+                InputStream st = classLoader.getResourceAsStream(filePath);
+				Set<StockDetails> stockDetails = parseStockDetailsByStockFromTxtFile.parseStockDetailsByStockFromTxtFile(stock, st);
 				stockDetailsRepository.save(stockDetails);
 				increaseStep();
 			});
@@ -104,7 +99,9 @@ public class FillDataBaseWithDataService {
         for (StockTicker ticker : tickers) {
             executor.execute(() -> {
                 Stock stock = stockRepository.findByTicker(ticker);
-                List<StockFiveMinutesDetails> stockDetails = parseStockDetailsByStockFromTxtFile.parseStockFiveMinutesDetailsByStockFromTxtFile(stock, LocalDate.of(2015, 10, 28));
+                String filePath = "stocks_data/5min/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
+                InputStream st = classLoader.getResourceAsStream(filePath);
+                List<StockFiveMinutesDetails> stockDetails = parseStockDetailsByStockFromTxtFile.parseStockFiveMinutesDetailsByStockFromTxtFile(stock, st, LocalDate.of(2015, 10, 28));
                 stockFiveMinutesDetailsRepository.save(stockDetails);
                 increaseStep();
             });

@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -22,25 +22,18 @@ import java.util.Set;
 @Service
 public class StockDetailsTextFileParserService {
 
-
     private final String cvsSplitBy = ",";
 
     @Inject
     private WebParserService webParserService;
 
-    public Set<StockDetails> parseStockDetailsByStockFromTxtFile(Stock stock) {
+    public Set<StockDetails> parseStockDetailsByStockFromTxtFile(Stock stock, InputStream st) {
         String line = "";
         Set<StockDetails> stockDetailsList = new HashSet<>();
         BufferedReader in = null;
 
         try {
-            ClassLoader classLoader = getClass().getClassLoader();
-            String filePath = "stocks_data/daily/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
-            FileReader fileIn = new FileReader(classLoader.getResource(filePath).getFile());
-
-            in = new BufferedReader(fileIn);
-
-            in.readLine();
+            in = new BufferedReader(new InputStreamReader(st));
             while ((line = in.readLine()) != null) {
                 StockDetails stockDetails = new StockDetails();
                 String[] stockdetails = line.split(cvsSplitBy);
@@ -58,9 +51,6 @@ public class StockDetailsTextFileParserService {
                 }
                 stockDetailsList.add(stockDetails);
             }
-
-        } catch (MalformedURLException e1) {
-            e1.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -73,18 +63,15 @@ public class StockDetailsTextFileParserService {
         return stockDetailsList;
     }
 
-    public List<StockFiveMinutesDetails> parseStockFiveMinutesDetailsByStockFromTxtFile(Stock stock, LocalDate startDate) {
+    public List<StockFiveMinutesDetails> parseStockFiveMinutesDetailsByStockFromTxtFile(Stock stock, InputStream st, LocalDate startDate) {
         String line = "";
         List<StockFiveMinutesDetails> stockFiveMinutesDetailsList = new ArrayList<>();
         BufferedReader in = null;
 
         try {
-            ClassLoader classLoader = getClass().getClassLoader();
-            String filePath = "stocks_data/5min/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
-            FileReader fileIn = new FileReader(classLoader.getResource(filePath).getFile());
 
-            in = new BufferedReader(fileIn);
-            in.readLine();
+            in = new BufferedReader(new InputStreamReader(st));
+            in.readLine(); //skip title lines
 
             while ((line = in.readLine()) != null) {
                 StockFiveMinutesDetails stockFiveMinutesDetails = new StockFiveMinutesDetails();
@@ -109,8 +96,6 @@ public class StockDetailsTextFileParserService {
 
             stockFiveMinutesDetailsList = fillEmptyTimeAndCumulativeVolume(stockFiveMinutesDetailsList);
 
-        } catch (MalformedURLException e1) {
-            e1.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

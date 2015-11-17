@@ -1,5 +1,14 @@
 package com.gpw.radar.service.auto.update.stockDetails;
 
+import com.gpw.radar.domain.enumeration.StockTicker;
+import com.gpw.radar.domain.stock.Stock;
+import com.gpw.radar.domain.stock.StockDetails;
+import com.gpw.radar.repository.stock.StockDetailsRepository;
+import com.gpw.radar.repository.stock.StockRepository;
+import com.gpw.radar.service.database.WebParserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,26 +20,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.gpw.radar.domain.enumeration.StockTicker;
-import com.gpw.radar.domain.stock.Stock;
-import com.gpw.radar.domain.stock.StockDetails;
-import com.gpw.radar.repository.stock.StockDetailsRepository;
-import com.gpw.radar.repository.stock.StockRepository;
-import com.gpw.radar.service.database.WebParserService;
-
 // getting data from http://stooq.pl/
 @Component("stooqParser")
 public class StooqParser implements StockDetailsParser {
-	
+
 	@Autowired
 	private StockRepository stockRepository;
-	
+
 	@Autowired
 	private StockDetailsRepository stockDetailsRepository;
-	
+
 	@Autowired
 	private WebParserService webParserService;
 
@@ -40,12 +39,12 @@ public class StooqParser implements StockDetailsParser {
 	@Override
 	public List<StockDetails> getCurrentStockDetails() {
 		List<StockDetails> stockDetails = new ArrayList<StockDetails>();
-		
+
 		for (StockTicker element : StockTicker.values()) {
 			Stock stock = stockRepository.findByTicker(element);
 
 			String line = "";
-			
+
 			try {
 				URLConnection stooqConnection = null;
 				URL urlStooq = new URL("http://stooq.pl/q/l/?s=" + stock.getTicker() + "&f=sd2t2ohlcv&h&e=csv");

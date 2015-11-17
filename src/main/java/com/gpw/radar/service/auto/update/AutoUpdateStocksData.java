@@ -1,30 +1,22 @@
 package com.gpw.radar.service.auto.update;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.List;
-
-import javax.annotation.security.RolesAllowed;
-import javax.inject.Inject;
-import javax.transaction.Transactional;
-
 import com.gpw.radar.domain.stock.StockDetails;
 import com.gpw.radar.domain.stock.StockIndicators;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.http.MediaType;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.gpw.radar.repository.auto.update.DailyStockDetailsParserRepository;
 import com.gpw.radar.repository.stock.StockDetailsRepository;
 import com.gpw.radar.repository.stock.StockIndicatorsRepository;
-import com.gpw.radar.security.AuthoritiesConstants;
 import com.gpw.radar.service.auto.update.stockDetails.StockDetailsParser;
 import com.gpw.radar.service.auto.update.stockIndicators.StockIndicatorsCalculator;
 import com.gpw.radar.service.database.WebParserService;
 import com.gpw.radar.service.stock.StockDetailsService;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.scheduling.annotation.Scheduled;
+
+import javax.inject.Inject;
+import javax.transaction.Transactional;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
 
 //@RestController
 //@RequestMapping("/api")

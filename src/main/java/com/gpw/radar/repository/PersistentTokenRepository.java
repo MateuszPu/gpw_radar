@@ -2,9 +2,9 @@ package com.gpw.radar.repository;
 
 import com.gpw.radar.domain.PersistentToken;
 import com.gpw.radar.domain.User;
-import java.time.LocalDate;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**

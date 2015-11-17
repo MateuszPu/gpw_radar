@@ -1,12 +1,12 @@
 package com.gpw.radar.service.auto.update.stockIndicators;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.inject.Inject;
-
+import com.gpw.radar.domain.enumeration.StockTicker;
+import com.gpw.radar.domain.stock.Stock;
+import com.gpw.radar.domain.stock.StockDetails;
+import com.gpw.radar.domain.stock.StockIndicators;
+import com.gpw.radar.repository.stock.StockDetailsRepository;
+import com.gpw.radar.repository.stock.StockIndicatorsRepository;
+import com.gpw.radar.repository.stock.StockRepository;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.math3.stat.StatUtils;
 import org.apache.commons.math3.stat.regression.SimpleRegression;
@@ -15,13 +15,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import com.gpw.radar.domain.enumeration.StockTicker;
-import com.gpw.radar.domain.stock.Stock;
-import com.gpw.radar.domain.stock.StockDetails;
-import com.gpw.radar.domain.stock.StockIndicators;
-import com.gpw.radar.repository.stock.StockDetailsRepository;
-import com.gpw.radar.repository.stock.StockIndicatorsRepository;
-import com.gpw.radar.repository.stock.StockRepository;
+import javax.inject.Inject;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Component("standardStockIndicatorsCalculator")
 public class StandardStockIndicatorsCalculator implements StockIndicatorsCalculator {

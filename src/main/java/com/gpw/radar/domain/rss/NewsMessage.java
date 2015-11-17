@@ -1,20 +1,13 @@
 package com.gpw.radar.domain.rss;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gpw.radar.domain.chat.ChatMessage;
 import com.gpw.radar.domain.enumeration.RssType;
 import com.gpw.radar.domain.stock.Stock;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "NEWS_MESSAGE")

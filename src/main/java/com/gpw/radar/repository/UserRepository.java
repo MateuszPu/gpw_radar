@@ -1,14 +1,12 @@
 package com.gpw.radar.repository;
 
+import com.gpw.radar.domain.User;
+import com.gpw.radar.domain.stock.Stock;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
-
-import org.joda.time.DateTime;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.gpw.radar.domain.User;
-import com.gpw.radar.domain.stock.Stock;
 
 /**
  * Spring Data JPA repository for the User entity.

@@ -1,6 +1,5 @@
 package com.gpw.radar.security;
 
-import com.gpw.radar.domain.Authority;
 import com.gpw.radar.domain.User;
 import com.gpw.radar.repository.UserRepository;
 import org.slf4j.Logger;

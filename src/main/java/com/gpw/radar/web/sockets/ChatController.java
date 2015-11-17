@@ -1,18 +1,16 @@
 package com.gpw.radar.web.sockets;
 
-import java.security.Principal;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.inject.Inject;
-
+import com.gpw.radar.domain.chat.ChatMessage;
+import com.gpw.radar.service.chat.MessageService;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 
-import com.gpw.radar.domain.chat.ChatMessage;
-import com.gpw.radar.service.chat.MessageService;
+import javax.inject.Inject;
+import java.security.Principal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Controller
 public class ChatController {
@@ -55,7 +53,7 @@ public class ChatController {
 	public void usersCount() {
 		messagingTemplate.convertAndSend("/webchat/count", users.size());
 	}
-	
+
 	static class Message {
 	    private String message;
 		public String getMessage() {

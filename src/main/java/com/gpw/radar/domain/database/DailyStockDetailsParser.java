@@ -1,12 +1,8 @@
 package com.gpw.radar.domain.database;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-
 import com.gpw.radar.service.auto.update.stockDetails.ParserMethod;
+
+import javax.persistence.*;
 
 @Entity(name = "STOCK_DETAILS_PARSER_METHOD")
 public class DailyStockDetailsParser {

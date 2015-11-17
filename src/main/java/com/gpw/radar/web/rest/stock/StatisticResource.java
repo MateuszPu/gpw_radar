@@ -1,11 +1,11 @@
 package com.gpw.radar.web.rest.stock;
 
-import java.util.EnumSet;
-import java.util.TreeSet;
-
-import javax.annotation.security.RolesAllowed;
-import javax.inject.Inject;
-
+import com.gpw.radar.domain.enumeration.StockTicker;
+import com.gpw.radar.domain.stock.StockStatistic;
+import com.gpw.radar.security.AuthoritiesConstants;
+import com.gpw.radar.service.correlation.CorrelationService;
+import com.gpw.radar.service.correlation.CorrelationType;
+import com.gpw.radar.service.stock.StatisticService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gpw.radar.domain.enumeration.StockTicker;
-import com.gpw.radar.domain.stock.StockStatistic;
-import com.gpw.radar.security.AuthoritiesConstants;
-import com.gpw.radar.service.correlation.CorrelationService;
-import com.gpw.radar.service.correlation.CorrelationType;
-import com.gpw.radar.service.stock.StatisticService;
+import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
+import java.util.EnumSet;
+import java.util.TreeSet;
 
 /**
  * REST controller for managing statistics.
@@ -30,7 +28,7 @@ public class StatisticResource {
 
 	@Inject
 	private CorrelationService correlationService;
-	
+
 	@Inject
 	private StatisticService statisticService;
 
@@ -60,10 +58,10 @@ public class StatisticResource {
 	public ResponseEntity<Long> getStocksNoChange() {
 		return statisticService.countStocksNoChange();
 	}
-	
+
 	@RequestMapping(value = "all/type/correlation", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EnumSet<CorrelationType>> getAllCorrelationTypes() {
         return new ResponseEntity<EnumSet<CorrelationType>>(EnumSet.allOf(CorrelationType.class), HttpStatus.OK);
     }
-	
+
 }

@@ -1,17 +1,9 @@
 package com.gpw.radar.service.correlation;
 
-import static java.util.EnumSet.complementOf;
-
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.TreeSet;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
-import javax.inject.Inject;
-
+import com.gpw.radar.domain.enumeration.StockTicker;
+import com.gpw.radar.domain.stock.StockDetails;
+import com.gpw.radar.domain.stock.StockStatistic;
+import com.gpw.radar.repository.stock.StockDetailsRepository;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Page;
@@ -20,10 +12,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.gpw.radar.domain.enumeration.StockTicker;
-import com.gpw.radar.domain.stock.StockDetails;
-import com.gpw.radar.domain.stock.StockStatistic;
-import com.gpw.radar.repository.stock.StockDetailsRepository;
+import javax.inject.Inject;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.TreeSet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+import static java.util.EnumSet.complementOf;
 
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS, value = "session")
@@ -41,7 +39,7 @@ public class CorrelationService {
 		}
 		Objects.requireNonNull(correlationForTicker);
 		Objects.requireNonNull(correlationType);
-		
+
 		this.step = 0;
 		isComputing = true;
 

@@ -1,11 +1,7 @@
 package com.gpw.radar.service.chat;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import javax.inject.Inject;
-
+import com.gpw.radar.domain.chat.ChatMessage;
+import com.gpw.radar.repository.chat.ChatMessageRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,8 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.gpw.radar.domain.chat.ChatMessage;
-import com.gpw.radar.repository.chat.ChatMessageRepository;
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class ChatMessageService {

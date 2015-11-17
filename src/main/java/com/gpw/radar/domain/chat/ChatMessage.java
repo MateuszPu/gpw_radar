@@ -1,36 +1,26 @@
 package com.gpw.radar.domain.chat;
 
-import java.time.ZonedDateTime;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gpw.radar.domain.User;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.time.ZonedDateTime;
 
 @Entity
 @Inheritance( strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class ChatMessage {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	private long id;
-	
+
 	@ManyToOne
 	@NotNull
 	@JsonIgnore
     @JoinColumn(name="user_id", foreignKey = @ForeignKey(name="FK_user"), nullable = false)
 	private User user;
-	
+
 	@NotNull
 	@Column(name = "user_login", nullable = false)
 	private String userLogin;
@@ -38,7 +28,7 @@ public abstract class ChatMessage {
 	@NotNull
     @Column(name = "created_date", nullable = false)
     private ZonedDateTime createdDate = ZonedDateTime.now();
-	
+
 	public abstract String getChatMessage();
 
 	public long getId() {

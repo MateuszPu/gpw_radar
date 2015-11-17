@@ -1,15 +1,13 @@
 package com.gpw.radar.service.stock;
 
-import java.time.LocalDate;
-
-import javax.inject.Inject;
-
+import com.gpw.radar.domain.stock.StockDetails;
+import com.gpw.radar.repository.stock.StockDetailsRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.gpw.radar.domain.stock.StockDetails;
-import com.gpw.radar.repository.stock.StockDetailsRepository;
+import javax.inject.Inject;
+import java.time.LocalDate;
 
 @Service
 public class StockDetailsService {

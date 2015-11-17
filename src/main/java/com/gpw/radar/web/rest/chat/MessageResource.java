@@ -1,10 +1,8 @@
 package com.gpw.radar.web.rest.chat;
 
-import java.util.List;
-
-import javax.annotation.security.RolesAllowed;
-import javax.inject.Inject;
-
+import com.gpw.radar.domain.chat.ChatMessage;
+import com.gpw.radar.security.AuthoritiesConstants;
+import com.gpw.radar.service.chat.ChatMessageService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gpw.radar.domain.chat.ChatMessage;
-import com.gpw.radar.security.AuthoritiesConstants;
-import com.gpw.radar.service.chat.ChatMessageService;
+import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
+import java.util.List;
 
 /**
  * REST controller for managing chat messages.

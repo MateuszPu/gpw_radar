@@ -1,7 +1,6 @@
 package com.gpw.radar.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.gpw.radar.domain.Authority;
 import com.gpw.radar.domain.PersistentToken;
 import com.gpw.radar.domain.User;
 import com.gpw.radar.repository.PersistentTokenRepository;
@@ -11,7 +10,6 @@ import com.gpw.radar.service.MailService;
 import com.gpw.radar.service.UserService;
 import com.gpw.radar.web.rest.dto.KeyAndPasswordDTO;
 import com.gpw.radar.web.rest.dto.UserDTO;
-
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * REST controller for managing the current user's account.

@@ -1,16 +1,14 @@
 package com.gpw.radar.service.chat;
 
-import java.security.Principal;
-
-import javax.inject.Inject;
-
-import org.springframework.stereotype.Service;
-
 import com.gpw.radar.domain.User;
 import com.gpw.radar.domain.chat.ChatMessage;
 import com.gpw.radar.domain.chat.UserMessage;
 import com.gpw.radar.repository.UserRepository;
 import com.gpw.radar.repository.chat.MessageRepository;
+import org.springframework.stereotype.Service;
+
+import javax.inject.Inject;
+import java.security.Principal;
 
 @Service
 public class MessageService {

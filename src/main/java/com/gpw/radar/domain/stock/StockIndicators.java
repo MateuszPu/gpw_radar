@@ -1,19 +1,10 @@
 package com.gpw.radar.domain.stock;
 
-import java.math.BigDecimal;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonView;
 import com.gpw.radar.jackson.View;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "STOCK_INDICATORS")

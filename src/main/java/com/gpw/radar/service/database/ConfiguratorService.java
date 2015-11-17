@@ -1,20 +1,18 @@
 package com.gpw.radar.service.database;
 
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.transaction.Transactional;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-
 import com.gpw.radar.domain.database.DailyStockDetailsParser;
 import com.gpw.radar.domain.database.FillDataStatus;
 import com.gpw.radar.domain.database.Type;
 import com.gpw.radar.repository.auto.update.DailyStockDetailsParserRepository;
 import com.gpw.radar.repository.auto.update.FillDataStatusRepository;
 import com.gpw.radar.service.auto.update.stockDetails.ParserMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import javax.inject.Inject;
+import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class ConfiguratorService {

@@ -1,13 +1,12 @@
 package com.gpw.radar.repository.stock;
 
-import java.util.List;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
 import com.gpw.radar.domain.enumeration.Ticker;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockStatistic;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 /**
  * Spring Data JPA repository for the Stock entity.
@@ -17,7 +16,7 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
 	Stock findByTicker(Ticker ticker);
 	List<Stock> findAllByOrderByTickerAsc();
 	Stock findByStockName(String stockName);
-	
+
 	@Query(value = "SELECT s.ticker, COUNT(s.ticker)\n"
 			+ "FROM stock s INNER JOIN user_stocks us ON s.id = us.stock_id \n"
 			+ "INNER JOIN user u on us.user_id = u.id GROUP BY s.ticker ORDER BY count(*) DESC LIMIT 5", nativeQuery = true)

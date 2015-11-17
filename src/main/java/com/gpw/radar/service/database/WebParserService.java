@@ -1,18 +1,8 @@
 package com.gpw.radar.service.database;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-
-import javax.inject.Inject;
-
+import com.gpw.radar.domain.stock.Stock;
+import com.gpw.radar.domain.stock.StockFinanceEvent;
+import com.gpw.radar.repository.stock.StockFinanceEventRepository;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -22,9 +12,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.gpw.radar.domain.stock.Stock;
-import com.gpw.radar.domain.stock.StockFinanceEvent;
-import com.gpw.radar.repository.stock.StockFinanceEventRepository;
+import javax.inject.Inject;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 public class WebParserService {

@@ -1,11 +1,12 @@
 package com.gpw.radar.web.rest.database;
 
-import java.util.EnumSet;
-import java.util.List;
-
-import javax.annotation.security.RolesAllowed;
-import javax.inject.Inject;
-
+import com.gpw.radar.domain.database.DailyStockDetailsParser;
+import com.gpw.radar.domain.database.FillDataStatus;
+import com.gpw.radar.domain.database.Type;
+import com.gpw.radar.security.AuthoritiesConstants;
+import com.gpw.radar.service.auto.update.stockDetails.ParserMethod;
+import com.gpw.radar.service.database.ConfiguratorService;
+import com.gpw.radar.service.database.FillDataBaseWithDataService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gpw.radar.domain.database.DailyStockDetailsParser;
-import com.gpw.radar.domain.database.FillDataStatus;
-import com.gpw.radar.domain.database.Type;
-import com.gpw.radar.security.AuthoritiesConstants;
-import com.gpw.radar.service.auto.update.stockDetails.ParserMethod;
-import com.gpw.radar.service.database.ConfiguratorService;
-import com.gpw.radar.service.database.FillDataBaseWithDataService;
+import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
+import java.util.EnumSet;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/configurator")
