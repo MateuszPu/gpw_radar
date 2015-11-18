@@ -16,10 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.io.InputStream;
-import java.time.LocalDate;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -74,7 +72,7 @@ public class FillDataBaseWithDataService {
 				Stock stock = stockRepository.findByTicker(ticker);
                 String filePath = "stocks_data/daily/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
                 InputStream st = classLoader.getResourceAsStream(filePath);
-				Set<StockDetails> stockDetails = parseStockDetailsByStockFromTxtFile.parseStockDetailsByStockFromTxtFile(stock, st);
+				List<StockDetails> stockDetails = parseStockDetailsByStockFromTxtFile.parseStockDetailsByStockFromTxtFile(stock, st);
 				stockDetailsRepository.save(stockDetails);
 				increaseStep();
 			});
@@ -100,9 +98,10 @@ public class FillDataBaseWithDataService {
             executor.execute(() -> {
                 Stock stock = stockRepository.findByTicker(ticker);
                 String filePath = "stocks_data/5min/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
-                InputStream st = classLoader.getResourceAsStream(filePath);
-                List<StockFiveMinutesDetails> stockDetails = parseStockDetailsByStockFromTxtFile.parseStockFiveMinutesDetailsByStockFromTxtFile(stock, st, LocalDate.of(2015, 10, 28));
-                stockFiveMinutesDetailsRepository.save(stockDetails);
+                InputStream inputStream = classLoader.getResourceAsStream(filePath);
+                List<StockFiveMinutesDetails> stockFiveMinutesDetails = parseStockDetailsByStockFromTxtFile.parseStockFiveMinutesDetailsByStockFromTxtFile(stock, inputStream);
+                List<StockFiveMinutesDetails> filledStockFiveMinutesDetails = parseStockDetailsByStockFromTxtFile.fillEmptyTimeAndCumulativeVolume(stockFiveMinutesDetails);
+                stockFiveMinutesDetailsRepository.save(filledStockFiveMinutesDetails);
                 increaseStep();
             });
         }

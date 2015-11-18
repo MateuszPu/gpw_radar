@@ -51,7 +51,9 @@ public class ConfiguratorService {
 		case STOCK:
 			return fillDataBaseWithDataService.fillDataBaseWithStocks();
 		case STOCK_DETAILS:
-			return fillDataBaseWithDataService.fillDataBaseWithStockFiveMinutesDetails();
+			return fillDataBaseWithDataService.fillDataBaseWithStockDetails();
+        case STOCK_DETAILS_FIVE_MINUTES:
+            return fillDataBaseWithDataService.fillDataBaseWithStockFiveMinutesDetails();
 		case STOCK_FINANCE_EVENTS:
 			return fillDataBaseWithDataService.fillDataBaseWithStockFinanceEvent();
 		default:

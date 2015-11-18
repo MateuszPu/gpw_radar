@@ -15,9 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class StockDetailsTextFileParserService {
@@ -27,9 +25,9 @@ public class StockDetailsTextFileParserService {
     @Inject
     private WebParserService webParserService;
 
-    public Set<StockDetails> parseStockDetailsByStockFromTxtFile(Stock stock, InputStream st) {
+    public List<StockDetails> parseStockDetailsByStockFromTxtFile(Stock stock, InputStream st) {
         String line = "";
-        Set<StockDetails> stockDetailsList = new HashSet<>();
+        List<StockDetails> stockDetailsList = new ArrayList<>();
         BufferedReader in = null;
 
         try {
@@ -63,7 +61,7 @@ public class StockDetailsTextFileParserService {
         return stockDetailsList;
     }
 
-    public List<StockFiveMinutesDetails> parseStockFiveMinutesDetailsByStockFromTxtFile(Stock stock, InputStream st, LocalDate startDate) {
+    public List<StockFiveMinutesDetails> parseStockFiveMinutesDetailsByStockFromTxtFile(Stock stock, InputStream st) {
         String line = "";
         List<StockFiveMinutesDetails> stockFiveMinutesDetailsList = new ArrayList<>();
         BufferedReader in = null;
@@ -71,7 +69,7 @@ public class StockDetailsTextFileParserService {
         try {
 
             in = new BufferedReader(new InputStreamReader(st));
-            in.readLine(); //skip title lines
+            //in.readLine(); //skip title lines
 
             while ((line = in.readLine()) != null) {
                 StockFiveMinutesDetails stockFiveMinutesDetails = new StockFiveMinutesDetails();
@@ -79,9 +77,6 @@ public class StockDetailsTextFileParserService {
                 stockFiveMinutesDetails.setStock(stock);
                 LocalDate dateDetail = webParserService.parseLocalDateFromString(stockFiveMinuteDetails[0]);
                 LocalTime timeDetail = webParserService.parseLocalTimeFromString(stockFiveMinuteDetails[1]);
-                if (dateDetail.isBefore(startDate)) {
-                    continue;
-                }
 
                 stockFiveMinutesDetails.setDate(LocalDateTime.of(dateDetail, timeDetail));
                 stockFiveMinutesDetails.setTime(timeDetail);
@@ -94,7 +89,7 @@ public class StockDetailsTextFileParserService {
                 stockFiveMinutesDetailsList.add(stockFiveMinutesDetails);
             }
 
-            stockFiveMinutesDetailsList = fillEmptyTimeAndCumulativeVolume(stockFiveMinutesDetailsList);
+//            stockFiveMinutesDetailsList = fillEmptyTimeAndCumulativeVolume(stockFiveMinutesDetailsList);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -108,7 +103,7 @@ public class StockDetailsTextFileParserService {
         return stockFiveMinutesDetailsList;
     }
 
-    private List<StockFiveMinutesDetails> fillEmptyTimeAndCumulativeVolume(List<StockFiveMinutesDetails> stockFiveMinutesDetailsList) {
+    public List<StockFiveMinutesDetails> fillEmptyTimeAndCumulativeVolume(List<StockFiveMinutesDetails> stockFiveMinutesDetailsList) {
         List<StockFiveMinutesDetails> filledEmptyTimeAndCumulativeVolume = new ArrayList<>();
 
         LocalDate startDate = stockFiveMinutesDetailsList.get(0).getDate().toLocalDate().minusDays(1);

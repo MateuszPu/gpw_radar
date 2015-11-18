@@ -26,11 +26,11 @@ public class StockFiveMinutesDetails {
 
     @NotNull
     @Column(name = "volume", nullable = false)
-    private Long volume;
+    private long volume;
 
     @NotNull
     @Column(name = "cumulated_volume", nullable = false)
-    private Long cumulatedVolume;
+    private long cumulatedVolume;
 
     @ManyToOne
     @JoinColumn(name="stock_id", foreignKey = @ForeignKey(name="FK_stock"))
@@ -60,19 +60,19 @@ public class StockFiveMinutesDetails {
         this.time = time;
     }
 
-    public Long getVolume() {
+    public long getVolume() {
         return volume;
     }
 
-    public void setVolume(Long volume) {
+    public void setVolume(long volume) {
         this.volume = volume;
     }
 
-    public Long getCumulatedVolume() {
+    public long getCumulatedVolume() {
         return cumulatedVolume;
     }
 
-    public void setCumulatedVolume(Long cumulatedVolume) {
+    public void setCumulatedVolume(long cumulatedVolume) {
         this.cumulatedVolume = cumulatedVolume;
     }
 
