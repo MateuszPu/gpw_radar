@@ -20,11 +20,13 @@
 	    	"button": {
 	    		"STOCK": "1. Step",
 	    		"STOCK_DETAILS" : "2. Step",
-	    		"STOCK_FINANCE_EVENTS" : "3. Step"
+                "STOCK_DETAILS_FIVE_MINUTES" : "3. Step",
+	    		"STOCK_FINANCE_EVENTS" : "4. Step"
 	    	},
 	    	"info" : {
 	    		"STOCK": "Fill database with stocks ",
 	    		"STOCK_DETAILS" : "Fill database with stock details",
+                "STOCK_DETAILS_FIVE_MINUTES": "Fill database with stock five minutes details",
 	    		"STOCK_FINANCE_EVENTS" : "Fill database with stock finance events"
 	    	}
 	    }

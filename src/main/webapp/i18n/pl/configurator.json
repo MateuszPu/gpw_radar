@@ -20,11 +20,13 @@
 	    	"button": {
 	    		"STOCK": "1. Krok",
 	    		"STOCK_DETAILS" : "2. Krok",
-	    		"STOCK_FINANCE_EVENTS" : "3. Krok"
+                "STOCK_DETAILS_FIVE_MINUTES" : "3. Krok",
+	    		"STOCK_FINANCE_EVENTS" : "4. Krok"
 	    	},
 	    	"info" : {
 	    		"STOCK": "Uzupełnij bazę danych spółkami",
 	    		"STOCK_DETAILS" : "Uzupełnij bazę danych szczegółami spółkek",
+                "STOCK_DETAILS_FIVE_MINUTES": "Uzupełnij bazę danych 5-minutowymi szczegółami spółek",
 	    		"STOCK_FINANCE_EVENTS" : "Uzupełnij bazę danych finansowymi wydarzeniami spółek"
 	    	}
 	    }

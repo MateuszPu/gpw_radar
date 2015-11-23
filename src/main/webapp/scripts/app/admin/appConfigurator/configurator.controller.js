@@ -1,25 +1,25 @@
 angular.module('gpwRadarApp')
 	.controller('ConfiguratorController', function ($scope, $filter, $timeout, AppConfigurator, StatusConfigurator, Stock) {
 
-		
+
 		//Method of stock details parser
 		$scope.allMethods = AppConfigurator.getAllMethods();
 
 		AppConfigurator.getCurrentMethod(function(response) {
     		$scope.selectedMethod = response.parserMethod;
     	});
-    	
+
     	$scope.setMethod = function() {
     		AppConfigurator.setMethod({parserMethod: $scope.selectedMethod});
     	};
-		
+
 		//Fill database with data
     	$scope.getStockTickersCount = function() {
     		Stock.getAllStockTickers(function(response) {
     			$scope.stockTickersCount = response.length;
     		});
     	}
-    	
+
     	$scope.getFillDataStatus = function() {
     		AppConfigurator.getFillDataStatus(function(response){
     			$scope.fillDataStatus = response;
@@ -28,9 +28,9 @@ angular.module('gpwRadarApp')
     	$scope.getStockTickersCount();
     	$scope.getFillDataStatus();
     	$scope.step = 0;
-    	
+
     	$scope.isDisabled = function(name) {
-    		if(name === 'STOCK_DETAILS') {
+    		if(name === 'STOCK_DETAILS' || name === 'STOCK_DETAILS_FIVE_MINUTES') {
     			return (!$scope.isDisabled('STOCK') || $filter('getByType')($scope.fillDataStatus, name));
     		}
     		if(name === 'STOCK_FINANCE_EVENTS') {
@@ -38,7 +38,7 @@ angular.module('gpwRadarApp')
     		}
     		return $filter('getByType')($scope.fillDataStatus, name);
     	};
-    	
+
     	$scope.fillDatabase = function(name) {
     		$scope.getFillStep();
     		$scope.typeName = name;
@@ -47,7 +47,7 @@ angular.module('gpwRadarApp')
     			$scope.getFillDataStatus();
     		});
     	}
-	    
+
     	$scope.getFillStep = function() {
     		$scope.updatingDB = true;
     	    (function tick() {
@@ -55,7 +55,7 @@ angular.module('gpwRadarApp')
 	    			  $scope.timeInMiliSeconds = 1000;
 		              $scope.promiseTimeout = $timeout(tick, $scope.timeInMiliSeconds);
 		              $scope.step = response;
-		  
+
 		              if(!$scope.updatingDB) {
 		                  $timeout.cancel($scope.promiseTimeout);
 		              }
@@ -71,7 +71,7 @@ angular.module('gpwRadarApp').filter('getByType', function() {
 				if (input[i].type == type) {
 					return input[i].filled;
 				}
-			}	
+			}
 		return null;
 	}
 });

@@ -123,7 +123,7 @@ public class FillDataBaseWithDataService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        fillDataStatusRepository.updateType(Type.STOCK_DETAILS.toString());
+        fillDataStatusRepository.updateType(Type.STOCK_DETAILS_FIVE_MINUTES.toString());
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
