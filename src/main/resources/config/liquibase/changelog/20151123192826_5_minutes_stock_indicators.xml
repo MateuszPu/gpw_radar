@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+   <changeSet author="mateusz (generated)" id="201511231928-1">
+      <createTable tableName="STOCK_FIVE_MINUTES_INDICATORS">
+         <column autoIncrement="true" name="id" type="BIGINT">
+            <constraints primaryKey="true" primaryKeyName="STOCK_FIVE_MINUTES_INDICATORSPK"/>
+         </column>
+         <column name="average_volume" type="FLOAT8">
+            <constraints nullable="false"/>
+         </column>
+         <column name="time_event" type="BYTEA">
+            <constraints nullable="false"/>
+         </column>
+         <column name="stock_id" type="BIGINT"/>
+      </createTable>
+   </changeSet>
+</databaseChangeLog>

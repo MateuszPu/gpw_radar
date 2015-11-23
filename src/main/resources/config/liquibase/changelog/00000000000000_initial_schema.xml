@@ -211,4 +211,10 @@
         </sql>
     </changeSet>
 
+    <changeSet author="mateusz" id="201511231928" dbms="postgresql">
+        <sql>
+            insert into FILLED_DATA_STATUS values('STOCK_DETAILS_FIVE_MINUTES');
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>
