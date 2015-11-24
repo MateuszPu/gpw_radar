@@ -1,5 +1,5 @@
 angular.module('gpwRadarApp')
-    .controller('StockController', function ($scope, $http, $filter, Stock, StocksFollowed) {
+    .controller('StockController', function ($scope, $filter, Stock, StocksFollowed) {
         $scope.stocksIndicatorsWithStocks = [];
         $scope.stocksFollowedByUser = [];
 
@@ -10,7 +10,7 @@ angular.module('gpwRadarApp')
     			$scope.getStocksFollowedByUser();
     		});
     	};
-    	
+
         $scope.getStocksFollowedByUser = function(){
         	StocksFollowed.getStocksFollowed().then(function(data) {
 	    	    $scope.stocksFollowedByUser = data;

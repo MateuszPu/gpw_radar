@@ -17,5 +17,5 @@ public enum StockTicker implements Ticker {
 //	tfo, tlx, tor, tpe, trk, ucg, urs, vst, vtg, vtl, wlt, woj, wse, wwl, zap,
 //	zep, zst, zuk
 
-    cdr
+    kgh, cdr
 }

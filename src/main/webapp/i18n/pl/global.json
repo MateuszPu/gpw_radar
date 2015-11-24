@@ -6,7 +6,9 @@
             "dashboards": {
                 "news": "Wiadomości"
             },
-    		"stockList": "Lista spółek",
+            "stockList": {
+                "title": "Lista spółek"
+            },
             "technicalAnalysis": {
                 "title": "Analiza techniczna",
                 "trends": {
@@ -18,6 +20,9 @@
             "statisticalAnalysis": {
                 "title": "Analiza statystyczna",
                 "correlation": "Korelacja"
+            },
+            "activeStocks": {
+                "title": "Najbardziej aktywne spółki"
             }
         },
         "menu": {

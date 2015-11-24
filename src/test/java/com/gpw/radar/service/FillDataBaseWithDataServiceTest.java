@@ -79,7 +79,7 @@ public class FillDataBaseWithDataServiceTest {
     }
 
     @Test
-    public void stockDetailsSize() {
+    public void stockFiveMinuteIndicator() {
         double average = indicatorsList.stream().filter(indi -> indi.getTime().equals(time)).findAny().get().getAverageVolume();
         assertThat(average).isCloseTo(expectedResult, perc);
     }

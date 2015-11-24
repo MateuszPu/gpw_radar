@@ -19,6 +19,7 @@
         <!-- endbuild -->
         <!-- build:css assets/styles/main.css -->
         <link rel="stylesheet" href="assets/styles/main.css">
+        <link rel="stylesheet" href="bower_components/iCheck/skins/all.css">
         <!-- endbuild -->
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
     </head>
@@ -27,21 +28,21 @@
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 		<div id="wrapper">
-		
+
 		    <!-- Left navbar -->
 		    <div ui-view="leftNavbar"></div>
-		
+
 		    <!-- Page wraper -->
 		    <!-- ng-class with current state name give you the ability to extended customization your view -->
 		    <div id="page-wrapper" class="gray-bg {{$state.current.name}}">
-		
+
 		        <!-- Top navbar -->
 		        <div ui-view="topNavbar" ng-cloak=""></div>
-		
+
 		        <!-- Main view  -->
 		        <div ui-view="content"></div>
-		
-		        <!-- Footer 
+
+		        <!-- Footer
 		        <div ng-include="'scripts/components/navbars/footer.html'"></div>-->
 		    </div>
 		    <!-- End page wrapper-->
@@ -204,6 +205,8 @@
 	<script src="scripts/app/entities/stock/correlation/correlation.js"></script>
 	<script src="scripts/app/entities/stock/list/stock.controller.js"></script>
 	<script src="scripts/app/entities/stock/list/stock.js"></script>
+	<script src="scripts/app/entities/stock/mostActive/most-active-stocks.js"></script>
+	<script src="scripts/app/entities/stock/mostActive/most.active.stocks.controller.js"></script>
 	<script src="scripts/app/entities/stock/trends/stocks-trend.js"></script>
 	<script src="scripts/app/entities/stock/trends/stocks.trend.down.controller.js"></script>
 	<script src="scripts/app/entities/stock/trends/stocks.trend.up.controller.js"></script>

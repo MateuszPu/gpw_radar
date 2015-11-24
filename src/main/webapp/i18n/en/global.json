@@ -6,7 +6,9 @@
             "dashboards": {
                 "news": "News"
             },
-			"stockList": "Stocks list",
+			"stockList": {
+                "title": "Stocks list"
+            },
             "technicalAnalysis": {
                 "title": "Technical analysis",
                 "trends": {
@@ -18,6 +20,9 @@
             "statisticalAnalysis": {
                 "title": "Statistical analysis",
                 "correlation": "Correlation"
+            },
+            "activeStocks": {
+                "title": "Most active stocks"
             }
         },
         "menu": {
