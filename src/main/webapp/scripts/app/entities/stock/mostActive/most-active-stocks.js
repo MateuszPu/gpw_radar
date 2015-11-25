@@ -6,7 +6,7 @@ angular.module('gpwRadarApp')
             url: '/most/active/stocks',
             data: {
                 roles: ['ROLE_USER'],
-                pageTitle: 'global.leftsidemenu.stockList'
+                pageTitle: 'global.leftsidemenu.activeStocks.title'
             },
             views: {
                 'content@': {
@@ -16,7 +16,7 @@ angular.module('gpwRadarApp')
             },
             resolve: {
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('stock');
+                    $translatePartialLoader.addPart('mostActiveStocks');
                     return $translate.refresh();
                 }]
             }
