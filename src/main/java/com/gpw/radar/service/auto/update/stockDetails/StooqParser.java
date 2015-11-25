@@ -5,7 +5,7 @@ import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;
 import com.gpw.radar.repository.stock.StockDetailsRepository;
 import com.gpw.radar.repository.stock.StockRepository;
-import com.gpw.radar.service.database.WebParserService;
+import com.gpw.radar.service.database.parser.DateAndTimeParserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +31,7 @@ public class StooqParser implements StockDetailsParser {
 	private StockDetailsRepository stockDetailsRepository;
 
 	@Autowired
-	private WebParserService webParserService;
+	private DateAndTimeParserService dateAndTimeParserService;
 
 	private static final String cvsSplitBy = ",";
 	private LocalDate quotesDate;
@@ -83,11 +83,11 @@ public class StooqParser implements StockDetailsParser {
 	}
 
 	private boolean isQuotesUpToDate(LocalDate wig20Date, String[] stockDetailsFromCsv) {
-		return wig20Date.isEqual(webParserService.parseLocalDateFromString(stockDetailsFromCsv[1]));
+		return wig20Date.isEqual(dateAndTimeParserService.parseLocalDateFromString(stockDetailsFromCsv[1]));
 	}
 
 	private StockDetails getNewValuesOfStockDetails(StockDetails stockDetails, String[] stockDetailsFromCsv) {
-		stockDetails.setDate(webParserService.parseLocalDateFromString(stockDetailsFromCsv[1]));
+		stockDetails.setDate(dateAndTimeParserService.parseLocalDateFromString(stockDetailsFromCsv[1]));
 		stockDetails.setOpenPrice(new BigDecimal(stockDetailsFromCsv[3]));
 		stockDetails.setMaxPrice(new BigDecimal(stockDetailsFromCsv[4]));
 		stockDetails.setMinPrice(new BigDecimal(stockDetailsFromCsv[5]));

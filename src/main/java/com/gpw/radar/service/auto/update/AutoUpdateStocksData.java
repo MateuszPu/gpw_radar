@@ -7,7 +7,7 @@ import com.gpw.radar.repository.stock.StockDetailsRepository;
 import com.gpw.radar.repository.stock.StockIndicatorsRepository;
 import com.gpw.radar.service.auto.update.stockDetails.StockDetailsParser;
 import com.gpw.radar.service.auto.update.stockIndicators.StockIndicatorsCalculator;
-import com.gpw.radar.service.database.WebParserService;
+import com.gpw.radar.service.database.parser.DateAndTimeParserService;
 import com.gpw.radar.service.stock.StockDetailsService;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -27,7 +27,7 @@ public class AutoUpdateStocksData {
 	private StockDetailsService stockDetailsService;
 
 	@Inject
-	private WebParserService webParserService;
+	private DateAndTimeParserService dateAndTimeParserService;
 
 	@Inject
 	private DailyStockDetailsParserRepository configuratorRepository;
@@ -50,7 +50,7 @@ public class AutoUpdateStocksData {
 	@Scheduled(cron = "0 30 17 ? * MON-FRI")
 	public void updateStockDetails() throws IOException, InterruptedException {
 		LocalDate lastQuotedDateFromDataBase = stockDetailsService.findLastTopDate().getBody();
-		LocalDate lastQuotedDateFromStooqWeb = webParserService.getLastDateWig20FromStooqWebsite();
+		LocalDate lastQuotedDateFromStooqWeb = dateAndTimeParserService.getLastDateWig20FromStooqWebsite();
 		stockIndicatorsCalculator = beanFactory.getBean("standardStockIndicatorsCalculator", StockIndicatorsCalculator.class);
 
 		switch (configuratorRepository.findMethod().getParserMethod()) {

@@ -7,7 +7,7 @@ import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
 import com.gpw.radar.domain.stock.StockFiveMinutesIndicators;
 import com.gpw.radar.service.database.FillDataBaseWithDataService;
-import com.gpw.radar.service.database.StockDetailsTextFileParserService;
+import com.gpw.radar.service.database.parser.text.StockDetailsParserService;
 import org.assertj.core.data.Percentage;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class FillDataBaseWithDataServiceTest {
     private FillDataBaseWithDataService fillDataBaseWithDataService;
 
     @Inject
-    private StockDetailsTextFileParserService stockDetailsTextFileParserService;
+    private StockDetailsParserService stockDetailsParserService;
 
     private TestContextManager testContextManager;
 
@@ -54,8 +54,8 @@ public class FillDataBaseWithDataServiceTest {
         stock.setStockShortName("KGH");
         String stockFiveMinutesDetailsFilePath = "/stocks_data/5min/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
         InputStream inputStreamOfStockFiveMinutesDetails = getClass().getResourceAsStream(stockFiveMinutesDetailsFilePath);
-        List<StockFiveMinutesDetails> stockFiveMinutesDetails = stockDetailsTextFileParserService.parseStockFiveMinutesDetailsByStockFromTxtFile(stock, inputStreamOfStockFiveMinutesDetails);
-        List<StockFiveMinutesDetails> filledStockFiveMinutesDetails = stockDetailsTextFileParserService.fillEmptyTimeAndCumulativeVolume(stockFiveMinutesDetails);
+        List<StockFiveMinutesDetails> stockFiveMinutesDetails = stockDetailsParserService.parseStockFiveMinutesDetails(stock, inputStreamOfStockFiveMinutesDetails);
+        List<StockFiveMinutesDetails> filledStockFiveMinutesDetails = stockDetailsParserService.fillEmptyTimeAndCumulativeVolume(stockFiveMinutesDetails);
         indicatorsList = fillDataBaseWithDataService.calculateIndicatorsFromDetails(filledStockFiveMinutesDetails);
     }
 

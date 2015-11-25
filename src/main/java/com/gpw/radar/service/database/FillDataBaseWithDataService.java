@@ -11,6 +11,10 @@ import com.gpw.radar.repository.stock.StockDetailsRepository;
 import com.gpw.radar.repository.stock.StockFiveMinutesDetailsRepository;
 import com.gpw.radar.repository.stock.StockFiveMinutesIndicatorsRepository;
 import com.gpw.radar.repository.stock.StockRepository;
+import com.gpw.radar.service.database.parser.DateAndTimeParserService;
+import com.gpw.radar.service.database.parser.text.StockDetailsParserService;
+import com.gpw.radar.service.database.parser.web.StockFinanceEventParserServcie;
+import com.gpw.radar.service.database.parser.web.StockParserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -34,7 +38,7 @@ public class FillDataBaseWithDataService {
     private StockRepository stockRepository;
 
     @Inject
-    private WebParserService webParserService;
+    private DateAndTimeParserService dateAndTimeParserService;
 
     @Inject
     private StockDetailsRepository stockDetailsRepository;
@@ -49,7 +53,13 @@ public class FillDataBaseWithDataService {
     private StockFiveMinutesDetailsRepository stockFiveMinutesDetailsRepository;
 
     @Inject
-    private StockDetailsTextFileParserService txtParser;
+    private StockDetailsParserService stockDetailsParserService;
+
+    @Inject
+    private StockParserService stockParserService;
+
+    @Inject
+    private StockFinanceEventParserServcie stockFinanceEventParserServcie;
 
     private int step;
 
@@ -62,7 +72,7 @@ public class FillDataBaseWithDataService {
         for (StockTicker element : StockTicker.values()) {
             Stock stock = new Stock();
             stock.setTicker(element);
-            stock = webParserService.setNameAndShortName(stock);
+            stock = stockParserService.setNameAndShortName(stock);
             stockRepository.save(stock);
             increaseStep();
         }
@@ -81,7 +91,7 @@ public class FillDataBaseWithDataService {
                 Stock stock = stockRepository.findByTicker(ticker);
                 String filePath = "stocks_data/daily/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
                 InputStream st = classLoader.getResourceAsStream(filePath);
-                List<StockDetails> stockDetails = txtParser.parseStockDetailsByStockFromTxtFile(stock, st);
+                List<StockDetails> stockDetails = stockDetailsParserService.parseStockDetails(stock, st);
                 stockDetailsRepository.save(stockDetails);
                 increaseStep();
             });
@@ -108,8 +118,8 @@ public class FillDataBaseWithDataService {
                 Stock stock = stockRepository.findByTicker(ticker);
                 String filePath = "stocks_data/5min/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
                 InputStream inputStream = classLoader.getResourceAsStream(filePath);
-                List<StockFiveMinutesDetails> stockFiveMinutesDetails = txtParser.parseStockFiveMinutesDetailsByStockFromTxtFile(stock, inputStream);
-                List<StockFiveMinutesDetails> filledStockFiveMinutesDetails = txtParser.fillEmptyTimeAndCumulativeVolume(stockFiveMinutesDetails);
+                List<StockFiveMinutesDetails> stockFiveMinutesDetails = stockDetailsParserService.parseStockFiveMinutesDetails(stock, inputStream);
+                List<StockFiveMinutesDetails> filledStockFiveMinutesDetails = stockDetailsParserService.fillEmptyTimeAndCumulativeVolume(stockFiveMinutesDetails);
                 List<StockFiveMinutesIndicators> fiveMinutesIndicators = calculateIndicatorsFromDetails(filledStockFiveMinutesDetails);
                 stockFiveMinutesIndicatorsRepository.save(fiveMinutesIndicators);
                 stockFiveMinutesDetailsRepository.save(filledStockFiveMinutesDetails);
@@ -155,7 +165,7 @@ public class FillDataBaseWithDataService {
         step = 0;
         for (StockTicker element : StockTicker.values()) {
             Stock stock = stockRepository.findByTicker(element);
-            webParserService.getStockFinanceEvent(stock);
+            stockFinanceEventParserServcie.getStockFinanceEvent(stock);
             increaseStep();
         }
         fillDataStatusRepository.updateType(Type.STOCK_FINANCE_EVENTS.toString());

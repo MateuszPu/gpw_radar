@@ -1,8 +1,9 @@
-package com.gpw.radar.service.database;
+package com.gpw.radar.service.database.parser.text;
 
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;
 import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
+import com.gpw.radar.service.database.parser.DateAndTimeParserService;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -18,14 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class StockDetailsTextFileParserService {
+public class StockDetailsParserService {
 
     private final String cvsSplitBy = ",";
 
     @Inject
-    private WebParserService webParserService;
+    private DateAndTimeParserService dateAndTimeParserService;
 
-    public List<StockDetails> parseStockDetailsByStockFromTxtFile(Stock stock, InputStream st) {
+    public List<StockDetails> parseStockDetails(Stock stock, InputStream st) {
         String line = "";
         List<StockDetails> stockDetailsList = new ArrayList<>();
         BufferedReader in = null;
@@ -37,7 +38,7 @@ public class StockDetailsTextFileParserService {
                 String[] stockdetails = line.split(cvsSplitBy);
                 stockDetails.setStock(stock);
 
-                stockDetails.setDate(webParserService.parseLocalDateFromString(stockdetails[0]));
+                stockDetails.setDate(dateAndTimeParserService.parseLocalDateFromString(stockdetails[0]));
                 stockDetails.setOpenPrice(new BigDecimal(stockdetails[1]));
                 stockDetails.setMaxPrice(new BigDecimal(stockdetails[2]));
                 stockDetails.setMinPrice(new BigDecimal(stockdetails[3]));
@@ -61,7 +62,7 @@ public class StockDetailsTextFileParserService {
         return stockDetailsList;
     }
 
-    public List<StockFiveMinutesDetails> parseStockFiveMinutesDetailsByStockFromTxtFile(Stock stock, InputStream st) {
+    public List<StockFiveMinutesDetails> parseStockFiveMinutesDetails(Stock stock, InputStream st) {
         String line = "";
         List<StockFiveMinutesDetails> stockFiveMinutesDetailsList = new ArrayList<>();
         BufferedReader in = null;
@@ -75,8 +76,8 @@ public class StockDetailsTextFileParserService {
                 StockFiveMinutesDetails stockFiveMinutesDetails = new StockFiveMinutesDetails();
                 String[] stockFiveMinuteDetails = line.split(cvsSplitBy);
                 stockFiveMinutesDetails.setStock(stock);
-                LocalDate dateDetail = webParserService.parseLocalDateFromString(stockFiveMinuteDetails[0]);
-                LocalTime timeDetail = webParserService.parseLocalTimeFromString(stockFiveMinuteDetails[1]);
+                LocalDate dateDetail = dateAndTimeParserService.parseLocalDateFromString(stockFiveMinuteDetails[0]);
+                LocalTime timeDetail = dateAndTimeParserService.parseLocalTimeFromString(stockFiveMinuteDetails[1]);
 
                 stockFiveMinutesDetails.setDate(LocalDateTime.of(dateDetail, timeDetail));
                 stockFiveMinutesDetails.setTime(timeDetail);
