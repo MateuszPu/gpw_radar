@@ -7,7 +7,7 @@ import com.gpw.radar.repository.stock.StockDetailsRepository;
 import com.gpw.radar.repository.stock.StockIndicatorsRepository;
 import com.gpw.radar.service.auto.update.stockDetails.StockDetailsParser;
 import com.gpw.radar.service.auto.update.stockIndicators.StockIndicatorsCalculator;
-import com.gpw.radar.service.database.parser.DateAndTimeParserService;
+import com.gpw.radar.service.parser.DateAndTimeParserService;
 import com.gpw.radar.service.stock.StockDetailsService;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,7 +21,7 @@ import java.util.List;
 //@RestController
 //@RequestMapping("/api")
 //@RolesAllowed(AuthoritiesConstants.ADMIN)
-public class AutoUpdateStocksData {
+public class AutoUpdateStocksDetailsData {
 
 	@Inject
 	private StockDetailsService stockDetailsService;

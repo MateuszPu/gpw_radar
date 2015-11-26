@@ -1,4 +1,4 @@
-package com.gpw.radar.service.database.parser.web;
+package com.gpw.radar.service.parser.web;
 
 import com.gpw.radar.domain.stock.Stock;
 import org.jsoup.Jsoup;

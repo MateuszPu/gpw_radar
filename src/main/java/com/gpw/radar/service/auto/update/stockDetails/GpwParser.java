@@ -7,9 +7,9 @@ import com.gpw.radar.repository.stock.StockRepository;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,7 +26,7 @@ import java.util.List;
 @Component("gpwParser")
 public class GpwParser implements StockDetailsParser {
 
-	@Autowired
+    @Inject
 	private StockRepository stockRepository;
 
 	private static final int indexOfTicker = 3;

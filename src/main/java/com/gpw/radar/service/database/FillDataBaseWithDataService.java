@@ -11,10 +11,9 @@ import com.gpw.radar.repository.stock.StockDetailsRepository;
 import com.gpw.radar.repository.stock.StockFiveMinutesDetailsRepository;
 import com.gpw.radar.repository.stock.StockFiveMinutesIndicatorsRepository;
 import com.gpw.radar.repository.stock.StockRepository;
-import com.gpw.radar.service.database.parser.DateAndTimeParserService;
-import com.gpw.radar.service.database.parser.text.StockDetailsParserService;
-import com.gpw.radar.service.database.parser.web.StockFinanceEventParserServcie;
-import com.gpw.radar.service.database.parser.web.StockParserService;
+import com.gpw.radar.service.parser.file.StockDetailsParserService;
+import com.gpw.radar.service.parser.web.StockFinanceEventParserServcie;
+import com.gpw.radar.service.parser.web.StockParserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -36,9 +35,6 @@ public class FillDataBaseWithDataService {
 
     @Inject
     private StockRepository stockRepository;
-
-    @Inject
-    private DateAndTimeParserService dateAndTimeParserService;
 
     @Inject
     private StockDetailsRepository stockDetailsRepository;

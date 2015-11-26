@@ -1,9 +1,11 @@
-package com.gpw.radar.service.database.parser.text;
+package com.gpw.radar.service.parser.file;
 
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;
 import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
-import com.gpw.radar.service.database.parser.DateAndTimeParserService;
+import com.gpw.radar.service.parser.DateAndTimeParserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -21,6 +23,7 @@ import java.util.List;
 @Service
 public class StockDetailsParserService {
 
+    private final Logger logger = LoggerFactory.getLogger(StockDetailsParserService.class);
     private final String cvsSplitBy = ",";
 
     @Inject
@@ -29,11 +32,11 @@ public class StockDetailsParserService {
     public List<StockDetails> parseStockDetails(Stock stock, InputStream st) {
         String line = "";
         List<StockDetails> stockDetailsList = new ArrayList<>();
-        BufferedReader in = null;
+        BufferedReader bufferedReader = null;
 
         try {
-            in = new BufferedReader(new InputStreamReader(st));
-            while ((line = in.readLine()) != null) {
+            bufferedReader = new BufferedReader(new InputStreamReader(st));
+            while ((line = bufferedReader.readLine()) != null) {
                 StockDetails stockDetails = new StockDetails();
                 String[] stockdetails = line.split(cvsSplitBy);
                 stockDetails.setStock(stock);
@@ -51,12 +54,12 @@ public class StockDetailsParserService {
                 stockDetailsList.add(stockDetails);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Error ocurs: " + e.getMessage());
         } finally {
             try {
-                in.close();
+                bufferedReader.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("Error ocurs: " + e.getMessage());
             }
         }
         return stockDetailsList;
@@ -65,14 +68,14 @@ public class StockDetailsParserService {
     public List<StockFiveMinutesDetails> parseStockFiveMinutesDetails(Stock stock, InputStream st) {
         String line = "";
         List<StockFiveMinutesDetails> stockFiveMinutesDetailsList = new ArrayList<>();
-        BufferedReader in = null;
+        BufferedReader bufferedReader = null;
 
         try {
 
-            in = new BufferedReader(new InputStreamReader(st));
+            bufferedReader = new BufferedReader(new InputStreamReader(st));
             //in.readLine(); //skip title lines
 
-            while ((line = in.readLine()) != null) {
+            while ((line = bufferedReader.readLine()) != null) {
                 StockFiveMinutesDetails stockFiveMinutesDetails = new StockFiveMinutesDetails();
                 String[] stockFiveMinuteDetails = line.split(cvsSplitBy);
                 stockFiveMinutesDetails.setStock(stock);
@@ -90,15 +93,13 @@ public class StockDetailsParserService {
                 stockFiveMinutesDetailsList.add(stockFiveMinutesDetails);
             }
 
-//            stockFiveMinutesDetailsList = fillEmptyTimeAndCumulativeVolume(stockFiveMinutesDetailsList);
-
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Error ocurs: " + e.getMessage());
         } finally {
             try {
-                in.close();
+                bufferedReader.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("Error ocurs: " + e.getMessage());
             }
         }
         return stockFiveMinutesDetailsList;

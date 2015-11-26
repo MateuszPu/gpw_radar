@@ -7,7 +7,7 @@ import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
 import com.gpw.radar.domain.stock.StockFiveMinutesIndicators;
 import com.gpw.radar.service.database.FillDataBaseWithDataService;
-import com.gpw.radar.service.database.parser.text.StockDetailsParserService;
+import com.gpw.radar.service.parser.file.StockDetailsParserService;
 import org.assertj.core.data.Percentage;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +29,7 @@ import static org.assertj.core.api.StrictAssertions.assertThat;
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 @RunWith(Parameterized.class)
-public class FillDataBaseWithDataServiceTest {
+public class fillDataBaseWithDataServiceTest {
 
     @Inject
     private FillDataBaseWithDataService fillDataBaseWithDataService;
@@ -59,7 +59,7 @@ public class FillDataBaseWithDataServiceTest {
         indicatorsList = fillDataBaseWithDataService.calculateIndicatorsFromDetails(filledStockFiveMinutesDetails);
     }
 
-    public FillDataBaseWithDataServiceTest(LocalTime time, double expectedResult) {
+    public fillDataBaseWithDataServiceTest(LocalTime time, double expectedResult) {
         this.time = time;
         this.expectedResult = expectedResult;
     }

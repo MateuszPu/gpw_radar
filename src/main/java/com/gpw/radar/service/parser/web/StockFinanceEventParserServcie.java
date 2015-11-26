@@ -1,9 +1,9 @@
-package com.gpw.radar.service.database.parser.web;
+package com.gpw.radar.service.parser.web;
 
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockFinanceEvent;
 import com.gpw.radar.repository.stock.StockFinanceEventRepository;
-import com.gpw.radar.service.database.parser.DateAndTimeParserService;
+import com.gpw.radar.service.parser.DateAndTimeParserService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

@@ -5,7 +5,7 @@ import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;
 import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
-import com.gpw.radar.service.database.parser.text.StockDetailsParserService;
+import com.gpw.radar.service.parser.file.StockDetailsParserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +26,7 @@ import static org.assertj.core.api.StrictAssertions.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
-public class StockDetailsParserServiceTest {
+public class CurrentStockDetailsParserServiceTest {
 
     @Inject
     private StockDetailsParserService stockDetailsParserService;
