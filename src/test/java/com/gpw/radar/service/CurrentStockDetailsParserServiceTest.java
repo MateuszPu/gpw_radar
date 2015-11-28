@@ -62,6 +62,7 @@ public class CurrentStockDetailsParserServiceTest {
         assertThat(firstStockDetails.getMinPrice()).isEqualTo(new BigDecimal("17.81"));
         assertThat(firstStockDetails.getClosePrice()).isEqualTo(new BigDecimal("17.87"));
         assertThat(firstStockDetails.getDate()).isEqualTo(LocalDate.of(2014,12,03));
+        assertThat(firstStockDetails.getStock()).isNotNull();
     }
 
     @Test
