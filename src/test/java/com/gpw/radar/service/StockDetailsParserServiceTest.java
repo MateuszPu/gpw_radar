@@ -26,7 +26,7 @@ import static org.assertj.core.api.StrictAssertions.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
-public class CurrentStockDetailsParserServiceTest {
+public class StockDetailsParserServiceTest {
 
     @Inject
     private StockDetailsParserService stockDetailsParserService;
@@ -78,6 +78,7 @@ public class CurrentStockDetailsParserServiceTest {
         assertThat(stockFiveMinutesDetails.getVolume()).isEqualTo(1417);
         assertThat(stockFiveMinutesDetails.getTime()).isEqualTo(LocalTime.of(9,5));
         assertThat(stockFiveMinutesDetails.getDate()).isEqualTo(LocalDateTime.of(2015,11,10,9,5));
+        assertThat(stockFiveMinutesDetails.getStock()).isNotNull();
     }
 
     @Test

@@ -59,7 +59,7 @@ public class StooqParser implements StockDetailsParser {
                 in.readLine();
                 line = in.readLine();
             } catch (IOException e) {
-                logger.error("Error ocurs: " + e.getMessage());
+                logger.error("Error occurs: " + e.getMessage());
             }
             StockDetails std = new StockDetails();
             String[] stockDetailsFromCsv = line.split(cvsSplitBy);

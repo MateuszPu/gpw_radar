@@ -21,7 +21,7 @@ public class CurrentStockDetailsParserService {
             URLConnection urlConnection = urlContent.openConnection();
             inputStreamReader = new InputStreamReader(urlConnection.getInputStream());
         } catch (IOException e) {
-            logger.error("Error ocurs: " + e.getMessage());
+            logger.error("Error occurs: " + e.getMessage());
         }
 
         return inputStreamReader;

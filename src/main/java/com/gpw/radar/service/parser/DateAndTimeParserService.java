@@ -74,7 +74,7 @@ public class DateAndTimeParserService {
             String[] stockDetailsFromCsv = line.split(cvsSplitBy);
             date = parseLocalDateFromString(stockDetailsFromCsv[1]);
         } catch (IOException e) {
-            logger.error("Error ocurs: " + e.getMessage());
+            logger.error("Error occurs: " + e.getMessage());
         }
         return date;
     }

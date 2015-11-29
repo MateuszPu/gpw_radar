@@ -21,7 +21,7 @@ public class StockParserService {
         try {
             doc = getDocumentFromStooqWeb(stock.getTicker().toString());
         } catch (IOException e) {
-            logger.error("Error ocurs: " + e.getMessage());
+            logger.error("Error occurs: " + e.getMessage());
         }
 
         String stockName = getStockNameFromWeb(doc);

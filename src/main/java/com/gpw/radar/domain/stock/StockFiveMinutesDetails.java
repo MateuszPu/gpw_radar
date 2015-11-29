@@ -32,6 +32,9 @@ public class StockFiveMinutesDetails {
     @Column(name = "cumulated_volume", nullable = false)
     private long cumulatedVolume;
 
+    @Transient
+    private String stockTicker;
+
     @ManyToOne
     @JoinColumn(name="stock_id", foreignKey = @ForeignKey(name="FK_stock"))
     private Stock stock;
@@ -74,6 +77,14 @@ public class StockFiveMinutesDetails {
 
     public void setCumulatedVolume(long cumulatedVolume) {
         this.cumulatedVolume = cumulatedVolume;
+    }
+
+    public String getStockTicker() {
+        return stockTicker;
+    }
+
+    public void setStockTicker(String stockTicker) {
+        this.stockTicker = stockTicker;
     }
 
     public Stock getStock() {

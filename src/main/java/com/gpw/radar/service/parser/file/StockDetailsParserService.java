@@ -39,23 +39,23 @@ public class StockDetailsParserService {
         try {
             bufferedReader.close();
         } catch (IOException e) {
-            logger.error("Error ocurs: " + e.getMessage());
+            logger.error("Error occurs: " + e.getMessage());
         }
 
         return stockDetailsList;
     }
 
     public Function<String, StockDetails> mapToStockDetails = (line) -> {
-        String[] splittedLine = line.split(",");
+        String[] splitLine = line.split(",");
         StockDetails stockDetails = new StockDetails();
-        stockDetails.setDate(dateAndTimeParserService.parseLocalDateFromString(splittedLine[0]));
-        stockDetails.setOpenPrice(new BigDecimal(splittedLine[1]));
-        stockDetails.setMaxPrice(new BigDecimal(splittedLine[2]));
-        stockDetails.setMinPrice(new BigDecimal(splittedLine[3]));
-        stockDetails.setClosePrice(new BigDecimal(splittedLine[4]));
+        stockDetails.setDate(dateAndTimeParserService.parseLocalDateFromString(splitLine[0]));
+        stockDetails.setOpenPrice(new BigDecimal(splitLine[1]));
+        stockDetails.setMaxPrice(new BigDecimal(splitLine[2]));
+        stockDetails.setMinPrice(new BigDecimal(splitLine[3]));
+        stockDetails.setClosePrice(new BigDecimal(splitLine[4]));
 
         try {
-            stockDetails.setVolume(Long.valueOf(splittedLine[5]));
+            stockDetails.setVolume(Long.valueOf(splitLine[5]));
         } catch (ArrayIndexOutOfBoundsException exc) {
             stockDetails.setVolume(0l);
         }
@@ -71,22 +71,22 @@ public class StockDetailsParserService {
         try {
             bufferedReader.close();
         } catch (IOException e) {
-            logger.error("Error ocurs: " + e.getMessage());
+            logger.error("Error occurs: " + e.getMessage());
         }
         return stockFiveMinutesDetailsList;
     }
 
     public Function<String, StockFiveMinutesDetails> mapToStockFiveMinutesDetails = (line) -> {
-        String[] splittedLine = line.split(",");
+        String[] splitLine = line.split(",");
         StockFiveMinutesDetails stockFiveMinutesDetails = new StockFiveMinutesDetails();
-        LocalDate dateDetail = dateAndTimeParserService.parseLocalDateFromString(splittedLine[0]);
-        LocalTime timeDetail = dateAndTimeParserService.parseLocalTimeFromString(splittedLine[1]);
+        LocalDate dateDetail = dateAndTimeParserService.parseLocalDateFromString(splitLine[0]);
+        LocalTime timeDetail = dateAndTimeParserService.parseLocalTimeFromString(splitLine[1]);
         stockFiveMinutesDetails.setDate(LocalDateTime.of(dateDetail, timeDetail));
         stockFiveMinutesDetails.setTime(timeDetail);
         stockFiveMinutesDetails.setCumulatedVolume(0l);
-        
+
         try {
-            stockFiveMinutesDetails.setVolume(Long.valueOf(splittedLine[6]));
+            stockFiveMinutesDetails.setVolume(Long.valueOf(splitLine[6]));
         } catch (ArrayIndexOutOfBoundsException exc) {
             stockFiveMinutesDetails.setVolume(0l);
         }

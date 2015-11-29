@@ -34,7 +34,7 @@ public class StockFinanceEventParserServcie {
         try {
             doc = getDocumentFromStockWatchWeb(stock.getStockShortName());
         } catch (IOException e) {
-            logger.error("Error ocurs: " + e.getMessage());
+            logger.error("Error occurs: " + e.getMessage());
         }
         Elements elements = doc.select("div[class=CASld roundAll]");
         // if elements.size == 3 means that stock has any finance event
