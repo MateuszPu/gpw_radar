@@ -24,7 +24,7 @@ public class DateAndTimeParserService {
     @Inject
     private CurrentStockDetailsParserService currentStockDetailsParserService;
 
-//    private final DateTimeFormatter dtfTypeOne = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    //    private final DateTimeFormatter dtfTypeOne = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 //    private final DateTimeFormatter dtfTypeTwo = DateTimeFormatter.ofPattern("yyyyMMdd");
 //    private final DateTimeFormatter localTimeTypeOne = DateTimeFormatter.ofPattern("HH:mm:ss");
 //    private final DateTimeFormatter localTimeTypeTwo = DateTimeFormatter.ofPattern("HHmmss");
@@ -42,12 +42,12 @@ public class DateAndTimeParserService {
     @PostConstruct
     private void init() {
         dataTimeFormatterMap = new HashMap<String, DateTimeFormatter>();
-        dataTimeFormatterMap.put(yearRegex+"-"+monthRegex+"-"+dayRegex, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        dataTimeFormatterMap.put(yearRegex+monthRegex+dayRegex, DateTimeFormatter.ofPattern("yyyyMMdd"));
+        dataTimeFormatterMap.put(yearRegex + "-" + monthRegex + "-" + dayRegex, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        dataTimeFormatterMap.put(yearRegex + monthRegex + dayRegex, DateTimeFormatter.ofPattern("yyyyMMdd"));
 
         localTimeFormatterMap = new HashMap<String, DateTimeFormatter>();
-        localTimeFormatterMap.put(hourRegex+":"+minutesSecondsRegex+":"+minutesSecondsRegex, DateTimeFormatter.ofPattern("HH:mm:ss"));
-        localTimeFormatterMap.put(hourRegex+minutesSecondsRegex+minutesSecondsRegex, DateTimeFormatter.ofPattern("HHmmss"));
+        localTimeFormatterMap.put(hourRegex + ":" + minutesSecondsRegex + ":" + minutesSecondsRegex, DateTimeFormatter.ofPattern("HH:mm:ss"));
+        localTimeFormatterMap.put(hourRegex + minutesSecondsRegex + minutesSecondsRegex, DateTimeFormatter.ofPattern("HHmmss"));
     }
 
     public LocalDate parseLocalDateFromString(String date) {
@@ -64,17 +64,24 @@ public class DateAndTimeParserService {
         String line = "";
         String cvsSplitBy = ",";
         LocalDate date = null;
+        BufferedReader bufferedReader = null;
         String url = "http://stooq.pl/q/l/?s=wig20&f=sd2t2ohlcv&h&e=csv";
         try {
-            InputStreamReader inputStreamReader = currentStockDetailsParserService.getBufferedReaderFromUrl(url);
-            BufferedReader in = new BufferedReader(inputStreamReader);
+            InputStreamReader inputStreamReader = currentStockDetailsParserService.getInputStreamReaderFromUrl(url);
+            bufferedReader = new BufferedReader(inputStreamReader);
             // skip first line as there are a headers
-            in.readLine();
-            line = in.readLine();
+            bufferedReader.readLine();
+            line = bufferedReader.readLine();
             String[] stockDetailsFromCsv = line.split(cvsSplitBy);
             date = parseLocalDateFromString(stockDetailsFromCsv[1]);
         } catch (IOException e) {
             logger.error("Error occurs: " + e.getMessage());
+        } finally {
+            try {
+                bufferedReader.close();
+            } catch (IOException e) {
+                logger.error("Error occurs: " + e.getMessage());
+            }
         }
         return date;
     }

@@ -1,11 +1,10 @@
-package com.gpw.radar.service.auto.update;
+package com.gpw.radar.service.auto.update.stockDetails;
 
 import com.gpw.radar.domain.stock.StockDetails;
 import com.gpw.radar.domain.stock.StockIndicators;
 import com.gpw.radar.repository.auto.update.DailyStockDetailsParserRepository;
 import com.gpw.radar.repository.stock.StockDetailsRepository;
 import com.gpw.radar.repository.stock.StockIndicatorsRepository;
-import com.gpw.radar.service.auto.update.stockDetails.StockDetailsParser;
 import com.gpw.radar.service.auto.update.stockIndicators.StockIndicatorsCalculator;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
 import com.gpw.radar.service.stock.StockDetailsService;

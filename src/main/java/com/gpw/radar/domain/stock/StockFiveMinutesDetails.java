@@ -32,6 +32,9 @@ public class StockFiveMinutesDetails {
     @Column(name = "cumulated_volume", nullable = false)
     private long cumulatedVolume;
 
+    @Column(name = "ratio_volme")
+    private double ratioVolume;
+
     @Transient
     private String stockTicker;
 
@@ -77,6 +80,14 @@ public class StockFiveMinutesDetails {
 
     public void setCumulatedVolume(long cumulatedVolume) {
         this.cumulatedVolume = cumulatedVolume;
+    }
+
+    public double getRatioVolume() {
+        return ratioVolume;
+    }
+
+    public void setRatioVolume(double ratioVolume) {
+        this.ratioVolume = ratioVolume;
     }
 
     public String getStockTicker() {

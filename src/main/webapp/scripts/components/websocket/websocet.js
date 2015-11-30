@@ -5,16 +5,18 @@ angular.module('gpwRadarApp')
         var stompClient = null;
         var subscriberUsersOnChat = null;
         var subscriberChatMessages = null;
+        var subscriberMostActiveStocks = null;
         var listenerCountUser = $q.defer();
         var listenerUsersOnChat = $q.defer();
         var listenerChatMessages = $q.defer();
+        var listenerMostActiveStocks = $q.defer();
         var connected = $q.defer();
         var alreadyConnectedOnce = false;
-        
+
         function userConnectedToApp() {
             stompClient.send('/app/webchat/user/app/on');
         };
-        
+
         function subscribeCountUsers() {
             stompClient.subscribe("/webchat/count", function(data) {
                 listenerCountUser.notify(data);
@@ -50,6 +52,11 @@ angular.module('gpwRadarApp')
 	            	listenerChatMessages.notify(data);
 	            });
             },
+            subscribeMostActiveStocks: function() {
+                subscriberMostActiveStocks = stompClient.subscribe("/most/active/stocks", function(data){
+                    listenerMostActiveStocks.notify(data);
+                });
+            },
             unsubscribeChat: function() {
                 if (subscriberUsersOnChat != null) {
                 	subscriberUsersOnChat.unsubscribe();
@@ -64,6 +71,9 @@ angular.module('gpwRadarApp')
             },
             reciveChatMessages: function() {
             	return listenerChatMessages.promise;
+            },
+            reciveMostActiveStocks: function() {
+                return listenerMostActiveStocks.promise;
             },
             userLoginToChat: function() {
             	stompClient.send('/app/webchat/user/login');

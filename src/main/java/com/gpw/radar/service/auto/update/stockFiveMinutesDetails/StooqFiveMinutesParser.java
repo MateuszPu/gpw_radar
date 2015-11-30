@@ -8,7 +8,7 @@ import com.gpw.radar.service.parser.DateAndTimeParserService;
 import com.gpw.radar.service.parser.web.CurrentStockDetailsParserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import java.io.BufferedReader;
@@ -24,8 +24,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 // getting data from http://stooq.pl/db
-@Service
-public class StooqFiveMinutesParser implements stockFiveMinutesDetailsParser {
+@Component("stooqFiveMinutesParser")
+public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
 
     //    http://stooq.pl/db/d/?d=20151125&t=5&u=17407230
     private final Logger logger = LoggerFactory.getLogger(StooqFiveMinutesParser.class);
@@ -126,7 +126,7 @@ public class StooqFiveMinutesParser implements stockFiveMinutesDetailsParser {
     }
 
     public InputStreamReader getInputStreamReader() {
-        InputStreamReader inputStreamReader = currentStockDetailsParserService.getBufferedReaderFromUrl(prepareUrl());
+        InputStreamReader inputStreamReader = currentStockDetailsParserService.getInputStreamReaderFromUrl(prepareUrl());
         return inputStreamReader;
     }
 

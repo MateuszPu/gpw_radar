@@ -14,7 +14,7 @@ public class CurrentStockDetailsParserService {
 
     private final Logger logger = LoggerFactory.getLogger(CurrentStockDetailsParserService.class);
 
-    public InputStreamReader getBufferedReaderFromUrl(String url) {
+    public InputStreamReader getInputStreamReaderFromUrl(String url) {
         InputStreamReader inputStreamReader = null;
         try {
             URL urlContent = new URL(url);

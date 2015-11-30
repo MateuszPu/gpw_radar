@@ -20,6 +20,7 @@
            <column name="volume" type="BIGINT">
                <constraints nullable="false"/>
            </column>
+           <column name="ratio_volme" type="float8"/>
            <column name="stock_id" type="BIGINT"/>
        </createTable>
    </changeSet>
