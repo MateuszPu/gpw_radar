@@ -5,7 +5,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
    <changeSet author="mateusz (generated)" id="201511231928-1">
       <createTable tableName="STOCK_FIVE_MINUTES_INDICATORS">
-         <column autoIncrement="true" name="id" type="BIGINT">
+         <column name="id" type="BIGINT">
             <constraints primaryKey="true" primaryKeyName="STOCK_FIVE_MINUTES_INDICATORSPK"/>
          </column>
          <column name="average_volume" type="FLOAT8">

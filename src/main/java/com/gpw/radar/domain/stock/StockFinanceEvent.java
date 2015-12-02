@@ -14,7 +14,9 @@ import java.time.LocalDate;
 public class StockFinanceEvent implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "idGenerator")
+    @TableGenerator(table = "hibernate_sequences_table", name = "idGenerator", pkColumnName = "pk",
+        valueColumnName = "value", pkColumnValue = "stock_finance_event")
     private Long id;
 
     @NotNull

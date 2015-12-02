@@ -23,7 +23,9 @@ import java.util.Set;
 public class User extends AbstractAuditingEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "idGenerator")
+    @TableGenerator(initialValue = 4, table = "hibernate_sequences_table", name = "idGenerator", pkColumnName = "pk",
+        valueColumnName = "value", pkColumnValue = "users", allocationSize = 1)
     private Long id;
 
     @NotNull

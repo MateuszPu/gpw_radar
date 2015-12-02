@@ -1,5 +1,7 @@
 package com.gpw.radar.domain.stock;
 
+import com.gpw.radar.domain.util.LocalTimeConverter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalTime;
@@ -12,11 +14,14 @@ import java.time.LocalTime;
 public class StockFiveMinutesIndicators {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "idGenerator")
+    @TableGenerator(table = "hibernate_sequences_table", name = "idGenerator", pkColumnName = "pk",
+        valueColumnName = "value", pkColumnValue = "stock_five_minutes_indicators")
     private Long id;
 
     @NotNull
     @Column(name = "time_event", nullable = false, columnDefinition = "time")
+    @Convert(converter = LocalTimeConverter.class)
     private LocalTime time;
 
     @NotNull

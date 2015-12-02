@@ -19,7 +19,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 // getting data from http://stooq.pl/db
@@ -52,7 +51,7 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
     public List<StockFiveMinutesDetails> getCurrentFiveMinutesStockDetails(InputStreamReader inputStreamReader, LocalTime lookingTime) {
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         List<StockFiveMinutesDetails> stockFiveMinutesDetailsList = bufferedReader.lines()
-            .map(mapToStockFiveMinutesDetails)
+            .map(line -> mapToStockFiveMinutesDetails(line))
             .filter(stockFiveMinutesDetails -> stockFiveMinutesDetails.getTime().equals(lookingTime))
             .collect(Collectors.toList());
 
@@ -65,7 +64,7 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
         return stockFiveMinutesDetailsList;
     }
 
-    private Function<String, StockFiveMinutesDetails> mapToStockFiveMinutesDetails = (line) -> {
+    private StockFiveMinutesDetails mapToStockFiveMinutesDetails(String line) {
         String[] splitLine = line.split(",");
         StockFiveMinutesDetails stockFiveMinutesDetails = new StockFiveMinutesDetails();
         stockFiveMinutesDetails.setStockTicker(splitLine[0].toLowerCase());
@@ -76,7 +75,20 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
         stockFiveMinutesDetails.setVolume(Long.valueOf(splitLine[8]));
 
         return stockFiveMinutesDetails;
-    };
+    }
+
+//    private Function<String, StockFiveMinutesDetails> mapToStockFiveMinutesDetails = (line) -> {
+//        String[] splitLine = line.split(",");
+//        StockFiveMinutesDetails stockFiveMinutesDetails = new StockFiveMinutesDetails();
+//        stockFiveMinutesDetails.setStockTicker(splitLine[0].toLowerCase());
+//        LocalTime eventTime = dateAndTimeParserService.parseLocalTimeFromString(splitLine[3]);
+//        LocalDate eventDate = dateAndTimeParserService.parseLocalDateFromString(splitLine[2]);
+//        stockFiveMinutesDetails.setTime(eventTime);
+//        stockFiveMinutesDetails.setDate(eventDate);
+//        stockFiveMinutesDetails.setVolume(Long.valueOf(splitLine[8]));
+//
+//        return stockFiveMinutesDetails;
+//    };
 
     public List<StockFiveMinutesDetails> calculateCumulatedVolume(List<StockFiveMinutesDetails> stockFiveMinutesDetails) {
         List<StockFiveMinutesDetails> stockFiveMinutesDetailsWithCalculatedCumulatedVolume = stockFiveMinutesDetails;

@@ -12,8 +12,8 @@ import java.time.ZonedDateTime;
 public abstract class ChatMessage {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "idChatMessageGenerator")
-    @TableGenerator(table = "hibernate_sequences", name = "idChatMessageGenerator", pkColumnName = "pk",
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "idGenerator")
+    @TableGenerator(table = "hibernate_sequences_table", name = "idGenerator", pkColumnName = "pk",
         valueColumnName = "value", pkColumnValue = "chat_message")
 	private long id;
 

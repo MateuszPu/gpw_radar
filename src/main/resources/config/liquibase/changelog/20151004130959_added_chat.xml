@@ -4,13 +4,6 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
 
-    <changeSet author="mateusz (generated)" id="1449054401658-19">
-        <createTable tableName="hibernate_sequences">
-            <column name="pk" type="VARCHAR(255)"/>
-            <column name="value" type="INT"/>
-        </createTable>
-    </changeSet>
-
     <changeSet author="mateusz (generated)" id="1449053026925-4">
         <createTable tableName="NEWS_MESSAGE">
             <column name="id" type="BIGINT">

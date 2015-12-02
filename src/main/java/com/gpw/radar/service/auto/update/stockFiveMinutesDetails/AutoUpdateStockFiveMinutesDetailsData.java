@@ -46,6 +46,7 @@ public class AutoUpdateStockFiveMinutesDetailsData {
     @Transactional
     @Scheduled(cron = "30 */5 9-18 * * MON-FRI")
     public void updateStockFiveMinuteDetails() {
+        System.out.println("WYSYLAM WIADOMOSC _______________________");
         LocalTime now = LocalTime.now();
         LocalTime lookingTime = LocalTime.of(now.getHour(), now.getMinute());
         lookingTime = lookingTime.minusMinutes(15);
@@ -57,12 +58,11 @@ public class AutoUpdateStockFiveMinutesDetailsData {
         }
     }
 
-//    @Scheduled(cron="*/45 * * * * ?")
-//    public void dobraMozeInnaNazwaTejJebanejMetody() {
-//        System.out.println("WYSYLAM WIADOMOSC _______________________");
-//        List<StockFiveMinutesDetails> std = stockFiveMinutesDetailsRepository.findAll();
-//        messagingTemplate.convertAndSend("/most/active/stocks", std.subList(0, 25));
-//    }
+    public void dobraMozeInnaNazwaTejJebanejMetody() {
+        System.out.println("WYSYLAM WIADOMOSC _______________________");
+        List<StockFiveMinutesDetails> std = stockFiveMinutesDetailsRepository.findAll();
+        messagingTemplate.convertAndSend("/most/active/stocks", std.subList(0, 25));
+    }
 
     private void compareToIndicators(List<StockFiveMinutesDetails> stockFiveMinutesDetails, LocalTime time) {
         List<StockFiveMinutesIndicators> indicators = fiveMinutesIndicators.stream().filter(indicator -> indicator.getTime().equals(time)).collect(Collectors.toList());

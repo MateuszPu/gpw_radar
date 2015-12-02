@@ -15,7 +15,9 @@ import java.util.Map;
 public class PersistentAuditEvent {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "idGenerator")
+    @TableGenerator(table = "hibernate_sequences_table", name = "idGenerator", pkColumnName = "pk",
+        valueColumnName = "value", pkColumnValue = "persistent_audit_event")
     @Column(name = "event_id")
     private Long id;
 

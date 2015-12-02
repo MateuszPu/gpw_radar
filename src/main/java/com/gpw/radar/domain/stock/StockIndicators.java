@@ -11,7 +11,9 @@ import java.math.BigDecimal;
 public class StockIndicators {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "idGenerator")
+    @TableGenerator(table = "hibernate_sequences_table", name = "idGenerator", pkColumnName = "pk",
+        valueColumnName = "value", pkColumnValue = "stock_indicators")
 	private Long id;
 
 	@Column(name = "slope_simple_regression_10")

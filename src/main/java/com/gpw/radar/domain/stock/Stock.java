@@ -21,7 +21,9 @@ import java.util.Set;
 public class Stock implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "idGenerator")
+    @TableGenerator(table = "hibernate_sequences_table", name = "idGenerator", pkColumnName = "pk",
+        valueColumnName = "value", pkColumnValue = "stock")
     @JsonView(View.StockIndicators.StockAndPercentReturn.class)
     private Long id;
 

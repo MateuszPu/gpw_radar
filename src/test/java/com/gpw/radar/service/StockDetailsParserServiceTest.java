@@ -17,7 +17,6 @@ import javax.inject.Inject;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -77,7 +76,7 @@ public class StockDetailsParserServiceTest {
         StockFiveMinutesDetails stockFiveMinutesDetails = list.get(0);
         assertThat(stockFiveMinutesDetails.getVolume()).isEqualTo(1417);
         assertThat(stockFiveMinutesDetails.getTime()).isEqualTo(LocalTime.of(9,5));
-        assertThat(stockFiveMinutesDetails.getDate()).isEqualTo(LocalDateTime.of(2015,11,10,9,5));
+        assertThat(stockFiveMinutesDetails.getDate()).isEqualTo(LocalDate.of(2015,11,10));
         assertThat(stockFiveMinutesDetails.getStock()).isNotNull();
     }
 
