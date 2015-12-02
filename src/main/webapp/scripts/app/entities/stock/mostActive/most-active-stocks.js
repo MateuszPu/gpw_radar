@@ -16,7 +16,7 @@ angular.module('gpwRadarApp')
             },
             resolve: {
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('mostActiveStocks');
+                    $translatePartialLoader.addPart('stock');
                     return $translate.refresh();
                 }]
             }

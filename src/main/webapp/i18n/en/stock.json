@@ -20,6 +20,25 @@
         		"title": "Stocks in trends"
         	}
         },
+        "list": {
+            "stockList": "Stocks list",
+            "title": "Stocks analyzed on the website",
+            "technical": "A. technical",
+            "fundamental": "A. fundamental",
+            "externalwebsites": "External websites",
+            "follow": "Follow",
+            "stopFollow": "Stop follow",
+            "search": "Search..."
+        },
+        "mostActiveStocks": {
+            "title": "Most active stocks",
+            "list": {
+                "ratio": "Ratio: {{ratio}}",
+                "cumulatedVolume": "Cumulated volume: {{cumulatedVolume}}",
+                "less": "Less",
+                "more": "More"
+            }
+        },
         "delete": {
             "question": "Are you sure you want to delete Stock {{ id }}?"
         },
@@ -28,16 +47,6 @@
         },
         "followed":{
         	"title": "Followed stocks"
-        },
-        "list": {
-        	"stockList": "Stocks list",
-        	"title": "Stocks analyzed on the website",
-        	"technical": "A. technical",
-        	"fundamental": "A. fundamental",
-        	"externalwebsites": "External websites",
-    		"follow": "Follow",
-    		"stopFollow": "Stop follow",
-            "search": "Search..."
         },
         "ticker": "Ticker",
         "stockName": "Stock name",

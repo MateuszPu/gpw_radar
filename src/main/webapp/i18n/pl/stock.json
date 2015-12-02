@@ -20,6 +20,25 @@
         		"title": "Spółki w trendzie"
         	}
         },
+        "list": {
+            "stockList": "Lista spółek",
+            "title": "Spółki poddawane analizie w serwisie",
+            "technical": "A. techniczna",
+            "fundamental": "A. fundamentalna",
+            "externalwebsites": "Zewnętrzne strony",
+            "follow": "Obserwuj",
+            "stopFollow": "Przestań obserwować",
+            "search": "Wyszukaj..."
+        },
+        "mostActiveStocks": {
+            "title": "Najbardziej aktywne spółki",
+            "list": {
+                "ratio": "Ratio: {{ratio}}",
+                "cumulatedVolume": "Wolumen skumulowany: {{cumulatedVolume}}",
+                "less": "Mniej",
+                "more": "Więcej"
+            }
+        },
         "delete": {
             "question": "Jesteś pewien, że chcesz usunąc spółkę {{ id }}?"
         },
@@ -28,16 +47,6 @@
         },
         "followed":{
         	"title": "Śledzone spółki"
-        },
-        "list": {
-        	"stockList": "Lista spółek",
-        	"title": "Spółki poddawane analizie w serwisie",
-        	"technical": "A. techniczna",
-        	"fundamental": "A. fundamentalna",
-        	"externalwebsites": "Zewnętrzne strony",
-        	"follow": "Obserwuj",
-        	"stopFollow": "Przestań obserwować",
-            "search": "Wyszukaj..."
         },
         "ticker": "Ticker",
         "stockName": "Nazwa spółki",

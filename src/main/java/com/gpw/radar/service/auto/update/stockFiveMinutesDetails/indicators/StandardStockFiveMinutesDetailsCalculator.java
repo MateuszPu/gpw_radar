@@ -22,7 +22,7 @@ public class StandardStockFiveMinutesDetailsCalculator {
 
     private List<StockFiveMinutesDetails> stockFiveMinutesDetails;
 
-    @Scheduled(cron = "0 15 04 ? * MON-FRI")
+    @Scheduled(cron = "0 0 04 ? * MON-FRI")
     public void updateIndicators() {
         stockFiveMinutesDetails = stockFiveMinutesDetailsRepository.findAll();
         List<StockFiveMinutesIndicators> indicators = stockFiveMinutesIndicatorsRepository.findAll();
