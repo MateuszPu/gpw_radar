@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+   <changeSet author="mateusz (generated)" id="1449054671280-1">
+      <createSequence sequenceName="hibernate_sequence"/>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-2">
+      <createTable tableName="AUTHORITY">
+         <column name="name" type="VARCHAR(50)">
+            <constraints nullable="false"/>
+         </column>
+      </createTable>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-3">
+      <createTable tableName="FILLED_DATA_STATUS">
+         <column name="data_type" type="VARCHAR(255)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="filled" type="BOOLEAN default 'false'">
+            <constraints nullable="false"/>
+         </column>
+      </createTable>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-4">
+      <createTable tableName="NEWS_MESSAGE">
+         <column name="id" type="BIGINT">
+            <constraints nullable="false"/>
+         </column>
+         <column name="created_date" type="timestamp">
+            <constraints nullable="false"/>
+         </column>
+         <column name="user_login" type="VARCHAR(255)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="user_id" type="BIGINT">
+            <constraints nullable="false"/>
+         </column>
+         <column name="link" type="VARCHAR(255)"/>
+         <column name="message" type="VARCHAR(1000)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="type" type="VARCHAR(255)"/>
+         <column name="stock_id" type="BIGINT"/>
+      </createTable>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-5">
+      <createTable tableName="PERSISTENT_AUDIT_EVENT">
+         <column autoIncrement="true" name="event_id" type="BIGINT">
+            <constraints primaryKey="true" primaryKeyName="PERSISTENT_AUDIT_EVENTPK"/>
+         </column>
+         <column name="event_date" type="timestamp"/>
+         <column name="event_type" type="VARCHAR(255)"/>
+         <column name="principal" type="VARCHAR(255)">
+            <constraints nullable="false"/>
+         </column>
+      </createTable>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-6">
+      <createTable tableName="PERSISTENT_AUDIT_EVT_DATA">
+         <column name="event_id" type="BIGINT">
+            <constraints nullable="false"/>
+         </column>
+         <column name="value" type="VARCHAR(255)"/>
+         <column name="name" type="VARCHAR(255)">
+            <constraints nullable="false"/>
+         </column>
+      </createTable>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-7">
+      <createTable tableName="PERSISTENT_TOKEN">
+         <column name="series" type="VARCHAR(255)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="ip_address" type="VARCHAR(39)"/>
+         <column name="token_date" type="date"/>
+         <column name="token_value" type="VARCHAR(255)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="user_agent" type="VARCHAR(255)"/>
+         <column name="user_id" type="BIGINT"/>
+      </createTable>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-8">
+      <createTable tableName="STOCK">
+         <column autoIncrement="true" name="id" type="BIGINT">
+            <constraints primaryKey="true" primaryKeyName="STOCKPK"/>
+         </column>
+         <column name="stock_name" type="VARCHAR(255)"/>
+         <column name="stock_short_name" type="VARCHAR(255)"/>
+         <column name="ticker" type="VARCHAR(255)">
+            <constraints nullable="false"/>
+         </column>
+      </createTable>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-9">
+      <createTable tableName="STOCK_DETAILS">
+         <column autoIncrement="true" name="id" type="BIGINT">
+            <constraints primaryKey="true" primaryKeyName="STOCK_DETAILSPK"/>
+         </column>
+         <column name="close_price" type="NUMBER(10, 2)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="date" type="date">
+            <constraints nullable="false"/>
+         </column>
+         <column name="max_price" type="NUMBER(10, 2)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="min_price" type="NUMBER(10, 2)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="open_price" type="NUMBER(10, 2)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="volume" type="BIGINT">
+            <constraints nullable="false"/>
+         </column>
+         <column name="stock_id" type="BIGINT"/>
+      </createTable>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-10">
+      <createTable tableName="STOCK_DETAILS_PARSER_METHOD">
+         <column name="method" type="VARCHAR(255)">
+            <constraints nullable="false"/>
+         </column>
+      </createTable>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-11">
+      <createTable tableName="STOCK_FINANCE_EVENT">
+         <column autoIncrement="true" name="id" type="BIGINT">
+            <constraints primaryKey="true" primaryKeyName="STOCK_FINANCE_EVENTPK"/>
+         </column>
+         <column name="date" type="date">
+            <constraints nullable="false"/>
+         </column>
+         <column name="message" type="VARCHAR(255)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="stock_id" type="BIGINT"/>
+      </createTable>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-12">
+      <createTable tableName="STOCK_FIVE_MINUTES_DETAILS">
+         <column autoIncrement="true" name="id" type="BIGINT">
+            <constraints primaryKey="true" primaryKeyName="STOCK_FIVE_MINUTES_DETAILSPK"/>
+         </column>
+         <column name="cumulated_volume" type="BIGINT">
+            <constraints nullable="false"/>
+         </column>
+         <column name="date_event" type="date">
+            <constraints nullable="false"/>
+         </column>
+         <column name="ratio_volme" type="FLOAT8"/>
+         <column name="time_event" type="time">
+            <constraints nullable="false"/>
+         </column>
+         <column name="volume" type="BIGINT">
+            <constraints nullable="false"/>
+         </column>
+         <column name="stock_id" type="BIGINT"/>
+      </createTable>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-13">
+      <createTable tableName="STOCK_FIVE_MINUTES_INDICATORS">
+         <column autoIncrement="true" name="id" type="BIGINT">
+            <constraints primaryKey="true" primaryKeyName="STOCK_FIVE_MINUTES_INDICATORSPK"/>
+         </column>
+         <column name="average_volume" type="FLOAT8">
+            <constraints nullable="false"/>
+         </column>
+         <column name="time_event" type="time">
+            <constraints nullable="false"/>
+         </column>
+         <column name="stock_id" type="BIGINT"/>
+      </createTable>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-14">
+      <createTable tableName="STOCK_INDICATORS">
+         <column autoIncrement="true" name="id" type="BIGINT">
+            <constraints primaryKey="true" primaryKeyName="STOCK_INDICATORSPK"/>
+         </column>
+         <column name="average_volume_10_days" type="NUMBER(10, 2)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="average_volume_30_days" type="NUMBER(10, 2)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="percent_return" type="NUMBER(10, 2)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="slope_simple_regression_10" type="FLOAT8"/>
+         <column name="slope_simple_regression_30" type="FLOAT8"/>
+         <column name="slope_simple_regression_60" type="FLOAT8"/>
+         <column name="slope_simple_regression_90" type="FLOAT8"/>
+         <column name="volume_ratio_10" type="NUMBER(10, 2)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="volume_ratio_30" type="NUMBER(10, 2)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="volume_value_30_days" type="NUMBER(25, 2)"/>
+         <column name="stock_id" type="BIGINT"/>
+      </createTable>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-15">
+      <createTable tableName="USERS">
+         <column autoIncrement="true" name="id" type="BIGINT">
+            <constraints primaryKey="true" primaryKeyName="USERSPK"/>
+         </column>
+         <column name="created_by" type="VARCHAR(50)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="created_date" type="timestamp">
+            <constraints nullable="false"/>
+         </column>
+         <column name="last_modified_by" type="VARCHAR(50)"/>
+         <column name="last_modified_date" type="timestamp"/>
+         <column name="activated" type="BOOLEAN">
+            <constraints nullable="false"/>
+         </column>
+         <column name="activation_key" type="VARCHAR(20)"/>
+         <column name="email" type="VARCHAR(100)"/>
+         <column name="first_name" type="VARCHAR(50)"/>
+         <column name="lang_key" type="VARCHAR(5)"/>
+         <column name="last_name" type="VARCHAR(50)"/>
+         <column name="login" type="VARCHAR(50)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="password" type="VARCHAR(60)"/>
+         <column name="reset_date" type="timestamp"/>
+         <column name="reset_key" type="VARCHAR(20)"/>
+      </createTable>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-16">
+      <createTable tableName="USER_AUTHORITY">
+         <column name="user_id" type="BIGINT">
+            <constraints nullable="false"/>
+         </column>
+         <column name="authority_name" type="VARCHAR(50)">
+            <constraints nullable="false"/>
+         </column>
+      </createTable>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-17">
+      <createTable tableName="USER_MESSAGE">
+         <column name="id" type="BIGINT">
+            <constraints nullable="false"/>
+         </column>
+         <column name="created_date" type="timestamp">
+            <constraints nullable="false"/>
+         </column>
+         <column name="user_login" type="VARCHAR(255)">
+            <constraints nullable="false"/>
+         </column>
+         <column name="user_id" type="BIGINT">
+            <constraints nullable="false"/>
+         </column>
+         <column name="message" type="VARCHAR(128)">
+            <constraints nullable="false"/>
+         </column>
+      </createTable>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-18">
+      <createTable tableName="USER_STOCKS">
+         <column name="user_id" type="BIGINT">
+            <constraints nullable="false"/>
+         </column>
+         <column name="stock_id" type="BIGINT">
+            <constraints nullable="false"/>
+         </column>
+      </createTable>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-19">
+      <createTable tableName="hibernate_sequences">
+         <column name="pk" type="VARCHAR(255)"/>
+         <column name="value" type="INT"/>
+      </createTable>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-20">
+      <addPrimaryKey columnNames="event_id, name" tableName="PERSISTENT_AUDIT_EVT_DATA"/>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-21">
+      <addPrimaryKey columnNames="user_id, authority_name" tableName="USER_AUTHORITY"/>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-22">
+      <addPrimaryKey columnNames="user_id, stock_id" tableName="USER_STOCKS"/>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-23">
+      <addPrimaryKey columnNames="name"
+                     constraintName="AUTHORITYPK"
+                     tableName="AUTHORITY"/>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-24">
+      <addPrimaryKey columnNames="id"
+                     constraintName="ChatMessagePK"
+                     tableName="NEWS_MESSAGE"/>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-25">
+      <addPrimaryKey columnNames="id"
+                     constraintName="ChatMessagePK"
+                     tableName="USER_MESSAGE"/>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-26">
+      <addPrimaryKey columnNames="data_type"
+                     constraintName="FILLED_DATA_STATUSPK"
+                     tableName="FILLED_DATA_STATUS"/>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-27">
+      <addPrimaryKey columnNames="series"
+                     constraintName="PERSISTENT_TOKENPK"
+                     tableName="PERSISTENT_TOKEN"/>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-28">
+      <addPrimaryKey columnNames="method"
+                     constraintName="STOCK_DETAILS_PARSER_METHODPK"
+                     tableName="STOCK_DETAILS_PARSER_METHOD"/>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-29">
+      <addUniqueConstraint columnNames="email"
+                           constraintName="UC_USERSEMAIL_COL"
+                           tableName="USERS"/>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-30">
+      <addUniqueConstraint columnNames="login"
+                           constraintName="UC_USERSLOGIN_COL"
+                           tableName="USERS"/>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-31">
+      <addForeignKeyConstraint baseColumnNames="authority_name"
+                               baseTableName="USER_AUTHORITY"
+                               constraintName="FK_7hl8ovqlkkowqlxhfo4m48ioj"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="name"
+                               referencedTableName="AUTHORITY"/>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-32">
+      <addForeignKeyConstraint baseColumnNames="user_id"
+                               baseTableName="NEWS_MESSAGE"
+                               constraintName="FK_exhqrs436fkmff2d3kowm8grn"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="id"
+                               referencedTableName="USERS"/>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-33">
+      <addForeignKeyConstraint baseColumnNames="stock_id"
+                               baseTableName="STOCK_FINANCE_EVENT"
+                               constraintName="FK_finance_event_to_stock"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="id"
+                               referencedTableName="STOCK"/>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-34">
+      <addForeignKeyConstraint baseColumnNames="user_id"
+                               baseTableName="USER_STOCKS"
+                               constraintName="FK_g6cvj484i36nbnrpm8yoxpb4x"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="id"
+                               referencedTableName="USERS"/>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-35">
+      <addForeignKeyConstraint baseColumnNames="user_id"
+                               baseTableName="PERSISTENT_TOKEN"
+                               constraintName="FK_hfm6ve7deuf8xubrvi14xnabd"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="id"
+                               referencedTableName="USERS"/>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-36">
+      <addForeignKeyConstraint baseColumnNames="stock_id"
+                               baseTableName="STOCK_INDICATORS"
+                               constraintName="FK_indicators_to_stock"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="id"
+                               referencedTableName="STOCK"/>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-37">
+      <addForeignKeyConstraint baseColumnNames="user_id"
+                               baseTableName="USER_AUTHORITY"
+                               constraintName="FK_or22hakky2a42qhu8rw1vn9ku"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="id"
+                               referencedTableName="USERS"/>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-38">
+      <addForeignKeyConstraint baseColumnNames="event_id"
+                               baseTableName="PERSISTENT_AUDIT_EVT_DATA"
+                               constraintName="FK_q25lt54sie68iy1oe0ntm2gum"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="event_id"
+                               referencedTableName="PERSISTENT_AUDIT_EVENT"/>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-39">
+      <addForeignKeyConstraint baseColumnNames="user_id"
+                               baseTableName="USER_MESSAGE"
+                               constraintName="FK_qrrtdqu23fodaq7g42ad7d1m9"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="id"
+                               referencedTableName="USERS"/>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-40">
+      <addForeignKeyConstraint baseColumnNames="stock_id"
+                               baseTableName="STOCK_FIVE_MINUTES_DETAILS"
+                               constraintName="FK_stock"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="id"
+                               referencedTableName="STOCK"/>
+   </changeSet>
+   <changeSet author="mateusz (generated)" id="1449054671280-41">
+      <addForeignKeyConstraint baseColumnNames="stock_id"
+                               baseTableName="USER_STOCKS"
+                               constraintName="FK_wba96o6yqs2xcu0fhedibupn"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="id"
+                               referencedTableName="STOCK"/>
+   </changeSet>
+</databaseChangeLog>

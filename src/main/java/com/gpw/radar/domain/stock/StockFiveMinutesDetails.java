@@ -2,7 +2,7 @@ package com.gpw.radar.domain.stock;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 /**
@@ -18,10 +18,10 @@ public class StockFiveMinutesDetails {
 
     @NotNull
     @Column(name = "date_event", nullable = false)
-    private LocalDateTime date;
+    private LocalDate date;
 
     @NotNull
-    @Column(name = "time_event", nullable = false)
+    @Column(name = "time_event", nullable = false, columnDefinition = "time")
     private LocalTime time;
 
     @NotNull
@@ -50,11 +50,11 @@ public class StockFiveMinutesDetails {
         this.id = id;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

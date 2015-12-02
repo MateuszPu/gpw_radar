@@ -7,7 +7,6 @@ import com.gpw.radar.repository.stock.StockFiveMinutesIndicatorsRepository;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -16,7 +15,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+//@Service
 public class AutoUpdateStockFiveMinutesDetailsData {
 
     @Inject

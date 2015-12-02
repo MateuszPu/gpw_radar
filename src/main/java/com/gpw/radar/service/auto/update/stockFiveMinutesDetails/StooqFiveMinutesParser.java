@@ -15,7 +15,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,9 +70,9 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
         StockFiveMinutesDetails stockFiveMinutesDetails = new StockFiveMinutesDetails();
         stockFiveMinutesDetails.setStockTicker(splitLine[0].toLowerCase());
         LocalTime eventTime = dateAndTimeParserService.parseLocalTimeFromString(splitLine[3]);
-        LocalDate localDate = dateAndTimeParserService.parseLocalDateFromString(splitLine[2]);
+        LocalDate eventDate = dateAndTimeParserService.parseLocalDateFromString(splitLine[2]);
         stockFiveMinutesDetails.setTime(eventTime);
-        stockFiveMinutesDetails.setDate(LocalDateTime.of(localDate, eventTime));
+        stockFiveMinutesDetails.setDate(eventDate);
         stockFiveMinutesDetails.setVolume(Long.valueOf(splitLine[8]));
 
         return stockFiveMinutesDetails;
@@ -109,7 +108,7 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
         stocksInApp = stockRepository.findAll();
         stockFiveMinutesDetails.stream().forEach(stFvDt -> stFvDt.setStock(getStockByString(stFvDt.getStockTicker())));
         List<StockFiveMinutesDetails> filteredDetails = stockFiveMinutesDetails.stream()
-            .filter(filtred -> filtred.getStock().getId() != null)
+            .filter(filtered -> filtered.getStock().getId() != null)
             .collect(Collectors.toList());
         return filteredDetails;
     }

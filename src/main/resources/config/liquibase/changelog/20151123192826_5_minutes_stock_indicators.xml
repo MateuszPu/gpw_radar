@@ -11,7 +11,7 @@
          <column name="average_volume" type="FLOAT8">
             <constraints nullable="false"/>
          </column>
-         <column name="time_event" type="BYTEA">
+         <column name="time_event" type="time">
             <constraints nullable="false"/>
          </column>
          <column name="stock_id" type="BIGINT"/>

@@ -10,7 +10,6 @@
     <include file="classpath:config/liquibase/changelog/20150803183322_added_entity_StockFinanceEvent.xml" relativeToChangelogFile="false"/>
    	<include file="classpath:config/liquibase/changelog/20150817192416_refactoring.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20151004130959_added_chat.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20151012191544_refactored_chat_message.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20151114114953_5_minutes_stock_details.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20151123192826_5_minutes_stock_indicators.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

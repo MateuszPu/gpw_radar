@@ -11,8 +11,10 @@ import java.time.ZonedDateTime;
 @Inheritance( strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class ChatMessage {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.TABLE)
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "idChatMessageGenerator")
+    @TableGenerator(table = "hibernate_sequences", name = "idChatMessageGenerator", pkColumnName = "pk",
+        valueColumnName = "value", pkColumnValue = "chat_message")
 	private long id;
 
 	@ManyToOne

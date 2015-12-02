@@ -16,7 +16,7 @@ public class StockFiveMinutesIndicators {
     private Long id;
 
     @NotNull
-    @Column(name = "time_event", nullable = false)
+    @Column(name = "time_event", nullable = false, columnDefinition = "time")
     private LocalTime time;
 
     @NotNull

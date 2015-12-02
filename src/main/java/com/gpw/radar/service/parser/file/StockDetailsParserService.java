@@ -15,7 +15,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +80,7 @@ public class StockDetailsParserService {
         StockFiveMinutesDetails stockFiveMinutesDetails = new StockFiveMinutesDetails();
         LocalDate dateDetail = dateAndTimeParserService.parseLocalDateFromString(splitLine[0]);
         LocalTime timeDetail = dateAndTimeParserService.parseLocalTimeFromString(splitLine[1]);
-        stockFiveMinutesDetails.setDate(LocalDateTime.of(dateDetail, timeDetail));
+        stockFiveMinutesDetails.setDate(dateDetail);
         stockFiveMinutesDetails.setTime(timeDetail);
         stockFiveMinutesDetails.setCumulatedVolume(0l);
 
@@ -97,12 +96,12 @@ public class StockDetailsParserService {
     public List<StockFiveMinutesDetails> fillEmptyTimeAndCumulativeVolume(List<StockFiveMinutesDetails> stockFiveMinutesDetailsList) {
         List<StockFiveMinutesDetails> filledEmptyTimeAndCumulativeVolume = new ArrayList<>();
 
-        LocalDate startDate = stockFiveMinutesDetailsList.get(0).getDate().toLocalDate().minusDays(1);
+        LocalDate startDate = stockFiveMinutesDetailsList.get(0).getDate().minusDays(1);
 
         int i = 0;
         for (StockFiveMinutesDetails element : stockFiveMinutesDetailsList) {
-            if (!element.getDate().toLocalDate().isEqual(startDate)) {
-                startDate = element.getDate().toLocalDate();
+            if (!element.getDate().isEqual(startDate)) {
+                startDate = element.getDate();
                 element.setCumulatedVolume(element.getVolume());
                 filledEmptyTimeAndCumulativeVolume.add(element);
                 i++;
@@ -118,7 +117,7 @@ public class StockDetailsParserService {
                 int lengthOfDifference = differenceInMinutes / 5;
                 for (int j = 1; j < lengthOfDifference; j++) {
                     StockFiveMinutesDetails emptyFiveMinutesDetails = new StockFiveMinutesDetails();
-                    emptyFiveMinutesDetails.setDate(stockFiveMinutesDetailsList.get(previousElementToCompare).getDate().plusMinutes(5 * j));
+                    emptyFiveMinutesDetails.setDate(stockFiveMinutesDetailsList.get(previousElementToCompare).getDate());
                     emptyFiveMinutesDetails.setTime(timeOfPreviousEvent.plusMinutes(5));
                     emptyFiveMinutesDetails.setVolume(0l);
                     emptyFiveMinutesDetails.setCumulatedVolume(stockFiveMinutesDetailsList.get(previousElementToCompare).getCumulatedVolume());
