@@ -7,6 +7,7 @@ import com.gpw.radar.repository.stock.StockFiveMinutesIndicatorsRepository;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -15,7 +16,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//@Service
+@Service
 public class AutoUpdateStockFiveMinutesDetailsData {
 
     @Inject
@@ -46,7 +47,6 @@ public class AutoUpdateStockFiveMinutesDetailsData {
     @Transactional
     @Scheduled(cron = "30 */5 9-18 * * MON-FRI")
     public void updateStockFiveMinuteDetails() {
-        System.out.println("WYSYLAM WIADOMOSC _______________________");
         LocalTime now = LocalTime.now();
         LocalTime lookingTime = LocalTime.of(now.getHour(), now.getMinute());
         lookingTime = lookingTime.minusMinutes(15);
@@ -58,27 +58,23 @@ public class AutoUpdateStockFiveMinutesDetailsData {
         }
     }
 
+    @Scheduled(cron = "0 */1 * * * *")
     public void dobraMozeInnaNazwaTejJebanejMetody() {
         System.out.println("WYSYLAM WIADOMOSC _______________________");
         List<StockFiveMinutesDetails> std = stockFiveMinutesDetailsRepository.findAll();
-        messagingTemplate.convertAndSend("/most/active/stocks", std.subList(0, 25));
+        messagingTemplate.convertAndSend("/most/active/stocks", std.subList(0, 12));
     }
 
     private void compareToIndicators(List<StockFiveMinutesDetails> stockFiveMinutesDetails, LocalTime time) {
-        List<StockFiveMinutesIndicators> indicators = fiveMinutesIndicators.stream().filter(indicator -> indicator.getTime().equals(time)).collect(Collectors.toList());
+        List<StockFiveMinutesIndicators> indicatorsToCompare = fiveMinutesIndicators.stream().filter(indicator -> indicator.getTime().equals(time)).collect(Collectors.toList());
 
         stockFiveMinutesDetails.stream().forEach(detail -> detail.setRatioVolume(detail.getCumulatedVolume() /
-            indicators.stream()
+            indicatorsToCompare.stream()
                 .filter(indi -> indi.getStock().equals(detail.getStock()))
                 .findAny()
                 .get().getAverageVolume()));
 
         stockFiveMinutesDetailsRepository.save(stockFiveMinutesDetails);
-
-        List<StockFiveMinutesDetails> sprtedByVolumeRation = stockFiveMinutesDetails.stream()
-            .sorted((stFvDt1, stFvDt2) -> Double.compare(stFvDt1.getRatioVolume(), stFvDt2.getCumulatedVolume()))
-            .collect(Collectors.toList());
-
-        messagingTemplate.convertAndSend("/most/active/stocks", sprtedByVolumeRation);
+        messagingTemplate.convertAndSend("/most/active/stocks", stockFiveMinutesDetails);
     }
 }

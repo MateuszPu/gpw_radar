@@ -77,19 +77,6 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
         return stockFiveMinutesDetails;
     }
 
-//    private Function<String, StockFiveMinutesDetails> mapToStockFiveMinutesDetails = (line) -> {
-//        String[] splitLine = line.split(",");
-//        StockFiveMinutesDetails stockFiveMinutesDetails = new StockFiveMinutesDetails();
-//        stockFiveMinutesDetails.setStockTicker(splitLine[0].toLowerCase());
-//        LocalTime eventTime = dateAndTimeParserService.parseLocalTimeFromString(splitLine[3]);
-//        LocalDate eventDate = dateAndTimeParserService.parseLocalDateFromString(splitLine[2]);
-//        stockFiveMinutesDetails.setTime(eventTime);
-//        stockFiveMinutesDetails.setDate(eventDate);
-//        stockFiveMinutesDetails.setVolume(Long.valueOf(splitLine[8]));
-//
-//        return stockFiveMinutesDetails;
-//    };
-
     public List<StockFiveMinutesDetails> calculateCumulatedVolume(List<StockFiveMinutesDetails> stockFiveMinutesDetails) {
         List<StockFiveMinutesDetails> stockFiveMinutesDetailsWithCalculatedCumulatedVolume = stockFiveMinutesDetails;
         LocalTime timeOfDetails = stockFiveMinutesDetails.get(0).getTime();

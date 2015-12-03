@@ -5495,6 +5495,19 @@ a.forum-item-title:hover {
         margin-bottom: 0;
     }
 }
+.vertical-timeline-time {
+    position: absolute;
+    top: 50%;
+    left: -15px;
+    width: 70px;
+    height: auto;
+    font-size: 16px;
+    border: 3px solid #f1f1f1;
+    text-align: center;
+}
+.vertical-timeline-time i {
+    text-align: center;
+}
 .vertical-timeline-icon {
     position: absolute;
     top: 0;
@@ -6319,6 +6332,10 @@ table.table-mail tr td {
 }
 .yellow-bg {
     background-color: #f8ac59;
+    color: #ffffff;
+}
+.ocean-bg {
+    background-color: #3C7376;
     color: #ffffff;
 }
 .red-bg {

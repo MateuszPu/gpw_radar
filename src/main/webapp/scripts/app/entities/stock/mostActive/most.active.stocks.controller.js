@@ -1,12 +1,13 @@
 angular.module('gpwRadarApp')
     .controller('MostActiveStocksController', function ($scope, Websocket) {
 
-        $scope.messages = [];
+        $scope.events = [];
 
         Websocket.subscribeMostActiveStocks();
 
         Websocket.reciveMostActiveStocks().then(null, null, function(message) {
-            $scope.messages.push(JSON.parse(message.body));
+            $scope.events.push(JSON.parse(message.body));
+            console.log($scope.events);
         });
     })
 
