@@ -19,4 +19,5 @@ public class StockDetailsService {
 		StockDetails stockDetails = stockDetailsRepository.findTopByOrderByDateDesc();
 		return new ResponseEntity<LocalDate>(stockDetails.getDate(), HttpStatus.OK);
 	}
+
 }

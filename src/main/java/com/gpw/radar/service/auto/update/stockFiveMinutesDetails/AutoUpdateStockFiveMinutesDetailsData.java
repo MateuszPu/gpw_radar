@@ -2,6 +2,7 @@ package com.gpw.radar.service.auto.update.stockFiveMinutesDetails;
 
 import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
 import com.gpw.radar.domain.stock.StockFiveMinutesIndicators;
+import com.gpw.radar.domain.stock.TimeStockFiveMinuteDetails;
 import com.gpw.radar.repository.stock.StockFiveMinutesDetailsRepository;
 import com.gpw.radar.repository.stock.StockFiveMinutesIndicatorsRepository;
 import org.springframework.beans.factory.BeanFactory;
@@ -53,19 +54,23 @@ public class AutoUpdateStockFiveMinutesDetailsData {
 
         if (!lookingTime.isBefore(LocalTime.of(9, 20)) && lookingTime.isBefore(LocalTime.of(17, 10))) {
             List<StockFiveMinutesDetails> stockFiveMinutesDetails = stockFiveMinutesDetailsParser.parseFiveMinutesStockDetails(lookingTime);
-            compareToIndicators(stockFiveMinutesDetails, lookingTime);
+            calculateVolumeRatio(stockFiveMinutesDetails, lookingTime);
             //ostatnia czesc to osobny cron na koniec dnia o 17.30 uzupelnic puste pola i zapisac do bazy ponownie i przeliczyc srednie
         }
     }
 
-    @Scheduled(cron = "0 */1 * * * *")
-    public void dobraMozeInnaNazwaTejJebanejMetody() {
-        System.out.println("WYSYLAM WIADOMOSC _______________________");
-        List<StockFiveMinutesDetails> std = stockFiveMinutesDetailsRepository.findAll();
-        messagingTemplate.convertAndSend("/most/active/stocks", std.subList(0, 12));
-    }
+//    @Scheduled(cron = "0 */1 * * * *")
+//    public void asd() {
+//        System.out.println("WYSYLAM WIADOMOSC _______________________");
+//        List<StockFiveMinutesDetails> std = stockFiveMinutesDetailsRepository.findByDate(LocalDate.of(2015, 10, 28));
+//        std = std.stream().filter(st -> st.getTime().equals(LocalTime.of(16,50))).collect(Collectors.toList());
+//        TimeStockFiveMinuteDetails a = new TimeStockFiveMinuteDetails();
+//        a.setTime(LocalTime.of(16,50));
+//        a.setListOfDetails(std);
+//        messagingTemplate.convertAndSend("/most/active/stocks", a);
+//    }
 
-    private void compareToIndicators(List<StockFiveMinutesDetails> stockFiveMinutesDetails, LocalTime time) {
+    private void calculateVolumeRatio(List<StockFiveMinutesDetails> stockFiveMinutesDetails, LocalTime time) {
         List<StockFiveMinutesIndicators> indicatorsToCompare = fiveMinutesIndicators.stream().filter(indicator -> indicator.getTime().equals(time)).collect(Collectors.toList());
 
         stockFiveMinutesDetails.stream().forEach(detail -> detail.setRatioVolume(detail.getCumulatedVolume() /
@@ -75,6 +80,11 @@ public class AutoUpdateStockFiveMinutesDetailsData {
                 .get().getAverageVolume()));
 
         stockFiveMinutesDetailsRepository.save(stockFiveMinutesDetails);
-        messagingTemplate.convertAndSend("/most/active/stocks", stockFiveMinutesDetails);
+        TimeStockFiveMinuteDetails timeStockFiveMinuteDetails = new TimeStockFiveMinuteDetails();
+        timeStockFiveMinuteDetails.setTime(time);
+        timeStockFiveMinuteDetails.setListOfDetails(stockFiveMinutesDetails);
+        messagingTemplate.convertAndSend("/most/active/stocks", timeStockFiveMinuteDetails);
     }
+
+
 }

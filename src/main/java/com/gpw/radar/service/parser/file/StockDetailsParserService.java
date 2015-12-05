@@ -118,7 +118,7 @@ public class StockDetailsParserService {
                 for (int j = 1; j < lengthOfDifference; j++) {
                     StockFiveMinutesDetails emptyFiveMinutesDetails = new StockFiveMinutesDetails();
                     emptyFiveMinutesDetails.setDate(stockFiveMinutesDetailsList.get(previousElementToCompare).getDate());
-                    emptyFiveMinutesDetails.setTime(timeOfPreviousEvent.plusMinutes(5));
+                    emptyFiveMinutesDetails.setTime(timeOfPreviousEvent.plusMinutes(5*j));
                     emptyFiveMinutesDetails.setVolume(0l);
                     emptyFiveMinutesDetails.setCumulatedVolume(stockFiveMinutesDetailsList.get(previousElementToCompare).getCumulatedVolume());
                     emptyFiveMinutesDetails.setStock(element.getStock());
