@@ -29,7 +29,7 @@ import static org.assertj.core.api.StrictAssertions.assertThat;
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 @RunWith(Parameterized.class)
-public class fillDataBaseWithDataServiceTest {
+public class FillDataBaseWithDataServiceTest {
 
     @Inject
     private FillDataBaseWithDataService fillDataBaseWithDataService;
@@ -59,7 +59,7 @@ public class fillDataBaseWithDataServiceTest {
         indicatorsList = fillDataBaseWithDataService.calculateIndicatorsFromDetails(filledStockFiveMinutesDetails);
     }
 
-    public fillDataBaseWithDataServiceTest(LocalTime time, double expectedResult) {
+    public FillDataBaseWithDataServiceTest(LocalTime time, double expectedResult) {
         this.time = time;
         this.expectedResult = expectedResult;
     }
