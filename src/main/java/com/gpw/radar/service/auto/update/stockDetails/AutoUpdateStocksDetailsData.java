@@ -10,6 +10,7 @@ import com.gpw.radar.service.parser.DateAndTimeParserService;
 import com.gpw.radar.service.stock.StockDetailsService;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -20,6 +21,7 @@ import java.util.List;
 //@RestController
 //@RequestMapping("/api")
 //@RolesAllowed(AuthoritiesConstants.ADMIN)
+@Service
 public class AutoUpdateStocksDetailsData {
 
 	@Inject

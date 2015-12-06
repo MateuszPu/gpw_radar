@@ -4,18 +4,18 @@ package com.gpw.radar.domain.enumeration;
  * The GpwStockTicker enumeration.
  */
 public enum StockTicker implements Ticker {
-//	abc, abe, acp, act, ago, alc, ali, alr, amc, aml, apt, arr, asb, ase, ast, atc,
-//	atd, att, bbd, bdx, bft, bhw, bio, bmc, brs, bsc, btm, bzw, car, ccc, cdr,
-//	cez, chs, cie, cig, cmp, cmr, col, cps, crm, czt, dbc, dom, dud, duo, eat, ech,
-//	eex, egs, elb, emp, emt, ena, eng, erb, erg, eur, fmf, fro, fsg, fte, gcn,
-//	gnb, gpw, gri, grj, gtc, gtn, hrs, hwe, idg, inc, ind, ing, ink, ipl, ipx, itg,
-//	jsw, jwc, kan, ker, kgh, kom, kpx, kri, krs, kru, ksw, kty, lbt, lbw, lcc, len,
-//	lpp, lts, ltx, lwb, mab, mag, mbk, mci, mcr, mdg, mds, mil, mlk, mol, mon, msw,
-//	msz, mwt, net, neu, nwg, opl, orb, ovo, pcm, pcr, pek, pel, peo, pge, pgn, pgs,
-//	phn, pjp, pkn, pko, pkp, pnd, prc, pwx, pzu, qmk, qrs, rbw, rdl, rdn, rfk, rmk,
-//	rob, sel, sen, sfs, sgn, skh, skt, smt, snk, sns, sol, stf, stp, stx, swg, tar,
-//	tfo, tlx, tor, tpe, trk, ucg, urs, vst, vtg, vtl, wlt, woj, wse, wwl, zap,
-//	zep, zst, zuk
+    fro, ipe, mnc, wik, grj, otm, sol, ast, ech, dud, gki, lsi, czt, dpl, del, bmc, pbg, atp, dcr, zwc,
+    ali, opf, ida, irl, tar, atr, mex, obl, cpa, mbw, ksw, wdx, ink, mrb, snx, ska, cng, vox, skh, zst,
+    kgn, fsg, tvl, agt, mrc, k2i, bmp, stf, odl, awb, pti, dtp, acg, mni, nva, bft, pwx, vtl, elt, bri,
+    tfo, was, qrs, rnk, smt, eah, ipl, dom, emp, bos, rwl, pdz, elz, bph, jwc, mag, erb, grt, abc, cdl,
+    idt, pbx, mvp, trr, col, rlp, alm, kom, uni, mak, wtn, fcl, kri, egs, ipt, inv, pgd, emt, imc, cog,
+    zue, sen, rdl, vgo, krk, pce, slv, ucg, alc, ltx, fte, snk, snt, wlt, msz, cmr, ind, dbc, car, prt,
+    pek, mab, mcr, pcr, idg, kan, fee, pep, nem, lvc, stx, rdn, btm, euc, phn, vin, gcn, ace, grl, tlx,
+    gri, pcm, chs, sfs, zep, lbw, bra, eex, sgn, prc, kpx, lcc, rfk, wpl, atc, rpc, hyp, msw, mdg, wwl,
+    crm, hwe, duo, opn, vst, rbw, zap, tor, hrs, cig, brs, pjp, mon, asb, bbd, stp, zka, urs, mds, ago,
+    mci, ipx, elb, aml, bio, net, gpw, skt, rob, pnd, amc, eat, itg, wse, unw, jsw, bdx, gtn, pkp, qmk,
+    orb, kty, ing, act, trk, cie, att, neu, lwb, nwg, sns, kru, cdr, apt, gnb, ena, lts, mil, acp, mbk,
+    tpe, cps, bhw, ker, eng, lpp, ccc, gtc, bzw, eur, pge, pgn, opl, alr, kgh, peo, pkn, pko, pzu
 
-    kgh, cdr
+//    kgh, cdr
 }

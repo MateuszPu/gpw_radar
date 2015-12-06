@@ -23,7 +23,7 @@ public class StockFiveMinutesDetailsService {
     public ResponseEntity<List<TimeStockFiveMinuteDetails>> findTodaysStockFiveMinutesDetails() {
         List<StockFiveMinutesDetails> std = stockFiveMinutesDetailsRepository.findByDate(LocalDate.now());
         List<TimeStockFiveMinuteDetails> st = new ArrayList<>();
-        for (LocalTime time = LocalTime.of(9, 5); time.isBefore(LocalTime.of(16, 50)); time = time.plusMinutes(5)) {
+        for (LocalTime time = LocalTime.of(9, 5); time.isBefore(LocalTime.of(16, 55)); time = time.plusMinutes(5)) {
             LocalTime t = time;
             TimeStockFiveMinuteDetails timeAndStock = new TimeStockFiveMinuteDetails();
             timeAndStock.setTime(time);

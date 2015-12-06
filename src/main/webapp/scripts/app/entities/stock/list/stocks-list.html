@@ -29,7 +29,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="stockIndicators in stocksIndicatorsWithStocks">
+                        <tr ng-repeat="stockIndicators in stocksIndicatorsWithStocks | orderBy: 'stock.ticker'">
                             <td>{{stockIndicators.stock.ticker}}</td>
                             <td>{{stockIndicators.stock.stockName}}</td>
                             <td>{{stockIndicators.percentReturn | number:2}}%</td>
