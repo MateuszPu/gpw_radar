@@ -10,7 +10,7 @@
                 </div>
                 <div class="ibox-content">
 
-                    <div id="vertical-timeline" class="vertical-container dark-timeline" ng-repeat="event in events | orderBy:'-time' | limitTo: 3" ng-init="numLimit= 3">
+                    <div id="vertical-timeline" class="vertical-container dark-timeline" ng-repeat="event in events | orderBy:'-time'" ng-init="numLimit= 3">
                         <div class="vertical-timeline-block">
                             <div class="vertical-timeline-time ocean-bg">
                                 <i>{{event.time}}</i>

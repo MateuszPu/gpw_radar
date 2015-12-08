@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -25,6 +26,6 @@ public class StockFiveMinutesDetailsResource {
     @RequestMapping(value = "/get/5/minutes/stocks/today", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<TimeStockFiveMinuteDetails>> getTopStockDetailsByDate() throws IOException
     {
-        return stockFiveMinutesDetailsService.findTodaysStockFiveMinutesDetails();
+        return stockFiveMinutesDetailsService.findTodaysStockFiveMinutesDetails(LocalDate.now());
     }
 }

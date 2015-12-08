@@ -52,7 +52,7 @@ public class AutoUpdateStockFiveMinutesDetailsData {
         LocalTime lookingTime = LocalTime.of(now.getHour(), now.getMinute());
         lookingTime = lookingTime.minusMinutes(15);
 
-        if (!lookingTime.isBefore(LocalTime.of(9, 20)) && lookingTime.isBefore(LocalTime.of(17, 10))) {
+        if (!lookingTime.isBefore(LocalTime.of(9, 5)) && lookingTime.isBefore(LocalTime.of(16, 55))) {
             List<StockFiveMinutesDetails> stockFiveMinutesDetails = stockFiveMinutesDetailsParser.parseFiveMinutesStockDetails(lookingTime);
             calculateVolumeRatio(stockFiveMinutesDetails, lookingTime);
             //ostatnia czesc to osobny cron na koniec dnia o 17.30 uzupelnic puste pola i zapisac do bazy ponownie i przeliczyc srednie

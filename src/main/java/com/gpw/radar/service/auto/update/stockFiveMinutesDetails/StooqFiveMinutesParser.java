@@ -48,6 +48,7 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
         return parsedList;
     }
 
+
     public List<StockFiveMinutesDetails> getCurrentFiveMinutesStockDetails(InputStreamReader inputStreamReader, LocalTime lookingTime) {
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         List<StockFiveMinutesDetails> stockFiveMinutesDetailsList = bufferedReader.lines()
@@ -64,6 +65,8 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
         return stockFiveMinutesDetailsList;
     }
 
+    //TODO: consider move query to database to postconstruct method, or maybe better while application is reading
+    // stock 5 minutes details line by line there should be check if the application exists in app
     private StockFiveMinutesDetails mapToStockFiveMinutesDetails(String line) {
         String[] splitLine = line.split(",");
         StockFiveMinutesDetails stockFiveMinutesDetails = new StockFiveMinutesDetails();
@@ -78,17 +81,17 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
     }
 
     public List<StockFiveMinutesDetails> calculateCumulatedVolume(List<StockFiveMinutesDetails> stockFiveMinutesDetails) {
-        List<StockFiveMinutesDetails> stockFiveMinutesDetailsWithCalculatedCumulatedVolume = stockFiveMinutesDetails;
+        List<StockFiveMinutesDetails> stockFiveMinutesDetailsToCalculateCumulatedVolume = stockFiveMinutesDetails;
         LocalTime timeOfDetails = stockFiveMinutesDetails.get(0).getTime();
 
         if (!timeOfDetails.isAfter(LocalTime.of(9, 5))) {
-            stockFiveMinutesDetailsWithCalculatedCumulatedVolume.forEach(st -> st.setCumulatedVolume(st.getVolume()));
+            stockFiveMinutesDetailsToCalculateCumulatedVolume.forEach(st -> st.setCumulatedVolume(st.getVolume()));
         } else {
-            stockFiveMinutesDetailsWithCalculatedCumulatedVolume.forEach(st -> st.setCumulatedVolume(sumVolume(st)));
+            stockFiveMinutesDetailsToCalculateCumulatedVolume.forEach(st -> st.setCumulatedVolume(sumVolume(st)));
         }
 
-        lastStockFiveMinuteDetails = stockFiveMinutesDetailsWithCalculatedCumulatedVolume;
-        return stockFiveMinutesDetailsWithCalculatedCumulatedVolume;
+        lastStockFiveMinuteDetails = stockFiveMinutesDetailsToCalculateCumulatedVolume;
+        return stockFiveMinutesDetailsToCalculateCumulatedVolume;
     }
 
     private long sumVolume(StockFiveMinutesDetails st) {
@@ -99,7 +102,6 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
         if (stockFiveMinutesDetails.isPresent()) {
             return st.getVolume() + stockFiveMinutesDetails.get().getCumulatedVolume();
         }
-
         return st.getVolume();
     }
 
@@ -133,9 +135,11 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
         stringBuffer.append("http://stooq.pl/db/d/?d=");
         LocalDate today = LocalDate.now();
         stringBuffer.append(today.getYear());
-        stringBuffer.append(today.getMonth());
-        stringBuffer.append(today.getDayOfMonth());
-        stringBuffer.append("&t=5&u=17407230");
+        String formattedMonth = String.format("%02d", today.getMonthValue());
+        stringBuffer.append(formattedMonth);
+        String formattedDay = String.format("%02d", today.getDayOfMonth());
+        stringBuffer.append(formattedDay);
+        stringBuffer.append("&t=5&u=17545139");
         return stringBuffer.toString();
     }
 }

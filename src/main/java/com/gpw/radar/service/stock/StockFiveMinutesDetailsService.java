@@ -20,15 +20,19 @@ public class StockFiveMinutesDetailsService {
     @Inject
     private StockFiveMinutesDetailsRepository stockFiveMinutesDetailsRepository;
 
-    public ResponseEntity<List<TimeStockFiveMinuteDetails>> findTodaysStockFiveMinutesDetails() {
-        List<StockFiveMinutesDetails> std = stockFiveMinutesDetailsRepository.findByDate(LocalDate.now());
+    public ResponseEntity<List<TimeStockFiveMinuteDetails>> findTodaysStockFiveMinutesDetails(LocalDate date) {
+        List<StockFiveMinutesDetails> std = stockFiveMinutesDetailsRepository.findByDate(date);
         List<TimeStockFiveMinuteDetails> st = new ArrayList<>();
-        for (LocalTime time = LocalTime.of(9, 5); time.isBefore(LocalTime.of(16, 55)); time = time.plusMinutes(5)) {
-            LocalTime t = time;
-            TimeStockFiveMinuteDetails timeAndStock = new TimeStockFiveMinuteDetails();
-            timeAndStock.setTime(time);
-            timeAndStock.setListOfDetails(std.stream().filter(a -> a.getTime().equals(t)).collect(Collectors.toList()));
-            st.add(timeAndStock);
+        if (!std.isEmpty()) {
+            for (LocalTime time = LocalTime.of(9, 5); time.isBefore(LocalTime.of(16, 55)); time = time.plusMinutes(5)) {
+                LocalTime t = time;
+                TimeStockFiveMinuteDetails timeAndStock = new TimeStockFiveMinuteDetails();
+                timeAndStock.setTime(time);
+                timeAndStock.setListOfDetails(std.stream().filter(a -> a.getTime().equals(t)).collect(Collectors.toList()));
+                if (!timeAndStock.getListOfDetails().isEmpty()) {
+                    st.add(timeAndStock);
+                }
+            }
         }
         return new ResponseEntity<List<TimeStockFiveMinuteDetails>>(st, HttpStatus.OK);
     }
