@@ -44,7 +44,7 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
         List<StockFiveMinutesDetails> parsedList = new ArrayList<StockFiveMinutesDetails>();
         parsedList = getCurrentFiveMinutesStockDetails(getInputStreamReader(), lookingTime);
         parsedList = calculateCumulatedVolume(parsedList);
-        parsedList = filterDetailsOfStockInApp(parsedList);
+//        parsedList = filterDetailsOfStockInApp(parsedList);
         return parsedList;
     }
 
@@ -53,7 +53,9 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         List<StockFiveMinutesDetails> stockFiveMinutesDetailsList = bufferedReader.lines()
             .map(line -> mapToStockFiveMinutesDetails(line))
-            .filter(stockFiveMinutesDetails -> stockFiveMinutesDetails.getTime().equals(lookingTime))
+            .filter(stFvDt -> stFvDt.isPresent())
+            .filter(stockFiveMinutesDetails -> stockFiveMinutesDetails.get().getTime().equals(lookingTime))
+            .map(st -> st.get())
             .collect(Collectors.toList());
 
         try {
@@ -67,17 +69,22 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
 
     //TODO: consider move query to database to postconstruct method, or maybe better while application is reading
     // stock 5 minutes details line by line there should be check if the application exists in app
-    private StockFiveMinutesDetails mapToStockFiveMinutesDetails(String line) {
+    private Optional<StockFiveMinutesDetails> mapToStockFiveMinutesDetails(String line) {
         String[] splitLine = line.split(",");
         StockFiveMinutesDetails stockFiveMinutesDetails = new StockFiveMinutesDetails();
-        stockFiveMinutesDetails.setStockTicker(splitLine[0].toLowerCase());
+        try {
+            StockTicker ticker = StockTicker.valueOf(splitLine[0].toLowerCase());
+            stockFiveMinutesDetails.setStockTicker(ticker);
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
         LocalTime eventTime = dateAndTimeParserService.parseLocalTimeFromString(splitLine[3]);
         LocalDate eventDate = dateAndTimeParserService.parseLocalDateFromString(splitLine[2]);
         stockFiveMinutesDetails.setTime(eventTime);
         stockFiveMinutesDetails.setDate(eventDate);
         stockFiveMinutesDetails.setVolume(Long.valueOf(splitLine[8]));
 
-        return stockFiveMinutesDetails;
+        return Optional.of(stockFiveMinutesDetails);
     }
 
     public List<StockFiveMinutesDetails> calculateCumulatedVolume(List<StockFiveMinutesDetails> stockFiveMinutesDetails) {
@@ -95,7 +102,7 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
     }
 
     private long sumVolume(StockFiveMinutesDetails st) {
-        String stockTicker = st.getStockTicker();
+        StockTicker stockTicker = st.getStockTicker();
         Optional<StockFiveMinutesDetails> stockFiveMinutesDetails = lastStockFiveMinuteDetails.stream()
             .filter(stFvDe -> stFvDe.getStockTicker().equals(stockTicker)).findFirst();
 
@@ -105,25 +112,25 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
         return st.getVolume();
     }
 
-    public List<StockFiveMinutesDetails> filterDetailsOfStockInApp(List<StockFiveMinutesDetails> stockFiveMinutesDetails) {
-        stocksInApp = stockRepository.findAll();
-        stockFiveMinutesDetails.stream().forEach(stFvDt -> stFvDt.setStock(getStockByString(stFvDt.getStockTicker())));
-        List<StockFiveMinutesDetails> filteredDetails = stockFiveMinutesDetails.stream()
-            .filter(filtered -> filtered.getStock().getId() != null)
-            .collect(Collectors.toList());
-        return filteredDetails;
-    }
-
-    private Stock getStockByString(String stockTicker) {
-        Stock stock = new Stock();
-        try {
-            StockTicker ticker = StockTicker.valueOf(stockTicker);
-            stock = stocksInApp.stream().filter(stc -> stc.getTicker().equals(ticker)).findAny().get();
-        } catch (IllegalArgumentException e) {
-            return stock; //return stock without id which will be possible removed details without stock
-        }
-        return stock;
-    }
+//    public List<StockFiveMinutesDetails> filterDetailsOfStockInApp(List<StockFiveMinutesDetails> stockFiveMinutesDetails) {
+//        stocksInApp = stockRepository.findAll();
+//        stockFiveMinutesDetails.stream().forEach(stFvDt -> stFvDt.setStock(getStockByString(stFvDt.getStockTicker())));
+//        List<StockFiveMinutesDetails> filteredDetails = stockFiveMinutesDetails.stream()
+//            .filter(filtered -> filtered.getStock().getId() != null)
+//            .collect(Collectors.toList());
+//        return filteredDetails;
+//    }
+//
+//    private Stock getStockByString(String stockTicker) {
+//        Stock stock = new Stock();
+//        try {
+//            StockTicker ticker = StockTicker.valueOf(stockTicker);
+//            stock = stocksInApp.stream().filter(stc -> stc.getTicker().equals(ticker)).findAny().get();
+//        } catch (IllegalArgumentException e) {
+//            return stock; //return stock without id which will be possible removed details without stock
+//        }
+//        return stock;
+//    }
 
     public InputStreamReader getInputStreamReader() {
         InputStreamReader inputStreamReader = currentStockDetailsParserService.getInputStreamReaderFromUrl(prepareUrl());

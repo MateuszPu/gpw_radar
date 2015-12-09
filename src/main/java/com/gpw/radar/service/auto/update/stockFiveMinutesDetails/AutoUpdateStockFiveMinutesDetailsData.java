@@ -85,6 +85,4 @@ public class AutoUpdateStockFiveMinutesDetailsData {
         timeStockFiveMinuteDetails.setListOfDetails(stockFiveMinutesDetails);
         messagingTemplate.convertAndSend("/most/active/stocks", timeStockFiveMinuteDetails);
     }
-
-
 }
