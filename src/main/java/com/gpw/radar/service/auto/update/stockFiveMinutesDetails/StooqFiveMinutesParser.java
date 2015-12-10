@@ -3,6 +3,8 @@ package com.gpw.radar.service.auto.update.stockFiveMinutesDetails;
 import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
+import com.gpw.radar.domain.stock.StockFiveMinutesIndicators;
+import com.gpw.radar.repository.stock.StockFiveMinutesIndicatorsRepository;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
 import com.gpw.radar.service.parser.web.CurrentStockDetailsParserService;
@@ -19,7 +21,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -30,8 +31,11 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
     //    http://stooq.pl/db/d/?d=20151125&t=5&u=17407230
     private final Logger logger = LoggerFactory.getLogger(StooqFiveMinutesParser.class);
 
-//    @Inject
-//    private StockRepository stockRepository;
+    @Inject
+    private StockRepository stockRepository;
+
+    @Inject
+    private StockFiveMinutesIndicatorsRepository stockFiveMinutesIndicatorsRepository;
 
     @Inject
     private CurrentStockDetailsParserService currentStockDetailsParserService;
@@ -39,15 +43,23 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
     @Inject
     private DateAndTimeParserService dateAndTimeParserService;
 
-//    private List<Stock> stocksInApp;
+    private List<Stock> stocksInApp;
     private List<StockFiveMinutesDetails> lastStockFiveMinuteDetails = new ArrayList<>();
+    private List<StockFiveMinutesIndicators> fiveMinutesIndicators;
+
+//    @Scheduled(cron = "0 45 8 * * MON-FRI")
+//    public void getActualyIndicators() {
+//        fiveMinutesIndicators = stockFiveMinutesIndicatorsRepository.findAll();
+//    }
 
     public List<StockFiveMinutesDetails> parseFiveMinutesStockDetails(LocalTime lookingTime) {
+        fiveMinutesIndicators = stockFiveMinutesIndicatorsRepository.findAll();
         List<StockFiveMinutesDetails> parsedList = new ArrayList<StockFiveMinutesDetails>();
         parsedList = getCurrentFiveMinutesStockDetails(getInputStreamReader(), lookingTime);
-        parsedList = calculateCumulatedVolume(parsedList, lookingTime);
         parsedList = fillEmptyTimeWithData(parsedList, lastStockFiveMinuteDetails);
-//        parsedList = filterDetailsOfStockInApp(parsedList);
+        parsedList = calculateCumulatedVolume(parsedList, lookingTime);
+        parsedList = setStockToEachDetail(parsedList);
+        parsedList = calculateVolumeRatio(parsedList, lookingTime);
         return parsedList;
     }
 
@@ -100,6 +112,7 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
         List<StockFiveMinutesDetails> a = lastStockFiveMinuteDetails.stream().filter(e -> !activeTickersDuringFiveMinuteSession.contains(e.getStockTicker())).collect(Collectors.toList());
         a.forEach(el -> el.setVolume(0));
         a.forEach(el -> el.setTime(el.getTime().plusMinutes(5)));
+//        a.forEach(el -> el.setRatioVolume(el.getRatioVolume()));
 
         filledList = Stream.concat(parsedList.stream(), a.stream()).collect(Collectors.toList());
 
@@ -129,6 +142,27 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
             return st.getVolume() + stockFiveMinutesDetails.get().getCumulatedVolume();
         }
         return st.getVolume();
+    }
+
+    public List<StockFiveMinutesDetails> setStockToEachDetail(List<StockFiveMinutesDetails> parsedList) {
+        stocksInApp = stockRepository.findAll();
+        parsedList.stream().forEach(stFvDt -> stFvDt.setStock(stocksInApp.stream()
+            .filter(stc -> stc.getTicker().equals(stFvDt.getStockTicker()))
+            .findAny()
+            .get()));
+        return parsedList;
+    }
+
+    private List<StockFiveMinutesDetails> calculateVolumeRatio(List<StockFiveMinutesDetails> stockFiveMinutesDetails, LocalTime time) {
+        List<StockFiveMinutesIndicators> indicatorsToCompare = fiveMinutesIndicators.stream().filter(indicator -> indicator.getTime().equals(time)).collect(Collectors.toList());
+
+        stockFiveMinutesDetails.stream().forEach(detail -> detail.setRatioVolume(detail.getCumulatedVolume() /
+            indicatorsToCompare.stream()
+                .filter(indi -> indi.getStock().getTicker().equals(detail.getStockTicker()))
+                .findAny()
+                .get().getAverageVolume()));
+
+        return stockFiveMinutesDetails;
     }
 
 //    public List<StockFiveMinutesDetails> filterDetailsOfStockInApp(List<StockFiveMinutesDetails> stockFiveMinutesDetails) {

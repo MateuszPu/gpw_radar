@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Service
+//@Service
 public class RssParserService {
 
 	private final Logger logger = LoggerFactory.getLogger(RssParserService.class);
