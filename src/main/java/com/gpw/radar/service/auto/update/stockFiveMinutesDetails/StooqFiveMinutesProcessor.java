@@ -25,11 +25,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 // getting data from http://stooq.pl/db
-@Component("stooqFiveMinutesParser")
-public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
+@Component("stooqFiveMinutesProcessor")
+public class StooqFiveMinutesProcessor implements StockFiveMinutesDetailsProcessor {
 
     //    http://stooq.pl/db/d/?d=20151125&t=5&u=17407230
-    private final Logger logger = LoggerFactory.getLogger(StooqFiveMinutesParser.class);
+    private final Logger logger = LoggerFactory.getLogger(StooqFiveMinutesProcessor.class);
 
     @Inject
     private StockRepository stockRepository;
@@ -47,13 +47,7 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
     private List<StockFiveMinutesDetails> lastStockFiveMinuteDetails = new ArrayList<>();
     private List<StockFiveMinutesIndicators> fiveMinutesIndicators;
 
-//    @Scheduled(cron = "0 45 8 * * MON-FRI")
-//    public void getActualyIndicators() {
-//        fiveMinutesIndicators = stockFiveMinutesIndicatorsRepository.findAll();
-//    }
-
-    public List<StockFiveMinutesDetails> parseFiveMinutesStockDetails(LocalTime lookingTime) {
-        fiveMinutesIndicators = stockFiveMinutesIndicatorsRepository.findAll();
+    public List<StockFiveMinutesDetails> processingFiveMinutesStockDetails(LocalTime lookingTime) {
         List<StockFiveMinutesDetails> parsedList = new ArrayList<StockFiveMinutesDetails>();
         parsedList = getCurrentFiveMinutesStockDetails(getInputStreamReader(), lookingTime);
         parsedList = fillEmptyTimeWithData(parsedList, lastStockFiveMinuteDetails);
@@ -104,7 +98,7 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
     public List<StockFiveMinutesDetails> fillEmptyTimeWithData(List<StockFiveMinutesDetails> parsedList, List<StockFiveMinutesDetails> lastStockFiveMinuteDetails) {
         List<StockFiveMinutesDetails> filledList = parsedList;
 
-        if(lastStockFiveMinuteDetails.isEmpty()) {
+        if (lastStockFiveMinuteDetails.isEmpty()) {
             return parsedList;
         }
 
@@ -112,7 +106,6 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
         List<StockFiveMinutesDetails> a = lastStockFiveMinuteDetails.stream().filter(e -> !activeTickersDuringFiveMinuteSession.contains(e.getStockTicker())).collect(Collectors.toList());
         a.forEach(el -> el.setVolume(0));
         a.forEach(el -> el.setTime(el.getTime().plusMinutes(5)));
-//        a.forEach(el -> el.setRatioVolume(el.getRatioVolume()));
 
         filledList = Stream.concat(parsedList.stream(), a.stream()).collect(Collectors.toList());
 
@@ -121,7 +114,6 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
 
     public List<StockFiveMinutesDetails> calculateCumulatedVolume(List<StockFiveMinutesDetails> stockFiveMinutesDetails, LocalTime timeOfDetails) {
         List<StockFiveMinutesDetails> stockFiveMinutesDetailsToCalculateCumulatedVolume = stockFiveMinutesDetails;
-//        LocalTime timeOfDetails = stockFiveMinutesDetails.get(0).getTime();
 
         if (!timeOfDetails.isAfter(LocalTime.of(9, 5))) {
             stockFiveMinutesDetailsToCalculateCumulatedVolume.forEach(st -> st.setCumulatedVolume(st.getVolume()));
@@ -153,7 +145,8 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
         return parsedList;
     }
 
-    private List<StockFiveMinutesDetails> calculateVolumeRatio(List<StockFiveMinutesDetails> stockFiveMinutesDetails, LocalTime time) {
+    public List<StockFiveMinutesDetails> calculateVolumeRatio(List<StockFiveMinutesDetails> stockFiveMinutesDetails, LocalTime time) {
+        fiveMinutesIndicators = stockFiveMinutesIndicatorsRepository.findAll();
         List<StockFiveMinutesIndicators> indicatorsToCompare = fiveMinutesIndicators.stream().filter(indicator -> indicator.getTime().equals(time)).collect(Collectors.toList());
 
         stockFiveMinutesDetails.stream().forEach(detail -> detail.setRatioVolume(detail.getCumulatedVolume() /
@@ -164,26 +157,6 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
 
         return stockFiveMinutesDetails;
     }
-
-//    public List<StockFiveMinutesDetails> filterDetailsOfStockInApp(List<StockFiveMinutesDetails> stockFiveMinutesDetails) {
-//        stocksInApp = stockRepository.findAll();
-//        stockFiveMinutesDetails.stream().forEach(stFvDt -> stFvDt.setStock(getStockByString(stFvDt.getStockTicker())));
-//        List<StockFiveMinutesDetails> filteredDetails = stockFiveMinutesDetails.stream()
-//            .filter(filtered -> filtered.getStock().getId() != null)
-//            .collect(Collectors.toList());
-//        return filteredDetails;
-//    }
-//
-//    private Stock getStockByString(String stockTicker) {
-//        Stock stock = new Stock();
-//        try {
-//            StockTicker ticker = StockTicker.valueOf(stockTicker);
-//            stock = stocksInApp.stream().filter(stc -> stc.getTicker().equals(ticker)).findAny().get();
-//        } catch (IllegalArgumentException e) {
-//            return stock; //return stock without id which will be possible removed details without stock
-//        }
-//        return stock;
-//    }
 
     public InputStreamReader getInputStreamReader() {
         InputStreamReader inputStreamReader = currentStockDetailsParserService.getInputStreamReaderFromUrl(prepareUrl());
@@ -201,5 +174,9 @@ public class StooqFiveMinutesParser implements StockFiveMinutesDetailsParser {
         stringBuffer.append(formattedDay);
         stringBuffer.append("&t=5&u=17545139");
         return stringBuffer.toString();
+    }
+
+    public void setLastStockFiveMinuteDetails(List<StockFiveMinutesDetails> lastStockFiveMinuteDetails) {
+        this.lastStockFiveMinuteDetails = lastStockFiveMinuteDetails;
     }
 }

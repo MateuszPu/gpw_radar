@@ -5,7 +5,7 @@ import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
 import java.time.LocalTime;
 import java.util.List;
 
-public interface StockFiveMinutesDetailsParser {
+public interface StockFiveMinutesDetailsProcessor {
 
-    List<StockFiveMinutesDetails> parseFiveMinutesStockDetails(LocalTime lookingTime);
+    List<StockFiveMinutesDetails> processingFiveMinutesStockDetails(LocalTime lookingTime);
 }

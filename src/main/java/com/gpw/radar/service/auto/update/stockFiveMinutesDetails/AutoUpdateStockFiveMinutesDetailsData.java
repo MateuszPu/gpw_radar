@@ -26,11 +26,11 @@ public class AutoUpdateStockFiveMinutesDetailsData {
     @Inject
     private BeanFactory beanFactory;
 
-    private StockFiveMinutesDetailsParser stockFiveMinutesDetailsParser;
+    private StockFiveMinutesDetailsProcessor stockFiveMinutesDetailsProcessor;
 
     @PostConstruct
     public void initParser() {
-        stockFiveMinutesDetailsParser = beanFactory.getBean("stooqFiveMinutesParser", StockFiveMinutesDetailsParser.class);
+        stockFiveMinutesDetailsProcessor = beanFactory.getBean("stooqFiveMinutesProcessor", StockFiveMinutesDetailsProcessor.class);
     }
 
     @Transactional
@@ -38,10 +38,10 @@ public class AutoUpdateStockFiveMinutesDetailsData {
     public void updateStockFiveMinuteDetails() {
         LocalTime now = LocalTime.now();
         LocalTime lookingTime = LocalTime.of(now.getHour(), now.getMinute());
-        lookingTime = lookingTime.minusMinutes(15);
+        lookingTime = lookingTime.minusMinutes(15); //we need to minus 15minutes as the downloading data is delay 15min to real quotes
 
         if (!lookingTime.isBefore(LocalTime.of(9, 5)) && lookingTime.isBefore(LocalTime.of(16, 55))) {
-            List<StockFiveMinutesDetails> stockFiveMinutesDetails = stockFiveMinutesDetailsParser.parseFiveMinutesStockDetails(lookingTime);
+            List<StockFiveMinutesDetails> stockFiveMinutesDetails = stockFiveMinutesDetailsProcessor.processingFiveMinutesStockDetails(lookingTime);
             sendDataToClient(stockFiveMinutesDetails, lookingTime);
             stockFiveMinutesDetailsRepository.save(stockFiveMinutesDetails);
             //ostatnia czesc to osobny cron na koniec dnia o 17.30 uzupelnic puste pola i zapisac do bazy ponownie i przeliczyc srednie
@@ -54,16 +54,4 @@ public class AutoUpdateStockFiveMinutesDetailsData {
         timeStockFiveMinuteDetails.setListOfDetails(stockFiveMinutesDetails);
         messagingTemplate.convertAndSend("/most/active/stocks", timeStockFiveMinuteDetails);
     }
-
-//    @Scheduled(cron = "0 */1 * * * *")
-//    public void asd() {
-//        System.out.println("WYSYLAM WIADOMOSC _______________________");
-//        List<StockFiveMinutesDetails> std = stockFiveMinutesDetailsRepository.findByDate(LocalDate.of(2015, 10, 28));
-//        std = std.stream().filter(st -> st.getTime().equals(LocalTime.of(16,50))).collect(Collectors.toList());
-//        TimeStockFiveMinuteDetails a = new TimeStockFiveMinuteDetails();
-//        a.setTime(LocalTime.of(16,50));
-//        a.setListOfDetails(std);
-//        messagingTemplate.convertAndSend("/most/active/stocks", a);
-//    }
-
 }
