@@ -1,4 +1,4 @@
-package com.gpw.radar.service.auto.update.stockIndicators;
+package com.gpw.radar.service.auto.update.stockDetails.indicators;
 
 import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.Stock;
@@ -38,9 +38,8 @@ public class StandardStockIndicatorsCalculator implements StockIndicatorsCalcula
 	private double[] maxPrice;
 	private double[] closePrice;
 	private double[] volume;
-	private SimpleRegression simpleRegerssion;
 
-	@Override
+    @Override
 	public List<StockIndicators> calculateCurrentStockIndicators() {
 		List<StockIndicators> stockIndicators = new ArrayList<StockIndicators>();
 		for (StockTicker element : StockTicker.values()) {
@@ -120,7 +119,7 @@ public class StandardStockIndicatorsCalculator implements StockIndicatorsCalcula
 
 	private double calculateSlopeSimpleRegression(double[] closePrice, int period) {
 		double[] dataForTrend = normalizeArray(Arrays.copyOfRange(closePrice, 0, period));
-		simpleRegerssion = new SimpleRegression();
+        SimpleRegression simpleRegerssion = new SimpleRegression();
 		int size = dataForTrend.length - 1;
 
 		for (int i = 0; i < size; i++) {

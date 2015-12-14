@@ -9,5 +9,5 @@ import java.util.List;
 public interface StockFiveMinutesDetailsRepository extends JpaRepository<StockFiveMinutesDetails,Long> {
 
     List<StockFiveMinutesDetails> findByDate(LocalDate date);
-
 }
+

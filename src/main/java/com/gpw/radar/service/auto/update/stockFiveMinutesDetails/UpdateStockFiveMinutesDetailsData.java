@@ -15,7 +15,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Service
-public class AutoUpdateStockFiveMinutesDetailsData {
+public class UpdateStockFiveMinutesDetailsData {
 
     @Inject
     private StockFiveMinutesDetailsRepository stockFiveMinutesDetailsRepository;
@@ -44,7 +44,6 @@ public class AutoUpdateStockFiveMinutesDetailsData {
             List<StockFiveMinutesDetails> stockFiveMinutesDetails = stockFiveMinutesDetailsProcessor.processingFiveMinutesStockDetails(lookingTime);
             sendDataToClient(stockFiveMinutesDetails, lookingTime);
             stockFiveMinutesDetailsRepository.save(stockFiveMinutesDetails);
-            //ostatnia czesc to osobny cron na koniec dnia o 17.30 uzupelnic puste pola i zapisac do bazy ponownie i przeliczyc srednie
         }
     }
 

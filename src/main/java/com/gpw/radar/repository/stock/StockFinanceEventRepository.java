@@ -8,9 +8,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-/**
- * Spring Data JPA repository for the StockFinanceEvent entity.
- */
 public interface StockFinanceEventRepository extends JpaRepository<StockFinanceEvent,Long> {
 	List<StockFinanceEvent> findByStock(Stock stock);
 
