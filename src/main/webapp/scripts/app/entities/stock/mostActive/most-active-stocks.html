@@ -21,13 +21,13 @@
                                         <tbody>
                                         <tr ng-repeat="stock in event.listOfDetails | orderBy:'-ratioVolume' | limitTo: numLimit">
                                             <td class="project-status">
-                                                <span style="font-size:14px" class="label label-danger" translate="stock.mostActiveStocks.list.ratio" translate-values="{ratio: '{{stock.ratioVolume | number : 2}}'}">Ratio: {{stock.ratioVolume | number : 2}}</span>
-                                                <span style="font-size:14px" class="label label-primary" translate="stock.mostActiveStocks.list.cumulatedVolume" translate-values="{cumulatedVolume: '{{stock.cumulatedVolume | number}}'}">Cumulated Volume: {{stock.cumulatedVolume | number}}</span>
+                                                <span style="font-size:14px" class="label label-danger" translate="stock.mostActiveStocks.list.ratio" translate-values="{ratio: '{{stock.ratioVolume | number : 2}}'}">Ratio:</span>
+                                                <span style="font-size:14px" class="label label-primary" translate="stock.mostActiveStocks.list.cumulatedVolume" translate-values="{cumulatedVolume: '{{stock.cumulatedVolume | number}}'}">Cumulated Volume:</span>
                                             </td>
                                             <td class="project-title">
                                                 <span>{{stock.stock.stockName}}</span>
                                                 <br/>
-                                                <small>{{stock.stock.ticker}}</small>
+                                                <small>{{stock.stock.ticker | uppercase}}</small>
                                             </td>
                                             <td class="project-actions">
                                                 <a href="http://stooq.pl/q/a/?s={{stock.stock.ticker}}"
@@ -38,7 +38,7 @@
                                         </tr>
                                         </tbody>
                                     </table>
-                                    <button  class="btn btn-default btn-block" ng-show="numLimit>=5" ng-click = "numLimit = numLimit+5"><span translate="stock.mostActiveStocks.list.more">More</span></button>
+                                    <button  class="btn btn-default btn-block" ng-click = "numLimit = numLimit+5"><span translate="stock.mostActiveStocks.list.more">More</span></button>
                                     <button  class="btn btn-default btn-block" ng-hide="numLimit<6" ng-click = "numLimit = numLimit-5"><span translate="stock.mostActiveStocks.list.less">Less</span></button>
                                 </div>
                             </div>
