@@ -7,7 +7,7 @@ angular.module('gpwRadarApp')
                 parent: 'site',
                 url: '/chat',
                 data: {
-                	roles: ['ROLE_USER'],
+                    authorities: ['ROLE_USER'],
                     pageTitle: 'global.menu.chat'
                 },
                 views: {

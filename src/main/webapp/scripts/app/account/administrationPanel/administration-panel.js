@@ -7,7 +7,7 @@ angular.module('gpwRadarApp')
                 parent: 'site',
                 url: '/user/administration/panel',
                 data: {
-                    roles: ['ROLE_USER'],
+                    authorities: ['ROLE_USER'],
                     pageTitle: 'panel.title'
                 },
                 views: {

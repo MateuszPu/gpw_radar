@@ -7,7 +7,7 @@ angular.module('gpwRadarApp')
                 parent: 'entity',
                 url: '/stocks/trend/up',
                 data: {
-                    roles: ['ROLE_USER'],
+                    authorities: ['ROLE_USER'],
                     pageTitle: 'global.leftsidemenu.technicalAnalysis.trends.trendUp'
                 },
                 views: {
@@ -27,7 +27,7 @@ angular.module('gpwRadarApp')
                 parent: 'entity',
                 url: '/stocks/trend/down',
                 data: {
-                    roles: ['ROLE_USER'],
+                    authorities: ['ROLE_USER'],
                     pageTitle: 'global.leftsidemenu.technicalAnalysis.trends.trendDown'
                 },
                 views: {

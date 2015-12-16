@@ -7,7 +7,7 @@ angular.module('gpwRadarApp')
                 parent: 'entity',
                 url: '/correlation',
                 data: {
-                    roles: ['ROLE_USER'],
+                    authorities: ['ROLE_USER'],
                     pageTitle: 'global.leftsidemenu.statisticalAnalysis.correlation'
                 },
                 views: {

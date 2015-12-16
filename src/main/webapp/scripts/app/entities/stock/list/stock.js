@@ -7,7 +7,7 @@ angular.module('gpwRadarApp')
                 parent: 'entity',
                 url: '/stocks/list',
                 data: {
-                    roles: ['ROLE_USER'],
+                    authorities: ['ROLE_USER'],
                     pageTitle: 'global.leftsidemenu.stockList'
                 },
                 views: {

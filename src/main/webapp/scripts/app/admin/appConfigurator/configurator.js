@@ -5,7 +5,7 @@ angular.module('gpwRadarApp')
                 parent: 'admin',
                 url: '/configurator',
                 data: {
-                    roles: ['ROLE_ADMIN'],
+                    authorities: ['ROLE_ADMIN'],
                     pageTitle: 'configurator.title'
                 },
                 views: {

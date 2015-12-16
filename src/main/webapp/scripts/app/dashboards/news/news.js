@@ -5,7 +5,7 @@ angular.module('gpwRadarApp')
             parent: 'dashboard',
             url: '/news',
             data: {
-            	roles: ['ROLE_USER'],
+                authorities: ['ROLE_USER'],
                 pageTitle: 'global.leftsidemenu.dashboards.news'
             },
             views: {
