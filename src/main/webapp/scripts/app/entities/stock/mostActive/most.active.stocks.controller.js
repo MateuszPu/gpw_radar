@@ -6,6 +6,9 @@ angular.module('gpwRadarApp')
 
         Websocket.reciveMostActiveStocks().then(null, null, function(response) {
             $scope.events.push(JSON.parse(response.body));
+            console.log($scope.events);
+            console.log(JSON.parse(response.body));
+            console.log($scope.events);
         });
     })
 

@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import scala.Array;
 
 import javax.inject.Inject;
 import java.io.InputStream;
@@ -58,15 +59,12 @@ public class StooqFiveMinutesProcessorTest {
 
     private void initDB() {
         List<Stock> stocks = new ArrayList<>();
-        Stock kgh = new Stock();
-        kgh.setTicker(StockTicker.kgh);
-        Stock tpe = new Stock();
-        tpe.setTicker(StockTicker.tpe);
-        Stock cdr = new Stock();
-        cdr.setTicker(StockTicker.cdr);
-        stocks.add(kgh);
-        stocks.add(tpe);
-        stocks.add(cdr);
+        List<StockTicker> tickerToTest = new ArrayList<>();
+        tickerToTest.add(StockTicker.kgh);
+        tickerToTest.add(StockTicker.tpe);
+        tickerToTest.add(StockTicker.cdr);
+        tickerToTest.add(StockTicker.pko);
+        tickerToTest.forEach(ticker -> stocks.add(new Stock(ticker)));
         stockRepository.save(stocks);
         initStockFiveMinutesIndicators(stocks);
     }
@@ -94,6 +92,13 @@ public class StooqFiveMinutesProcessorTest {
             .filter(st -> st.getTicker().equals(StockTicker.cdr)).findFirst().get());
         indicators.add(cdrIndicators);
 
+        StockFiveMinutesIndicators pkoIndicators = new StockFiveMinutesIndicators();
+        pkoIndicators.setTime(LocalTime.of(9, 5));
+        pkoIndicators.setAverageVolume(11010);
+        pkoIndicators.setStock(stocks.stream()
+            .filter(st -> st.getTicker().equals(StockTicker.pko)).findFirst().get());
+        indicators.add(pkoIndicators);
+
         StockFiveMinutesIndicators kgh2Indicators = new StockFiveMinutesIndicators();
         kgh2Indicators.setTime(LocalTime.of(9, 10));
         kgh2Indicators.setAverageVolume(38365);
@@ -114,6 +119,14 @@ public class StooqFiveMinutesProcessorTest {
         cdr2Indicators.setStock(stocks.stream()
             .filter(st -> st.getTicker().equals(StockTicker.cdr)).findFirst().get());
         indicators.add(cdr2Indicators);
+
+        StockFiveMinutesIndicators pko2Indicators = new StockFiveMinutesIndicators();
+        pko2Indicators.setTime(LocalTime.of(9, 10));
+        pko2Indicators.setAverageVolume(21010);
+        pko2Indicators.setStock(stocks.stream()
+            .filter(st -> st.getTicker().equals(StockTicker.pko)).findFirst().get());
+        indicators.add(pko2Indicators);
+
         stockFiveMinutesIndicatorsRepository.save(indicators);
     }
 
@@ -125,7 +138,7 @@ public class StooqFiveMinutesProcessorTest {
         InputStream inputStreamNextOne = getClass().getResourceAsStream(stockFiveMinutesDetailsFilePath);
         InputStreamReader inputStreamReaderNextOne = new InputStreamReader(inputStreamNextOne);
         list = stooqFiveMinutesProcessor.getCurrentFiveMinutesStockDetails(inputStreamReaderNextOne, LocalTime.of(9, 10));
-        assertThat(list.size()).isEqualTo(2);
+        assertThat(list.size()).isEqualTo(3);
     }
 
     @Test
@@ -136,9 +149,9 @@ public class StooqFiveMinutesProcessorTest {
         List<StockFiveMinutesDetails> stockFiveMinutesDetailsAt910 = stooqFiveMinutesProcessor.getCurrentFiveMinutesStockDetails(inputStreamReaderNextOne, LocalTime.of(9, 10));
 
         assertThat(stockFiveMinutesDetailsAt905.size()).isEqualTo(3);
-        assertThat(stockFiveMinutesDetailsAt910.size()).isEqualTo(2);
-        stockFiveMinutesDetailsAt910 = stooqFiveMinutesProcessor.fillEmptyTimeWithData(stockFiveMinutesDetailsAt910, stockFiveMinutesDetailsAt905);
         assertThat(stockFiveMinutesDetailsAt910.size()).isEqualTo(3);
+        stockFiveMinutesDetailsAt910 = stooqFiveMinutesProcessor.fillEmptyTimeWithData(stockFiveMinutesDetailsAt910, stockFiveMinutesDetailsAt905);
+        assertThat(stockFiveMinutesDetailsAt910.size()).isEqualTo(4);
         StockFiveMinutesDetails missingStockFiveMinutesDetails = stockFiveMinutesDetailsAt910.stream()
             .filter(stock -> stock.getStockTicker().equals(StockTicker.tpe))
             .filter(stock -> stock.getTime().equals(LocalTime.of(9, 10)))

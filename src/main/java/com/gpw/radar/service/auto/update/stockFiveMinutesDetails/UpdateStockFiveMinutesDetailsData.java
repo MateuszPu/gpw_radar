@@ -41,7 +41,7 @@ public class UpdateStockFiveMinutesDetailsData {
         lookingTime = lookingTime.minusMinutes(15); //we need to minus 15minutes as the downloading data is delay 15min to real quotes
 
         if (lookingTime.isAfter(LocalTime.of(9, 0)) && lookingTime.isBefore(LocalTime.of(16, 55))) {
-            List<StockFiveMinutesDetails> stockFiveMinutesDetails = stockFiveMinutesDetailsProcessor.processingFiveMinutesStockDetails(lookingTime);
+            List<StockFiveMinutesDetails> stockFiveMinutesDetails = stockFiveMinutesDetailsProcessor.processFiveMinutesStockDetails(lookingTime);
             sendDataToClient(stockFiveMinutesDetails, lookingTime);
             stockFiveMinutesDetailsRepository.save(stockFiveMinutesDetails);
         }

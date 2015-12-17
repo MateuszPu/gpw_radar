@@ -47,7 +47,7 @@ public class StooqFiveMinutesProcessor implements StockFiveMinutesDetailsProcess
     private List<StockFiveMinutesDetails> lastStockFiveMinuteDetails = new ArrayList<>();
     private List<StockFiveMinutesIndicators> fiveMinutesIndicators;
 
-    public List<StockFiveMinutesDetails> processingFiveMinutesStockDetails(LocalTime lookingTime) {
+    public List<StockFiveMinutesDetails> processFiveMinutesStockDetails(LocalTime lookingTime) {
         List<StockFiveMinutesDetails> parsedList = new ArrayList<StockFiveMinutesDetails>();
         parsedList = getCurrentFiveMinutesStockDetails(getInputStreamReader(), lookingTime);
         parsedList = fillEmptyTimeWithData(parsedList, lastStockFiveMinuteDetails);
