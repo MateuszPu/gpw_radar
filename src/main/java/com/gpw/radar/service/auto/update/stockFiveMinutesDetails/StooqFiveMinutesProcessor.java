@@ -44,17 +44,17 @@ public class StooqFiveMinutesProcessor implements StockFiveMinutesDetailsProcess
     private DateAndTimeParserService dateAndTimeParserService;
 
     private List<Stock> stocksInApp;
-    private List<StockFiveMinutesDetails> lastStockFiveMinuteDetails = new ArrayList<>();
+    private List<StockFiveMinutesDetails> lastStockFiveMinuteDetails = new ArrayList<>();;
     private List<StockFiveMinutesIndicators> fiveMinutesIndicators;
 
-    public List<StockFiveMinutesDetails> processFiveMinutesStockDetails(LocalTime lookingTime) {
-        List<StockFiveMinutesDetails> parsedList = new ArrayList<StockFiveMinutesDetails>();
-        parsedList = getCurrentFiveMinutesStockDetails(getInputStreamReader(), lookingTime);
-        parsedList = fillEmptyTimeWithData(parsedList, lastStockFiveMinuteDetails);
-        parsedList = calculateCumulatedVolume(parsedList, lookingTime);
-        parsedList = setStockToEachDetail(parsedList);
-        parsedList = calculateVolumeRatio(parsedList, lookingTime);
-        return parsedList;
+    public List<StockFiveMinutesDetails> processDetailsByTime(LocalTime lookingTime) {
+        List<StockFiveMinutesDetails> processedDetails = new ArrayList<StockFiveMinutesDetails>();
+        processedDetails = getCurrentFiveMinutesStockDetails(getInputStreamReader(), lookingTime);
+        processedDetails = fillEmptyTimeWithData(processedDetails, lastStockFiveMinuteDetails);
+        processedDetails = calculateCumulatedVolume(processedDetails, lookingTime);
+        processedDetails = setStockToEachDetail(processedDetails);
+        processedDetails = calculateVolumeRatio(processedDetails, lookingTime);
+        return processedDetails;
     }
 
     public List<StockFiveMinutesDetails> getCurrentFiveMinutesStockDetails(InputStreamReader inputStreamReader, LocalTime lookingTime) {
@@ -68,6 +68,7 @@ public class StooqFiveMinutesProcessor implements StockFiveMinutesDetailsProcess
 
         try {
             bufferedReader.close();
+            inputStreamReader.close();
         } catch (IOException e) {
             logger.error("Error occurs: " + e.getMessage());
         }
@@ -95,25 +96,25 @@ public class StooqFiveMinutesProcessor implements StockFiveMinutesDetailsProcess
         return Optional.of(stockFiveMinutesDetails);
     }
 
-    public List<StockFiveMinutesDetails> fillEmptyTimeWithData(List<StockFiveMinutesDetails> parsedList, List<StockFiveMinutesDetails> lastStockFiveMinuteDetails) {
-        List<StockFiveMinutesDetails> filledList = parsedList;
+    public List<StockFiveMinutesDetails> fillEmptyTimeWithData(List<StockFiveMinutesDetails> detailsList, List<StockFiveMinutesDetails> lastStockFiveMinuteDetails) {
+        List<StockFiveMinutesDetails> filledList = new ArrayList<>(detailsList);
 
         if (lastStockFiveMinuteDetails.isEmpty()) {
-            return parsedList;
+            return detailsList;
         }
-
-        List<StockTicker> activeTickersDuringFiveMinuteSession = parsedList.stream().map(e -> e.getStockTicker()).collect(Collectors.toList());
+        lastStockFiveMinuteDetails.forEach(e -> e.setId(null));
+        List<StockTicker> activeTickersDuringFiveMinuteSession = detailsList.stream().map(e -> e.getStockTicker()).collect(Collectors.toList());
         List<StockFiveMinutesDetails> a = lastStockFiveMinuteDetails.stream().filter(e -> !activeTickersDuringFiveMinuteSession.contains(e.getStockTicker())).collect(Collectors.toList());
         a.forEach(el -> el.setVolume(0));
         a.forEach(el -> el.setTime(el.getTime().plusMinutes(5)));
 
-        filledList = Stream.concat(parsedList.stream(), a.stream()).collect(Collectors.toList());
+        filledList.addAll(a);
 
         return filledList;
     }
 
     public List<StockFiveMinutesDetails> calculateCumulatedVolume(List<StockFiveMinutesDetails> stockFiveMinutesDetails, LocalTime timeOfDetails) {
-        List<StockFiveMinutesDetails> stockFiveMinutesDetailsToCalculateCumulatedVolume = stockFiveMinutesDetails;
+        List<StockFiveMinutesDetails> stockFiveMinutesDetailsToCalculateCumulatedVolume = new ArrayList<>(stockFiveMinutesDetails);
 
         if (!timeOfDetails.isAfter(LocalTime.of(9, 5))) {
             stockFiveMinutesDetailsToCalculateCumulatedVolume.forEach(st -> st.setCumulatedVolume(st.getVolume()));
@@ -121,7 +122,7 @@ public class StooqFiveMinutesProcessor implements StockFiveMinutesDetailsProcess
             stockFiveMinutesDetailsToCalculateCumulatedVolume.forEach(st -> st.setCumulatedVolume(sumVolume(st)));
         }
 
-        lastStockFiveMinuteDetails = stockFiveMinutesDetailsToCalculateCumulatedVolume;
+        lastStockFiveMinuteDetails = new ArrayList<>(stockFiveMinutesDetailsToCalculateCumulatedVolume);
         return stockFiveMinutesDetailsToCalculateCumulatedVolume;
     }
 

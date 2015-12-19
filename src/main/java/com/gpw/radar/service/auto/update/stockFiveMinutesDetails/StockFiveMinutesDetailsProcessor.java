@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface StockFiveMinutesDetailsProcessor {
 
-    List<StockFiveMinutesDetails> processFiveMinutesStockDetails(LocalTime lookingTime);
+    List<StockFiveMinutesDetails> processDetailsByTime(LocalTime lookingTime);
 }
