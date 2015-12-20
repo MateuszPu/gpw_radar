@@ -2,29 +2,25 @@ package com.gpw.radar.service.database;
 
 import com.gpw.radar.domain.database.Type;
 import com.gpw.radar.domain.enumeration.StockTicker;
-import com.gpw.radar.domain.stock.Stock;
-import com.gpw.radar.domain.stock.StockDetails;
-import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
-import com.gpw.radar.domain.stock.StockFiveMinutesIndicators;
+import com.gpw.radar.domain.stock.*;
 import com.gpw.radar.repository.auto.update.FillDataStatusRepository;
-import com.gpw.radar.repository.stock.StockDetailsRepository;
-import com.gpw.radar.repository.stock.StockFiveMinutesDetailsRepository;
-import com.gpw.radar.repository.stock.StockFiveMinutesIndicatorsRepository;
-import com.gpw.radar.repository.stock.StockRepository;
+import com.gpw.radar.repository.stock.*;
+import com.gpw.radar.service.auto.update.stockFiveMinutesDetails.StockFiveMinutesDetailsProcessor;
 import com.gpw.radar.service.parser.file.StockDetailsParserService;
-import com.gpw.radar.service.parser.web.StockFinanceEventParserServcie;
+import com.gpw.radar.service.parser.web.stockFinanceEvent.StockFinanceEventParser;
+import com.gpw.radar.service.parser.web.stockFinanceEvent.StockwatchParserService;
 import com.gpw.radar.service.parser.web.StockParserService;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.InputStream;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -43,6 +39,9 @@ public class FillDataBaseWithDataService {
     private FillDataStatusRepository fillDataStatusRepository;
 
     @Inject
+    private StockFinanceEventRepository stockFinanceEventRepository;
+
+    @Inject
     private StockFiveMinutesIndicatorsRepository stockFiveMinutesIndicatorsRepository;
 
     @Inject
@@ -55,11 +54,31 @@ public class FillDataBaseWithDataService {
     private StockParserService stockParserService;
 
     @Inject
-    private StockFinanceEventParserServcie stockFinanceEventParserServcie;
+    private BeanFactory beanFactory;
 
     private int step;
-
     private ClassLoader classLoader = getClass().getClassLoader();
+    private StockFinanceEventParser stockFinanceEventParser;
+
+    @PostConstruct
+    public void initParsers() {
+        stockFinanceEventParser = beanFactory.getBean("stockwatchParserService", StockFinanceEventParser.class);
+    }
+
+    public ResponseEntity<Void> fillDatabaseWithData(Type type) {
+        switch (type) {
+            case STOCK:
+                return fillDataBaseWithStocks();
+            case STOCK_DETAILS:
+                return fillDataBaseWithStockDetails();
+            case STOCK_DETAILS_FIVE_MINUTES:
+                return fillDataBaseWithStockFiveMinutesDetails();
+            case STOCK_FINANCE_EVENTS:
+                return fillDataBaseWithStockFinanceEvent();
+            default:
+                return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
     //TODO: refactor sending step as socket to application
     @Transactional
@@ -152,20 +171,16 @@ public class FillDataBaseWithDataService {
         return fiveMinutesIndicators;
     }
 
-    private synchronized void increaseStep() {
-        step++;
-    }
-
     @Transactional
     public ResponseEntity<Void> fillDataBaseWithStockFinanceEvent() {
-        step = 0;
-        for (StockTicker element : StockTicker.values()) {
-            Stock stock = stockRepository.findByTicker(element);
-            stockFinanceEventParserServcie.getStockFinanceEvent(stock);
-            increaseStep();
-        }
-        fillDataStatusRepository.updateType(Type.STOCK_FINANCE_EVENTS.toString());
+        List<StockFinanceEvent> stockFinanceEventFromWeb = stockFinanceEventParser.getStockFinanceEventFromWeb();
+        stockFinanceEventRepository.save(stockFinanceEventFromWeb);
+//        fillDataStatusRepository.updateType(Type.STOCK_FINANCE_EVENTS.toString());
         return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    private synchronized void increaseStep() {
+        step++;
     }
 
     public int getStep() {

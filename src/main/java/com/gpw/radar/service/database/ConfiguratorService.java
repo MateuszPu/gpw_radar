@@ -47,21 +47,4 @@ public class ConfiguratorService {
         List<FillDataStatus> list = fillDataStatusRepository.findAll();
         return new ResponseEntity<List<FillDataStatus>>(list, HttpStatus.OK);
     }
-
-    public ResponseEntity<Void> fillDatabaseWithData(Type type) {
-        Map<Type, Runnable> commands = new HashMap<>();
-//        commands.put(Type.STOCK, () -> {fillDataBaseWithDataService.fillDataBaseWithStocks();});
-        switch (type) {
-            case STOCK:
-                return fillDataBaseWithDataService.fillDataBaseWithStocks();
-            case STOCK_DETAILS:
-                return fillDataBaseWithDataService.fillDataBaseWithStockDetails();
-            case STOCK_DETAILS_FIVE_MINUTES:
-                return fillDataBaseWithDataService.fillDataBaseWithStockFiveMinutesDetails();
-            case STOCK_FINANCE_EVENTS:
-                return fillDataBaseWithDataService.fillDataBaseWithStockFinanceEvent();
-            default:
-                return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-        }
-    }
 }

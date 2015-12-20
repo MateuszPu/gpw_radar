@@ -4,6 +4,7 @@ import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
 import com.gpw.radar.domain.stock.TimeStockFiveMinuteDetails;
 import com.gpw.radar.repository.stock.StockFiveMinutesDetailsRepository;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
+import com.gpw.radar.service.sockets.SocketMessageService;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -27,7 +28,7 @@ public class UpdateStockFiveMinutesDetailsData {
     private StockFiveMinutesDetailsRepository stockFiveMinutesDetailsRepository;
 
     @Inject
-    private SimpMessageSendingOperations messagingTemplate;
+    private SocketMessageService socketMessageService;
 
     @Inject
     private BeanFactory beanFactory;
@@ -48,15 +49,8 @@ public class UpdateStockFiveMinutesDetailsData {
 
         if (lookingTime.isAfter(LocalTime.of(9, 0)) && lookingTime.isBefore(LocalTime.of(16, 55))) {
             List<StockFiveMinutesDetails> stockFiveMinutesDetails = stockFiveMinutesDetailsProcessor.processDetailsByTime(lookingTime);
-            sendDataToClient(stockFiveMinutesDetails, lookingTime);
+            socketMessageService.sendMostActiveStocksToClient(stockFiveMinutesDetails, lookingTime);
             stockFiveMinutesDetailsRepository.save(stockFiveMinutesDetails);
         }
-    }
-
-    public void sendDataToClient(List<StockFiveMinutesDetails> stockFiveMinutesDetails, LocalTime time) {
-        TimeStockFiveMinuteDetails timeStockFiveMinuteDetails = new TimeStockFiveMinuteDetails();
-        timeStockFiveMinuteDetails.setTime(time);
-        timeStockFiveMinuteDetails.setListOfDetails(stockFiveMinutesDetails);
-        messagingTemplate.convertAndSend("/most/active/stocks", timeStockFiveMinuteDetails);
     }
 }

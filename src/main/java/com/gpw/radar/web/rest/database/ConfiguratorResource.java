@@ -36,7 +36,7 @@ public class ConfiguratorResource {
 		return new ResponseEntity<EnumSet<ParserMethod>>(EnumSet.allOf(ParserMethod.class), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "current/stock/details/parser/method", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "current/stock/details/parser/method", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<DailyStockDetailsParser> getCurrentMethod() {
 		DailyStockDetailsParser currentMethod = configuratorService.getCurrentStockDetailsParserMethod();
 		return new ResponseEntity<DailyStockDetailsParser>(currentMethod, HttpStatus.OK);
@@ -54,7 +54,7 @@ public class ConfiguratorResource {
 
 	@RequestMapping(value = "fill/database", method = RequestMethod.GET)
 	public ResponseEntity<Void> fillDatabaseWithData(@RequestParam Type type) {
-		return configuratorService.fillDatabaseWithData(type);
+		return fillDataBaseWithDataService.fillDatabaseWithData(type);
 	}
 
 	@RequestMapping(value = "get/step/of/fill", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
