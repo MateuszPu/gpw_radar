@@ -23,7 +23,6 @@ public class SocketMessageService {
     }
 
     public void sendStepOfFillDatabaseToClient(Double step) {
-        System.out.println(step);
         messagingTemplate.convertAndSend("/step/of/fill/db", step);
     }
 }

@@ -49,14 +49,12 @@ public class StockwatchParserService implements StockFinanceEventParser{
         List<Elements> financeEventsElements = getAllFinanceEvents();
         stockInApp = stockRepository.findAll();
 
-        for (int i = 0; i < financeEventsElements.size(); i++) {
-            stockFinanceEventParsed.addAll(financeEventsElements.get(i)
-                .stream()
-                .map(e -> mapToStockFinanceEvent(e))
-                .filter(e -> e.isPresent())
-                .map(e -> e.get())
-                .collect(Collectors.toList()));
-        }
+        financeEventsElements.forEach(elements -> stockFinanceEventParsed.addAll(elements
+            .stream()
+            .map(e -> mapToStockFinanceEvent(e))
+            .filter(element -> element.isPresent())
+            .map(element -> element.get())
+            .collect(Collectors.toList())));
 
         return stockFinanceEventParsed;
     }
