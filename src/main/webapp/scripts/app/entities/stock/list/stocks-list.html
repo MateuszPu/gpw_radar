@@ -13,11 +13,11 @@
                            class="table table-striped">
                         <thead>
                         <tr>
-                            <th st-sort="stock.ticker" st-skip-natural="true" class="col-xs-2"><a href=""><span
+                            <th st-sort="stock.ticker" st-sort-default="true" st-skip-natural="true" class="col-xs-2"><a href=""><span
                                 translate="stock.ticker">Ticker</span></a></th>
-                            <th st-sort="stock.stockName" st-skip-natural="true" class="col-xs-4"><a href=""><span
+                            <th st-sort="stock.stockName" class="col-xs-4"><a href=""><span
                                 translate="stock.stockName">Name</span></a></th>
-                            <th st-sort="percentReturn" st-skip-natural="true" class="col-xs-2"><a href=""><span
+                            <th st-sort="percentReturn" class="col-xs-2"><a href=""><span
                                 translate="stock.change">Percent return</span></a></th>
                             <th class="col-xs-2"><span translate="stock.list.follow">Follow</span></th>
                             <th class="col-xs-2"><span translate="stock.list.externalwebsites">External websites</span>
@@ -29,7 +29,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="stockIndicators in stocksIndicatorsWithStocks | orderBy: 'stock.ticker'">
+                        <tr ng-repeat="stockIndicators in stocksIndicatorsWithStocks">
                             <td>{{stockIndicators.stock.ticker}}</td>
                             <td>{{stockIndicators.stock.stockName}}</td>
                             <td>{{stockIndicators.percentReturn | number:2}}%</td>
