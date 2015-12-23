@@ -21,8 +21,4 @@ public class SocketMessageService {
         timeStockFiveMinuteDetails.setListOfDetails(stockFiveMinutesDetails);
         messagingTemplate.convertAndSend("/most/active/stocks", timeStockFiveMinuteDetails);
     }
-
-    public void sendStepOfFillDatabaseToClient(Double step) {
-        messagingTemplate.convertAndSend("/step/of/fill/db", step);
-    }
 }

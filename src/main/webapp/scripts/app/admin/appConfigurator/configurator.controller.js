@@ -40,14 +40,6 @@ angular.module('gpwRadarApp')
     		return $filter('getByType')($scope.fillDataStatus, name);
     	};
 
-        //$scope.step = 0;
-        //Websocket.subscribeMostActiveStocks();
-        //
-        //Websocket.reciveMostActiveStocks().then(null, null, function(response) {
-        //    $scope.step = response.body;
-        //    console.log($scope.dupa);
-        //});
-
 
     	$scope.fillDatabase = function(name) {
     		//$scope.getFillStep();

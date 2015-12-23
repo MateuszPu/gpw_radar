@@ -35,16 +35,9 @@ public class StockwatchParserService implements StockFinanceEventParser{
     @Inject
     private StockRepository stockRepository;
 
-    @Inject
-    private SocketMessageService socketMessageService;
-
     private List<Stock> stockInApp;
-    private double step;
-    private int sizeOfEvents;
 
     public List<StockFinanceEvent> getStockFinanceEventFromWeb() {
-        step = 0.0;
-        sizeOfEvents = 0;
         List<StockFinanceEvent> stockFinanceEventParsed = new ArrayList<>();
         List<Elements> financeEventsElements = getAllFinanceEvents();
         stockInApp = stockRepository.findAll();
@@ -60,9 +53,6 @@ public class StockwatchParserService implements StockFinanceEventParser{
     }
 
     private Optional<StockFinanceEvent> mapToStockFinanceEvent(Element e) {
-        Double percentOfFill = (++step/sizeOfEvents) * 100.0;
-        socketMessageService.sendStepOfFillDatabaseToClient(percentOfFill);
-
         StockFinanceEvent stockFinanceEvent = new StockFinanceEvent();
         String stockShortName = e.getElementsByClass("l").first().text().toLowerCase();
 
@@ -94,11 +84,10 @@ public class StockwatchParserService implements StockFinanceEventParser{
                 Elements tr = doc.select("tbody").select("tr");
                 trElements.add(tr);
                 i++;
-                sizeOfEvents += tr.size();
                 doc = getDocumentFromStockWatchWeb(i);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Error occurs: " + e);
         }
         return trElements;
     }
