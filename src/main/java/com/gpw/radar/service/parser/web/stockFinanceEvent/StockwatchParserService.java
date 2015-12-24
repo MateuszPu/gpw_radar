@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 //data getting from stock watch website
 @Component("stockwatchParserService")
-public class StockwatchParserService implements StockFinanceEventParser{
+public class StockwatchParserService implements StockFinanceEventParser {
 
     private final Logger logger = LoggerFactory.getLogger(StockwatchParserService.class);
 
@@ -38,8 +38,12 @@ public class StockwatchParserService implements StockFinanceEventParser{
     private List<Stock> stockInApp;
 
     public List<StockFinanceEvent> getStockFinanceEventFromWeb() {
+        return getStockFinanceEvents(getDocumentsFromStockWatchWeb());
+    }
+
+    public List<StockFinanceEvent> getStockFinanceEvents(List<Document> documents) {
         List<StockFinanceEvent> stockFinanceEventParsed = new ArrayList<>();
-        List<Elements> financeEventsElements = getAllFinanceEvents();
+        List<Elements> financeEventsElements = getAllFinanceEvents(documents);
         stockInApp = stockRepository.findAll();
 
         financeEventsElements.forEach(elements -> stockFinanceEventParsed.addAll(elements
@@ -73,23 +77,30 @@ public class StockwatchParserService implements StockFinanceEventParser{
         return Optional.of(stockFinanceEvent);
     }
 
-    private List<Elements> getAllFinanceEvents() {
-        int i = 0;
-        Document doc = null;
+    private List<Elements> getAllFinanceEvents(List<Document> documents) {
         List<Elements> trElements = new ArrayList<>();
 
+        for(Document element: documents) {
+            Elements tr = element.select("tbody").select("tr");
+            trElements.add(tr);
+        }
+        return trElements;
+    }
+
+    private List<Document> getDocumentsFromStockWatchWeb() {
+        List<Document> documents = new ArrayList<>();
+        int i = 0;
         try {
-            doc = getDocumentFromStockWatchWeb(i);
+            Document doc = getDocumentFromStockWatchWeb(i);
             while (!doc.select("table").isEmpty()) {
-                Elements tr = doc.select("tbody").select("tr");
-                trElements.add(tr);
-                i++;
-                doc = getDocumentFromStockWatchWeb(i);
+                documents.add(doc);
+                doc = getDocumentFromStockWatchWeb(i++);
             }
         } catch (IOException e) {
             logger.error("Error occurs: " + e);
         }
-        return trElements;
+
+        return documents;
     }
 
     private Document getDocumentFromStockWatchWeb(int page) throws IOException {
