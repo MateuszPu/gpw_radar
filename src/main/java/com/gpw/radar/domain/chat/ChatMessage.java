@@ -24,10 +24,6 @@ public abstract class ChatMessage {
 	private User user;
 
 	@NotNull
-	@Column(name = "user_login", nullable = false)
-	private String userLogin;
-
-	@NotNull
     @Column(name = "created_date", nullable = false)
     private ZonedDateTime createdDate = ZonedDateTime.now();
 
@@ -50,11 +46,7 @@ public abstract class ChatMessage {
 	}
 
 	public String getUserLogin() {
-		return userLogin;
-	}
-
-	public void setUserLogin(String userLogin) {
-		this.userLogin = userLogin;
+		return this.user.getLogin();
 	}
 
 	public ZonedDateTime getCreatedDate() {

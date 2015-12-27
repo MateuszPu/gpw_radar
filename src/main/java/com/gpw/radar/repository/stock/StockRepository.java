@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Spring Data JPA repository for the Stock entity.
@@ -15,7 +16,7 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
 
 	Stock findByTicker(Ticker ticker);
 	List<Stock> findAllByOrderByTickerAsc();
-	Stock findByStockName(String stockName);
+	Optional<Stock> findByStockName(String stockName);
 
 	@Query(value = "SELECT s.ticker, COUNT(s.ticker)\n"
 			+ "FROM stock s INNER JOIN user_stocks us ON s.id = us.stock_id \n"

@@ -1,20 +1,12 @@
 package com.gpw.radar.service.auto.update.stockFiveMinutesDetails;
 
 import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
-import com.gpw.radar.domain.stock.TimeStockFiveMinuteDetails;
 import com.gpw.radar.repository.stock.StockFiveMinutesDetailsRepository;
-import com.gpw.radar.service.parser.DateAndTimeParserService;
-import com.gpw.radar.service.sockets.SocketMessageService;
+import com.gpw.radar.service.sockets.SocketMessageHandler;
 import org.springframework.beans.factory.BeanFactory;
-import org.springframework.http.MediaType;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -28,7 +20,7 @@ public class UpdateStockFiveMinutesDetailsData {
     private StockFiveMinutesDetailsRepository stockFiveMinutesDetailsRepository;
 
     @Inject
-    private SocketMessageService socketMessageService;
+    private SocketMessageHandler socketMessageService;
 
     @Inject
     private BeanFactory beanFactory;

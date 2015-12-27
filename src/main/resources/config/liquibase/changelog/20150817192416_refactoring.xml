@@ -3,7 +3,7 @@
                    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
-   <changeSet author="ppp (generated)" id="1439832268539-1">
+   <changeSet author="mateusz" id="20150817192416-1">
       <createTable tableName="STOCK_INDICATORS">
          <column name="id" type="BIGINT">
             <constraints primaryKey="true" primaryKeyName="STOCK_INDICATORSPK"/>
@@ -30,7 +30,7 @@
          <column name="stock_id" type="BIGINT"/>
       </createTable>
    </changeSet>
-   <changeSet author="ppp (generated)" id="1439832268539-2">
+   <changeSet author="mateusz" id="20150817192416-2">
       <createTable tableName="USER_STOCKS">
          <column name="user_id" type="BIGINT">
             <constraints nullable="false"/>
@@ -40,20 +40,20 @@
          </column>
       </createTable>
    </changeSet>
-   <changeSet author="ppp (generated)" id="1439832268539-3">
+   <changeSet author="mateusz" id="20150817192416-3">
       <addColumn tableName="STOCK_DETAILS">
          <column name="stock_id" type="int8"/>
       </addColumn>
    </changeSet>
-   <changeSet author="ppp (generated)" id="1439832268539-4">
+   <changeSet author="mateusz" id="20150817192416-4">
       <addColumn tableName="STOCK_FINANCE_EVENT">
          <column name="stock_id" type="int8"/>
       </addColumn>
    </changeSet>
-   <changeSet author="ppp (generated)" id="1439832268539-5">
+   <changeSet author="mateusz" id="20150817192416-5">
       <addPrimaryKey columnNames="user_id, stock_id" tableName="USER_STOCKS"/>
    </changeSet>
-   <changeSet author="ppp (generated)" id="1439832268539-6">
+   <changeSet author="mateusz" id="20150817192416-6">
       <addForeignKeyConstraint baseColumnNames="stock_id"
                                baseTableName="STOCK_DETAILS"
                                constraintName="FK_details_to_stock"
@@ -62,7 +62,7 @@
                                referencedColumnNames="id"
                                referencedTableName="STOCK"/>
    </changeSet>
-   <changeSet author="ppp (generated)" id="1439832268539-7">
+   <changeSet author="mateusz" id="20150817192416-7">
       <addForeignKeyConstraint baseColumnNames="stock_id"
                                baseTableName="STOCK_FINANCE_EVENT"
                                constraintName="FK_finance_event_to_stock"
@@ -71,7 +71,7 @@
                                referencedColumnNames="id"
                                referencedTableName="STOCK"/>
    </changeSet>
-   <changeSet author="ppp (generated)" id="1439832268539-8">
+   <changeSet author="mateusz" id="20150817192416-8">
       <addForeignKeyConstraint baseColumnNames="user_id"
                                baseTableName="USER_STOCKS"
                                constraintName="FK_g6cvj484i36nbnrpm8yoxpb4x"
@@ -80,7 +80,7 @@
                                referencedColumnNames="id"
                                referencedTableName="USERS"/>
    </changeSet>
-   <changeSet author="ppp (generated)" id="1439832268539-9">
+   <changeSet author="mateusz" id="20150817192416-9">
       <addForeignKeyConstraint baseColumnNames="stock_id"
                                baseTableName="STOCK_INDICATORS"
                                constraintName="FK_indicators_to_stock"
@@ -89,7 +89,7 @@
                                referencedColumnNames="id"
                                referencedTableName="STOCK"/>
    </changeSet>
-   <changeSet author="ppp (generated)" id="1439832268539-10">
+   <changeSet author="mateusz" id="20150817192416-10">
       <addForeignKeyConstraint baseColumnNames="stock_id"
                                baseTableName="USER_STOCKS"
                                constraintName="FK_wba96o6yqs2xcu0fhedibupn"
@@ -98,22 +98,22 @@
                                referencedColumnNames="id"
                                referencedTableName="STOCK"/>
    </changeSet>
-   <changeSet author="ppp (generated)" id="1439832268539-11">
+   <changeSet author="mateusz" id="20150817192416-11">
       <dropColumn columnName="average_volume_10_days" tableName="stock_details"/>
    </changeSet>
-   <changeSet author="ppp (generated)" id="1439832268539-12">
+   <changeSet author="mateusz" id="20150817192416-12">
       <dropColumn columnName="average_volume_30_days" tableName="stock_details"/>
    </changeSet>
-   <changeSet author="ppp (generated)" id="1439832268539-13">
+   <changeSet author="mateusz" id="20150817192416-13">
       <dropColumn columnName="percent_return" tableName="stock_details"/>
    </changeSet>
-   <changeSet author="ppp (generated)" id="1439832268539-14">
+   <changeSet author="mateusz" id="20150817192416-14">
       <dropColumn columnName="volume_ratio_10" tableName="stock_details"/>
    </changeSet>
-   <changeSet author="ppp (generated)" id="1439832268539-15">
+   <changeSet author="mateusz" id="20150817192416-15">
       <dropColumn columnName="volume_ratio_30" tableName="stock_details"/>
    </changeSet>
-   <changeSet author="ppp (generated)" id="1441214072163-1">
+   <changeSet author="mateusz" id="20150818192416-1">
       <addColumn tableName="STOCK_INDICATORS">
          <column name="volume_value_30_days" type="numeric(25, 2)">
          </column>

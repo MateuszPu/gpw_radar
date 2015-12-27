@@ -28,7 +28,6 @@ public class MessageService {
         UserMessage msg = new UserMessage();
         msg.setMessage(message);
         msg.setUser(currentUser);
-        msg.setUserLogin(userLogin);
         messageRepository.save(msg);
         return msg;
     }

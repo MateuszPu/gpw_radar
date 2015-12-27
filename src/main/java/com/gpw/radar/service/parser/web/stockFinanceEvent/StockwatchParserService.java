@@ -35,7 +35,7 @@ public class StockwatchParserService implements StockFinanceEventParser {
     @Inject
     private StockRepository stockRepository;
 
-    private List<Stock> stockInApp;
+    private List<Stock> stockInApp = new ArrayList<>();
 
     public List<StockFinanceEvent> getStockFinanceEventFromWeb() {
         return getStockFinanceEvents(getDocumentsFromStockWatchWeb());

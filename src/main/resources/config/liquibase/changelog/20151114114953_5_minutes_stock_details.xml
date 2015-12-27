@@ -3,7 +3,7 @@
                    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
-   <changeSet author="mateusz" id="1447498204409-1">
+   <changeSet author="mateusz" id="20151114114953-1">
        <createTable tableName="STOCK_FIVE_MINUTES_DETAILS">
            <column name="id" type="BIGINT">
                <constraints primaryKey="true" primaryKeyName="STOCK_FIVE_MINUTES_DETAILSPK"/>

@@ -4,15 +4,12 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
 
-    <changeSet author="mateusz (generated)" id="1449053026925-4">
+    <changeSet author="mateusz" id="20151004130959-1">
         <createTable tableName="NEWS_MESSAGE">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="created_date" type="timestamp">
-                <constraints nullable="false"/>
-            </column>
-            <column name="user_login" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="user_id" type="BIGINT">
@@ -27,15 +24,12 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="mateusz (generated)" id="1449053026925-17">
+    <changeSet author="mateusz" id="20151004130959-2">
         <createTable tableName="USER_MESSAGE">
             <column name="id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="created_date" type="timestamp">
-                <constraints nullable="false"/>
-            </column>
-            <column name="user_login" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="user_id" type="BIGINT">
@@ -47,34 +41,35 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="mateusz (generated)" id="1449053026925-24">
+    <changeSet author="mateusz" id="20151004130959-3">
         <addPrimaryKey columnNames="id"
                        constraintName="NewsMessagePK"
                        tableName="NEWS_MESSAGE"/>
     </changeSet>
-    <changeSet author="mateusz (generated)" id="1449053026925-25">
+    <changeSet author="mateusz" id="20151004130959-4">
         <addPrimaryKey columnNames="id"
                        constraintName="UserMessagePK"
                        tableName="USER_MESSAGE"/>
     </changeSet>
 
-    <changeSet author="mateusz (generated)" id="1449053026925-32">
+    <changeSet author="mateusz" id="20151004130959-5">
         <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="NEWS_MESSAGE"
-                                 constraintName="FK_exhqrs436fkmff2d3kowm8grn"
+                                 constraintName="FK_NEWS_MESSAGE_USER"
                                  deferrable="false"
                                  initiallyDeferred="false"
                                  referencedColumnNames="id"
                                  referencedTableName="USERS"/>
     </changeSet>
 
-    <changeSet author="mateusz (generated)" id="1449053026925-39">
+    <changeSet author="mateusz" id="20151004130959-6">
         <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="USER_MESSAGE"
-                                 constraintName="FK_qrrtdqu23fodaq7g42ad7d1m9"
+                                 constraintName="FK_MESSAGE_USER"
                                  deferrable="false"
                                  initiallyDeferred="false"
                                  referencedColumnNames="id"
                                  referencedTableName="USERS"/>
     </changeSet>
+
 </databaseChangeLog>

@@ -6,7 +6,8 @@ import com.gpw.radar.domain.User;
 import com.gpw.radar.repository.PersistentTokenRepository;
 import com.gpw.radar.repository.UserRepository;
 import com.gpw.radar.security.SecurityUtils;
-import com.gpw.radar.service.MailService;
+import com.gpw.radar.service.mail.MailSender;
+import com.gpw.radar.service.mail.MailService;
 import com.gpw.radar.service.UserService;
 import com.gpw.radar.web.rest.dto.KeyAndPasswordDTO;
 import com.gpw.radar.web.rest.dto.UserDTO;
@@ -45,7 +46,7 @@ public class AccountResource {
     private PersistentTokenRepository persistentTokenRepository;
 
     @Inject
-    private MailService mailService;
+    private MailSender mailService;
 
     /**
      * POST  /register -> register the user.

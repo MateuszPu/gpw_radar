@@ -2,7 +2,7 @@ package com.gpw.radar.web.rest.chat;
 
 import com.gpw.radar.domain.chat.ChatMessage;
 import com.gpw.radar.security.AuthoritiesConstants;
-import com.gpw.radar.service.chat.ChatMessageService;
+import com.gpw.radar.service.chat.ChatMessageLoader;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +23,7 @@ import java.util.List;
 public class MessageResource {
 
 	@Inject
-	private ChatMessageService chatMessageService;
+	private ChatMessageLoader chatMessageService;
 
 	@RequestMapping(value = "/last/10/messages", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ChatMessage>> getLastMessages(@RequestParam int page) {

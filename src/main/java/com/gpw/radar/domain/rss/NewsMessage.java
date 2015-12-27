@@ -1,6 +1,7 @@
 package com.gpw.radar.domain.rss;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gpw.radar.domain.User;
 import com.gpw.radar.domain.chat.ChatMessage;
 import com.gpw.radar.domain.enumeration.RssType;
 import com.gpw.radar.domain.stock.Stock;
@@ -8,6 +9,7 @@ import com.gpw.radar.domain.stock.Stock;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "NEWS_MESSAGE")
@@ -67,8 +69,11 @@ public class NewsMessage extends ChatMessage {
 	@Override
 	public String getChatMessage() {
 		StringBuilder str = new StringBuilder();
-		str.append("<a href=\"" + getLink() + "\" target=\"_blank\">" + getMessage() + "</a> ");
-		// str.append(getMessage());
+		str.append("<a href=\"");
+        str.append(getLink());
+        str.append("\" target=\"_blank\">");
+        str.append(getMessage());
+        str.append("</a> ");
 		return str.toString();
 	}
 }
