@@ -1,8 +1,8 @@
 angular.module('gpwRadarApp')
     .controller('ChatController', function ($scope, $window, $http, ChatMessage, Websocket) {
-    	
+
     	$scope.showSystemMessage = true;
-    	
+
     	$scope.showMessage = function(login) {
     		if ($scope.showSystemMessage) {
     			return true;
@@ -11,13 +11,13 @@ angular.module('gpwRadarApp')
     			return login != 'system';
     		}
     	}
-    	
-        $scope.messages = ChatMessage.getMessages({page: 0}); 
-        
+
+        $scope.messages = ChatMessage.getMessages({page: 0});
+
         var counter = 1;
         $scope.loadOlder = function() {
         	var promise = $http({
-        	    url: 'api/chat/older/messages', 
+        	    url: 'api/chat/older/messages',
         	    method: "GET",
         	    params: {page: counter}
         	 });
@@ -30,21 +30,22 @@ angular.module('gpwRadarApp')
 			  });
             counter++;
         };
-        
-        Websocket.subscribeUsersOnChat();
+
+        Websocket.receiveWebsocketStatus().then(null, null, function(data){
+            Websocket.subscribeUsersOnChat();
+            Websocket.subscribeChatMessages();
+            Websocket.userLoginToChat();
+        });
+
         Websocket.receiveUsersOnChat().then(null, null, function(user) {
         	$scope.users = JSON.parse(user.body);
         });
-        
-        Websocket.subscribeChatMessages();
-        
-        Websocket.userLoginToChat();
+
         Websocket.reciveChatMessages().then(null, null, function(message) {
         	$scope.messages.push(JSON.parse(message.body));
         });
-        
+
 	    $scope.sendMessage = function() {
-//	        ngstomp.send('/app/webchat/send/message', $scope.message);
 	        Websocket.sendMessageToChat($scope.message);
 	        if($scope.messages.length > 15){
 	        	$scope.messages.splice(0, $scope.messages.length-15);
@@ -55,14 +56,8 @@ angular.module('gpwRadarApp')
         $window.onbeforeunload = function (evt) {
         	Websocket.userLeaveChat();
         	Websocket.unsubscribeChat();
-	    	
-        }
-        
-	    $scope.$on('$destroy', function() {
-	    	Websocket.userLeaveChat();
-	    	Websocket.unsubscribeChat();
-	    });
-	    
+        };
+
     	$scope.$watch('message', function (newValue, oldValue) {
 			if (newValue) {
 				if (newValue.length > 90) {

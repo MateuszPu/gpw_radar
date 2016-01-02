@@ -16,6 +16,17 @@ angular.module('gpwRadarApp')
                         controller: 'ChatController'
                     }
                 },
+                onEnter: function($rootScope, Websocket){
+                    if($rootScope.isWebsocket) {
+                        Websocket.subscribeUsersOnChat();
+                        Websocket.subscribeChatMessages();
+                        Websocket.userLoginToChat();
+                    }
+                },
+                onExit: function(Websocket) {
+                    Websocket.userLeaveChat();
+                    Websocket.unsubscribeChat();
+                },
                 resolve: {
                     mainTranslatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate,$translatePartialLoader) {
                         $translatePartialLoader.addPart('chat');

@@ -1,24 +1,27 @@
 'use strict';
 
-angular.module('gpwRadarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pascalprecht.translate', 
+angular.module('gpwRadarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pascalprecht.translate',
                'ui.bootstrap', 'luegg.directives', 'angularMoment', 'smart-table', 'ui.select', 'ui.calendar',
     'ngResource', 'ui.router', 'ngCookies', 'ngAria', 'ngCacheBuster', 'ngFileUpload', 'infinite-scroll'])
     .run(function ($rootScope, $location, $timeout, $window, $http, $state, $translate, Language, Auth, Principal, ENV, VERSION, amMoment, Websocket) {
 		amMoment.changeLocale('pl');
-    	
-//    	ngstomp.connect();
-//    	ngstomp.subscribe('/webchat/count',  messageFromServer);
-//    	function messageFromServer(count) {
-//        	$rootScope.countUsers = count.body;
-//        };
-//        ngstomp.send('/app/webchat/user/app/on');
-        
-		Websocket.connect();
-//		Websocket.subscribe();
-		Websocket.receiveCountUser().then(null, null, function(count) {
-			$rootScope.countUsers = count.body;
+
+        $rootScope.isWebsocket = false;
+        Websocket.connect();
+        Websocket.receiveWebsocketStatus().then(null, null, function(data){
+            $rootScope.runCountUsersOnChat();
+            $rootScope.isWebsocket = true;
         });
-		
+
+        $rootScope.runCountUsersOnChat = function() {
+            Websocket.userConnectedToApp();
+            Websocket.subscribeCountUsers();
+        };
+
+        Websocket.receiveCountUsers().then(null, null, function(count) {
+            $rootScope.countUsers = count.body;
+        });
+
     	$rootScope.ENV = ENV;
         $rootScope.VERSION = VERSION;
         $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
@@ -28,12 +31,12 @@ angular.module('gpwRadarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pasca
             if (Principal.isIdentityResolved()) {
                 Auth.authorize();
             }
-            
+
             // Update the language
             Language.getCurrent().then(function (language) {
                 $translate.use(language);
             });
-            
+
         });
 
         $rootScope.$on('$stateChangeSuccess',  function(event, toState, toParams, fromState, fromParams) {
@@ -52,12 +55,12 @@ angular.module('gpwRadarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pasca
             if (toState.data.pageTitle) {
                 titleKey = toState.data.pageTitle;
             }
-            
+
             $translate(titleKey).then(function (title) {
                 // Change window title with translated one
                 $window.document.title = title;
             });
-            
+
         });
 
         $rootScope.back = function() {
@@ -105,7 +108,7 @@ angular.module('gpwRadarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pasca
         $httpProvider.interceptors.push('errorHandlerInterceptor');
         $httpProvider.interceptors.push('authExpiredInterceptor');
         $httpProvider.interceptors.push('notificationInterceptor');
-        
+
         // Initialize angular-translate
         $translateProvider.useLoader('$translatePartialLoader', {
             urlTemplate: 'i18n/{lang}/{part}.json'
@@ -119,7 +122,7 @@ angular.module('gpwRadarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pasca
         tmhDynamicLocaleProvider.localeLocationPattern('bower_components/angular-i18n/angular-locale_{{locale}}.js');
         tmhDynamicLocaleProvider.useCookieStorage();
         tmhDynamicLocaleProvider.storageKey('NG_TRANSLATE_LANG_KEY');
-        
+
     })
     .config(['$urlMatcherFactoryProvider', function($urlMatcherFactory) {
         $urlMatcherFactory.type('boolean', {

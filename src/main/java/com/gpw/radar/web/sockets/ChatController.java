@@ -46,13 +46,21 @@ public class ChatController {
 	}
 
 	@SubscribeMapping("/webchat/user/app/on")
-	public void applicationOn() {
-		usersCount();
+    @SendTo("/webchat/count")
+	public int applicationOn() {
+//		usersCount();
+        return users.size();
 	}
 
 	public void usersCount() {
 		messagingTemplate.convertAndSend("/webchat/count", users.size());
 	}
+
+    @SubscribeMapping("/websocket/connection/open")
+    @SendTo("/websocket/status")
+    public boolean socketConnectionOpen() {
+        return true;
+    }
 
 	static class Message {
 	    private String message;

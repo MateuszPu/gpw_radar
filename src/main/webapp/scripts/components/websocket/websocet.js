@@ -7,6 +7,8 @@ angular.module('gpwRadarApp')
         var subscriberChatMessages = null;
         var subscriberMostActiveStocks = null;
         var subscriberStepOfFillDb = null;
+        var subscriberCountUsers = null;
+        var listenerWebsocketConnection = $q.defer();
         var listenerCountUser = $q.defer();
         var listenerUsersOnChat = $q.defer();
         var listenerChatMessages = $q.defer();
@@ -15,13 +17,13 @@ angular.module('gpwRadarApp')
         var connected = $q.defer();
         var alreadyConnectedOnce = false;
 
-        function userConnectedToApp() {
-            stompClient.send('/app/webchat/user/app/on');
+        function websocketConnectionOpen() {
+            stompClient.send('/app/websocket/connection/open');
         };
 
-        function subscribeCountUsers() {
-            stompClient.subscribe("/webchat/count", function(data) {
-                listenerCountUser.notify(data);
+        function subscribeWebsocketConnection() {
+            stompClient.subscribe("/websocket/status", function(data) {
+                listenerWebsocketConnection.notify(data);
             });
         };
 
@@ -37,17 +39,27 @@ angular.module('gpwRadarApp')
                 headers['X-CSRF-TOKEN'] = $cookies[$http.defaults.xsrfCookieName];
                 stompClient.connect(headers, function(frame) {
                     connected.resolve("success");
-                    subscribeCountUsers();
-                    userConnectedToApp();
+                    websocketConnectionOpen();
+                    subscribeWebsocketConnection();
                     if (!alreadyConnectedOnce) {
+                        websocketConnectionOpen();
+                        subscribeWebsocketConnection();
                         alreadyConnectedOnce = true;
                     }
                 });
             },
+            userConnectedToApp: function() {
+                stompClient.send('/app/webchat/user/app/on');
+            },
+            subscribeCountUsers: function() {
+                subscriberCountUsers =  stompClient.subscribe("/webchat/count", function(data) {
+                    listenerCountUser.notify(data);
+                });
+            },
             subscribeUsersOnChat: function() {
-	            subscriberUsersOnChat = stompClient.subscribe("/webchat/user", function(data) {
-	            	listenerUsersOnChat.notify(data);
-	            });
+                    subscriberUsersOnChat = stompClient.subscribe("/webchat/user", function (data) {
+                        listenerUsersOnChat.notify(data);
+                    });
             },
             subscribeChatMessages: function() {
 	            subscriberChatMessages = stompClient.subscribe("/webchat/recive", function(data) {
@@ -70,7 +82,15 @@ angular.module('gpwRadarApp')
                 	subscriberChatMessages.unsubscribe();
                 }
             },
-            receiveCountUser: function() {
+            unsubscribeMostActiveStocks: function() {
+                if (subscriberMostActiveStocks != null) {
+                    subscriberMostActiveStocks.unsubscribe();
+                }
+            },
+            receiveWebsocketStatus: function() {
+                return listenerWebsocketConnection.promise;
+            },
+            receiveCountUsers: function() {
                 return listenerCountUser.promise;
             },
             receiveUsersOnChat: function() {

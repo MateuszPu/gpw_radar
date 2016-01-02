@@ -30,6 +30,7 @@ angular.module('gpwRadarApp')
             },
 
             logout: function () {
+                Websocket.userLeaveChat();
                 AuthServerProvider.logout();
                 Principal.authenticate(null);
                 // Reset state memory

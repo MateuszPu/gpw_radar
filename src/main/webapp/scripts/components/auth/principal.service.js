@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('gpwRadarApp')
-    .factory('Principal', function Principal($q, Account) {
+    .factory('Principal', function Principal($q, Account, Websocket) {
         var _identity,
             _authenticated = false;
 
@@ -61,6 +61,7 @@ angular.module('gpwRadarApp')
                         _identity = account.data;
                         _authenticated = true;
                         deferred.resolve(_identity);
+                        Websocket.connect();
                     })
                     .catch(function() {
                         _identity = null;

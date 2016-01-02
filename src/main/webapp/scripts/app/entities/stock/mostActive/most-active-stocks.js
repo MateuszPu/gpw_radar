@@ -14,6 +14,14 @@ angular.module('gpwRadarApp')
                     controller: 'MostActiveStocksController'
                 }
             },
+            onEnter: function($rootScope, Websocket){
+                if($rootScope.isWebsocket) {
+                    Websocket.subscribeMostActiveStocks();
+                }
+            },
+            onExit: function(Websocket) {
+                Websocket.unsubscribeMostActiveStocks();
+            },
             resolve: {
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('stock');

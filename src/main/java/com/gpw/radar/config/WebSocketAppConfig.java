@@ -29,7 +29,7 @@ public class WebSocketAppConfig extends AbstractWebSocketMessageBrokerConfigurer
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry config) {
-		config.enableSimpleBroker("/webchat", "/most/active");
+		config.enableSimpleBroker("/webchat", "/websocket","/most/active");
 		config.setApplicationDestinationPrefixes("/app");
 	}
 
