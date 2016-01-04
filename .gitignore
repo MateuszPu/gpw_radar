@@ -1,65 +1,80 @@
 ######################
 # Project Specific
 ######################
-/src/main/webapp/dist
+/gpw_radar/src/main/webapp/dist
 
 ######################
 # Node
 ######################
-/node/**
-/node_modules/**
+/gpw_radar/node/**
+/gpw_radar/node_modules/**
 
 ######################
 # SASS
 ######################
-.sass-cache/**
+/gpw_radar/*.sass-cache/**
 
 ######################
 # Eclipse
 ######################
 *.pydevproject
+/gpw_radar/.project
+/gpw_radar/.metadata
+/gpw_radar/bin/**
+/gpw_radar/tmp/**
+/gpw_radar/tmp/**/*
+/gpw_radar/*.tmp
+/gpw_radar/*.bak
+/gpw_radar/*.swp
+/gpw_radar/*~.nib
+/gpw_radarlocal.properties
+/gpw_radar/.classpath
+/gpw_radar/.settings/**
+/gpw_radar/.loadpath
+/gpw_radar/src/main/resources/rebel.xml
+
 .project
 .metadata
-/bin/**
-/tmp/**
-/tmp/**/*
+bin/**
+tmp/**
+tmp/**/*
 *.tmp
 *.bak
 *.swp
 *~.nib
-local.properties
+/gpw_radarlocal.properties
 .classpath
 .settings/**
 .loadpath
-/src/main/resources/rebel.xml
+src/main/resources/rebel.xml
 
 # External tool builders
-.externalToolBuilders/**
+/gpw_radar/.externalToolBuilders/**
 
 # Locally stored "Eclipse launch configurations"
-*.launch
+/gpw_radar/*.launch
 
 # CDT-specific
-.cproject
+/gpw_radar/.cproject
 
 # PDT-specific
-.buildpath
+/gpw_radar/.buildpath
 
 ######################
 # Intellij
 ######################
-.idea/**
-*.iml
-*.iws
-*.ipr
-*.ids
-*.orig
+/gpw_radar/.idea/**
+/gpw_radar/*.iml
+/gpw_radar/*.iws
+/gpw_radar/*.ipr
+/gpw_radar/*.ids
+/gpw_radar/*.orig
 
 ######################
 # Maven
 ######################
-/log/**
-/target/**
+/gpw_radar/log/**
+/gpw_radar/target/**
 
 ######################
 # Gradle
@@ -78,10 +93,10 @@ local.properties
 # Windows
 ######################
 # Windows image file caches
-Thumbs.db
+/gpw_radar/Thumbs.db
 
 # Folder config file
-Desktop.ini
+/gpw_radar/Desktop.ini
 
 ######################
 # Mac OSX
@@ -99,10 +114,10 @@ Desktop.ini
 ######################
 # Directories
 ######################
-/build/**
-/bin/**
-/spring_loaded/**
-/deploy/**
+/gpw_radar/build/**
+/gpw_radar/bin/**
+/gpw_radar/spring_loaded/**
+/gpw_radar/deploy/**
 
 ######################
 # Logs
@@ -118,12 +133,58 @@ Desktop.ini
 .merge_file*
 
 ######################
-# Gradle Wrapper
-######################
-!gradle/wrapper/gradle-wrapper.jar
-
-######################
 # bower components
 ######################
-src/main/webapp/bower_components
-/target/
+/gpw_radar/src/main/webapp/bower_components
+
+
+######################
+# technical idicators project
+######################
+/technical_analysis_indicators/build/**
+/technical_analysis_indicators/bin/**
+/technical_analysis_indicators/spring_loaded/**
+/technical_analysis_indicators/deploy/**
+/technical_analysis_indicators/log/**
+/technical_analysis_indicators/target/**
+
+######################
+# Eclipse
+######################
+*.pydevproject
+/technical_analysis_indicators/.project
+/technical_analysis_indicators/.metadata
+/technical_analysis_indicators/bin/**
+/technical_analysis_indicators/tmp/**
+/technical_analysis_indicators/tmp/**/*
+/technical_analysis_indicators/*.tmp
+/technical_analysis_indicators/*.bak
+/technical_analysis_indicators/*.swp
+/technical_analysis_indicators/*~.nib
+/gpw_radarlocal.properties
+/technical_analysis_indicators/.classpath
+/technical_analysis_indicators/.settings/**
+/technical_analysis_indicators/.loadpath
+/technical_analysis_indicators/src/main/resources/rebel.xml
+
+# External tool builders
+/technical_analysis_indicators/.externalToolBuilders/**
+
+# Locally stored "Eclipse launch configurations"
+/technical_analysis_indicators/*.launch
+
+# CDT-specific
+/technical_analysis_indicators/.cproject
+
+# PDT-specific
+/technical_analysis_indicators/.buildpath
+
+######################
+# Intellij
+######################
+/technical_analysis_indicators/.idea/**
+/technical_analysis_indicators/*.iml
+/technical_analysis_indicators/*.iws
+/technical_analysis_indicators/*.ipr
+/technical_analysis_indicators/*.ids
+/technical_analysis_indicators/*.orig
