@@ -60,15 +60,57 @@ src/main/resources/rebel.xml
 # PDT-specific
 /gpw_radar/.buildpath
 
+*.pydevproject
+/technical_analysis_indicators/.project
+/technical_analysis_indicators/.metadata
+/technical_analysis_indicators/bin/**
+/technical_analysis_indicators/tmp/**
+/technical_analysis_indicators/tmp/**/*
+/technical_analysis_indicators/*.tmp
+/technical_analysis_indicators/*.bak
+/technical_analysis_indicators/*.swp
+/technical_analysis_indicators/*~.nib
+/gpw_radarlocal.properties
+/technical_analysis_indicators/.classpath
+/technical_analysis_indicators/.settings/**
+/technical_analysis_indicators/.loadpath
+/technical_analysis_indicators/src/main/resources/rebel.xml
+
+# External tool builders
+/technical_analysis_indicators/.externalToolBuilders/**
+
+# Locally stored "Eclipse launch configurations"
+/technical_analysis_indicators/*.launch
+
+# CDT-specific
+/technical_analysis_indicators/.cproject
+
+# PDT-specific
+/technical_analysis_indicators/.buildpath
+
 ######################
 # Intellij
 ######################
+.idea/**
+*.iml
+*.iws
+*.ipr
+*.ids
+*.orig
+
 /gpw_radar/.idea/**
 /gpw_radar/*.iml
 /gpw_radar/*.iws
 /gpw_radar/*.ipr
 /gpw_radar/*.ids
 /gpw_radar/*.orig
+
+/technical_analysis_indicators/.idea/**
+/technical_analysis_indicators/*.iml
+/technical_analysis_indicators/*.iws
+/technical_analysis_indicators/*.ipr
+/technical_analysis_indicators/*.ids
+/technical_analysis_indicators/*.orig
 
 ######################
 # Maven
@@ -147,44 +189,3 @@ src/main/resources/rebel.xml
 /technical_analysis_indicators/deploy/**
 /technical_analysis_indicators/log/**
 /technical_analysis_indicators/target/**
-
-######################
-# Eclipse
-######################
-*.pydevproject
-/technical_analysis_indicators/.project
-/technical_analysis_indicators/.metadata
-/technical_analysis_indicators/bin/**
-/technical_analysis_indicators/tmp/**
-/technical_analysis_indicators/tmp/**/*
-/technical_analysis_indicators/*.tmp
-/technical_analysis_indicators/*.bak
-/technical_analysis_indicators/*.swp
-/technical_analysis_indicators/*~.nib
-/gpw_radarlocal.properties
-/technical_analysis_indicators/.classpath
-/technical_analysis_indicators/.settings/**
-/technical_analysis_indicators/.loadpath
-/technical_analysis_indicators/src/main/resources/rebel.xml
-
-# External tool builders
-/technical_analysis_indicators/.externalToolBuilders/**
-
-# Locally stored "Eclipse launch configurations"
-/technical_analysis_indicators/*.launch
-
-# CDT-specific
-/technical_analysis_indicators/.cproject
-
-# PDT-specific
-/technical_analysis_indicators/.buildpath
-
-######################
-# Intellij
-######################
-/technical_analysis_indicators/.idea/**
-/technical_analysis_indicators/*.iml
-/technical_analysis_indicators/*.iws
-/technical_analysis_indicators/*.ipr
-/technical_analysis_indicators/*.ids
-/technical_analysis_indicators/*.orig

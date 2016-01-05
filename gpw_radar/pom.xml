@@ -376,10 +376,12 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-data</artifactId>
         </dependency>
+
+        <!-- technical indicators dependency -->
         <dependency>
-            <groupId>eu.verdelhan</groupId>
-            <artifactId>ta4j</artifactId>
-            <version>0.7</version>
+            <groupId>technical.analysis.indicators</groupId>
+            <artifactId>technical_analysis_indicators</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

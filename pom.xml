@@ -12,7 +12,7 @@
 
     <modules>
         <module>gpw_radar</module>
-        <module>technical_analysis_indicators</module>
+        <module>technical_analysis</module>
     </modules>
 
     <build>

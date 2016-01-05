@@ -4,7 +4,6 @@ import com.gpw.radar.Application;
 import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockFinanceEvent;
-import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.parser.web.stockFinanceEvent.StockwatchParserService;
 import org.jsoup.Jsoup;
@@ -17,13 +16,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.inject.Inject;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
