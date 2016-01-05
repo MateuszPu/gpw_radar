@@ -19,11 +19,11 @@ public class AscendingSortedTicksTest {
 
     @Before
     public void init() {
-        tickers.add(new Tick(LocalDate.of(2015, 1, 1), 0, 0, 0, 0, 0));
-        tickers.add(new Tick(LocalDate.of(2015, 12, 3), 0, 0, 0, 0, 0));
-        tickers.add(new Tick(LocalDate.of(2015, 12, 7), 0, 0, 0, 0, 0));
-        tickers.add(new Tick(LocalDate.of(2015, 11, 5), 0, 0, 0, 0, 0));
-        tickers.add(new Tick(LocalDate.of(2015, 5, 23), 0, 0, 0, 0, 0));
+        tickers.add(new Tick(LocalDate.of(2015, 1, 1), 0, 0, 0, 0, 0, 0));
+        tickers.add(new Tick(LocalDate.of(2015, 12, 3), 0, 0, 0, 0, 0, 0));
+        tickers.add(new Tick(LocalDate.of(2015, 12, 7), 0, 0, 0, 0, 0, 0));
+        tickers.add(new Tick(LocalDate.of(2015, 11, 5), 0, 0, 0, 0, 0, 0));
+        tickers.add(new Tick(LocalDate.of(2015, 5, 23), 0, 0, 0, 0, 0, 0));
 
         ascendingSortedTicks = new AscendingSortedTicks(tickers);
     }

@@ -61,32 +61,32 @@ src/main/resources/rebel.xml
 /gpw_radar/.buildpath
 
 *.pydevproject
-/technical_analysis_indicators/.project
-/technical_analysis_indicators/.metadata
-/technical_analysis_indicators/bin/**
-/technical_analysis_indicators/tmp/**
-/technical_analysis_indicators/tmp/**/*
-/technical_analysis_indicators/*.tmp
-/technical_analysis_indicators/*.bak
-/technical_analysis_indicators/*.swp
-/technical_analysis_indicators/*~.nib
+/technical_analysis/.project
+/technical_analysis/.metadata
+/technical_analysis/bin/**
+/technical_analysis/tmp/**
+/technical_analysis/tmp/**/*
+/technical_analysis/*.tmp
+/technical_analysis/*.bak
+/technical_analysis/*.swp
+/technical_analysis/*~.nib
 /gpw_radarlocal.properties
-/technical_analysis_indicators/.classpath
-/technical_analysis_indicators/.settings/**
-/technical_analysis_indicators/.loadpath
-/technical_analysis_indicators/src/main/resources/rebel.xml
+/technical_analysis/.classpath
+/technical_analysis/.settings/**
+/technical_analysis/.loadpath
+/technical_analysis/src/main/resources/rebel.xml
 
 # External tool builders
-/technical_analysis_indicators/.externalToolBuilders/**
+/technical_analysis/.externalToolBuilders/**
 
 # Locally stored "Eclipse launch configurations"
-/technical_analysis_indicators/*.launch
+/technical_analysis/*.launch
 
 # CDT-specific
-/technical_analysis_indicators/.cproject
+/technical_analysis/.cproject
 
 # PDT-specific
-/technical_analysis_indicators/.buildpath
+/technical_analysis/.buildpath
 
 ######################
 # Intellij
@@ -105,12 +105,12 @@ src/main/resources/rebel.xml
 /gpw_radar/*.ids
 /gpw_radar/*.orig
 
-/technical_analysis_indicators/.idea/**
-/technical_analysis_indicators/*.iml
-/technical_analysis_indicators/*.iws
-/technical_analysis_indicators/*.ipr
-/technical_analysis_indicators/*.ids
-/technical_analysis_indicators/*.orig
+/technical_analysis/.idea/**
+/technical_analysis/*.iml
+/technical_analysis/*.iws
+/technical_analysis/*.ipr
+/technical_analysis/*.ids
+/technical_analysis/*.orig
 
 ######################
 # Maven
@@ -183,9 +183,9 @@ src/main/resources/rebel.xml
 ######################
 # technical idicators project
 ######################
-/technical_analysis_indicators/build/**
-/technical_analysis_indicators/bin/**
-/technical_analysis_indicators/spring_loaded/**
-/technical_analysis_indicators/deploy/**
-/technical_analysis_indicators/log/**
-/technical_analysis_indicators/target/**
+/technical_analysis/build/**
+/technical_analysis/bin/**
+/technical_analysis/spring_loaded/**
+/technical_analysis/deploy/**
+/technical_analysis/log/**
+/technical_analysis/target/**

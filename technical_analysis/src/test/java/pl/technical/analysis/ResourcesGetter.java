@@ -33,6 +33,6 @@ public class ResourcesGetter {
 
         DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd");
         LocalDate date = LocalDate.parse(elements[0], DATE_FORMAT);
-        return new Tick(date, Double.valueOf(elements[1]), Double.valueOf(elements[2]), Double.valueOf(elements[3]), Double.valueOf(elements[4]), 0);
+        return new Tick(date, Double.valueOf(elements[1]), Double.valueOf(elements[2]), Double.valueOf(elements[3]), Double.valueOf(elements[4]), Long.valueOf(elements[5]), 0);
     }
 }

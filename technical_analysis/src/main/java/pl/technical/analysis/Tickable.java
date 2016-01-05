@@ -14,5 +14,7 @@ public interface Tickable {
 
     BigDecimal getClosePrice();
 
+    long getVolume();
+
     int getNumberOfTransaction();
 }
