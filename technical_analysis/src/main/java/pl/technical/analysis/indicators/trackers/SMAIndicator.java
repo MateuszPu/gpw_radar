@@ -19,7 +19,7 @@ public final class SMAIndicator extends Indicator {
     }
 
     public void calculateIndicator() {
-        List<BigDecimal> closesPrices = getClosePrices();
+        List<BigDecimal> closesPrices = super.getClosePrices();
         BigDecimal divider = BigDecimal.valueOf(super.period);
 
         for (int i = 0; i < closesPrices.size() - super.period + 1; i++) {

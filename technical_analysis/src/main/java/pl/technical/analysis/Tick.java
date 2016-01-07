@@ -51,11 +51,11 @@ public final class Tick implements Tickable {
         return closePrice;
     }
 
-    public long getVolume() {
+    public Long getVolume() {
         return volume;
     }
 
-    public int getNumberOfTransaction() {
+    public Integer getNumberOfTransaction() {
         return numberOfTransaction;
     }
 }

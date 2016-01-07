@@ -21,7 +21,7 @@ public class WMAIndicator extends Indicator {
 
     @Override
     protected void calculateIndicator() {
-        List<BigDecimal> closesPrices = getClosePrices();
+        List<BigDecimal> closesPrices = super.getClosePrices();
 
         for (int i = 0; i < closesPrices.size() - super.period + 1; i++) {
             List<BigDecimal> closes = closesPrices.subList(i, super.period + i);
