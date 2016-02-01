@@ -31,8 +31,7 @@ public class RSIIndicator extends Indicator {
             BigDecimal rsIndicator = calculateRsIndicator(closesPrices, i);
 
             if (rsIndicator.doubleValue() > 0) {
-                BigDecimal hundred = BigDecimal.valueOf(100);
-                BigDecimal rsiIndicator = hundred.subtract((hundred.divide((BigDecimal.ONE.add(rsIndicator)), 2, BigDecimal.ROUND_HALF_UP)));
+                BigDecimal rsiIndicator = super.hundred.subtract((super.hundred.divide((BigDecimal.ONE.add(rsIndicator)), 2, BigDecimal.ROUND_HALF_UP)));
                 indicators.add(rsiIndicator.doubleValue());
             } else {
                 indicators.add(0.0);

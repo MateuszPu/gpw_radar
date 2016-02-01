@@ -10,14 +10,10 @@ import java.util.stream.Collectors;
 
 public abstract class Indicator {
 
-    protected final AscendingSortedTicks ticks;
+    protected final BigDecimal hundred = BigDecimal.valueOf(100);
+	protected final AscendingSortedTicks ticks;
     protected final int period;
     protected List<Double> indicators = new ArrayList<>();
-
-    private Indicator() {
-        ticks = null;
-        period = 0;
-    }
 
     public Indicator(List<Tickable> ticks, int period) {
         if (period < 2) {
