@@ -1,9 +1,11 @@
-package com.gpw.radar.service.parser.file;
+package com.gpw.radar.service.parser.file.stockFiveMinutesDetails;
 
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;
 import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
+import com.gpw.radar.domain.stock.StockFiveMinutesIndicators;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
+import com.gpw.radar.service.parser.file.stockDetails.StockDetailsParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -22,44 +24,14 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
-public class StockDetailsParserService {
+public class FileStockFiveMinutesDetailsParserService implements StockFiveMinutesDetailsParser {
 
-    private final Logger logger = LoggerFactory.getLogger(StockDetailsParserService.class);
+    private final Logger logger = LoggerFactory.getLogger(FileStockFiveMinutesDetailsParserService.class);
     private final String cvsSplitBy = ",";
 
     @Inject
     private DateAndTimeParserService dateAndTimeParserService;
 
-    public List<StockDetails> parseStockDetails(Stock stock, InputStream st) {
-        List<StockDetails> stockDetailsList = new ArrayList<>();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(st));
-        stockDetailsList = bufferedReader.lines().map(mapToStockDetails).collect(Collectors.toList());
-        stockDetailsList.forEach(stockDetails -> stockDetails.setStock(stock));
-        try {
-            bufferedReader.close();
-        } catch (IOException e) {
-            logger.error("Error occurs: " + e.getMessage());
-        }
-
-        return stockDetailsList;
-    }
-
-    public Function<String, StockDetails> mapToStockDetails = (line) -> {
-        String[] splitLine = line.split(",");
-        StockDetails stockDetails = new StockDetails();
-        stockDetails.setDate(dateAndTimeParserService.parseLocalDateFromString(splitLine[0]));
-        stockDetails.setOpenPrice(new BigDecimal(splitLine[1]));
-        stockDetails.setMaxPrice(new BigDecimal(splitLine[2]));
-        stockDetails.setMinPrice(new BigDecimal(splitLine[3]));
-        stockDetails.setClosePrice(new BigDecimal(splitLine[4]));
-
-        try {
-            stockDetails.setVolume(Long.valueOf(splitLine[5]));
-        } catch (ArrayIndexOutOfBoundsException exc) {
-            stockDetails.setVolume(0l);
-        }
-        return stockDetails;
-    };
 
     public List<StockFiveMinutesDetails> parseStockFiveMinutesDetails(Stock stock, InputStream st) {
         List<StockFiveMinutesDetails> stockFiveMinutesDetailsList = new ArrayList<>();
@@ -118,7 +90,7 @@ public class StockDetailsParserService {
                 for (int j = 1; j < lengthOfDifference; j++) {
                     StockFiveMinutesDetails emptyFiveMinutesDetails = new StockFiveMinutesDetails();
                     emptyFiveMinutesDetails.setDate(stockFiveMinutesDetailsList.get(previousElementToCompare).getDate());
-                    emptyFiveMinutesDetails.setTime(timeOfPreviousEvent.plusMinutes(5*j));
+                    emptyFiveMinutesDetails.setTime(timeOfPreviousEvent.plusMinutes(5 * j));
                     emptyFiveMinutesDetails.setVolume(0l);
                     emptyFiveMinutesDetails.setCumulatedVolume(stockFiveMinutesDetailsList.get(previousElementToCompare).getCumulatedVolume());
                     emptyFiveMinutesDetails.setStock(element.getStock());
@@ -131,4 +103,24 @@ public class StockDetailsParserService {
         }
         return filledEmptyTimeAndCumulativeVolume;
     }
+
+    public List<StockFiveMinutesIndicators> calculateIndicatorsFromDetails(List<StockFiveMinutesDetails> filledStockFiveMinutesDetails) {
+        List<StockFiveMinutesIndicators> fiveMinutesIndicators = new ArrayList<>();
+        Stock stock = filledStockFiveMinutesDetails.get(0).getStock();
+        for (LocalTime i = LocalTime.of(9, 05); i.isBefore(LocalTime.of(16, 55)); i = i.plusMinutes(5)) {
+            StockFiveMinutesIndicators indicator = new StockFiveMinutesIndicators();
+            LocalTime time = i;
+            double average = filledStockFiveMinutesDetails.stream()
+                .filter(element -> element.getTime().equals(time))
+                .collect(Collectors.toList())
+                .stream()
+                .collect(Collectors.averagingDouble(element -> element.getCumulatedVolume()));
+            indicator.setTime(time);
+            indicator.setAverageVolume(average);
+            indicator.setStock(stock);
+            fiveMinutesIndicators.add(indicator);
+        }
+        return fiveMinutesIndicators;
+    }
+
 }

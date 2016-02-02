@@ -5,11 +5,13 @@ import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.*;
 import com.gpw.radar.repository.auto.update.FillDataStatusRepository;
 import com.gpw.radar.repository.stock.*;
-import com.gpw.radar.service.auto.update.stockFiveMinutesDetails.StockFiveMinutesDetailsProcessor;
-import com.gpw.radar.service.parser.file.StockDetailsParserService;
+import com.gpw.radar.service.parser.file.stockDetails.FileStockDetailsParserService;
+import com.gpw.radar.service.parser.file.stockDetails.StockDetailsParser;
+import com.gpw.radar.service.parser.file.stockFiveMinutesDetails.StockFiveMinutesDetailsParser;
+import com.gpw.radar.service.parser.web.stock.StockParser;
 import com.gpw.radar.service.parser.web.stockFinanceEvent.StockFinanceEventParser;
-import com.gpw.radar.service.parser.web.stockFinanceEvent.StockwatchParserService;
-import com.gpw.radar.service.parser.web.StockParserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +22,9 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.InputStream;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -28,6 +32,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class FillDataBaseWithDataService {
+
+    private final Logger logger = LoggerFactory.getLogger(FillDataBaseWithDataService.class);
 
     @Inject
     private StockRepository stockRepository;
@@ -48,21 +54,21 @@ public class FillDataBaseWithDataService {
     private StockFiveMinutesDetailsRepository stockFiveMinutesDetailsRepository;
 
     @Inject
-    private StockDetailsParserService stockDetailsParserService;
-
-    @Inject
-    private StockParserService stockParserService;
-
-    @Inject
     private BeanFactory beanFactory;
 
     private int step;
     private ClassLoader classLoader = getClass().getClassLoader();
     private StockFinanceEventParser stockFinanceEventParser;
+    private StockParser stockParser;
+    private StockDetailsParser stockDetailsParser;
+    private StockFiveMinutesDetailsParser stockFiveMinutesDetailsParser;
 
     @PostConstruct
     public void initParsers() {
         stockFinanceEventParser = beanFactory.getBean("stockwatchParserService", StockFinanceEventParser.class);
+        stockParser = beanFactory.getBean("stooqParserService", StockParser.class);
+        stockDetailsParser = beanFactory.getBean("fileStockDetailsParserService", StockDetailsParser.class);
+        stockFiveMinutesDetailsParser = beanFactory.getBean("fileStockFiveMinutesDetailsParserService", StockFiveMinutesDetailsParser.class);
     }
 
     public ResponseEntity<Void> fillDatabaseWithData(Type type) {
@@ -87,7 +93,7 @@ public class FillDataBaseWithDataService {
         for (StockTicker element : StockTicker.values()) {
             Stock stock = new Stock();
             stock.setTicker(element);
-            stock = stockParserService.setNameAndShortName(stock);
+            stock = stockParser.setNameAndShortName(stock);
             stockRepository.save(stock);
             increaseStep();
         }
@@ -106,7 +112,7 @@ public class FillDataBaseWithDataService {
                 Stock stock = stockRepository.findByTicker(ticker);
                 String filePath = "stocks_data/daily/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
                 InputStream st = classLoader.getResourceAsStream(filePath);
-                List<StockDetails> stockDetails = stockDetailsParserService.parseStockDetails(stock, st);
+                List<StockDetails> stockDetails = stockDetailsParser.parseStockDetails(stock, st);
                 stockDetailsRepository.save(stockDetails);
                 increaseStep();
             });
@@ -116,7 +122,7 @@ public class FillDataBaseWithDataService {
         try {
             executor.awaitTermination(5, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.error("Error occurs: " + e.getMessage());
         }
         fillDataStatusRepository.updateType(Type.STOCK_DETAILS.toString());
         return new ResponseEntity<Void>(HttpStatus.OK);
@@ -133,9 +139,9 @@ public class FillDataBaseWithDataService {
                 Stock stock = stockRepository.findByTicker(ticker);
                 String filePath = "stocks_data/5min/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
                 InputStream inputStream = classLoader.getResourceAsStream(filePath);
-                List<StockFiveMinutesDetails> stockFiveMinutesDetails = stockDetailsParserService.parseStockFiveMinutesDetails(stock, inputStream);
-                List<StockFiveMinutesDetails> filledStockFiveMinutesDetails = stockDetailsParserService.fillEmptyTimeAndCumulativeVolume(stockFiveMinutesDetails);
-                List<StockFiveMinutesIndicators> fiveMinutesIndicators = calculateIndicatorsFromDetails(filledStockFiveMinutesDetails);
+                List<StockFiveMinutesDetails> stockFiveMinutesDetails = stockFiveMinutesDetailsParser.parseStockFiveMinutesDetails(stock, inputStream);
+                List<StockFiveMinutesDetails> filledStockFiveMinutesDetails = stockFiveMinutesDetailsParser.fillEmptyTimeAndCumulativeVolume(stockFiveMinutesDetails);
+                List<StockFiveMinutesIndicators> fiveMinutesIndicators = stockFiveMinutesDetailsParser.calculateIndicatorsFromDetails(filledStockFiveMinutesDetails);
                 stockFiveMinutesIndicatorsRepository.save(fiveMinutesIndicators);
                 stockFiveMinutesDetailsRepository.save(filledStockFiveMinutesDetails);
                 increaseStep();
@@ -146,29 +152,10 @@ public class FillDataBaseWithDataService {
         try {
             executor.awaitTermination(5, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.error("Error occurs: " + e.getMessage());
         }
         fillDataStatusRepository.updateType(Type.STOCK_DETAILS_FIVE_MINUTES.toString());
         return new ResponseEntity<Void>(HttpStatus.OK);
-    }
-
-    public List<StockFiveMinutesIndicators> calculateIndicatorsFromDetails(List<StockFiveMinutesDetails> filledStockFiveMinutesDetails) {
-        List<StockFiveMinutesIndicators> fiveMinutesIndicators = new ArrayList<>();
-        Stock stock = filledStockFiveMinutesDetails.get(0).getStock();
-        for (LocalTime i = LocalTime.of(9, 05); i.isBefore(LocalTime.of(16, 55)); i = i.plusMinutes(5)) {
-            StockFiveMinutesIndicators indicator = new StockFiveMinutesIndicators();
-            LocalTime time = i;
-            double average = filledStockFiveMinutesDetails.stream()
-                .filter(element -> element.getTime().equals(time))
-                .collect(Collectors.toList())
-                .stream()
-                .collect(Collectors.averagingDouble(element -> element.getCumulatedVolume()));
-            indicator.setTime(time);
-            indicator.setAverageVolume(average);
-            indicator.setStock(stock);
-            fiveMinutesIndicators.add(indicator);
-        }
-        return fiveMinutesIndicators;
     }
 
     @Transactional

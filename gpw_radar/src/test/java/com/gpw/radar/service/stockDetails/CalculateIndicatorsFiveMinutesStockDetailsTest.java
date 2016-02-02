@@ -7,7 +7,8 @@ import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
 import com.gpw.radar.domain.stock.StockFiveMinutesIndicators;
 import com.gpw.radar.service.database.FillDataBaseWithDataService;
-import com.gpw.radar.service.parser.file.StockDetailsParserService;
+import com.gpw.radar.service.parser.file.stockDetails.FileStockDetailsParserService;
+import com.gpw.radar.service.parser.file.stockFiveMinutesDetails.FileStockFiveMinutesDetailsParserService;
 import org.assertj.core.data.Percentage;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +36,10 @@ public class CalculateIndicatorsFiveMinutesStockDetailsTest {
     private FillDataBaseWithDataService fillDataBaseWithDataService;
 
     @Inject
-    private StockDetailsParserService stockDetailsParserService;
+    private FileStockDetailsParserService fileStockDetailsParserService;
+
+    @Inject
+    private FileStockFiveMinutesDetailsParserService fileStockFiveMinutesDetailsParserService;
 
     private TestContextManager testContextManager;
 
@@ -54,9 +58,9 @@ public class CalculateIndicatorsFiveMinutesStockDetailsTest {
         stock.setStockShortName("KGH");
         String stockFiveMinutesDetailsFilePath = "/stocks_data/5min/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
         InputStream inputStreamOfStockFiveMinutesDetails = getClass().getResourceAsStream(stockFiveMinutesDetailsFilePath);
-        List<StockFiveMinutesDetails> stockFiveMinutesDetails = stockDetailsParserService.parseStockFiveMinutesDetails(stock, inputStreamOfStockFiveMinutesDetails);
-        List<StockFiveMinutesDetails> filledStockFiveMinutesDetails = stockDetailsParserService.fillEmptyTimeAndCumulativeVolume(stockFiveMinutesDetails);
-        indicatorsList = fillDataBaseWithDataService.calculateIndicatorsFromDetails(filledStockFiveMinutesDetails);
+        List<StockFiveMinutesDetails> stockFiveMinutesDetails = fileStockFiveMinutesDetailsParserService.parseStockFiveMinutesDetails(stock, inputStreamOfStockFiveMinutesDetails);
+        List<StockFiveMinutesDetails> filledStockFiveMinutesDetails = fileStockFiveMinutesDetailsParserService.fillEmptyTimeAndCumulativeVolume(stockFiveMinutesDetails);
+        indicatorsList = fileStockFiveMinutesDetailsParserService.calculateIndicatorsFromDetails(filledStockFiveMinutesDetails);
     }
 
     public CalculateIndicatorsFiveMinutesStockDetailsTest(LocalTime time, double expectedResult) {

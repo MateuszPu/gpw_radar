@@ -5,7 +5,8 @@ import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;
 import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
-import com.gpw.radar.service.parser.file.StockDetailsParserService;
+import com.gpw.radar.service.parser.file.stockDetails.FileStockDetailsParserService;
+import com.gpw.radar.service.parser.file.stockFiveMinutesDetails.FileStockFiveMinutesDetailsParserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,10 +26,13 @@ import static org.assertj.core.api.StrictAssertions.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
-public class StockDetailsParserServiceTest {
+public class FileStockDetailsParserServiceTest {
 
     @Inject
-    private StockDetailsParserService stockDetailsParserService;
+    private FileStockDetailsParserService fileStockDetailsParserService;
+
+    @Inject
+    private FileStockFiveMinutesDetailsParserService fileStockFiveMinutesDetailsParserService;
 
     private Stock stock = new Stock();
     private InputStream inputStreamOfStockDetails;
@@ -47,13 +51,13 @@ public class StockDetailsParserServiceTest {
 
     @Test
     public void stockDetailsSize() {
-        List<StockDetails> list = stockDetailsParserService.parseStockDetails(stock, inputStreamOfStockDetails);
+        List<StockDetails> list = fileStockDetailsParserService.parseStockDetails(stock, inputStreamOfStockDetails);
         assertThat(list.size()).isEqualTo(20);
     }
 
     @Test
     public void stockDetailsContent() {
-        List<StockDetails> list = stockDetailsParserService.parseStockDetails(stock, inputStreamOfStockDetails);
+        List<StockDetails> list = fileStockDetailsParserService.parseStockDetails(stock, inputStreamOfStockDetails);
         StockDetails firstStockDetails = list.get(0);
         assertThat(firstStockDetails.getVolume()).isEqualTo(277939);
         assertThat(firstStockDetails.getOpenPrice()).isEqualTo(new BigDecimal("17.9"));
@@ -66,13 +70,13 @@ public class StockDetailsParserServiceTest {
 
     @Test
     public void stockFiveMinutesDetailsSize() {
-        List<StockFiveMinutesDetails> list = stockDetailsParserService.parseStockFiveMinutesDetails(stock, inputStreamOfStockFiveMinutesDetails);
+        List<StockFiveMinutesDetails> list = fileStockFiveMinutesDetailsParserService.parseStockFiveMinutesDetails(stock, inputStreamOfStockFiveMinutesDetails);
         assertThat(list.size()).isEqualTo(85);
     }
 
     @Test
     public void stockFiveMinutesDetailsContent() {
-        List<StockFiveMinutesDetails> list = stockDetailsParserService.parseStockFiveMinutesDetails(stock, inputStreamOfStockFiveMinutesDetails);
+        List<StockFiveMinutesDetails> list = fileStockFiveMinutesDetailsParserService.parseStockFiveMinutesDetails(stock, inputStreamOfStockFiveMinutesDetails);
         StockFiveMinutesDetails stockFiveMinutesDetails = list.get(0);
         assertThat(stockFiveMinutesDetails.getVolume()).isEqualTo(1417);
         assertThat(stockFiveMinutesDetails.getTime()).isEqualTo(LocalTime.of(9,5));
@@ -82,15 +86,15 @@ public class StockDetailsParserServiceTest {
 
     @Test
     public void stockFiveMinutesDetailsFillEmptyRangeSize() {
-        List<StockFiveMinutesDetails> list = stockDetailsParserService.parseStockFiveMinutesDetails(stock, inputStreamOfStockFiveMinutesDetails);
-        List<StockFiveMinutesDetails> filledList = stockDetailsParserService.fillEmptyTimeAndCumulativeVolume(list);
+        List<StockFiveMinutesDetails> list = fileStockFiveMinutesDetailsParserService.parseStockFiveMinutesDetails(stock, inputStreamOfStockFiveMinutesDetails);
+        List<StockFiveMinutesDetails> filledList = fileStockFiveMinutesDetailsParserService.fillEmptyTimeAndCumulativeVolume(list);
         assertThat(filledList.size()).isEqualTo(94);
     }
 
     @Test
     public void stockFiveMinutesDetailsFillEmptyRangeContent() {
-        List<StockFiveMinutesDetails> list = stockDetailsParserService.parseStockFiveMinutesDetails(stock, inputStreamOfStockFiveMinutesDetails);
-        List<StockFiveMinutesDetails> filledList = stockDetailsParserService.fillEmptyTimeAndCumulativeVolume(list);
+        List<StockFiveMinutesDetails> list = fileStockFiveMinutesDetailsParserService.parseStockFiveMinutesDetails(stock, inputStreamOfStockFiveMinutesDetails);
+        List<StockFiveMinutesDetails> filledList = fileStockFiveMinutesDetailsParserService.fillEmptyTimeAndCumulativeVolume(list);
         StockFiveMinutesDetails firstStockFiveMinutesDetails = filledList.stream().findFirst().get();
         StockFiveMinutesDetails thirdStockFiveMinutesDetails = filledList.get(2);
         StockFiveMinutesDetails stockFiveMinutesDetails = filledList.stream()

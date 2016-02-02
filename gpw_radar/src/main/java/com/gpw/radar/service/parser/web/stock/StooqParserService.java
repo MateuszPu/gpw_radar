@@ -1,4 +1,4 @@
-package com.gpw.radar.service.parser.web;
+package com.gpw.radar.service.parser.web.stock;
 
 import com.gpw.radar.domain.stock.Stock;
 import org.jsoup.Jsoup;
@@ -11,12 +11,14 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
+//Data downloading from stooq.pl using jsoup library
 @Service
-public class StockParserService {
+public class StooqParserService implements StockParser {
 
-    private final Logger logger = LoggerFactory.getLogger(StockParserService.class);
+    private final Logger logger = LoggerFactory.getLogger(StooqParserService.class);
 
     public Stock setNameAndShortName(Stock stock) {
+
         Document doc = null;
         try {
             doc = getDocumentFromStooqWeb(stock.getTicker().toString());

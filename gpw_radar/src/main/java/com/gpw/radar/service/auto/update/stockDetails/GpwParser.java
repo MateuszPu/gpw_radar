@@ -7,6 +7,8 @@ import com.gpw.radar.repository.stock.StockRepository;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -25,6 +27,8 @@ import java.util.List;
 //getting data from http://www.gpw.pl/akcje_i_pda_notowania_ciagle_pelna_wersja#all
 @Component("gpwParser")
 public class GpwParser implements StockDetailsParser {
+
+    private final Logger logger = LoggerFactory.getLogger(GpwParser.class);
 
     @Inject
 	private StockRepository stockRepository;
@@ -123,7 +127,7 @@ public class GpwParser implements StockDetailsParser {
 			URL url = new URL("http://www.gpw.pl/ajaxindex.php?action=GPWQuotations&start=showTable&tab=all&lang=PL&full=1");
 			urlConnection = url.openConnection();
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+            logger.error("Error occurs: " + e.getMessage());
 		}
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
@@ -135,7 +139,7 @@ public class GpwParser implements StockDetailsParser {
 		try {
 			doc = Jsoup.connect("http://www.gpw.pl/akcje_i_pda_notowania_ciagle_pelna_wersja#all").get();
 		} catch (IOException e) {
-			e.printStackTrace();
+            logger.error("Error occurs: " + e.getMessage());
 		}
 
 		Elements el = doc.select("div[class=\"colFL\"]");
