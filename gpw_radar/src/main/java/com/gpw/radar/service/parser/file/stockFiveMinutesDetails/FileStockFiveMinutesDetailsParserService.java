@@ -27,11 +27,9 @@ import java.util.stream.Collectors;
 public class FileStockFiveMinutesDetailsParserService implements StockFiveMinutesDetailsParser {
 
     private final Logger logger = LoggerFactory.getLogger(FileStockFiveMinutesDetailsParserService.class);
-    private final String cvsSplitBy = ",";
 
     @Inject
     private DateAndTimeParserService dateAndTimeParserService;
-
 
     public List<StockFiveMinutesDetails> parseStockFiveMinutesDetails(Stock stock, InputStream st) {
         List<StockFiveMinutesDetails> stockFiveMinutesDetailsList = new ArrayList<>();

@@ -33,12 +33,6 @@ import static org.assertj.core.api.StrictAssertions.assertThat;
 public class CalculateIndicatorsFiveMinutesStockDetailsTest {
 
     @Inject
-    private FillDataBaseWithDataService fillDataBaseWithDataService;
-
-    @Inject
-    private FileStockDetailsParserService fileStockDetailsParserService;
-
-    @Inject
     private FileStockFiveMinutesDetailsParserService fileStockFiveMinutesDetailsParserService;
 
     private TestContextManager testContextManager;
