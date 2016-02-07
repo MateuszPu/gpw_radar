@@ -1,28 +1,42 @@
 package com.gpw.radar.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gpw.radar.domain.stock.Stock;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.validator.constraints.Email;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.validator.constraints.Email;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gpw.radar.domain.stock.Stock;
 
 /**
  * A user.
  */
 @Entity
 @Table(name = "USERS")
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class User extends AbstractAuditingEntity implements Serializable {
 
-    @Id
+	@Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "idGenerator")
     @TableGenerator(table = "hibernate_sequences_table", name = "idGenerator", pkColumnName = "pk",
         valueColumnName = "value", pkColumnValue = "users", initialValue = 1000, allocationSize = 1)
@@ -36,8 +50,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @JsonIgnore
     @NotNull
-    @Size(min = 60, max = 60)
-    @Column(length = 60)
+    @Size(min = 60, max = 60) 
+    @Column(name = "password_hash",length = 60)
     private String password;
 
     @Size(max = 50)
@@ -78,12 +92,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
             name = "USER_AUTHORITY",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Authority> authorities = new HashSet<>();
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PersistentToken> persistentTokens = new HashSet<>();
-
+    
     @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -92,7 +108,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "stock_id", referencedColumnName = "id")})
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Stock> stocks = new HashSet<>();
-
 
     public Long getId() {
         return id;

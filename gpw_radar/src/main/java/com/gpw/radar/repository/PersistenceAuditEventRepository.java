@@ -1,9 +1,10 @@
 package com.gpw.radar.repository;
 
 import com.gpw.radar.domain.PersistentAuditEvent;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import java.util.List;
 
 /**

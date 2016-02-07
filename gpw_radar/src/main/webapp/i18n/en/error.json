@@ -1,6 +1,10 @@
 {
     "errors": {
         "title": "Error page!",
+        "methodNotSupported": "Operation not supported",
+        "validation" : "Validation error",
+        "accessDenied" : "Access denied",
+        "concurrencyFailure" : "Concurrency failure",
         "403": "You are not authorized to access the page."
     }
 }

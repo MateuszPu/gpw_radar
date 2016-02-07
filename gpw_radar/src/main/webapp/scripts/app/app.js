@@ -1,10 +1,29 @@
 'use strict';
 
-angular.module('gpwRadarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pascalprecht.translate',
-               'ui.bootstrap', 'luegg.directives', 'angularMoment', 'smart-table', 'ui.select', 'ui.calendar',
-    'ngResource', 'ui.router', 'ngCookies', 'ngAria', 'ngCacheBuster', 'ngFileUpload', 'infinite-scroll'])
+angular.module('gpwRadarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pascalprecht.translate', 
+   'ngResource', 'ngCookies', 'ngAria', 'ngCacheBuster', 'ngFileUpload',
+    // jhipster-needle-angularjs-add-module JHipster will add new module here
+    'ui.bootstrap', 'ui.router',  'infinite-scroll', 'angular-loading-bar',
+    'luegg.directives', 'angularMoment', 'smart-table', 'ui.select', 'ui.calendar',
+    'ngResource'
+    ])
+
     .run(function ($rootScope, $location, $timeout, $window, $http, $state, $translate, Language, Auth, Principal, ENV, VERSION, amMoment, Websocket) {
-		amMoment.changeLocale('pl');
+        // update the window title using params in the following
+        // precendence
+        // 1. titleKey parameter
+        // 2. $state.$current.data.pageTitle (current state page title)
+        // 3. 'global.title'
+        var updateTitle = function(titleKey) {
+            if (!titleKey && $state.$current.data && $state.$current.data.pageTitle) {
+                titleKey = $state.$current.data.pageTitle;
+            }
+            $translate(titleKey || 'global.title').then(function (title) {
+                $window.document.title = title;
+            });
+        };
+        
+        amMoment.changeLocale('pl');
 
         $rootScope.isWebsocket = false;
         Websocket.connect();
@@ -22,7 +41,7 @@ angular.module('gpwRadarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pasca
             $rootScope.countUsers = count.body;
         });
 
-    	$rootScope.ENV = ENV;
+        $rootScope.ENV = ENV;
         $rootScope.VERSION = VERSION;
         $rootScope.$on('$stateChangeStart', function (event, toState, toStateParams) {
             $rootScope.toState = toState;
@@ -31,12 +50,13 @@ angular.module('gpwRadarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pasca
             if (Principal.isIdentityResolved()) {
                 Auth.authorize();
             }
-
+			
+            
             // Update the language
             Language.getCurrent().then(function (language) {
                 $translate.use(language);
             });
-
+            
         });
 
         $rootScope.$on('$stateChangeSuccess',  function(event, toState, toParams, fromState, fromParams) {
@@ -55,14 +75,13 @@ angular.module('gpwRadarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pasca
             if (toState.data.pageTitle) {
                 titleKey = toState.data.pageTitle;
             }
-
-            $translate(titleKey).then(function (title) {
-                // Change window title with translated one
-                $window.document.title = title;
-            });
-
+            updateTitle(titleKey);
         });
+        
+        // if the current translation changes, update the window title
+        $rootScope.$on('$translateChangeSuccess', function() { updateTitle(); });
 
+        
         $rootScope.back = function() {
             // If previous state is 'activate' or do not exist go to 'home'
             if ($rootScope.previousStateName === 'activate' || $state.get($rootScope.previousStateName) === null) {
@@ -72,7 +91,9 @@ angular.module('gpwRadarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pasca
             }
         };
     })
-    .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider, $translateProvider, tmhDynamicLocaleProvider, httpRequestInterceptorCacheBusterProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider, $translateProvider, tmhDynamicLocaleProvider, httpRequestInterceptorCacheBusterProvider, AlertServiceProvider) {
+        // uncomment below to make alerts look like toast
+        //AlertServiceProvider.showAsToast(true);
 
         //enable CSRF
         $httpProvider.defaults.xsrfCookieName = 'CSRF-TOKEN';
@@ -101,6 +122,7 @@ angular.module('gpwRadarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pasca
                 ],
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('global');
+//                    $translatePartialLoader.addPart('error');
                 }]
             }
         });
@@ -108,7 +130,8 @@ angular.module('gpwRadarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pasca
         $httpProvider.interceptors.push('errorHandlerInterceptor');
         $httpProvider.interceptors.push('authExpiredInterceptor');
         $httpProvider.interceptors.push('notificationInterceptor');
-
+        // jhipster-needle-angularjs-add-interceptor JHipster will add new application interceptor here
+        
         // Initialize angular-translate
         $translateProvider.useLoader('$translatePartialLoader', {
             urlTemplate: 'i18n/{lang}/{part}.json'
@@ -122,8 +145,9 @@ angular.module('gpwRadarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pasca
         tmhDynamicLocaleProvider.localeLocationPattern('bower_components/angular-i18n/angular-locale_{{locale}}.js');
         tmhDynamicLocaleProvider.useCookieStorage();
         tmhDynamicLocaleProvider.storageKey('NG_TRANSLATE_LANG_KEY');
-
+        
     })
+    // jhipster-needle-angularjs-add-config JHipster will add new application configuration here
     .config(['$urlMatcherFactoryProvider', function($urlMatcherFactory) {
         $urlMatcherFactory.type('boolean', {
             name : 'boolean',
@@ -133,4 +157,4 @@ angular.module('gpwRadarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pasca
             is: function(val) { return [true,false,0,1].indexOf(val) >= 0 },
             pattern: /bool|true|0|1/
         });
-    }]);;
+    }]);

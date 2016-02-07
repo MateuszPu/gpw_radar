@@ -1,4 +1,4 @@
-// Generated on 2015-10-31 using generator-jhipster 2.23.0
+// Generated on 2016-02-06 using generator-jhipster 2.27.0
 'use strict';
 var fs = require('fs');
 
@@ -8,7 +8,13 @@ var parseVersionFromPomXml = function() {
     var version;
     var pomXml = fs.readFileSync('pom.xml', "utf8");
     parseString(pomXml, function (err, result){
-        version = result.project.version[0];
+        if (result.project.version && result.project.version[0]) {
+            version = result.project.version[0];
+        } else if (result.project.parent && result.project.parent[0] && result.project.parent[0].version && result.project.parent[0].version[0]) {
+            version = result.project.parent[0].version[0]
+        } else {
+            throw new Error('pom.xml is malformed. No version is defined');
+        }
     });
     return version;
 };
@@ -30,7 +36,7 @@ module.exports = function (grunt) {
     require('time-grunt')(grunt);
 
     grunt.initConfig({
-         app: {
+        app: {
             // Application variables
             scripts: [
                    // JS files to be included by includeSource task into index.html
@@ -119,7 +125,12 @@ module.exports = function (grunt) {
             },
             options: {
                 watchTask: true,
-                proxy: "localhost:8080"
+                proxy: {
+                    target: "localhost:8080",
+                    proxyOptions: {
+                        xfwd: true
+                    }
+                }
             }
         },
         clean: {
@@ -165,7 +176,7 @@ module.exports = function (grunt) {
             }
         },
         useminPrepare: {
-            html: 'src/main/webapp/**/*.html',
+            html: 'src/main/webapp/index.html',
             options: {
                 dest: '<%= yeoman.dist %>',
                 flow: {
@@ -284,20 +295,28 @@ module.exports = function (grunt) {
                         'generated/*'
                     ]
                 }]
-            },
-            generateOpenshiftDirectory: {
-                    expand: true,
-                    dest: 'deploy/openshift',
-                    src: [
-                        'pom.xml',
-                        'src/main/**'
-                ]
             }
         },
         karma: {
             unit: {
                 configFile: 'src/test/javascript/karma.conf.js',
                 singleRun: true
+            }
+        },
+        protractor: {
+            options: {
+                configFile: 'src/test/javascript/protractor.conf.js'
+            },
+            e2e: {
+                options: {
+                    // Stops Grunt process if a test fails
+                    keepAlive: false
+                }
+            },
+            continuous: {
+                options: {
+                    keepAlive: true
+                }
             }
         },
         ngAnnotate: {
@@ -316,13 +335,6 @@ module.exports = function (grunt) {
                 push: false,
                 connectCommits: false,
                 message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
-            },
-            openshift: {
-                options: {
-                    dir: 'deploy/openshift',
-                    remote: 'openshift',
-                    branch: 'master'
-                }
             }
         },
         ngconstant: {
@@ -394,18 +406,6 @@ module.exports = function (grunt) {
         'htmlmin'
     ]);
 
-    grunt.registerTask('buildOpenshift', [
-        'test',
-        'build',
-        'copy:generateOpenshiftDirectory',
-    ]);
-
-    grunt.registerTask('deployOpenshift', [
-        'test',
-        'build',
-        'copy:generateOpenshiftDirectory',
-        'buildcontrol:openshift'
-    ]);
-
+    grunt.registerTask('itest', ['protractor:continuous']);
     grunt.registerTask('default', ['serve']);
 };

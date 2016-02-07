@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('gpwRadarApp')
-    .controller('LanguageController', function ($scope, $translate, Language, tmhDynamicLocale, amMoment) {
+    .controller('LanguageController', function ($scope, $translate, Language, tmhDynamicLocale) {
         $scope.changeLanguage = function (languageKey) {
-        	amMoment.changeLocale(languageKey);
             $translate.use(languageKey);
             tmhDynamicLocale.set(languageKey);
         };
@@ -21,6 +20,7 @@ angular.module('gpwRadarApp')
                 "en": "English",
                 "es": "Español",
                 "fr": "Français",
+                "gl": "Galego",
                 "hu": "Magyar",
                 "it": "Italiano",
                 "ja": "日本語",
@@ -32,6 +32,7 @@ angular.module('gpwRadarApp')
                 "ro": "Română",
                 "ru": "Русский",
                 "sv": "Svenska",
+                "ta": "தமிழ்",
                 "tr": "Türkçe",
                 "zh-cn": "中文（简体）",
                 "zh-tw": "繁體中文"

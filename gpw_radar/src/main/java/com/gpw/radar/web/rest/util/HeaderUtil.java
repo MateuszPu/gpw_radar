@@ -16,7 +16,7 @@ public class HeaderUtil {
     }
 
     public static HttpHeaders createEntityCreationAlert(String entityName, String param) {
-        return createAlert("gpwRadarApp." + entityName + ".created", param);
+        return createAlert("gpwradarApp." + entityName + ".created", param);
     }
 
     public static HttpHeaders createEntityUpdateAlert(String entityName, String param) {
@@ -25,5 +25,12 @@ public class HeaderUtil {
 
     public static HttpHeaders createEntityDeletionAlert(String entityName, String param) {
         return createAlert("gpwRadarApp." + entityName + ".deleted", param);
+    }
+
+    public static HttpHeaders createFailureAlert(String entityName, String errorKey, String defaultMessage) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-gpwRadarApp-error", "error." + errorKey);
+        headers.add("X-gpwRadarApp-params", entityName);
+        return headers;
     }
 }

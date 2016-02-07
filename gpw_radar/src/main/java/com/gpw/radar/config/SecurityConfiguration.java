@@ -12,9 +12,10 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
+
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.csrf.CsrfFilter;
 
@@ -77,6 +78,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
             .addFilterAfter(new CsrfCookieGeneratorFilter(), CsrfFilter.class)
             .exceptionHandling()
+            .accessDeniedHandler(new CustomAccessDeniedHandler())
             .authenticationEntryPoint(authenticationEntryPoint)
         .and()
             .rememberMe()
@@ -95,7 +97,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .logout()
             .logoutUrl("/api/logout")
             .logoutSuccessHandler(ajaxLogoutSuccessHandler)
-            .deleteCookies("JSESSIONID")
+            .deleteCookies("JSESSIONID", "CSRF-TOKEN")
             .permitAll()
         .and()
             .headers()
@@ -111,6 +113,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/logs/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/api/audits/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/api/**").authenticated()
+            .antMatchers("/websocket/tracker").hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/websocket/**").permitAll()
             .antMatchers("/metrics/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/health/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/trace/**").hasAuthority(AuthoritiesConstants.ADMIN)

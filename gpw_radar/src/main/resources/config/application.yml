@@ -46,15 +46,22 @@ jhipster:
         corePoolSize: 2
         maxPoolSize: 50
         queueCapacity: 10000
+    #cors: #By default CORS are not enabled. Uncomment to enable.
+        #allowed-origins: "*"
+        #allowed-methods: GET, PUT, POST, DELETE, OPTIONS
+        #allowed-headers: "*"
+        #exposed-headers:
+        #allow-credentials: true
+        #max-age: 1800
     mail:
-        from: gpw_radar@localhost
+        from: gpwRadar@localhost
     security:
         rememberme:
             # security key (this key should be unique for your application, and kept secret)
-            key: 055a18d2a259f1808e76809c5989c2d97784027d
+            key: 07a3f7bcdffcc2802e4dfe5fb981219d106c4dc6
     swagger:
-        title: gpw_radar API
-        description: gpw_radar API documentation
+        title: gpwRadar API
+        description: gpwRadar API documentation
         version: 0.0.1
         termsOfServiceUrl:
         contact:

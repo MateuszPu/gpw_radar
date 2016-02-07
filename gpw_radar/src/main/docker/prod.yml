@@ -1,0 +1,10 @@
+gpwradar-postgresql:
+  container_name: gpwradar-postgresql
+  image: postgres:9.4.5
+  # volumes:
+  #   - ~/volumes/jhipster/gpwRadar/postgresql/:/var/lib/postgresql/
+  environment:
+    - POSTGRES_USER=gpwRadar
+    - POSTGRES_PASSWORD=
+  ports:
+    - "5432:5432"

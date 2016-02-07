@@ -1,8 +1,9 @@
 package com.gpw.radar.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 import javax.validation.constraints.NotNull;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.web.cors.CorsConfiguration;
 
 /**
  * Properties specific to JHipster.
@@ -29,6 +30,8 @@ public class JHipsterProperties {
     private final Swagger swagger = new Swagger();
 
     private final Metrics metrics = new Metrics();
+
+    private final CorsConfiguration cors = new CorsConfiguration();
 
 
 
@@ -62,6 +65,10 @@ public class JHipsterProperties {
 
     public Metrics getMetrics() {
         return metrics;
+    }
+
+    public CorsConfiguration getCors() {
+        return cors;
     }
 
 
@@ -167,6 +174,8 @@ public class JHipsterProperties {
 
         private int timeToLiveSeconds = 3600;
 
+        private final Ehcache ehcache = new Ehcache();
+
         public int getTimeToLiveSeconds() {
             return timeToLiveSeconds;
         }
@@ -174,11 +183,28 @@ public class JHipsterProperties {
         public void setTimeToLiveSeconds(int timeToLiveSeconds) {
             this.timeToLiveSeconds = timeToLiveSeconds;
         }
+
+        public Ehcache getEhcache() {
+            return ehcache;
+        }
+
+        public static class Ehcache {
+
+            private String maxBytesLocalHeap = "16M";
+
+            public String getMaxBytesLocalHeap() {
+                return maxBytesLocalHeap;
+            }
+
+            public void setMaxBytesLocalHeap(String maxBytesLocalHeap) {
+                this.maxBytesLocalHeap = maxBytesLocalHeap;
+            }
+        }
     }
 
     public static class Mail {
 
-        private String from = "gpw.radar@gmail.com";
+        private String from = "gpwRadar@localhost";
 
         public String getFrom() {
             return from;
@@ -214,9 +240,9 @@ public class JHipsterProperties {
 
     public static class Swagger {
 
-        private String title = "gpw_radar API";
+        private String title = "gpwRadar API";
 
-        private String description = "gpw_radar API documentation";
+        private String description = "gpwRadar API documentation";
 
         private String version = "0.0.1";
 
@@ -359,7 +385,7 @@ public class JHipsterProperties {
 
             private int port = 2003;
 
-            private String prefix = "gpw_radar";
+            private String prefix = "gpwRadar";
 
             public boolean isEnabled() {
                 return enabled;

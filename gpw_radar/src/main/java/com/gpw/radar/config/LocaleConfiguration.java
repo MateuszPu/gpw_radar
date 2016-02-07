@@ -1,6 +1,7 @@
 package com.gpw.radar.config;
 
 import com.gpw.radar.config.locale.AngularCookieLocaleResolver;
+
 import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.MessageSource;

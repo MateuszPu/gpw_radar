@@ -1,6 +1,10 @@
 {
     "errors": {
         "title": "Strona błędu!",
+        "methodNotSupported": "Operacja nie wspierana",
+        "validation" : "Błąd walidacji",
+        "accessDenied" : "Brak dostępu",
+        "concurrencyFailure" : "Błąd współbieżnośći",
         "403": "Nie masz praw dostępu do tej storny."
     }
 }

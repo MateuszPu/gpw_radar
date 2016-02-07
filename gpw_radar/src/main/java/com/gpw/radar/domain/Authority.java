@@ -1,10 +1,11 @@
 package com.gpw.radar.domain;
 
-
-import javax.persistence.Column;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "AUTHORITY")
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Authority implements Serializable {
 
     @NotNull

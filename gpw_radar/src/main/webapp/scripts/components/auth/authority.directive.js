@@ -1,5 +1,6 @@
 'use strict';
 
+
 angular.module('gpwRadarApp')
     .directive('hasAnyAuthority', ['Principal', function (Principal) {
         return {
@@ -28,6 +29,12 @@ angular.module('gpwRadarApp')
 
                 if (authorities.length > 0) {
                     defineVisibility(true);
+                    
+                    scope.$watch(function(scope) {
+                        return Principal.isAuthenticated();
+                    }, function(newValue) {
+                        defineVisibility(true);
+                    });
                 }
             }
         };
@@ -61,6 +68,12 @@ angular.module('gpwRadarApp')
 
                 if (authority.length > 0) {
                     defineVisibility(true);
+
+                    scope.$watch(function(scope) {
+                        return Principal.isAuthenticated();
+                    }, function(newValue) {
+                        defineVisibility(true);
+                    });
                 }
             }
         };

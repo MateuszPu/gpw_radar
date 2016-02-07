@@ -6,7 +6,7 @@ package com.gpw.radar.domain.enumeration;
 public enum StockTicker implements Ticker {
     fro, ipe, mnc, wik, grj, otm, sol, ast, ech, dud, gki, lsi, czt, dpl, del, bmc, pbg, atp, dcr, zwc,
     ali, opf, ida, irl, tar, atr, mex, obl, cpa, mbw, ksw, wdx, ink, mrb, snx, ska, cng, vox, skh, zst,
-    kgn, fsg, tvl, agt, mrc, k2i, bmp, stf, odl, awb, pti, dtp, acg, mni, nva, bft, pwx, vtl, elt, bri,
+    kgn, fsg, tvl, agt, mrc, k2i, bmp, stf, odl, awb, dtp, acg, mni, nva, bft, pwx, vtl, elt, bri,
     tfo, was, qrs, rnk, smt, eah, ipl, dom, emp, bos, rwl, pdz, elz, bph, jwc, mag, erb, grt, abc, cdl,
     idt, pbx, mvp, trr, col, rlp, alm, kom, uni, mak, wtn, fcl, kri, egs, ipt, inv, pgd, emt, imc, cog,
     zue, sen, rdl, vgo, krk, pce, slv, ucg, alc, ltx, fte, snk, snt, wlt, msz, cmr, ind, dbc, car, prt,

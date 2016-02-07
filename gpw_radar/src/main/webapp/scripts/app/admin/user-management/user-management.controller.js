@@ -1,13 +1,21 @@
 'use strict';
 
 angular.module('gpwRadarApp')
-    .controller('UserManagementController', function ($scope, $modal, User, ParseLinks, Language) {
+    .controller('UserManagementController', function ($scope, Principal, User, ParseLinks, Language) {
         $scope.users = [];
-
-        $scope.page = 0;
+        $scope.authorities = ["ROLE_USER", "ROLE_ADMIN"];
+        Language.getAll().then(function (languages) {
+            $scope.languages = languages;
+        });
+		
+		Principal.identity().then(function(account) {
+            $scope.currentAccount = account;
+        });
+        $scope.page = 1;
         $scope.loadAll = function () {
-            User.query({page: $scope.page, per_page: 20}, function (result, headers) {
+            User.query({page: $scope.page - 1, size: 20}, function (result, headers) {
                 $scope.links = ParseLinks.parse(headers('link'));
+                $scope.totalItems = headers('X-Total-Count');
                 $scope.users = result;
             });
         };
@@ -26,22 +34,14 @@ angular.module('gpwRadarApp')
             });
         };
 
-        $scope.showUpdate = function(login) {
-        	User.get({login: login}, function (result) {
-                var modalInstance = $modal.open({
-                    templateUrl: 'scripts/app/admin/user-management/user-management-detail-edit.modal.html',
-                    controller: 'UserDetailEditController',
-                    size: 'lg',
-                    resolve: {
-                    	user: function() {
-                            return result;
-                        }
-                    }
-                });
-                modalInstance.result.then(function () {
-            		$scope.loadAll();
-        	    });
-        	});
+        $scope.clear = function () {
+            $scope.user = {
+                id: null, login: null, firstName: null, lastName: null, email: null,
+                activated: null, langKey: null, createdBy: null, createdDate: null,
+                lastModifiedBy: null, lastModifiedDate: null, resetDate: null,
+                resetKey: null, authorities: null
+            };
+            $scope.editForm.$setPristine();
+            $scope.editForm.$setUntouched();
         };
-
     });

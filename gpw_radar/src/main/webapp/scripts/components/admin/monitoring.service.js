@@ -1,5 +1,6 @@
 'use strict';
 
+
 angular.module('gpwRadarApp')
     .factory('MonitoringService', function ($rootScope, $http) {
         return {

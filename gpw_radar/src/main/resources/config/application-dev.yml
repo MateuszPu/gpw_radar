@@ -29,10 +29,12 @@ spring:
         database: POSTGRESQL
         show_sql: true
         properties:
-            hibernate.cache.use_second_level_cache: false
+            hibernate.cache.use_second_level_cache: true
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
-            hibernate.id.new_generator_mappings: true
+            hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+    mail:
+        host: localhost
     messages:
         cache-seconds: 1
     thymeleaf:
@@ -49,8 +51,12 @@ server:
 # ===================================================================
 
 jhipster:
+    cache: # Hibernate 2nd level cache, used by CacheConfiguration
+        timeToLiveSeconds: 3600
+        ehcache:
+            maxBytesLocalHeap: 16M
     mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: gpw.radar@gmail.com
+        from: gpwRadar@localhost
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         spark:
@@ -61,4 +67,4 @@ jhipster:
             enabled: false
             host: localhost
             port: 2003
-            prefix: gpw_radar
+            prefix: gpwRadar

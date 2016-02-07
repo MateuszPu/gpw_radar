@@ -1,8 +1,8 @@
 package com.gpw.radar.web.rest.dto;
 
-import com.gpw.radar.domain.User;
-
 import java.time.ZonedDateTime;
+
+import com.gpw.radar.domain.User;
 
 /**
  * A DTO extending the UserDTO, which is meant to be used in the user management UI.

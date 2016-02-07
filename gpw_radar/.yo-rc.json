@@ -4,18 +4,23 @@
     "packageName": "com.gpw.radar",
     "packageFolder": "com/gpw/radar",
     "authenticationType": "session",
-    "hibernateCache": "no",
+    "hibernateCache": "ehcache",
     "clusteredHttpSession": "no",
-    "websocket": "no",
+    "websocket": "spring-websocket",
     "databaseType": "sql",
     "devDatabaseType": "postgresql",
     "prodDatabaseType": "postgresql",
     "searchEngine": "no",
-    "useCompass": false,
+    "useSass": false,
     "buildTool": "maven",
     "frontendBuilder": "grunt",
-    "javaVersion": "8",
     "enableTranslation": true,
-    "rememberMeKey": "518923451ccd315459aa417b18ef0fc8e302b035"
+    "enableSocialSignIn": false,
+    "rememberMeKey": "07a3f7bcdffcc2802e4dfe5fb981219d106c4dc6",
+    "testFrameworks": [
+      "gatling",
+      "cucumber",
+      "protractor"
+    ]
   }
 }

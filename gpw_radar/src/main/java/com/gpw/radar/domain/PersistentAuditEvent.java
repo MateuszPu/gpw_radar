@@ -1,8 +1,8 @@
 package com.gpw.radar.domain;
 
+import java.time.LocalDateTime;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +14,7 @@ import java.util.Map;
 @Table(name = "PERSISTENT_AUDIT_EVENT")
 public class PersistentAuditEvent {
 
-    @Id
+	@Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "idGenerator")
     @TableGenerator(table = "hibernate_sequences_table", name = "idGenerator", pkColumnName = "pk",
         valueColumnName = "value", pkColumnValue = "persistent_audit_event")
@@ -34,7 +34,7 @@ public class PersistentAuditEvent {
 	@MapKeyColumn(name = "name")
 	@Column(name = "value")
 	@CollectionTable(name = "PERSISTENT_AUDIT_EVT_DATA", joinColumns = @JoinColumn(name = "event_id"))
-	private Map<String, String> data = new HashMap<>();
+    private Map<String, String> data = new HashMap<>();
 
     public Long getId() {
         return id;

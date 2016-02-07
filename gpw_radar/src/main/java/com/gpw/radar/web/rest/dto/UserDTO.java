@@ -2,11 +2,10 @@ package com.gpw.radar.web.rest.dto;
 
 import com.gpw.radar.domain.Authority;
 import com.gpw.radar.domain.User;
+
 import org.hibernate.validator.constraints.Email;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Set;
 import java.util.stream.Collectors;
 /**

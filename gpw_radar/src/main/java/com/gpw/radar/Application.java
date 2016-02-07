@@ -2,6 +2,7 @@ package com.gpw.radar;
 
 import com.gpw.radar.config.Constants;
 import com.gpw.radar.config.JHipsterProperties;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -33,7 +34,7 @@ public class Application {
     private Environment env;
 
     /**
-     * Initializes gpw_radar.
+     * Initializes gpwRadar.
      * <p/>
      * Spring profiles can be configured with a program arguments --spring.profiles.active=your-active-profile
      * <p/>

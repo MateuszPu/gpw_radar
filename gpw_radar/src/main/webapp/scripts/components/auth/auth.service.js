@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('gpwRadarApp')
-    .factory('Auth', function Auth($rootScope, $state, $q, $translate, amMoment, Principal, AuthServerProvider, Account, Register, Activate, Password, PasswordResetInit, PasswordResetFinish, Websocket) {
+    .factory('Auth', function Auth($rootScope, $state, $q, $translate, Principal, AuthServerProvider, Account, Register, Activate, Password, PasswordResetInit, PasswordResetFinish, Websocket, amMoment) {
         return {
             login: function (credentials, callback) {
                 var cb = callback || angular.noop;
@@ -30,7 +30,7 @@ angular.module('gpwRadarApp')
             },
 
             logout: function () {
-                if($rootScope.isWebsocket){
+            	if($rootScope.isWebsocket){
                     Websocket.userLeaveChat();
                 }
                 AuthServerProvider.logout();

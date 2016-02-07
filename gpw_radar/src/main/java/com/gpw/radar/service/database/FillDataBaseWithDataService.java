@@ -1,15 +1,15 @@
 package com.gpw.radar.service.database;
 
-import com.gpw.radar.domain.database.Type;
-import com.gpw.radar.domain.enumeration.StockTicker;
-import com.gpw.radar.domain.stock.*;
-import com.gpw.radar.repository.auto.update.FillDataStatusRepository;
-import com.gpw.radar.repository.stock.*;
-import com.gpw.radar.service.parser.file.stockDetails.FileStockDetailsParserService;
-import com.gpw.radar.service.parser.file.stockDetails.StockDetailsParser;
-import com.gpw.radar.service.parser.file.stockFiveMinutesDetails.StockFiveMinutesDetailsParser;
-import com.gpw.radar.service.parser.web.stock.StockParser;
-import com.gpw.radar.service.parser.web.stockFinanceEvent.StockFinanceEventParser;
+import java.io.InputStream;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
@@ -18,17 +18,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import java.io.InputStream;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
+import com.gpw.radar.domain.database.Type;
+import com.gpw.radar.domain.enumeration.StockTicker;
+import com.gpw.radar.domain.stock.Stock;
+import com.gpw.radar.domain.stock.StockDetails;
+import com.gpw.radar.domain.stock.StockFinanceEvent;
+import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
+import com.gpw.radar.domain.stock.StockFiveMinutesIndicators;
+import com.gpw.radar.repository.auto.update.FillDataStatusRepository;
+import com.gpw.radar.repository.stock.StockDetailsRepository;
+import com.gpw.radar.repository.stock.StockFinanceEventRepository;
+import com.gpw.radar.repository.stock.StockFiveMinutesDetailsRepository;
+import com.gpw.radar.repository.stock.StockFiveMinutesIndicatorsRepository;
+import com.gpw.radar.repository.stock.StockRepository;
+import com.gpw.radar.service.parser.file.stockDetails.StockDetailsParser;
+import com.gpw.radar.service.parser.file.stockFiveMinutesDetails.StockFiveMinutesDetailsParser;
+import com.gpw.radar.service.parser.web.stock.StockParser;
+import com.gpw.radar.service.parser.web.stockFinanceEvent.StockFinanceEventParser;
 
 @Service
 public class FillDataBaseWithDataService {
@@ -71,6 +77,7 @@ public class FillDataBaseWithDataService {
         stockFiveMinutesDetailsParser = beanFactory.getBean("fileStockFiveMinutesDetailsParserService", StockFiveMinutesDetailsParser.class);
     }
 
+//    @Transactional
     public ResponseEntity<Void> fillDatabaseWithData(Type type) {
         switch (type) {
             case STOCK:
@@ -89,13 +96,11 @@ public class FillDataBaseWithDataService {
     //TODO: refactor sending step as socket to application
     @Transactional
     public ResponseEntity<Void> fillDataBaseWithStocks() {
-        step = 0;
         for (StockTicker element : StockTicker.values()) {
             Stock stock = new Stock();
             stock.setTicker(element);
             stock = stockParser.setNameAndShortName(stock);
             stockRepository.save(stock);
-            increaseStep();
         }
         fillDataStatusRepository.updateType(Type.STOCK.toString());
         return new ResponseEntity<Void>(HttpStatus.OK);

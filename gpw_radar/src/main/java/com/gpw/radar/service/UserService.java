@@ -1,5 +1,23 @@
 package com.gpw.radar.service;
 
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.gpw.radar.domain.Authority;
 import com.gpw.radar.domain.User;
 import com.gpw.radar.domain.stock.Stock;
@@ -10,22 +28,7 @@ import com.gpw.radar.repository.UserRepository;
 import com.gpw.radar.repository.stock.StockFinanceEventRepository;
 import com.gpw.radar.security.SecurityUtils;
 import com.gpw.radar.service.util.RandomUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.inject.Inject;
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import com.gpw.radar.web.rest.dto.ManagedUserDTO;
 
 /**
  * Service class for managing users.
@@ -47,7 +50,7 @@ public class UserService {
 
     @Inject
     private AuthorityRepository authorityRepository;
-
+    
     @Inject
     private StockFinanceEventRepository stockFinanceEventRepository;
 
@@ -84,7 +87,7 @@ public class UserService {
 
     public Optional<User> requestPasswordReset(String mail) {
         return userRepository.findOneByEmail(mail)
-            .filter(user -> user.getActivated())
+            .filter(User::getActivated)
             .map(user -> {
                 user.setResetKey(RandomUtil.generateResetKey());
                 user.setResetDate(ZonedDateTime.now());
@@ -118,8 +121,36 @@ public class UserService {
         return newUser;
     }
 
+    public User createUser(ManagedUserDTO managedUserDTO) {
+        User user = new User();
+        user.setLogin(managedUserDTO.getLogin());
+        user.setFirstName(managedUserDTO.getFirstName());
+        user.setLastName(managedUserDTO.getLastName());
+        user.setEmail(managedUserDTO.getEmail());
+        if (managedUserDTO.getLangKey() == null) {
+            user.setLangKey("en"); // default language is English
+        } else {
+            user.setLangKey(managedUserDTO.getLangKey());
+        }
+        if (managedUserDTO.getAuthorities() != null) {
+            Set<Authority> authorities = new HashSet<>();
+            managedUserDTO.getAuthorities().stream().forEach(
+                authority -> authorities.add(authorityRepository.findOne(authority))
+            );
+            user.setAuthorities(authorities);
+        }
+        String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
+        user.setPassword(encryptedPassword);
+        user.setResetKey(RandomUtil.generateResetKey());
+        user.setResetDate(ZonedDateTime.now());
+        user.setActivated(true);
+        userRepository.save(user);
+        log.debug("Created Information for User: {}", user);
+        return user;
+    }
+
     public void updateUserInformation(String firstName, String lastName, String email, String langKey) {
-        userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(u -> {
+        userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).ifPresent(u -> {
             u.setFirstName(firstName);
             u.setLastName(lastName);
             u.setEmail(email);
@@ -129,8 +160,15 @@ public class UserService {
         });
     }
 
+    public void deleteUserInformation(String login) {
+        userRepository.findOneByLogin(login).ifPresent(u -> {
+            userRepository.delete(u);
+            log.debug("Deleted User: {}", u);
+        });
+    }
+
     public void changePassword(String password) {
-        userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(u-> {
+        userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).ifPresent(u -> {
             String encryptedPassword = passwordEncoder.encode(password);
             u.setPassword(encryptedPassword);
             userRepository.save(u);
@@ -155,7 +193,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public User getUserWithAuthorities() {
-        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
+        User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUser().getUsername()).get();
         user.getAuthorities().size(); // eagerly load the association
         return user;
     }
@@ -195,7 +233,7 @@ public class UserService {
             userRepository.delete(user);
         }
     }
-
+    
     public ResponseEntity<List<StockFinanceEvent>> getStocksFinanceEventFollowedByUser() {
 		User user = getUserWithAuthorities();
 		List<StockFinanceEvent> stockFinanceEventsFollowedByUser = stockFinanceEventRepository.getFollowedStockFinanceEvent(user.getId());

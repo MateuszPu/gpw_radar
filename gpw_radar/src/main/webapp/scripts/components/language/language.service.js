@@ -8,7 +8,7 @@ angular.module('gpwRadarApp')
                 var language = $translate.storage().get('NG_TRANSLATE_LANG_KEY');
 
                 if (angular.isUndefined(language)) {
-                	language = 'pl';
+                    language = 'en';
                 }
 
                 deferred.resolve(language);
@@ -27,11 +27,7 @@ angular.module('gpwRadarApp')
  They are written in English to avoid character encoding issues (not a perfect solution)
  */
     .constant('LANGUAGES', [
-        'en', 'pl'
-        //JHipster will add new languages here
+        'en', 'fr'
+        // jhipster-needle-006 - JHipster will add new languages here
     ]
 );
-
-
-
-
