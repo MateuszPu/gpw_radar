@@ -77,22 +77,6 @@ public class FillDataBaseWithDataService {
         stockFiveMinutesDetailsParser = beanFactory.getBean("fileStockFiveMinutesDetailsParserService", StockFiveMinutesDetailsParser.class);
     }
 
-//    @Transactional
-    public ResponseEntity<Void> fillDatabaseWithData(Type type) {
-        switch (type) {
-            case STOCK:
-                return fillDataBaseWithStocks();
-            case STOCK_DETAILS:
-                return fillDataBaseWithStockDetails();
-            case STOCK_DETAILS_FIVE_MINUTES:
-                return fillDataBaseWithStockFiveMinutesDetails();
-            case STOCK_FINANCE_EVENTS:
-                return fillDataBaseWithStockFinanceEvent();
-            default:
-                return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
     //TODO: refactor sending step as socket to application
     @Transactional
     public ResponseEntity<Void> fillDataBaseWithStocks() {
@@ -102,7 +86,7 @@ public class FillDataBaseWithDataService {
             stock = stockParser.setNameAndShortName(stock);
             stockRepository.save(stock);
         }
-        fillDataStatusRepository.updateType(Type.STOCK.toString());
+//        fillDataStatusRepository.updateType(Type.STOCK.toString());
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
@@ -129,7 +113,7 @@ public class FillDataBaseWithDataService {
         } catch (InterruptedException e) {
             logger.error("Error occurs: " + e.getMessage());
         }
-        fillDataStatusRepository.updateType(Type.STOCK_DETAILS.toString());
+//        fillDataStatusRepository.updateType(Type.STOCK_DETAILS.toString());
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
@@ -159,7 +143,7 @@ public class FillDataBaseWithDataService {
         } catch (InterruptedException e) {
             logger.error("Error occurs: " + e.getMessage());
         }
-        fillDataStatusRepository.updateType(Type.STOCK_DETAILS_FIVE_MINUTES.toString());
+//        fillDataStatusRepository.updateType(Type.STOCK_DETAILS_FIVE_MINUTES.toString());
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 

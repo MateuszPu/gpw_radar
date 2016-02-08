@@ -16,13 +16,10 @@ public class WebsocketSecurityConfiguration extends AbstractSecurityWebSocketMes
             // matches any destination that starts with /rooms/
             .simpDestMatchers("/webchat/**").authenticated()
             .simpDestMatchers("/websocket/**").authenticated()
-            .simpDestMatchers("/most/active/**").authenticated()
+            .simpDestMatchers("/most/active/**").authenticated();
             // (i.e. cannot send messages directly to /topic/, /queue/)
             // (i.e. cannot subscribe to /topic/messages/* to get messages sent to
             // /topic/messages-user<id>)
-            .simpTypeMatchers(SimpMessageType.MESSAGE, SimpMessageType.SUBSCRIBE).denyAll()
-            // catch all
-            .anyMessage().denyAll();
     }
 
     /**

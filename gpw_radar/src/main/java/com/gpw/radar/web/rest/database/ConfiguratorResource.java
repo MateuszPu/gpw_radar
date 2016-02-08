@@ -54,7 +54,18 @@ public class ConfiguratorResource {
 
 	@RequestMapping(value = "fill/database", method = RequestMethod.GET)
 	public ResponseEntity<Void> fillDatabaseWithData(@RequestParam Type type) {
-		return fillDataBaseWithDataService.fillDatabaseWithData(type);
+        switch (type) {
+            case STOCK:
+                return fillDataBaseWithDataService.fillDataBaseWithStocks();
+            case STOCK_DETAILS:
+                return fillDataBaseWithDataService.fillDataBaseWithStockDetails();
+            case STOCK_DETAILS_FIVE_MINUTES:
+                return fillDataBaseWithDataService.fillDataBaseWithStockFiveMinutesDetails();
+            case STOCK_FINANCE_EVENTS:
+                return fillDataBaseWithDataService.fillDataBaseWithStockFinanceEvent();
+            default:
+                return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
 	}
 
 	@RequestMapping(value = "get/step/of/fill", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

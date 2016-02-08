@@ -60,6 +60,12 @@
         <sonar.sources>${project.basedir}/src/main/</sonar.sources>
         <sonar.surefire.reportsPath>${project.testresult.directory}/surefire-reports</sonar.surefire.reportsPath>
         <sonar.tests>${project.basedir}/src/test/</sonar.tests>
+
+
+        <jsoup.version>1.8.3</jsoup.version>
+        <commons.math3.version>3.5</commons.math3.version>
+        <rometools.version>1.5.0</rometools.version>
+        <technical.analysis.indicators.version>1.0-SNAPSHOT</technical.analysis.indicators.version>
     </properties>
 
     <dependencies>
@@ -375,23 +381,23 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.8.3</version>
+            <version>${jsoup.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>
-            <version>3.5</version>
+            <version>${commons.math3.version}</version>
         </dependency>
         <dependency>
             <groupId>com.rometools</groupId>
             <artifactId>rome-fetcher</artifactId>
-            <version>1.5.0</version>
+            <version>${rometools.version}</version>
         </dependency>
         <!-- technical indicators dependency -->
         <dependency>
             <groupId>technical.analysis.indicators</groupId>
             <artifactId>technical_analysis_indicators</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${technical.analysis.indicators.version}</version>
         </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>
@@ -606,10 +612,10 @@
                     <changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
                     <diffChangeLogFile>src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
                     <driver>org.postgresql.Driver</driver>
-                    <url>jdbc:postgresql://localhost:5432/gpwRadar</url>
+                    <url>jdbc:postgresql://localhost:5432/gpw_radar</url>
                     <defaultSchemaName></defaultSchemaName>
-                    <username>gpwRadar</username>
-                    <password></password>
+                    <username>postgres</username>
+                    <password>postgres</password>
                     <referenceUrl>hibernate:spring:com.gpw.radar.domain?dialect=org.hibernate.dialect.PostgreSQL82Dialect</referenceUrl>
                     <verbose>true</verbose>
                     <logging>debug</logging>
