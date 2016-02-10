@@ -1,13 +1,9 @@
 package com.gpw.radar.service.stock;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gpw.radar.domain.User;
 import com.gpw.radar.domain.enumeration.TrendDirection;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockIndicators;
-import com.gpw.radar.jackson.View;
 import com.gpw.radar.repository.UserRepository;
 import com.gpw.radar.repository.stock.StockIndicatorsRepository;
 import com.gpw.radar.repository.stock.StockRepository;
@@ -25,7 +21,6 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.net.URISyntaxException;
-import java.time.LocalDate;
 import java.util.List;
 
 @Service

@@ -54,16 +54,22 @@ public class StockwatchParserServiceTest {
     private void initDocs() {
         String stockFinanceEventPath_1 = "/stocks_data/stock_finance_event/exampleOfStockFinanceEvent_1.html";
         String stockFinanceEventPath_2 = "/stocks_data/stock_finance_event/exampleOfStockFinanceEvent_2.html";
-        InputStream inputStreamOfstockFinanceEventPath_1 = getClass().getResourceAsStream(stockFinanceEventPath_1);
-        InputStream inputStreamOfstockFinanceEventPath_2 = getClass().getResourceAsStream(stockFinanceEventPath_2);
-        try {
-            Document doc_1 = Jsoup.parse(inputStreamOfstockFinanceEventPath_1, null, "uri cannot be null");
-            Document doc_2 = Jsoup.parse(inputStreamOfstockFinanceEventPath_2, null, "uri cannot be null");
+
+        try (InputStream inputStreamOfStockFinanceEventPath_1 = getClass().getResourceAsStream(stockFinanceEventPath_1)) {
+            Document doc_1 = Jsoup.parse(inputStreamOfStockFinanceEventPath_1, null, "uri cannot be null");
             documents.add(doc_1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (InputStream inputStreamOfStockFinanceEventPath_2 = getClass().getResourceAsStream(stockFinanceEventPath_2)) {
+            Document doc_2 = Jsoup.parse(inputStreamOfStockFinanceEventPath_2, null, "uri cannot be null");
             documents.add(doc_2);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
     }
 
     @Test

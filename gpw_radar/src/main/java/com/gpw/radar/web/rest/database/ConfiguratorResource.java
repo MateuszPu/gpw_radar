@@ -10,10 +10,8 @@ import com.gpw.radar.service.database.FillDataBaseWithDataService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -52,9 +50,10 @@ public class ConfiguratorResource {
 		return configuratorService.getFillDataStatus();
 	}
 
-	@RequestMapping(value = "fill/database", method = RequestMethod.GET)
-	public ResponseEntity<Void> fillDatabaseWithData(@RequestParam Type type) {
-        switch (type) {
+	@RequestMapping(value = "fill/database", method = RequestMethod.POST)
+    @Transactional
+	public ResponseEntity<Void> fillDatabaseWithData(@RequestBody String type) {
+        switch (Type.valueOf(type)) {
             case STOCK:
                 return fillDataBaseWithDataService.fillDataBaseWithStocks();
             case STOCK_DETAILS:

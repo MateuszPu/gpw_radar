@@ -60,10 +60,10 @@ public class RssParserService implements RssObservable {
     }
 
     @Override
-    @Scheduled(cron = "*/5 * 8-17 * * MON-FRI")
-    @Scheduled(cron = "0 */5 18-23 * * MON-FRI")
-    @Scheduled(cron = "0 */30 0-7 * * MON-FRI")
-    @Scheduled(cron = "0 */30 * * * SAT,SUN")
+//    @Scheduled(cron = "*/5 * 8-17 * * MON-FRI")
+//    @Scheduled(cron = "0 */5 18-23 * * MON-FRI")
+//    @Scheduled(cron = "0 */30 0-7 * * MON-FRI")
+//    @Scheduled(cron = "0 */30 * * * SAT,SUN")
     public void fireCron() {
         parsedRssNewsMessage = new ArrayList<>();
         if (isNewRssMessagePresented()) {

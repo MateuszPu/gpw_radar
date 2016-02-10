@@ -9,10 +9,14 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
+import com.google.common.base.Stopwatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.data.jpa.repository.JpaContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -78,7 +82,6 @@ public class FillDataBaseWithDataService {
     }
 
     //TODO: refactor sending step as socket to application
-    @Transactional
     public ResponseEntity<Void> fillDataBaseWithStocks() {
         for (StockTicker element : StockTicker.values()) {
             Stock stock = new Stock();
@@ -86,11 +89,10 @@ public class FillDataBaseWithDataService {
             stock = stockParser.setNameAndShortName(stock);
             stockRepository.save(stock);
         }
-//        fillDataStatusRepository.updateType(Type.STOCK.toString());
+        fillDataStatusRepository.updateType(Type.STOCK.toString());
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    @Transactional
     public ResponseEntity<Void> fillDataBaseWithStockDetails() {
         step = 0;
         EnumSet<StockTicker> tickers = EnumSet.allOf(StockTicker.class);
@@ -103,7 +105,6 @@ public class FillDataBaseWithDataService {
                 InputStream st = classLoader.getResourceAsStream(filePath);
                 List<StockDetails> stockDetails = stockDetailsParser.parseStockDetails(stock, st);
                 stockDetailsRepository.save(stockDetails);
-                increaseStep();
             });
         }
 
@@ -113,11 +114,10 @@ public class FillDataBaseWithDataService {
         } catch (InterruptedException e) {
             logger.error("Error occurs: " + e.getMessage());
         }
-//        fillDataStatusRepository.updateType(Type.STOCK_DETAILS.toString());
+        fillDataStatusRepository.updateType(Type.STOCK_DETAILS.toString());
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    @Transactional
     public ResponseEntity<Void> fillDataBaseWithStockFiveMinutesDetails() {
         step = 0;
         EnumSet<StockTicker> tickers = EnumSet.allOf(StockTicker.class);
@@ -143,15 +143,14 @@ public class FillDataBaseWithDataService {
         } catch (InterruptedException e) {
             logger.error("Error occurs: " + e.getMessage());
         }
-//        fillDataStatusRepository.updateType(Type.STOCK_DETAILS_FIVE_MINUTES.toString());
+        fillDataStatusRepository.updateType(Type.STOCK_DETAILS_FIVE_MINUTES.toString());
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
-    @Transactional
     public ResponseEntity<Void> fillDataBaseWithStockFinanceEvent() {
         List<StockFinanceEvent> stockFinanceEventFromWeb = stockFinanceEventParser.getStockFinanceEventFromWeb();
         stockFinanceEventRepository.save(stockFinanceEventFromWeb);
-//        fillDataStatusRepository.updateType(Type.STOCK_FINANCE_EVENTS.toString());
+        fillDataStatusRepository.updateType(Type.STOCK_FINANCE_EVENTS.toString());
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 

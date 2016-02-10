@@ -66,8 +66,7 @@ public class DateAndTimeParserService {
         LocalDate date = null;
         BufferedReader bufferedReader = null;
         String url = "http://stooq.pl/q/l/?s=wig20&f=sd2t2ohlcv&h&e=csv";
-        try {
-            InputStreamReader inputStreamReader = currentStockDetailsParserService.getInputStreamReaderFromUrl(url);
+        try (InputStreamReader inputStreamReader = currentStockDetailsParserService.getInputStreamReaderFromUrl(url)){
             bufferedReader = new BufferedReader(inputStreamReader);
             // skip first line as there are a headers
             bufferedReader.readLine();
@@ -76,12 +75,6 @@ public class DateAndTimeParserService {
             date = parseLocalDateFromString(stockDetailsFromCsv[1]);
         } catch (IOException e) {
             logger.error("Error occurs: " + e.getMessage());
-        } finally {
-            try {
-                bufferedReader.close();
-            } catch (IOException e) {
-                logger.error("Error occurs: " + e.getMessage());
-            }
         }
         return date;
     }

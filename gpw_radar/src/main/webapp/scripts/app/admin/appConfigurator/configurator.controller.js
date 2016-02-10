@@ -1,5 +1,5 @@
 angular.module('gpwRadarApp')
-	.controller('ConfiguratorController', function ($scope, $filter, $timeout, Websocket, AppConfigurator, StatusConfigurator, Stock) {
+	.controller('ConfiguratorController', function ($scope, $filter, $http, $timeout, Websocket, AppConfigurator, Stock) {
 
 
 		//Method of stock details parser
@@ -40,30 +40,10 @@ angular.module('gpwRadarApp')
     		return $filter('getByType')($scope.fillDataStatus, name);
     	};
 
-
     	$scope.fillDatabase = function(name) {
-    		//$scope.getFillStep();
     		$scope.typeName = name;
-    		AppConfigurator.fillDatabaseWithData({type: name}, function(response) {
-    			$scope.updatingDB = false;
-    			//$scope.getFillDataStatus();
-    		});
+            AppConfigurator.fillDatabaseWithData($scope.typeName);
     	};
-
-    	$scope.getFillStep = function() {
-    		$scope.updatingDB = true;
-    	    (function tick() {
-    	    	StatusConfigurator.getStep().then(function(response){
-	    			  $scope.timeInMiliSeconds = 1000;
-		              $scope.promiseTimeout = $timeout(tick, $scope.timeInMiliSeconds);
-		              $scope.step = response;
-
-		              if(!$scope.updatingDB) {
-		                  $timeout.cancel($scope.promiseTimeout);
-		              }
-    	    	});
-    	    })();
-    	}
 	});
 
 angular.module('gpwRadarApp').filter('getByType', function() {

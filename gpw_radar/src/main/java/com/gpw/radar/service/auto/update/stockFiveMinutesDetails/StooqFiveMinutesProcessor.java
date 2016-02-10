@@ -81,12 +81,14 @@ public class StooqFiveMinutesProcessor implements StockFiveMinutesDetailsProcess
     private Optional<StockFiveMinutesDetails> mapToStockFiveMinutesDetails(String line) {
         String[] splitLine = line.split(",");
         StockFiveMinutesDetails stockFiveMinutesDetails = new StockFiveMinutesDetails();
+
         try {
             StockTicker ticker = StockTicker.valueOf(splitLine[0].toLowerCase());
             stockFiveMinutesDetails.setStockTicker(ticker);
         } catch (IllegalArgumentException e) {
             return Optional.empty();
         }
+
         LocalTime eventTime = dateAndTimeParserService.parseLocalTimeFromString(splitLine[3]);
         LocalDate eventDate = dateAndTimeParserService.parseLocalDateFromString(splitLine[2]);
         stockFiveMinutesDetails.setTime(eventTime);

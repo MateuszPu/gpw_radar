@@ -47,15 +47,13 @@ public class StooqParser implements StockDetailsParser {
 
         for (StockTicker element : StockTicker.values()) {
             Stock stock = stockRepository.findByTicker(element);
-
             String line = "";
 
             String url = ("http://stooq.pl/q/l/?s=" + stock.getTicker() + "&f=sd2t2ohlcv&h&e=csv");
             InputStreamReader inputStreamReader = currentStockDetailsParserService.getInputStreamReaderFromUrl(url);
-            BufferedReader in = new BufferedReader(inputStreamReader);
 
             // skip headers
-            try {
+            try (BufferedReader in = new BufferedReader(inputStreamReader)) {
                 in.readLine();
                 line = in.readLine();
             } catch (IOException e) {

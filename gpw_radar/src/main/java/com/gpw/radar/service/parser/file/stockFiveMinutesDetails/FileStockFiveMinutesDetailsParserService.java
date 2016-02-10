@@ -33,15 +33,13 @@ public class FileStockFiveMinutesDetailsParserService implements StockFiveMinute
 
     public List<StockFiveMinutesDetails> parseStockFiveMinutesDetails(Stock stock, InputStream st) {
         List<StockFiveMinutesDetails> stockFiveMinutesDetailsList = new ArrayList<>();
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(st));
-        stockFiveMinutesDetailsList = bufferedReader.lines().map(mapToStockFiveMinutesDetails).collect(Collectors.toList());
-        stockFiveMinutesDetailsList.forEach(stockFiveMinutesDetails -> stockFiveMinutesDetails.setStock(stock));
-
-        try {
-            bufferedReader.close();
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(st))) {
+            stockFiveMinutesDetailsList = bufferedReader.lines().map(mapToStockFiveMinutesDetails).collect(Collectors.toList());
+            stockFiveMinutesDetailsList.forEach(stockFiveMinutesDetails -> stockFiveMinutesDetails.setStock(stock));
         } catch (IOException e) {
             logger.error("Error occurs: " + e.getMessage());
         }
+
         return stockFiveMinutesDetailsList;
     }
 
