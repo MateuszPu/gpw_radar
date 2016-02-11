@@ -32,7 +32,7 @@ public class FileStockDetailsParserService implements StockDetailsParser {
     public List<StockDetails> parseStockDetails(Stock stock, InputStream st) {
         List<StockDetails> stockDetailsList = new ArrayList<>();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(st));
-        stockDetailsList = bufferedReader.lines().map(mapToStockDetails).collect(Collectors.toList());
+        stockDetailsList = bufferedReader.lines().map(line -> mapToStockDetails(line)).collect(Collectors.toList());
         stockDetailsList.forEach(stockDetails -> stockDetails.setStock(stock));
         try {
             bufferedReader.close();
@@ -43,7 +43,7 @@ public class FileStockDetailsParserService implements StockDetailsParser {
         return stockDetailsList;
     }
 
-    public Function<String, StockDetails> mapToStockDetails = (line) -> {
+    public StockDetails mapToStockDetails (String line)  {
         String[] splitLine = line.split(",");
         StockDetails stockDetails = new StockDetails();
         stockDetails.setDate(dateAndTimeParserService.parseLocalDateFromString(splitLine[0]));
@@ -52,11 +52,13 @@ public class FileStockDetailsParserService implements StockDetailsParser {
         stockDetails.setMinPrice(new BigDecimal(splitLine[3]));
         stockDetails.setClosePrice(new BigDecimal(splitLine[4]));
 
-        try {
+        if(splitLine.length == 6) {
             stockDetails.setVolume(Long.valueOf(splitLine[5]));
-        } catch (ArrayIndexOutOfBoundsException exc) {
+        }
+        else {
             stockDetails.setVolume(0l);
         }
+
         return stockDetails;
-    };
+    }
 }

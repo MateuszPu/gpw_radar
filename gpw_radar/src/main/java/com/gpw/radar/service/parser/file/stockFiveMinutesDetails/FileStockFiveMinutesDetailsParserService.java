@@ -34,7 +34,7 @@ public class FileStockFiveMinutesDetailsParserService implements StockFiveMinute
     public List<StockFiveMinutesDetails> parseStockFiveMinutesDetails(Stock stock, InputStream st) {
         List<StockFiveMinutesDetails> stockFiveMinutesDetailsList = new ArrayList<>();
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(st))) {
-            stockFiveMinutesDetailsList = bufferedReader.lines().map(mapToStockFiveMinutesDetails).collect(Collectors.toList());
+            stockFiveMinutesDetailsList = bufferedReader.lines().map(line -> mapToStockFiveMinutesDetails(line)).collect(Collectors.toList());
             stockFiveMinutesDetailsList.forEach(stockFiveMinutesDetails -> stockFiveMinutesDetails.setStock(stock));
         } catch (IOException e) {
             logger.error("Error occurs: " + e.getMessage());
@@ -43,7 +43,7 @@ public class FileStockFiveMinutesDetailsParserService implements StockFiveMinute
         return stockFiveMinutesDetailsList;
     }
 
-    public Function<String, StockFiveMinutesDetails> mapToStockFiveMinutesDetails = (line) -> {
+    public StockFiveMinutesDetails mapToStockFiveMinutesDetails(String line) {
         String[] splitLine = line.split(",");
         StockFiveMinutesDetails stockFiveMinutesDetails = new StockFiveMinutesDetails();
         LocalDate dateDetail = dateAndTimeParserService.parseLocalDateFromString(splitLine[0]);
@@ -52,13 +52,14 @@ public class FileStockFiveMinutesDetailsParserService implements StockFiveMinute
         stockFiveMinutesDetails.setTime(timeDetail);
         stockFiveMinutesDetails.setCumulatedVolume(0l);
 
-        try {
+        if (splitLine.length == 6) {
             stockFiveMinutesDetails.setVolume(Long.valueOf(splitLine[6]));
-        } catch (ArrayIndexOutOfBoundsException exc) {
+        } else {
             stockFiveMinutesDetails.setVolume(0l);
         }
+
         return stockFiveMinutesDetails;
-    };
+    }
 
     //TODO: refactor this method
     public List<StockFiveMinutesDetails> fillEmptyTimeAndCumulativeVolume(List<StockFiveMinutesDetails> stockFiveMinutesDetailsList) {
