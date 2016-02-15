@@ -1,9 +1,11 @@
 package com.gpw.radar.service.auto.update.stockFiveMinutesDetails;
 
+import com.gpw.radar.config.Constants;
 import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
 import com.gpw.radar.repository.stock.StockFiveMinutesDetailsRepository;
 import com.gpw.radar.service.sockets.SocketMessageHandler;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Service
+@Profile(Constants.SPRING_PROFILE_PRODUCTION)
 public class UpdateStockFiveMinutesDetailsData {
 
     @Inject

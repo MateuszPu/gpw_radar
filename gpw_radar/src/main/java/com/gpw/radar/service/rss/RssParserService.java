@@ -1,5 +1,6 @@
 package com.gpw.radar.service.rss;
 
+import com.gpw.radar.config.Constants;
 import com.gpw.radar.domain.enumeration.RssType;
 import com.gpw.radar.domain.rss.NewsMessage;
 import com.gpw.radar.domain.stock.Stock;
@@ -15,6 +16,7 @@ import com.rometools.rome.io.FeedException;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
+@Profile(Constants.SPRING_PROFILE_PRODUCTION)
 public class RssParserService implements RssObservable {
 
     private final Logger logger = LoggerFactory.getLogger(RssParserService.class);
