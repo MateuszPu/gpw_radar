@@ -19,8 +19,7 @@ public class NewsMessageService {
 	@Inject
 	NewsMessageRepository newsMessageRepository;
 
-	public ResponseEntity<List<NewsMessage>> getLatestNewsMessageByType(RssType type) {
-		Pageable page = new PageRequest(0, 5, Direction.DESC, "createdDate");
+	public ResponseEntity<List<NewsMessage>> getLatestNewsMessageByType(RssType type, Pageable page) {
 		List<NewsMessage> latestNewsMessage = newsMessageRepository.findByType(type, page).getContent();
 		return new ResponseEntity<List<NewsMessage>>(latestNewsMessage, HttpStatus.OK);
 	}

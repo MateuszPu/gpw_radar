@@ -3,6 +3,9 @@ package com.gpw.radar.web.rest.rss;
 import com.gpw.radar.domain.enumeration.RssType;
 import com.gpw.radar.domain.rss.NewsMessage;
 import com.gpw.radar.service.rss.NewsMessageService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +23,10 @@ public class NewsMessageResource {
 	@Inject
 	private NewsMessageService newsMessageService;
 
-	@RequestMapping(value = "/get/latest/by/type", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<NewsMessage>> getTop10NewsMessageByType(@RequestParam RssType type) {
-		return newsMessageService.getLatestNewsMessageByType(type);
+	@RequestMapping(value = "/latest", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<NewsMessage>> getNewsMessageByType(@RequestParam RssType type, @RequestParam int page, @RequestParam  int size) {
+        Pageable pageable = new PageRequest(page, size, Sort.Direction.DESC, "createdDate");
+		return newsMessageService.getLatestNewsMessageByType(type, pageable);
 	}
 
 }

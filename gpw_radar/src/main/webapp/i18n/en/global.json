@@ -23,6 +23,17 @@
             },
             "activeStocks": {
                 "title": "Most active stocks"
+            },
+            "news": {
+                "title": "News",
+                "type": {
+                    "espi": "ESPI",
+                    "ebi": "EBI",
+                    "results": "Results",
+                    "pap": "PAP",
+                    "challenge": "Challenge",
+                    "recommendations": "Recommendations"
+                }
             }
         },
         "menu": {

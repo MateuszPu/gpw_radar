@@ -23,6 +23,17 @@
             },
             "activeStocks": {
                 "title": "Najbardziej aktywne spółki"
+            },
+            "news": {
+                "title": "Wiadomości",
+                "type": {
+                    "espi": "ESPI",
+                    "ebi": "EBI",
+                    "results": "Wyniki",
+                    "pap": "PAP",
+                    "challenge": "Wezwania",
+                    "recommendations": "Rekomendacje"
+                }
             }
         },
         "menu": {

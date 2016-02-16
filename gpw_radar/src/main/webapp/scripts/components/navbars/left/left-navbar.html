@@ -44,23 +44,50 @@
                 	</li>
                 </ul>
             </li>
+            <li ui-sref-active="administrationPanel">
+                <a ui-sref="administrationPanel">
+                    <i class="fa fa-briefcase"></i>
+                    <span translate="global.menu.account.administrationPanel"> Administration Panel</span>
+                </a>
+            </li>
+            <li ui-sref-active="stockslist">
+                <a ui-sref="stockslist">
+                    <i class="fa fa-database"></i>
+                    <span translate="global.leftsidemenu.stockList.title"> Stocks List</span>
+                </a>
+            </li>
             <li ui-sref-active="mostActiveStocks">
                 <a ui-sref="mostActiveStocks">
                     <i class="fa fa-rocket"></i>
                     <span translate="global.leftsidemenu.activeStocks.title"> Most active stocks</span>
                 </a>
             </li>
-            <li ui-sref-active="administrationPanel">
-                <a ui-sref="administrationPanel">
-	                <i class="fa fa-briefcase"></i>
-	                <span translate="global.menu.account.administrationPanel"> Administration Panel</span>
+            <li ui-sref-active="">
+                <a>
+                    <i class="fa fa-commenting"></i>
+                    <span translate="global.leftsidemenu.news.title"> News</span>
+                    <span class="fa arrow"></span>
                 </a>
-            </li>
-            <li ui-sref-active="stockslist">
-                <a ui-sref="stockslist">
-                	<i class="fa fa-database"></i>
-                	<span translate="global.leftsidemenu.stockList.title"> Stocks List</span>
-                </a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a ui-sref="espi"><i class="fa fa-rss-square"></i><span translate="global.leftsidemenu.news.type.espi">ESPI</span></a>
+                    </li>
+                    <li>
+                        <a ui-sref="ebi"><i class="fa fa-rss"></i><span translate="global.leftsidemenu.news.type.ebi">EBI</span></a>
+                    </li>
+                    <li>
+                        <a ui-sref="results"><i class="fa fa-pie-chart"></i><span translate="global.leftsidemenu.news.type.results">Results</span></a>
+                    </li>
+                    <li>
+                        <a ui-sref="challenge"><i class="fa fa-bullhorn"></i><span translate="global.leftsidemenu.news.type.challenge">Challenge</span></a>
+                    </li>
+                    <li>
+                        <a ui-sref="recommendations"><i class="fa fa-thumbs-o-up"></i><span translate="global.leftsidemenu.news.type.recommendations">Recommendations</span></a>
+                    </li>
+                    <li>
+                        <a ui-sref="pap"><i class="fa fa-info-circle"></i><span translate="global.leftsidemenu.news.type.pap">PAP</span></a>
+                    </li>
+                </ul>
             </li>
             <li>
                 <a>
