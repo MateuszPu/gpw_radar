@@ -1,9 +1,18 @@
 angular.module('gpwRadarApp')
     .controller('RecommendationsController', function ($scope, NewsMessage) {
 
-        $scope.endDate = new Date();
-        $scope.startDate = new Date($scope.endDate.getUTCFullYear(), $scope.endDate.getUTCMonth()-1, $scope.endDate.getUTCDate());
+        $scope.endDate = moment();
+        $scope.startDate = moment().subtract(30, "days"),
 
-        $scope.datePicker = {startDate: $scope.startDate, endDate: $scope.endDate};
+        $scope.datePicker = {
+            startDate: $scope.startDate,
+            endDate: $scope.endDate
+        };
 
+        $scope.opts = {
+            ranges: {
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(30, 'days'), moment()]
+            }
+        };
     });
