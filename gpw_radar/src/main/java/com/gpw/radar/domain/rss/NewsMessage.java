@@ -18,7 +18,6 @@ public class NewsMessage extends ChatMessage {
 	@NotNull
 	@Size(min = 1, max = 1000)
 	@Column(length = 1000, nullable = false)
-	@JsonIgnore
 	private String message;
 
 	@ManyToOne
@@ -27,7 +26,6 @@ public class NewsMessage extends ChatMessage {
 	private Stock stock;
 
 	@NotNull
-	@JsonIgnore
 	private String link;
 
 	@NotNull

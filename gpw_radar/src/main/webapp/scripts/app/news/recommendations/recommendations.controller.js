@@ -2,17 +2,16 @@ angular.module('gpwRadarApp')
     .controller('RecommendationsController', function ($scope, NewsMessage) {
 
         $scope.endDate = moment();
-        $scope.startDate = moment().subtract(30, "days"),
+        $scope.startDate = moment().subtract(30, "days");
 
-        $scope.datePicker = {
-            startDate: $scope.startDate,
-            endDate: $scope.endDate
-        };
+        $scope.$watch('startDate', function(newVal, oldVal){
+            $scope.smartTableSafeCopy = NewsMessage.getLatestMessagesDateRange({type: 'RECOMMENDATIONS', startDate: $scope.startDate, endDate: $scope.endDate});
+            $scope.messages = [].concat($scope.smartTableSafeCopy);
+        }, true);
 
-        $scope.opts = {
-            ranges: {
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(30, 'days'), moment()]
-            }
-        };
+        $scope.$watch('endDate', function(newVal, oldVal){
+            $scope.smartTableSafeCopy = NewsMessage.getLatestMessagesDateRange({type: 'RECOMMENDATIONS', startDate: $scope.startDate, endDate: $scope.endDate});
+            $scope.messages = [].concat($scope.smartTableSafeCopy);
+        }, true);
+
     });

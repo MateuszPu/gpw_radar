@@ -11,16 +11,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class NewsMessageService {
 
 	@Inject
-	NewsMessageRepository newsMessageRepository;
+	private NewsMessageRepository newsMessageRepository;
 
 	public ResponseEntity<List<NewsMessage>> getLatestNewsMessageByType(RssType type, Pageable page) {
 		List<NewsMessage> latestNewsMessage = newsMessageRepository.findByType(type, page).getContent();
-		return new ResponseEntity<List<NewsMessage>>(latestNewsMessage, HttpStatus.OK);
+        return new ResponseEntity<List<NewsMessage>>(latestNewsMessage, HttpStatus.OK);
 	}
+
+    public ResponseEntity<List<NewsMessage>> getMessagesByTypeBetweenDates(RssType type, ZonedDateTime startDate, ZonedDateTime endDate) {
+        if(startDate.isAfter(endDate)) {
+            return new ResponseEntity<List<NewsMessage>>(new ArrayList<NewsMessage>(), HttpStatus.BAD_REQUEST);
+        }
+        List<NewsMessage> latestNewsMessage = newsMessageRepository.findByTypeAndCreatedDateAfterAndCreatedDateBefore(type, startDate, endDate);
+        return new ResponseEntity<List<NewsMessage>>(latestNewsMessage, HttpStatus.OK);
+    }
 }
