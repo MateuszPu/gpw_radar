@@ -1,6 +1,12 @@
 {
     "news": {
         "title": "News",
+        "details": "Details",
+        "link": "Link",
+        "itemNumber": "No.",
+        "message": "Message",
+        "date": "Date",
+        "search": "Search...",
         "type": {
         	"results": "Results",
         	"ebi": "EBI",

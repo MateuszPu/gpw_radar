@@ -1,6 +1,12 @@
 {
     "news": {
         "title": "Wiadomości",
+        "details": "Szczegóły",
+        "link": "Link",
+        "itemNumber": "Lp.",
+        "message": "Wiadomość",
+        "date": "Data",
+        "search": "Szukaj...",
         "type": {
         	"results": "Wyniki",
         	"ebi": "EBI",
