@@ -8,7 +8,6 @@ angular.module('gpwRadarApp')
                 perPage: '='
             },
             compile: function(element, attrs){
-                console.log(attrs);
                 if (!attrs.perPage) { attrs.perPage = '8'; }
             },
             restrict: 'E',

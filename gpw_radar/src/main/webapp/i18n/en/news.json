@@ -7,6 +7,7 @@
         "message": "Message",
         "date": "Date",
         "search": "Search...",
+        "noData": "No data for selected date range",
         "type": {
         	"results": "Results",
         	"ebi": "EBI",

@@ -20,7 +20,7 @@ public class NewsMessage extends ChatMessage {
 	@Column(length = 1000, nullable = false)
 	private String message;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "stock_id", foreignKey = @ForeignKey(name = "FK_stock"))
 	@JsonIgnore
 	private Stock stock;
