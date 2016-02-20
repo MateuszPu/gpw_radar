@@ -28,7 +28,7 @@ public class NewsMessageService {
 
     public ResponseEntity<List<NewsMessage>> getMessagesByTypeBetweenDates(RssType type, ZonedDateTime startDate, ZonedDateTime endDate) {
         if(startDate.isAfter(endDate)) {
-            return new ResponseEntity<List<NewsMessage>>(new ArrayList<NewsMessage>(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<List<NewsMessage>>(HttpStatus.BAD_REQUEST);
         }
         List<NewsMessage> latestNewsMessage = newsMessageRepository.findByTypeAndCreatedDateAfterAndCreatedDateBefore(type, startDate, endDate);
         return new ResponseEntity<List<NewsMessage>>(latestNewsMessage, HttpStatus.OK);
