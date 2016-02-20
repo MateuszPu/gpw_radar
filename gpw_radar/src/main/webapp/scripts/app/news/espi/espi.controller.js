@@ -1,9 +1,17 @@
 angular.module('gpwRadarApp')
     .controller('EspiController', function ($scope, NewsMessage) {
 
-        $scope.endDate = new Date();
-        $scope.startDate = new Date($scope.endDate.getUTCFullYear(), $scope.endDate.getUTCMonth()-1, $scope.endDate.getUTCDate());
+        $scope.endDate = moment();
+        $scope.startDate = moment().subtract(30, "days");
 
-        $scope.datePicker = {startDate: $scope.startDate, endDate: $scope.endDate};
+        $scope.$watch('startDate', function(newVal, oldVal){
+            $scope.smartTableSafeCopy = NewsMessage.getLatestMessagesDateRange({type: 'ESPI', startDate: $scope.startDate, endDate: $scope.endDate});
+            $scope.messages = [].concat($scope.smartTableSafeCopy);
+        }, true);
+
+        $scope.$watch('endDate', function(newVal, oldVal){
+            $scope.smartTableSafeCopy = NewsMessage.getLatestMessagesDateRange({type: 'ESPI', startDate: $scope.startDate, endDate: $scope.endDate});
+            $scope.messages = [].concat($scope.smartTableSafeCopy);
+        }, true);
 
     });

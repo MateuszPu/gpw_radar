@@ -4,7 +4,6 @@ angular.module('gpwRadarApp')
 	        scope: {
 	        	translatePath: '@',
 	        	translateValuesPath: '@',
-	        	dupa: '@'
 	        },
 	        restrict: 'E',
 	        templateUrl: 'scripts/components/directives/breadcrumbs/breadcrumbs-translate-values-template.html'
