@@ -2,6 +2,7 @@ package com.gpw.radar.web.rest.rss;
 
 import com.gpw.radar.domain.enumeration.RssType;
 import com.gpw.radar.domain.rss.NewsMessage;
+import com.gpw.radar.security.AuthoritiesConstants;
 import com.gpw.radar.service.rss.NewsMessageService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,12 +14,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import java.time.ZonedDateTime;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/news/message")
+@RolesAllowed(AuthoritiesConstants.USER)
 public class NewsMessageResource {
 
 	@Inject
