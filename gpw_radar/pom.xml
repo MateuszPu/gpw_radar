@@ -66,6 +66,7 @@
         <commons.math3.version>3.5</commons.math3.version>
         <rometools.version>1.5.0</rometools.version>
         <technical.analysis.indicators.version>1.0-SNAPSHOT</technical.analysis.indicators.version>
+        <modelmapper.version>0.7.5</modelmapper.version>
     </properties>
 
     <dependencies>
@@ -398,6 +399,12 @@
             <groupId>technical.analysis.indicators</groupId>
             <artifactId>technical_analysis_indicators</artifactId>
             <version>${technical.analysis.indicators.version}</version>
+        </dependency>
+        <!-- dto -->
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>${modelmapper.version}</version>
         </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>

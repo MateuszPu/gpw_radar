@@ -1,8 +1,5 @@
 package com.gpw.radar.domain.stock;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.gpw.radar.jackson.View;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -41,7 +38,6 @@ public class StockIndicators {
     private BigDecimal volumeRatio30;
 
     @Column(name = "percent_return", precision=10, scale=2, nullable = false)
-    @JsonView(View.StockIndicators.StockAndPercentReturn.class)
     private BigDecimal percentReturn;
 
     @Column(name = "volume_value_30_days", precision=25, scale=2)
@@ -49,7 +45,6 @@ public class StockIndicators {
 
     @OneToOne
     @JoinColumn(name="stock_id", foreignKey = @ForeignKey(name="FK_indicators_to_stock"))
-    @JsonView(View.StockIndicators.StockAndPercentReturn.class)
     private Stock stock;
 
 	public Long getId() {

@@ -2,10 +2,8 @@ package com.gpw.radar.domain.stock;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.gpw.radar.domain.User;
 import com.gpw.radar.domain.enumeration.StockTicker;
-import com.gpw.radar.jackson.View;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -24,21 +22,17 @@ public class Stock implements Serializable {
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "idGenerator")
     @TableGenerator(table = "hibernate_sequences_table", name = "idGenerator", pkColumnName = "pk",
         valueColumnName = "value", pkColumnValue = "stock")
-    @JsonView(View.StockIndicators.StockAndPercentReturn.class)
     private Long id;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "ticker", nullable = false)
-    @JsonView(View.StockIndicators.StockAndPercentReturn.class)
     private StockTicker ticker;
 
     @Column(name = "stock_name")
-    @JsonView(View.StockIndicators.StockAndPercentReturn.class)
     private String stockName;
 
     @Column(name = "stock_short_name")
-    @JsonView(View.StockIndicators.StockAndPercentReturn.class)
     private String stockShortName;
 
     @JsonIgnore

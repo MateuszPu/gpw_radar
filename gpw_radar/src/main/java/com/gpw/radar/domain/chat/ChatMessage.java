@@ -45,10 +45,6 @@ public abstract class ChatMessage {
 		this.user = user;
 	}
 
-	public String getUserLogin() {
-		return this.user.getLogin();
-	}
-
 	public ZonedDateTime getCreatedDate() {
 		return createdDate;
 	}
