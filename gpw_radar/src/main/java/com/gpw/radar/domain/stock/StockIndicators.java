@@ -43,7 +43,7 @@ public class StockIndicators {
     @Column(name = "volume_value_30_days", precision=25, scale=2)
     private BigDecimal volumeValue30Days;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="stock_id", foreignKey = @ForeignKey(name="FK_indicators_to_stock"))
     private Stock stock;
 

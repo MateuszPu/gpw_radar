@@ -5,6 +5,7 @@ import com.gpw.radar.domain.enumeration.TrendDirection;
 import com.gpw.radar.domain.stock.StockIndicators;
 import com.gpw.radar.security.AuthoritiesConstants;
 import com.gpw.radar.service.stock.StockService;
+import com.gpw.radar.web.rest.dto.stock.StockWithStockIndicatorsDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,7 +30,7 @@ public class StockResource {
 
 	@RequestMapping(value = "/stocks/get/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RolesAllowed(AuthoritiesConstants.USER)
-	public ResponseEntity<List<StockIndicators>> getAllWithOutPagination() throws URISyntaxException {
+	public ResponseEntity<List<StockWithStockIndicatorsDTO>> getAllWithOutPagination() throws URISyntaxException {
 		return stockService.getAllStocksFetchStockIndicators();
 	}
 
@@ -40,15 +41,15 @@ public class StockResource {
 		return stockService.getTrendingStocks(direction, days, offset, limit);
 	}
 
-	@RequestMapping(value = "/stock/follow/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/stock/follow", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RolesAllowed(AuthoritiesConstants.USER)
-	public ResponseEntity<Void> followStock(@PathVariable long id) throws URISyntaxException {
+	public ResponseEntity<Void> followStock(@RequestBody long id) throws URISyntaxException {
 		return stockService.followStock(id);
     }
 
-	@RequestMapping(value = "/stock/stop/follow/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/stock/stop/follow", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RolesAllowed(AuthoritiesConstants.USER)
-	public ResponseEntity<Void> stopFollowStock(@PathVariable long id) throws URISyntaxException {
+	public ResponseEntity<Void> stopFollowStock(@RequestBody long id) throws URISyntaxException {
 		return stockService.stopFollowStock(id);
 	}
 

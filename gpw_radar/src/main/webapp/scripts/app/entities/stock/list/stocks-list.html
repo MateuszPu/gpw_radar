@@ -9,13 +9,13 @@
                     </h1>
                 </div>
                 <div class="ibox-content">
-                    <table st-table="stocksIndicatorsWithStocks" st-safe-src="smartTableSafeCopy"
+                    <table st-table="stocksFetchIndicator" st-safe-src="smartTableSafeCopy"
                            class="table table-striped">
                         <thead>
                         <tr>
-                            <th st-sort="stock.ticker" st-sort-default="true" st-skip-natural="true" class="col-xs-2"><a href=""><span
+                            <th st-sort="stockTicker" st-sort-default="true" st-skip-natural="true" class="col-xs-2"><a href=""><span
                                 translate="stock.ticker">Ticker</span></a></th>
-                            <th st-sort="stock.stockName" class="col-xs-4"><a href=""><span
+                            <th st-sort="stockName" class="col-xs-4"><a href=""><span
                                 translate="stock.stockName">Name</span></a></th>
                             <th st-sort="percentReturn" class="col-xs-2"><a href=""><span
                                 translate="stock.change">Percent return</span></a></th>
@@ -29,24 +29,24 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="stockIndicators in stocksIndicatorsWithStocks">
-                            <td>{{stockIndicators.stock.ticker}}</td>
-                            <td>{{stockIndicators.stock.stockName}}</td>
-                            <td>{{stockIndicators.percentReturn | number:2}}%</td>
-                            <td>
-                                <a class="btn btn-primary" href="" ng-click="followStock(stockIndicators.stock.id)"
-                                   ng-hide="isFollowed(stockIndicators.stock.id)"><i class="fa fa-plus-square"></i></a>
-                                <a class="btn btn-danger" href="" ng-click="stopFollowStock(stockIndicators.stock.id)"
-                                   ng-show="isFollowed(stockIndicators.stock.id)"><i class="fa fa-minus-square"></i></a>
-                            </td>
-                            <td>
-                            	<a href="http://stooq.pl/q/a/?s={{stockIndicators.stock.ticker}}"
-                                   target="_blank" translate="stock.list.technical">A. technical</a> <br>
-                                <a href="http://www.stockwatch.pl/gpw/{{stockIndicators.stock.stockShortName}},komunikaty,wyniki.aspx"
-                                    target="_blank" translate="stock.list.fundamental">A. fundamental</a>
-                            </td>
+                            <tr ng-repeat="stock in stocksFetchIndicator">
+                                <td>{{stock.stockTicker}}</td>
+                                <td>{{stock.stockName}}</td>
+                                <td>{{stock.percentReturn | number:2}}%</td>
+                                <td>
+                                    <a class="btn btn-primary" href="" ng-click="followStock(stock.stockId)"
+                                       ng-hide="isFollowed(stock.stockId)"><i class="fa fa-plus-square"></i></a>
+                                    <a class="btn btn-danger" href="" ng-click="stopFollowStock(stock.stockId)"
+                                       ng-show="isFollowed(stock.stockId)"><i class="fa fa-minus-square"></i></a>
+                                </td>
+                                <td>
+                                    <a href="http://stooq.pl/q/a/?s={{stock.stockTicker}}"
+                                       target="_blank" translate="stock.list.technical">A. technical</a> <br>
+                                    <a href="http://www.stockwatch.pl/gpw/{{stock.stockShortName}},komunikaty,wyniki.aspx"
+                                        target="_blank" translate="stock.list.fundamental">A. fundamental</a>
+                                </td>
 
-                        </tr>
+                            </tr>
                         </tbody>
                         <tfoot>
                         <tr>

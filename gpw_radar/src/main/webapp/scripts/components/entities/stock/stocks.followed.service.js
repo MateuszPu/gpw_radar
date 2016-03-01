@@ -6,19 +6,19 @@ angular.module('gpwRadarApp').factory('StocksFollowed', function($http) {
 		    		});
 				 return promise;
 			 },
-			
+
 			 followStock: function(id) {
-		    	$http.get('api/stock/follow/'+id).success(function(response) {
+		    	$http.post('api/stock/follow/', id).success(function(response) {
 		    		return response;
 		    	});
 			 },
-			 
+
 			 stopFollowStock: function(id) {
-	    		$http.get('api/stock/stop/follow/'+id).success(function(response) {
+	    		$http.post('api/stock/stop/follow/', id).success(function(response) {
 	    			return response;
 	    		});
 			 }
-			  
+
 		  };
 		  return stocksFollowedByUser;
 	});
@@ -30,7 +30,7 @@ angular.module('gpwRadarApp').filter('getById', function() {
 				if (+input[i].id == +id) {
 					return input[i];
 				}
-			}	
+			}
 		return null;
 	}
 });

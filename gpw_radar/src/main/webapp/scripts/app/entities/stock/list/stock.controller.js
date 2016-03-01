@@ -1,12 +1,12 @@
 angular.module('gpwRadarApp')
     .controller('StockController', function ($scope, $filter, Stock, StocksFollowed) {
-        $scope.stocksIndicatorsWithStocks = [];
+        $scope.stocksFetchIndicator = [];
         $scope.stocksFollowedByUser = [];
 
     	$scope.getAllStocks = function(){
     		Stock.getAllFetchStockIndicators(function(result){
     			$scope.smartTableSafeCopy = result;
-    			$scope.stocksIndicatorsWithStocks = [].concat($scope.smartTableSafeCopy);
+    			$scope.stocksFetchIndicator = [].concat($scope.smartTableSafeCopy);
     			$scope.getStocksFollowedByUser();
     		});
     	};

@@ -8,7 +8,11 @@ import com.gpw.radar.repository.UserRepository;
 import com.gpw.radar.repository.stock.StockIndicatorsRepository;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.UserService;
+import com.gpw.radar.web.rest.dto.rssNews.NewsDetailsDTO;
+import com.gpw.radar.web.rest.dto.stock.StockWithStockIndicatorsDTO;
 import com.gpw.radar.web.rest.util.PaginationUtil;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -19,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import java.lang.reflect.Type;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -39,15 +44,20 @@ public class StockService {
 	@Inject
 	private UserRepository userRepository;
 
-	public ResponseEntity<List<Stock>> getAllWithPagination(int offset, int limit) throws URISyntaxException {
-		Page<Stock> page = stockRepository.findAll(PaginationUtil.generatePageRequest(offset, limit));
-		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/stocks", offset, limit);
-		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-	}
+//	public ResponseEntity<List<Stock>> getAllWithPagination(int offset, int limit) throws URISyntaxException {
+//		Page<Stock> page = stockRepository.findAll(PaginationUtil.generatePageRequest(offset, limit));
+//		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/stocks", offset, limit);
+//		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+//	}
 
-	public ResponseEntity<List<StockIndicators>> getAllStocksFetchStockIndicators() throws URISyntaxException {
+	public ResponseEntity<List<StockWithStockIndicatorsDTO>> getAllStocksFetchStockIndicators() throws URISyntaxException {
 		List<StockIndicators> stockIndicators = stockIndicatorsRepository.findAllStocksFetchStockIndicators();
-		return new ResponseEntity<List<StockIndicators>>(stockIndicators, HttpStatus.OK);
+
+        ModelMapper modelMapper = new ModelMapper();
+        Type dtoType = new TypeToken<List<StockWithStockIndicatorsDTO>>() {}.getType();
+        List<StockWithStockIndicatorsDTO> dto = modelMapper.map(stockIndicators, dtoType);
+
+		return new ResponseEntity<List<StockWithStockIndicatorsDTO>>(dto, HttpStatus.OK);
 	}
 
 	public ResponseEntity<Page<StockIndicators>> getTrendingStocks(TrendDirection trendDirection, int days, int offset, int limit) throws URISyntaxException {
