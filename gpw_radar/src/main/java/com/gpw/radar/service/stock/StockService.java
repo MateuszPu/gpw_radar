@@ -44,43 +44,31 @@ public class StockService {
 	@Inject
 	private UserRepository userRepository;
 
-//	public ResponseEntity<List<Stock>> getAllWithPagination(int offset, int limit) throws URISyntaxException {
-//		Page<Stock> page = stockRepository.findAll(PaginationUtil.generatePageRequest(offset, limit));
-//		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/stocks", offset, limit);
-//		return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-//	}
-
 	public ResponseEntity<List<StockWithStockIndicatorsDTO>> getAllStocksFetchStockIndicators() throws URISyntaxException {
 		List<StockIndicators> stockIndicators = stockIndicatorsRepository.findAllStocksFetchStockIndicators();
-
-        ModelMapper modelMapper = new ModelMapper();
-        Type dtoType = new TypeToken<List<StockWithStockIndicatorsDTO>>() {}.getType();
-        List<StockWithStockIndicatorsDTO> dto = modelMapper.map(stockIndicators, dtoType);
-
-		return new ResponseEntity<List<StockWithStockIndicatorsDTO>>(dto, HttpStatus.OK);
+		return new ResponseEntity<List<StockWithStockIndicatorsDTO>>(getStockWithStockIndicatorsDTOs(stockIndicators), HttpStatus.OK);
 	}
 
-	public ResponseEntity<Page<StockIndicators>> getTrendingStocks(TrendDirection trendDirection, int days, int offset, int limit) throws URISyntaxException {
-		String jsonResult = "";
+    public ResponseEntity<List<StockWithStockIndicatorsDTO>> getTrendingStocks(TrendDirection trendDirection, int days, int offset, int limit) throws URISyntaxException {
 		switch (trendDirection) {
 		case UP:
 			switch (days) {
 			case 10:
 				Page<StockIndicators> stockIn10DaysTrendUp = stockIndicatorsRepository.findWithStocksIndicators10DaysTrendUp(PaginationUtil.generatePageRequest(offset, limit));
 				HttpHeaders headers10DaysTrendUp = PaginationUtil.generatePaginationHttpHeaders(stockIn10DaysTrendUp, "/apis/tocks/trends/up/days", offset, limit);
-				return new ResponseEntity<Page<StockIndicators>>(stockIn10DaysTrendUp, headers10DaysTrendUp, HttpStatus.OK);
+				return new ResponseEntity<List<StockWithStockIndicatorsDTO>>(getStockWithStockIndicatorsDTOs(stockIn10DaysTrendUp.getContent()), headers10DaysTrendUp, HttpStatus.OK);
 			case 30:
 				Page<StockIndicators> stockIn30DaysTrendUp = stockIndicatorsRepository.findWithStocksIndicators30DaysTrendUp(PaginationUtil.generatePageRequest(offset, limit));
 				HttpHeaders headers30DaysTrendUp = PaginationUtil.generatePaginationHttpHeaders(stockIn30DaysTrendUp, "/apis/tocks/trends/up/days", offset, limit);
-				return new ResponseEntity<Page<StockIndicators>>(stockIn30DaysTrendUp, headers30DaysTrendUp, HttpStatus.OK);
+				return new ResponseEntity<List<StockWithStockIndicatorsDTO>>(getStockWithStockIndicatorsDTOs(stockIn30DaysTrendUp.getContent()), headers30DaysTrendUp, HttpStatus.OK);
 			case 60:
 				Page<StockIndicators> stockIn60DaysTrendUp = stockIndicatorsRepository.findWithStocksIndicators60DaysTrendUp(PaginationUtil.generatePageRequest(offset, limit));
 				HttpHeaders headers60DaysTrendUp = PaginationUtil.generatePaginationHttpHeaders(stockIn60DaysTrendUp, "/apis/tocks/trends/up/days", offset, limit);
-				return new ResponseEntity<Page<StockIndicators>>(stockIn60DaysTrendUp, headers60DaysTrendUp, HttpStatus.OK);
+				return new ResponseEntity<List<StockWithStockIndicatorsDTO>>(getStockWithStockIndicatorsDTOs(stockIn60DaysTrendUp.getContent()), headers60DaysTrendUp, HttpStatus.OK);
 			case 90:
 				Page<StockIndicators> stockIn90DaysTrendUp = stockIndicatorsRepository.findWithStocksIndicators90DaysTrendUp(PaginationUtil.generatePageRequest(offset, limit));
 				HttpHeaders headers90DaysTrendUp = PaginationUtil.generatePaginationHttpHeaders(stockIn90DaysTrendUp, "/apis/tocks/trends/up/days", offset, limit);
-				return new ResponseEntity<Page<StockIndicators>>(stockIn90DaysTrendUp, headers90DaysTrendUp, HttpStatus.OK);
+				return new ResponseEntity<List<StockWithStockIndicatorsDTO>>(getStockWithStockIndicatorsDTOs(stockIn90DaysTrendUp.getContent()), headers90DaysTrendUp, HttpStatus.OK);
 			default:
 				break;
 			}
@@ -89,23 +77,29 @@ public class StockService {
 			case 10:
 				Page<StockIndicators> stockIn10DaysTrendDown = stockIndicatorsRepository.findWithStocksIndicators10DaysTrendDown(PaginationUtil.generatePageRequest(offset, limit));
 				HttpHeaders headers10DaysTrendDown = PaginationUtil.generatePaginationHttpHeaders(stockIn10DaysTrendDown, "/apis/tocks/trends/down/days", offset, limit);
-				return new ResponseEntity<Page<StockIndicators>>(stockIn10DaysTrendDown, headers10DaysTrendDown, HttpStatus.OK);
+				return new ResponseEntity<List<StockWithStockIndicatorsDTO>>(getStockWithStockIndicatorsDTOs(stockIn10DaysTrendDown.getContent()), headers10DaysTrendDown, HttpStatus.OK);
 			case 30:
 				Page<StockIndicators> stockIn30DaysTrendDown = stockIndicatorsRepository.findWithStocksIndicators30DaysTrendDown(PaginationUtil.generatePageRequest(offset, limit));
 				HttpHeaders headers30DaysTrendDown = PaginationUtil.generatePaginationHttpHeaders(stockIn30DaysTrendDown, "/apis/tocks/trends/down/days", offset, limit);
-				return new ResponseEntity<Page<StockIndicators>>(stockIn30DaysTrendDown, headers30DaysTrendDown, HttpStatus.OK);
+				return new ResponseEntity<List<StockWithStockIndicatorsDTO>>(getStockWithStockIndicatorsDTOs(stockIn30DaysTrendDown.getContent()), headers30DaysTrendDown, HttpStatus.OK);
 			case 60:
 				Page<StockIndicators> stockIn60DaysTrendDown = stockIndicatorsRepository.findWithStocksIndicators60DaysTrendDown(PaginationUtil.generatePageRequest(offset, limit));
 				HttpHeaders headers60DaysTrendDown = PaginationUtil.generatePaginationHttpHeaders(stockIn60DaysTrendDown, "/apis/tocks/trends/down/days", offset, limit);
-				return new ResponseEntity<Page<StockIndicators>>(stockIn60DaysTrendDown, headers60DaysTrendDown, HttpStatus.OK);
+				return new ResponseEntity<List<StockWithStockIndicatorsDTO>>(getStockWithStockIndicatorsDTOs(stockIn60DaysTrendDown.getContent()), headers60DaysTrendDown, HttpStatus.OK);
 			case 90:
 				Page<StockIndicators> stockIn90DaysTrendDown = stockIndicatorsRepository.findWithStocksIndicators90DaysTrendDown(PaginationUtil.generatePageRequest(offset, limit));
 				HttpHeaders headers90DaysTrendDown = PaginationUtil.generatePaginationHttpHeaders(stockIn90DaysTrendDown, "/apis/tocks/trends/down/days", offset, limit);
-				return new ResponseEntity<Page<StockIndicators>>(stockIn90DaysTrendDown, headers90DaysTrendDown, HttpStatus.OK);
+				return new ResponseEntity<List<StockWithStockIndicatorsDTO>>(getStockWithStockIndicatorsDTOs(stockIn90DaysTrendDown.getContent()), headers90DaysTrendDown, HttpStatus.OK);
 			}
 		}
-		return new ResponseEntity<Page<StockIndicators>>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<List<StockWithStockIndicatorsDTO>>(HttpStatus.NO_CONTENT);
 	}
+
+    private List<StockWithStockIndicatorsDTO> getStockWithStockIndicatorsDTOs(List<StockIndicators> stockIndicators) {
+        ModelMapper modelMapper = new ModelMapper();
+        Type dtoType = new TypeToken<List<StockWithStockIndicatorsDTO>>() {}.getType();
+        return modelMapper.map(stockIndicators, dtoType);
+    }
 
 	@Transactional
 	public ResponseEntity<Void> followStock(long stockId) throws URISyntaxException {
