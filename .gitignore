@@ -117,6 +117,7 @@ src/main/resources/rebel.xml
 ######################
 /gpw_radar/log/**
 /gpw_radar/target/**
+/gpw_radar/.mvn
 
 ######################
 # Gradle

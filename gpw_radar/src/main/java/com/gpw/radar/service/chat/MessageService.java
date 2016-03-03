@@ -19,9 +19,9 @@ public class MessageService {
     @Inject
     private UserRepository userRepository;
 
-    public ChatMessage createUserMessage(String message, Principal principal) {
+    public UserMessage createUserMessage(String message, Principal principal) {
         if (message.length() > 128 || message.length() < 1) {
-            return null;
+            throw new IllegalArgumentException("Message should have length of 1 to 128");
         }
         String userLogin = principal.getName();
         User currentUser = userRepository.findOneByLogin(userLogin).get();

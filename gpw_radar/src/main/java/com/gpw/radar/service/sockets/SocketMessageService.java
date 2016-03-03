@@ -6,6 +6,8 @@ import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
 import com.gpw.radar.domain.stock.TimeStockFiveMinuteDetails;
 import com.gpw.radar.service.chat.RssObserver;
 import com.gpw.radar.service.rss.RssObservable;
+import com.gpw.radar.web.rest.dto.chat.ChatMessageDTO;
+import org.modelmapper.ModelMapper;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +40,10 @@ public class SocketMessageService implements RssObserver, SocketMessageHandler {
     }
 
     public void sendToChat(NewsMessage message) {
-        messagingTemplate.convertAndSend("/webchat/recive", (ChatMessage) message);
+        ModelMapper modelMapper = new ModelMapper();
+        ChatMessageDTO chatMessageDTO = modelMapper.map((ChatMessage) message, ChatMessageDTO.class);
+
+        messagingTemplate.convertAndSend("/webchat/recive", chatMessageDTO);
     }
 
     @Override

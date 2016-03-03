@@ -1,7 +1,9 @@
 package com.gpw.radar.web.sockets;
 
-import com.gpw.radar.domain.chat.ChatMessage;
+import com.gpw.radar.domain.chat.UserMessage;
 import com.gpw.radar.service.chat.MessageService;
+import com.gpw.radar.web.rest.dto.chat.ChatMessageDTO;
+import org.modelmapper.ModelMapper;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
@@ -25,9 +27,13 @@ public class ChatController {
 
 	@SubscribeMapping("/webchat/send/message")
 	@SendTo("/webchat/recive")
-	public ChatMessage sendChatMessage(Message message, Principal principal) {
-		ChatMessage msg = messageService.createUserMessage(message.getMessage(), principal);
-		return msg;
+	public ChatMessageDTO sendChatMessage(Message message, Principal principal) {
+        UserMessage msg = messageService.createUserMessage(message.getMessage(), principal);
+
+        ModelMapper modelMapper = new ModelMapper();
+        ChatMessageDTO chatMessageDTO = modelMapper.map(msg, ChatMessageDTO.class);
+
+        return chatMessageDTO;
 	}
 
 	@SubscribeMapping("/webchat/user/login")
@@ -48,7 +54,6 @@ public class ChatController {
 	@SubscribeMapping("/webchat/user/app/on")
     @SendTo("/webchat/count")
 	public int applicationOn() {
-//		usersCount();
         return users.size();
 	}
 
