@@ -50,9 +50,6 @@ public class UserService {
 
     @Inject
     private AuthorityRepository authorityRepository;
-    
-    @Inject
-    private StockFinanceEventRepository stockFinanceEventRepository;
 
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
@@ -233,15 +230,4 @@ public class UserService {
             userRepository.delete(user);
         }
     }
-    
-    public ResponseEntity<List<StockFinanceEvent>> getStocksFinanceEventFollowedByUser() {
-		User user = getUserWithAuthorities();
-		List<StockFinanceEvent> stockFinanceEventsFollowedByUser = stockFinanceEventRepository.getFollowedStockFinanceEvent(user.getId());
-		return new ResponseEntity<List<StockFinanceEvent>>(stockFinanceEventsFollowedByUser, HttpStatus.OK);
-	}
-
-	public ResponseEntity<Set<Stock>> getStocksFollowedByUser() {
-		User user = getUserWithAuthorities();
-		return new ResponseEntity<Set<Stock>>(user.getStocks(), HttpStatus.OK);
-	}
 }

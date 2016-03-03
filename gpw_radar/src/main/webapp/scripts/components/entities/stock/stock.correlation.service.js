@@ -10,12 +10,12 @@ angular.module('gpwRadarApp')
     })
     .factory('CorrelationStep', function($http){
     	var getStepServ = {
-    			getStep: function() {
-    				var promise = $http.get('api/statistic/stock/correlation/step').then(function (response){
-    					return response.data;
-    				})
-    				return promise;
-    			}
+            getStep: function() {
+                var promise = $http.get('api/statistic/stock/correlation/step').then(function (response){
+                    return response.data;
+                })
+                return promise;
+            }
     	}
     	return getStepServ;
     })

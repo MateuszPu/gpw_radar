@@ -8,7 +8,7 @@ import com.gpw.radar.repository.UserRepository;
 import com.gpw.radar.repository.stock.StockIndicatorsRepository;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.UserService;
-import com.gpw.radar.web.rest.dto.rssNews.NewsDetailsDTO;
+import com.gpw.radar.web.rest.dto.stock.StockDTO;
 import com.gpw.radar.web.rest.dto.stock.StockWithStockIndicatorsDTO;
 import com.gpw.radar.web.rest.util.PaginationUtil;
 import org.modelmapper.ModelMapper;
@@ -25,7 +25,9 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.lang.reflect.Type;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class StockService {
@@ -118,4 +120,17 @@ public class StockService {
 		userRepository.save(user);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
+
+    @Transactional
+    public ResponseEntity<List<StockDTO>> getStocksFollowedByUser() {
+        User user = userService.getUserWithAuthorities();
+        Set<Stock> followedStocks = stockRepository.findByUsers(user);
+        return new ResponseEntity<List<StockDTO>>(getStockDTOs(followedStocks), HttpStatus.OK);
+    }
+
+    private List<StockDTO> getStockDTOs(Collection<Stock> stocks) {
+        ModelMapper modelMapper = new ModelMapper();
+        Type dto = new TypeToken<List<StockDTO>>() {}.getType();
+        return modelMapper.map(stocks, dto);
+    }
 }

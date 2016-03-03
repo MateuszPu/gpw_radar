@@ -3,6 +3,7 @@ package com.gpw.radar.web.rest.stock;
 import com.gpw.radar.domain.stock.StockFinanceEvent;
 import com.gpw.radar.security.AuthoritiesConstants;
 import com.gpw.radar.service.stock.StockFinanceEventService;
+import com.gpw.radar.web.rest.dto.stock.StockWithStockFinanceEventDTO;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +27,7 @@ public class StockFinanceEventResource {
 
 	@RequestMapping(value = "/all/finance/event", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RolesAllowed(AuthoritiesConstants.USER)
-	public ResponseEntity<List<StockFinanceEvent>> getAll() throws URISyntaxException {
+	public ResponseEntity<List<StockWithStockFinanceEventDTO>> getAll() throws URISyntaxException {
 		return stockFinanceEventService.getAllStockFinanceEvent();
 	}
 }

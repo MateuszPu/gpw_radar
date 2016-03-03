@@ -12,6 +12,10 @@ import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import com.gpw.radar.service.stock.StockFinanceEventService;
+import com.gpw.radar.service.stock.StockService;
+import com.gpw.radar.web.rest.dto.stock.StockDTO;
+import com.gpw.radar.web.rest.dto.stock.StockWithStockFinanceEventDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -83,6 +87,12 @@ public class UserResource {
 
     @Inject
     private UserService userService;
+
+    @Inject
+    private StockService stockService;
+
+    @Inject
+    private StockFinanceEventService stockFinanceEventService;
 
     /**
      * POST  /users -> Creates a new user.
@@ -209,16 +219,16 @@ public class UserResource {
         userService.deleteUserInformation(login);
         return ResponseEntity.ok().headers(HeaderUtil.createAlert( "user-management.deleted", login)).build();
     }
-    
+
     @RequestMapping(value = "/users/stocks/followed", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RolesAllowed(AuthoritiesConstants.USER)
-	public ResponseEntity<Set<Stock>> getListStocksFollowedByUser(Principal principal) {
-		return userService.getStocksFollowedByUser();
+	public ResponseEntity<List<StockDTO>> getListStocksFollowedByUser() {
+		return stockService.getStocksFollowedByUser();
 	}
 
 	@RequestMapping(value = "/users/stocks/followed/finance/event", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@RolesAllowed(AuthoritiesConstants.USER)
-	public ResponseEntity<List<StockFinanceEvent>> getListFinanceEventsStocksFollowedByUser(Principal principal) {
-		return userService.getStocksFinanceEventFollowedByUser();
+	public ResponseEntity<List<StockWithStockFinanceEventDTO>> getListFinanceEventsStocksFollowedByUser() {
+		return stockFinanceEventService.getStocksFinanceEventFollowedByUser();
 	}
 }
