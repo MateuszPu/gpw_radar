@@ -18,7 +18,6 @@ angular.module('gpwRadarApp').factory('StocksFollowed', function($http) {
 	    			return response;
 	    		});
 			 }
-
 		  };
 		  return stocksFollowedByUser;
 	});
@@ -27,7 +26,7 @@ angular.module('gpwRadarApp').filter('getById', function() {
 	return function(input, id) {
 		var i=0, len=input.length;
 			for (; i<len; i++) {
-				if (+input[i].id == +id) {
+				if (+input[i].stockId == +id) {
 					return input[i];
 				}
 			}

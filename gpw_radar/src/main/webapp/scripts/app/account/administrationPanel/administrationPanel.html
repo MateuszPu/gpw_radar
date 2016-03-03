@@ -41,7 +41,7 @@
 							   		</div>
 						  		</div>
 							</div>
-				
+
 				        	<div class="panel panel-success">
 							  <div class="panel-heading">
 							  	<div class="row">
@@ -54,7 +54,7 @@
 									</div>
 				              	</div>
 							  </div>
-				
+
 							  <div class="panel-body" ng-show='showFollowedStocks'>
 							    <div class="panel panel-default">
 									<table st-table="stocksFollowedByUserList" st-safe-src="smartTableSafeCopy"
@@ -72,19 +72,19 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr ng-repeat="stock in stocksFollowedByUserList">
-												<td>{{stock.ticker}}</td>
-												<td>{{stock.stockName}}</td>
+											<tr ng-repeat="item in stocksFollowedByUserList">
+												<td>{{item.stockTicker}}</td>
+												<td>{{item.stockName}}</td>
 												<td>
-													<a class="btn btn-danger" href="" ng-click="stopFollowStock(stock.id)"><i class="fa fa-minus-square"></i></a>
+													<a class="btn btn-danger" href="" ng-click="stopFollowStock(item.stockId)"><i class="fa fa-minus-square"></i></a>
 												</td>
 												<td>
-													<a href="http://stooq.pl/q/a/?s={{stock.ticker}}"
+													<a href="http://stooq.pl/q/a/?s={{item.stockTicker}}"
 														target="_blank" translate="panel.followedStocks.technical">A. technical</a> <br>
-													<a href="http://www.stockwatch.pl/gpw/{{stock.stockShortName}},komunikaty,wyniki.aspx"
+													<a href="http://www.stockwatch.pl/gpw/{{item.stockShortName}},komunikaty,wyniki.aspx"
 														target="_blank" translate="panel.followedStocks.fundamental">A. fundamental</a>
 												</td>
-				
+
 											</tr>
 										</tbody>
 										<tfoot>
@@ -99,7 +99,7 @@
 								</div>
 							  </div>
 							</div>
-				
+
 							<div class="panel panel-success">
 								<div class="panel-heading">
 				 			  		<div class="row">
