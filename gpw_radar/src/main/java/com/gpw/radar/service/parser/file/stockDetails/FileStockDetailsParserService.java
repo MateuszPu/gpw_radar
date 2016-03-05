@@ -52,11 +52,11 @@ public class FileStockDetailsParserService implements StockDetailsParser {
         stockDetails.setMinPrice(new BigDecimal(splitLine[3]));
         stockDetails.setClosePrice(new BigDecimal(splitLine[4]));
 
-        if(splitLine.length == 6) {
-            stockDetails.setVolume(Long.valueOf(splitLine[5]));
+        if(splitLine.length != 7) {
+            stockDetails.setVolume(0l);
         }
         else {
-            stockDetails.setVolume(0l);
+            stockDetails.setVolume(Long.valueOf(splitLine[5]));
         }
 
         return stockDetails;
