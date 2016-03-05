@@ -52,10 +52,10 @@ public class FileStockFiveMinutesDetailsParserService implements StockFiveMinute
         stockFiveMinutesDetails.setTime(timeDetail);
         stockFiveMinutesDetails.setCumulatedVolume(0l);
 
-        if (splitLine.length == 6) {
-            stockFiveMinutesDetails.setVolume(Long.valueOf(splitLine[6]));
-        } else {
+        if (splitLine.length != 8) {
             stockFiveMinutesDetails.setVolume(0l);
+        } else {
+            stockFiveMinutesDetails.setVolume(Long.valueOf(splitLine[6]));
         }
 
         return stockFiveMinutesDetails;
