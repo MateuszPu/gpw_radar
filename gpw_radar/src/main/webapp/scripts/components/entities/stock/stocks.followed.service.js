@@ -2,21 +2,23 @@ angular.module('gpwRadarApp').factory('StocksFollowed', function($http) {
 	var stocksFollowedByUser = {
 			 getStocksFollowed: function() {
 				 var promise =  $http.get('api/users/stocks/followed').then(function(response) {
-					 return response.data;
-		    		});
+                        return response.data;
+                    });
 				 return promise;
 			 },
 
 			 followStock: function(id) {
-		    	$http.post('api/stock/follow/', id).success(function(response) {
-		    		return response;
-		    	});
+                 var promise = $http.post('api/stock/follow/', id).success(function(response) {
+		    		    return response.data;
+                    });
+                 return promise;
 			 },
 
 			 stopFollowStock: function(id) {
-	    		$http.post('api/stock/stop/follow/', id).success(function(response) {
-	    			return response;
-	    		});
+                 var promise = $http.post('api/stock/stop/follow/', id).success(function(response) {
+	    			    return response.data;
+                    });
+                 return promise;
 			 }
 		  };
 		  return stocksFollowedByUser;

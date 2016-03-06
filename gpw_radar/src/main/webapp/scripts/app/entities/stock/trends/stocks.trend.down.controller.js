@@ -1,12 +1,11 @@
 'use strict';
 
 angular.module('gpwRadarApp')
-    .controller('StockTrendsDownController', function ($scope, $http, $filter, StockTrends, ParseLinks, StocksFollowed) {
+    .controller('StockTrendsDownController', function ($scope, $http, $filter, StockTrends, ParseLinks) {
         $scope.stocksTrendsDown10Days = [];
         $scope.stocksTrendsDown30Days = [];
         $scope.stocksTrendsDown60Days = [];
         $scope.stocksTrendsDown90Days = [];
-        $scope.stocksFollowedByUser = [];
 
         $scope.getStocksTrendsDown = function (page, days) {
             StockTrends.getTrendsDown({page: page, per_page: 5, days: days}, function (result, headers) {
@@ -37,12 +36,6 @@ angular.module('gpwRadarApp')
             });
         };
 
-        $scope.getStocksFollowedByUser = function () {
-        	StocksFollowed.getStocksFollowed().then(function (data) {
-                $scope.stocksFollowedByUser = data;
-            });
-        };
-
         $scope.loadPage = function (page, days) {
             switch (parseInt(days)) {
                 case 10:
@@ -65,24 +58,8 @@ angular.module('gpwRadarApp')
             $scope.loadPage(1, 30);
             $scope.loadPage(1, 60);
             $scope.loadPage(1, 90);
-
-            $scope.getStocksFollowedByUser();
         };
-        
+
         $scope.loadAll();
 
-        $scope.followStock = function (id) {
-        	StocksFollowed.followStock(id);
-            $scope.loadAll();
-        };
-
-        $scope.stopFollowStock = function (id) {
-        	StocksFollowed.stopFollowStock(id);
-            $scope.loadAll();
-        };
-
-        $scope.isFollowed = function (id) {
-            var found = $filter('getById')($scope.stocksFollowedByUser, id);
-            return found;
-        };
     });
