@@ -13,10 +13,7 @@
         <td>{{stockIndicators.stockTicker}}</td>
         <td>{{stockIndicators.percentReturn | number:2}}%</td>
         <td>
-            <a class="btn btn-primary" href="" ng-click="startFollow({id: stockIndicators.stockId})"
-               ng-hide="isFollowed({id: stockIndicators.stockId})"><i class="fa fa-plus-square"></i></a>
-            <a class="btn btn-danger" href="" ng-click="stopFollow({id: stockIndicators.stockId})"
-               ng-show="isFollowed({id: stockIndicators.stockId})"><i class="fa fa-minus-square"></i></a>
+            <follow-stock id="stockIndicators.stockId"></follow-stock>
         </td>
         <td><a href="http://stooq.pl/q/a/?s={{stockIndicators.stockTicker}}"
                target="_blank" translate="stock.list.technical">A. technical</a> <br>

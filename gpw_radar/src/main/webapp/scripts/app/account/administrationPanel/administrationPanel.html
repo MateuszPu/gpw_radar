@@ -76,7 +76,8 @@
 												<td>{{item.stockTicker}}</td>
 												<td>{{item.stockName}}</td>
 												<td>
-													<a class="btn btn-danger" href="" ng-click="stopFollowStock(item.stockId)"><i class="fa fa-minus-square"></i></a>
+													<!--<a class="btn btn-danger" href="" ng-click="stopFollowStock(item.stockId)"><i class="fa fa-minus-square"></i></a>-->
+                                                    <follow-stock id="item.stockId" update-data="getAllStocksFollowed()"></follow-stock>
 												</td>
 												<td>
 													<a href="http://stooq.pl/q/a/?s={{item.stockTicker}}"
