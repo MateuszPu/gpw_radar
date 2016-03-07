@@ -6,8 +6,7 @@ import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
 import com.gpw.radar.domain.stock.StockFiveMinutesIndicators;
-import com.gpw.radar.service.database.FillDataBaseWithDataService;
-import com.gpw.radar.service.parser.file.stockDetails.FileStockDetailsParserService;
+import com.gpw.radar.service.builders.StockBuilder;
 import com.gpw.radar.service.parser.file.stockFiveMinutesDetails.FileStockFiveMinutesDetailsParserService;
 import org.assertj.core.data.Percentage;
 import org.junit.Before;
@@ -46,10 +45,7 @@ public class CalculateIndicatorsFiveMinutesStockDetailsTest {
     public void setup() throws Exception {
         this.testContextManager = new TestContextManager(getClass());
         this.testContextManager.prepareTestInstance(this);
-        Stock stock = new Stock();
-        stock.setTicker(StockTicker.kgh);
-        stock.setStockName("KGH");
-        stock.setStockShortName("KGH");
+        Stock stock = StockBuilder.sampleStock().ticker(StockTicker.kgh).stockName("KGH").stockShortName("KGH").build();
         String stockFiveMinutesDetailsFilePath = "/stocks_data/5min/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
         InputStream inputStreamOfStockFiveMinutesDetails = getClass().getResourceAsStream(stockFiveMinutesDetailsFilePath);
         List<StockFiveMinutesDetails> stockFiveMinutesDetails = fileStockFiveMinutesDetailsParserService.parseStockFiveMinutesDetails(stock, inputStreamOfStockFiveMinutesDetails);

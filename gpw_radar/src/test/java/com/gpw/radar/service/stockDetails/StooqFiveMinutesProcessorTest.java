@@ -9,6 +9,7 @@ import com.gpw.radar.domain.stock.StockFiveMinutesIndicators;
 import com.gpw.radar.repository.stock.StockFiveMinutesIndicatorsRepository;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.auto.update.stockFiveMinutesDetails.StooqFiveMinutesProcessor;
+import com.gpw.radar.service.builders.StockBuilder;
 import org.assertj.core.data.Percentage;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +17,6 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import scala.Array;
 
 import javax.inject.Inject;
 import java.io.InputStream;
@@ -59,12 +59,10 @@ public class StooqFiveMinutesProcessorTest {
 
     private void initDB() {
         List<Stock> stocks = new ArrayList<>();
-        List<StockTicker> tickerToTest = new ArrayList<>();
-        tickerToTest.add(StockTicker.kgh);
-        tickerToTest.add(StockTicker.tpe);
-        tickerToTest.add(StockTicker.cdr);
-        tickerToTest.add(StockTicker.pko);
-        tickerToTest.forEach(ticker -> stocks.add(new Stock(ticker)));
+        stocks.add(StockBuilder.sampleStock().ticker(StockTicker.kgh).build());
+        stocks.add(StockBuilder.sampleStock().ticker(StockTicker.tpe).build());
+        stocks.add(StockBuilder.sampleStock().ticker(StockTicker.cdr).build());
+        stocks.add(StockBuilder.sampleStock().ticker(StockTicker.pko).build());
         stockRepository.save(stocks);
         initStockFiveMinutesIndicators(stocks);
     }

@@ -5,6 +5,7 @@ import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;
 import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
+import com.gpw.radar.service.builders.StockBuilder;
 import com.gpw.radar.service.parser.file.stockDetails.FileStockDetailsParserService;
 import com.gpw.radar.service.parser.file.stockFiveMinutesDetails.FileStockFiveMinutesDetailsParserService;
 import org.junit.Before;
@@ -34,15 +35,13 @@ public class FileStockDetailsParserServiceTest {
     @Inject
     private FileStockFiveMinutesDetailsParserService fileStockFiveMinutesDetailsParserService;
 
-    private Stock stock = new Stock();
+    private Stock stock;
     private InputStream inputStreamOfStockDetails;
     private InputStream inputStreamOfStockFiveMinutesDetails;
 
     @Before
     public void init() {
-        stock.setTicker(StockTicker.cdr);
-        stock.setStockName("cdr");
-        stock.setStockShortName("CDR");
+        stock = StockBuilder.sampleStock().ticker(StockTicker.cdr).stockName("cdr").stockShortName("CDR").build();
         String stockDetailsFilePath = "/stocks_data/daily/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
         String stockFiveMinutesDetailsFilePath = "/stocks_data/5min/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
         inputStreamOfStockDetails = getClass().getResourceAsStream(stockDetailsFilePath);

@@ -39,13 +39,6 @@ public class Stock implements Serializable {
 	@ManyToMany(mappedBy = "stocks")
 	private Set<User> users = new HashSet<>();
 
-    public Stock() {
-    }
-
-    public Stock(StockTicker ticker){
-        this.ticker = ticker;
-    }
-
     public Long getId() {
         return id;
     }

@@ -5,6 +5,7 @@ import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockFinanceEvent;
 import com.gpw.radar.repository.stock.StockRepository;
+import com.gpw.radar.service.builders.StockBuilder;
 import com.gpw.radar.service.parser.web.stockFinanceEvent.StockwatchParserService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -45,9 +46,7 @@ public class StockwatchParserServiceTest {
 
     private void initDB() {
         stockRepository.deleteAll();
-        Stock stock = new Stock();
-        stock.setTicker(StockTicker.pkn);
-        stock.setStockShortName("pknorlen");
+        Stock stock = StockBuilder.sampleStock().ticker(StockTicker.pkn).stockShortName("pknorlen").build();
         stockRepository.save(stock);
     }
 
@@ -68,8 +67,6 @@ public class StockwatchParserServiceTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     @Test
