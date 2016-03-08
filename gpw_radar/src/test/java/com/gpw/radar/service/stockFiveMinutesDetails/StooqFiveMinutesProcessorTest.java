@@ -1,4 +1,4 @@
-package com.gpw.radar.service.stockDetails;
+package com.gpw.radar.service.stockFiveMinutesDetails;
 
 
 import com.gpw.radar.Application;

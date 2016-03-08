@@ -5,22 +5,28 @@ import com.gpw.radar.domain.stock.StockIndicators;
 import com.gpw.radar.repository.auto.update.DailyStockDetailsParserRepository;
 import com.gpw.radar.repository.stock.StockDetailsRepository;
 import com.gpw.radar.repository.stock.StockIndicatorsRepository;
+import com.gpw.radar.security.AuthoritiesConstants;
 import com.gpw.radar.service.auto.update.stockDetails.indicators.StockIndicatorsCalculator;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
 import com.gpw.radar.service.stock.StockDetailsService;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
-//@RestController
-//@RequestMapping("/api")
-//@RolesAllowed(AuthoritiesConstants.ADMIN)
+@RestController
+@RequestMapping("/api")
+@RolesAllowed(AuthoritiesConstants.ADMIN)
 @Service
 public class UpdateStocksDetailsData {
 
@@ -46,7 +52,7 @@ public class UpdateStocksDetailsData {
 	private StockIndicatorsCalculator stockIndicatorsCalculator;
 
 
-//	@RequestMapping(value = "/update/db", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/update/db", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
 	@Scheduled(cron = "0 30 17 ? * MON-FRI")
 	public void updateStockDetails() throws IOException, InterruptedException {
@@ -60,7 +66,7 @@ public class UpdateStocksDetailsData {
 			break;
 		case STOOQ:
 			stockDetailsParser = beanFactory.getBean("stooqParser", StockDetailsParser.class);
-			stockDetailsParser.setQutesDate(lastQuotedDateFromStooqWeb);
+			stockDetailsParser.setQuotesDate(lastQuotedDateFromStooqWeb);
 			break;
 		}
 

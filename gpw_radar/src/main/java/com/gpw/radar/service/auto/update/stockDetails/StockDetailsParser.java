@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface StockDetailsParser {
 	List<StockDetails> getCurrentStockDetails();
-	void setQutesDate (LocalDate quotesDate);
+	void setQuotesDate(LocalDate quotesDate);
 }

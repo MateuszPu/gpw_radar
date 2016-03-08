@@ -112,7 +112,7 @@ public class StooqParser implements StockDetailsParser {
     }
 
     @Override
-    public void setQutesDate(LocalDate quotesDate) {
+    public void setQuotesDate(LocalDate quotesDate) {
         this.quotesDate = quotesDate;
     }
 

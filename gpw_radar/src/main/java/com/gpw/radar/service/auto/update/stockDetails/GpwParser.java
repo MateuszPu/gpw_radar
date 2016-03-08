@@ -110,10 +110,16 @@ public class GpwParser implements StockDetailsParser {
 			BufferedReader bufferedReader = getBufferedReaderFromUrl();
 
 			// skip first 6 lines, as the 7th line is the html content of table
-			for (int i = 0; i < 7; i++) {
-				bufferedReader.readLine();
-			}
-			htmlContent = bufferedReader.readLine();
+//			for (int i = 0; i < 15; i++) {
+//                if(i == 7) {
+//                    htmlContent = bufferedReader.readLine();
+//                    break;
+//                }
+//                System.out.println(bufferedReader.readLine());
+//			}
+
+            htmlContent = bufferedReader.lines().filter(s -> s.startsWith("<table")).findAny().get();
+
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -124,14 +130,15 @@ public class GpwParser implements StockDetailsParser {
 	private BufferedReader getBufferedReaderFromUrl() throws IOException {
 		URLConnection urlConnection = null;
 		try {
-			URL url = new URL("http://www.gpw.pl/ajaxindex.php?action=GPWQuotations&start=showTable&tab=all&lang=PL&full=1");
+			URL url = new URL("https://www.gpw.pl/ajaxindex.php?action=GPWQuotations&start=showTable&tab=all&lang=PL&full=1");
 			urlConnection = url.openConnection();
 		} catch (MalformedURLException e) {
             logger.error("Error occurs: " + e.getMessage());
 		}
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-		return br;
+
+        return br;
 	}
 
 	private LocalDate getCurrentDateOfStockDetails() {
@@ -148,6 +155,7 @@ public class GpwParser implements StockDetailsParser {
 	}
 
 	@Override
-	public void setQutesDate(LocalDate quotesDate) {
+	public void setQuotesDate(LocalDate quotesDate) {
+        throw new UnsupportedOperationException("method should be not override");
 	}
 }
