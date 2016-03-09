@@ -4,16 +4,13 @@ import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockFinanceEvent;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
-import com.gpw.radar.service.sockets.SocketMessageService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.io.IOException;

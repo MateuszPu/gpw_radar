@@ -5,14 +5,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
 @Service
-public class CurrentStockDetailsParserService {
+public class UrlStreamsGetterService {
 
-    private final Logger logger = LoggerFactory.getLogger(CurrentStockDetailsParserService.class);
+    private final Logger logger = LoggerFactory.getLogger(UrlStreamsGetterService.class);
 
     public InputStreamReader getInputStreamReaderFromUrl(String url) {
         InputStreamReader inputStreamReader = null;
@@ -25,5 +26,17 @@ public class CurrentStockDetailsParserService {
             logger.error("Error occurs: " + e.getMessage());
         }
         return inputStreamReader;
+    }
+
+    public InputStream getInputStreamFromUrl(String url) {
+        InputStream inputStream = null;
+
+        try {
+            URL urlContent = new URL(url);
+            inputStream = urlContent.openStream();
+        } catch (IOException e) {
+            logger.error("Error occurs: " + e.getMessage());
+        }
+        return inputStream;
     }
 }

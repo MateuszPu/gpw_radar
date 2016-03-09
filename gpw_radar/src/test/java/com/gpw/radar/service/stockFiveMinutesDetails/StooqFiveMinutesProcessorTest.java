@@ -11,6 +11,7 @@ import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.auto.update.stockFiveMinutesDetails.StooqFiveMinutesProcessor;
 import com.gpw.radar.service.builders.StockBuilder;
 import org.assertj.core.data.Percentage;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalTime;
@@ -55,6 +57,12 @@ public class StooqFiveMinutesProcessorTest {
         stockFiveMinutesDetailsFilePath = "/stocks_data/5min/pl/wse_stocks/detailsOnlineList.prn";
         inputStreamOfStockFiveMinutesDetails = getClass().getResourceAsStream(stockFiveMinutesDetailsFilePath);
         inputStreamReader = new InputStreamReader(inputStreamOfStockFiveMinutesDetails);
+    }
+
+    @After
+    public void close() throws IOException {
+        inputStreamOfStockFiveMinutesDetails.close();
+        inputStreamReader.close();
     }
 
     private void initDB() {

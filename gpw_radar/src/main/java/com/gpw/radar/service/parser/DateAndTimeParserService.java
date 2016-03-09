@@ -1,6 +1,6 @@
 package com.gpw.radar.service.parser;
 
-import com.gpw.radar.service.parser.web.CurrentStockDetailsParserService;
+import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class DateAndTimeParserService {
     private final Logger logger = LoggerFactory.getLogger(DateAndTimeParserService.class);
 
     @Inject
-    private CurrentStockDetailsParserService currentStockDetailsParserService;
+    private UrlStreamsGetterService urlStreamsGetterService;
 
     //    private final DateTimeFormatter dtfTypeOne = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 //    private final DateTimeFormatter dtfTypeTwo = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -66,7 +66,7 @@ public class DateAndTimeParserService {
         LocalDate date = null;
         BufferedReader bufferedReader = null;
         String url = "http://stooq.pl/q/l/?s=wig20&f=sd2t2ohlcv&h&e=csv";
-        try (InputStreamReader inputStreamReader = currentStockDetailsParserService.getInputStreamReaderFromUrl(url)){
+        try (InputStreamReader inputStreamReader = urlStreamsGetterService.getInputStreamReaderFromUrl(url)){
             bufferedReader = new BufferedReader(inputStreamReader);
             // skip first line as there are a headers
             bufferedReader.readLine();

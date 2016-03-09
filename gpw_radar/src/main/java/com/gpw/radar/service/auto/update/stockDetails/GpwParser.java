@@ -4,6 +4,7 @@ import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;
 import com.gpw.radar.repository.stock.StockRepository;
+import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -14,11 +15,9 @@ import org.springframework.stereotype.Component;
 import javax.inject.Inject;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -33,10 +32,13 @@ public class GpwParser implements StockDetailsParser {
     @Inject
 	private StockRepository stockRepository;
 
+    @Inject
+    private UrlStreamsGetterService urlStreamsGetterService;
+
 	private static final int indexOfTicker = 3;
 	private static final int indexOfOpenPrice = 8;
-	private static final int indexOfMaxPrice = 9;
-	private static final int indexOfMinPrice = 10;
+    private static final int indexOfMinPrice = 9;
+	private static final int indexOfMaxPrice = 10;
 	private static final int indexOfClosePrice = 11;
 	// private final int indexOfTransactionCount = 20;
 	private static final int indexOfVolume = 21;
@@ -45,100 +47,78 @@ public class GpwParser implements StockDetailsParser {
 
 	@Override
 	public List<StockDetails> getCurrentStockDetails() {
-		List<StockDetails> stockDetails = new ArrayList<StockDetails>();
-		Elements tableRows = getTableRowsContentFromWeb();
-		StockTicker ticker;
 		LocalDate date = getCurrentDateOfStockDetails();
-
-		// start from index 2 to skip table title
-		for (int index = 2; index < tableRows.size() - 1; index++) {
-
-			// skip the table title showing every 20 stock details
-			if (index % 22 == 0) {
-				index++;
-				continue;
-			}
-			Elements select = tableRows.get(index).select("td");
-
-			try {
-				ticker = StockTicker.valueOf(select.get(indexOfTicker).text().toLowerCase());
-			} catch (IllegalArgumentException ex) {
-				// if the ticker from web is not in database skip to next step
-				continue;
-			}
-
-			StockDetails std = new StockDetails();
-			Stock stock = stockRepository.findByTicker(ticker);
-			std.setStock(stock);
-
-			std.setDate(date);
-			try {
-				std.setOpenPrice(new BigDecimal(getElement(select, indexOfOpenPrice)));
-				std.setMaxPrice(new BigDecimal(getElement(select, indexOfMaxPrice)));
-				std.setMinPrice(new BigDecimal(getElement(select, indexOfMinPrice)));
-				std.setClosePrice(new BigDecimal(getElement(select, indexOfClosePrice)));
-				std.setVolume(Long.valueOf(getElement(select, indexOfVolume)));
-			} catch (NumberFormatException ex) {
-				// if string is not a valid presentation of number that means
-				// the stockdetails was not qouted
-				std.setOpenPrice(new BigDecimal(getElement(select, indexOfLastClosePrice)));
-				std.setMaxPrice(new BigDecimal(getElement(select, indexOfLastClosePrice)));
-				std.setMinPrice(new BigDecimal(getElement(select, indexOfLastClosePrice)));
-				std.setClosePrice(new BigDecimal(getElement(select, indexOfLastClosePrice)));
-				std.setVolume(0l);
-			}
-			stockDetails.add(std);
-		}
-		return stockDetails;
+        InputStream inputStreamFromUrl = urlStreamsGetterService.getInputStreamFromUrl("https://www.gpw.pl/ajaxindex.php?action=GPWQuotations&start=showTable&tab=all&lang=PL&full=1");
+        Elements tableRows = getTableRowsContentFromWeb(inputStreamFromUrl);
+        return getStockDetailsFromWeb(tableRows, date);
 	}
+
+    public List<StockDetails> getStockDetailsFromWeb(Elements tableRows, LocalDate date) {
+        List<StockDetails> stockDetails = new ArrayList<StockDetails>();
+        StockTicker ticker;
+
+        // start from index 2 to skip table title
+        for (int index = 2; index < tableRows.size() - 1; index++) {
+
+            // skip the table title showing every 20 stock details
+            if (index % 22 == 0) {
+                index++;
+                continue;
+            }
+            Elements select = tableRows.get(index).select("td");
+
+            try {
+                ticker = StockTicker.valueOf(select.get(indexOfTicker).text().toLowerCase());
+            } catch (IllegalArgumentException ex) {
+                // if the ticker from web is not in database skip to next step
+                continue;
+            }
+
+            StockDetails std = new StockDetails();
+            Stock stock = stockRepository.findByTicker(ticker);
+            std.setStock(stock);
+
+            std.setDate(date);
+            try {
+                std.setOpenPrice(new BigDecimal(getElement(select, indexOfOpenPrice)));
+                std.setMaxPrice(new BigDecimal(getElement(select, indexOfMaxPrice)));
+                std.setMinPrice(new BigDecimal(getElement(select, indexOfMinPrice)));
+                std.setClosePrice(new BigDecimal(getElement(select, indexOfClosePrice)));
+                std.setVolume(Long.valueOf(getElement(select, indexOfVolume)));
+            } catch (NumberFormatException ex) {
+                // if string is not a valid presentation of number that means
+                // the stockdetails was not quoted
+                std.setOpenPrice(new BigDecimal(getElement(select, indexOfLastClosePrice)));
+                std.setMaxPrice(new BigDecimal(getElement(select, indexOfLastClosePrice)));
+                std.setMinPrice(new BigDecimal(getElement(select, indexOfLastClosePrice)));
+                std.setClosePrice(new BigDecimal(getElement(select, indexOfLastClosePrice)));
+                std.setVolume(0l);
+            }
+            stockDetails.add(std);
+        }
+        return stockDetails;
+    }
 
 	private String getElement(Elements select, int indexOfElement) {
 		return select.get(indexOfElement).text().replace(",", ".").replace("\u00a0", "");
 	}
 
-	private Elements getTableRowsContentFromWeb() {
-		String htmlContent = getHtmlContent();
+	private Elements getTableRowsContentFromWeb(InputStream inputStream) {
+		String htmlContent = getHtmlContent(inputStream);
 		Document doc = Jsoup.parse(htmlContent);
 		Elements tableRows = doc.select("tr");
 		return tableRows;
 	}
 
-	private String getHtmlContent() {
+	private String getHtmlContent(InputStream inputStream) {
 		String htmlContent = "";
 
-		try {
-			BufferedReader bufferedReader = getBufferedReaderFromUrl();
-
-			// skip first 6 lines, as the 7th line is the html content of table
-//			for (int i = 0; i < 15; i++) {
-//                if(i == 7) {
-//                    htmlContent = bufferedReader.readLine();
-//                    break;
-//                }
-//                System.out.println(bufferedReader.readLine());
-//			}
-
+		try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))){
             htmlContent = bufferedReader.lines().filter(s -> s.startsWith("<table")).findAny().get();
-
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return htmlContent;
-	}
-
-	private BufferedReader getBufferedReaderFromUrl() throws IOException {
-		URLConnection urlConnection = null;
-		try {
-			URL url = new URL("https://www.gpw.pl/ajaxindex.php?action=GPWQuotations&start=showTable&tab=all&lang=PL&full=1");
-			urlConnection = url.openConnection();
-		} catch (MalformedURLException e) {
-            logger.error("Error occurs: " + e.getMessage());
-		}
-
-		BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-
-        return br;
 	}
 
 	private LocalDate getCurrentDateOfStockDetails() {

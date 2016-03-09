@@ -24,11 +24,11 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
-@RestController
-@RequestMapping("/api")
+//@RestController
+//@RequestMapping("/api")
 @RolesAllowed(AuthoritiesConstants.ADMIN)
 @Service
-public class UpdateStocksDetailsData {
+public class StocksDetailsUpdater {
 
 	@Inject
 	private StockDetailsService stockDetailsService;
@@ -52,8 +52,8 @@ public class UpdateStocksDetailsData {
 	private StockIndicatorsCalculator stockIndicatorsCalculator;
 
 
-	@RequestMapping(value = "/update/db", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@Transactional
+//	@RequestMapping(value = "/update/db", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//	@Transactional
 	@Scheduled(cron = "0 30 17 ? * MON-FRI")
 	public void updateStockDetails() throws IOException, InterruptedException {
 		LocalDate lastQuotedDateFromDataBase = stockDetailsService.findLastTopDate().getBody();
@@ -73,6 +73,7 @@ public class UpdateStocksDetailsData {
 		if (!lastQuotedDateFromDataBase.isEqual(lastQuotedDateFromStooqWeb)) {
             List<StockDetails> currentStockDetails = stockDetailsParser.getCurrentStockDetails();
             stockDetailsRepository.save(currentStockDetails);
+
             List<StockIndicators> stockIndicators = stockIndicatorsCalculator.calculateCurrentStockIndicators();
             stockIndicatorsRepository.save(stockIndicators);
 		}

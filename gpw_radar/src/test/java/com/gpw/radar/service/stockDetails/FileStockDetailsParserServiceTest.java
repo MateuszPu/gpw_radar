@@ -8,6 +8,7 @@ import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
 import com.gpw.radar.service.builders.StockBuilder;
 import com.gpw.radar.service.parser.file.stockDetails.FileStockDetailsParserService;
 import com.gpw.radar.service.parser.file.stockFiveMinutesDetails.FileStockFiveMinutesDetailsParserService;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -46,6 +48,12 @@ public class FileStockDetailsParserServiceTest {
         String stockFiveMinutesDetailsFilePath = "/stocks_data/5min/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
         inputStreamOfStockDetails = getClass().getResourceAsStream(stockDetailsFilePath);
         inputStreamOfStockFiveMinutesDetails = getClass().getResourceAsStream(stockFiveMinutesDetailsFilePath);
+    }
+
+    @After
+    public void close() throws IOException {
+        inputStreamOfStockDetails.close();
+        inputStreamOfStockFiveMinutesDetails.close();
     }
 
     @Test

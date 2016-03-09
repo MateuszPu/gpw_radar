@@ -7,7 +7,7 @@ import com.gpw.radar.domain.stock.StockFiveMinutesIndicators;
 import com.gpw.radar.repository.stock.StockFiveMinutesIndicatorsRepository;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
-import com.gpw.radar.service.parser.web.CurrentStockDetailsParserService;
+import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 // getting data from http://stooq.pl/db
 @Component("stooqFiveMinutesProcessor")
@@ -38,13 +37,14 @@ public class StooqFiveMinutesProcessor implements StockFiveMinutesDetailsProcess
     private StockFiveMinutesIndicatorsRepository stockFiveMinutesIndicatorsRepository;
 
     @Inject
-    private CurrentStockDetailsParserService currentStockDetailsParserService;
+    private UrlStreamsGetterService urlStreamsGetterService;
 
     @Inject
     private DateAndTimeParserService dateAndTimeParserService;
 
     private List<Stock> stocksInApp;
-    private List<StockFiveMinutesDetails> lastStockFiveMinuteDetails = new ArrayList<>();;
+    private List<StockFiveMinutesDetails> lastStockFiveMinuteDetails = new ArrayList<>();
+    ;
     private List<StockFiveMinutesIndicators> fiveMinutesIndicators;
 
     public List<StockFiveMinutesDetails> processDetailsByTime(LocalTime lookingTime) {
@@ -162,7 +162,7 @@ public class StooqFiveMinutesProcessor implements StockFiveMinutesDetailsProcess
     }
 
     public InputStreamReader getInputStreamReader() {
-        InputStreamReader inputStreamReader = currentStockDetailsParserService.getInputStreamReaderFromUrl(prepareUrl());
+        InputStreamReader inputStreamReader = urlStreamsGetterService.getInputStreamReaderFromUrl(prepareUrl());
         return inputStreamReader;
     }
 
