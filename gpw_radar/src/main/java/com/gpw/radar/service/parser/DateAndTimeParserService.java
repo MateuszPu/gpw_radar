@@ -64,10 +64,8 @@ public class DateAndTimeParserService {
         String line = "";
         String cvsSplitBy = ",";
         LocalDate date = null;
-        BufferedReader bufferedReader = null;
         String url = "http://stooq.pl/q/l/?s=wig20&f=sd2t2ohlcv&h&e=csv";
-        try (InputStreamReader inputStreamReader = urlStreamsGetterService.getInputStreamReaderFromUrl(url)){
-            bufferedReader = new BufferedReader(inputStreamReader);
+        try (BufferedReader bufferedReader = new BufferedReader(urlStreamsGetterService.getInputStreamReaderFromUrl(url))){
             // skip first line as there are a headers
             bufferedReader.readLine();
             line = bufferedReader.readLine();

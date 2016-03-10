@@ -128,7 +128,7 @@ public class RssParserService implements RssObservable {
     }
 
     private Optional<Stock> getStockFromTitle(String message) {
-        Pattern pattern = Pattern.compile("^([ĄŻŹĆŃŁÓŚĘ0-9A-Z-/.]+ )+");
+        Pattern pattern = Pattern.compile("^([\\p{javaUpperCase}0-9-/.]+ )+");
         Matcher matcher = pattern.matcher(message);
         if (matcher.find()) {
             Optional<Stock> stock = stockRepository.findByStockName(matcher.group(0).trim());

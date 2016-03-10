@@ -1,9 +1,10 @@
 package com.gpw.radar.service.parser.web.stock;
 
 
-import com.gpw.radar.domain.stock.Stock;
+import org.jsoup.nodes.Document;
 
 public interface StockParser {
 
-    public Stock setNameAndShortName(Stock stock);
+    String getStockNameFromWeb(Document doc);
+    String getStockShortNameFromWeb(Document doc);
 }

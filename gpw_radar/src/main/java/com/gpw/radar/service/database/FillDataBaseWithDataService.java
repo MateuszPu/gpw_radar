@@ -1,5 +1,6 @@
 package com.gpw.radar.service.database;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.EnumSet;
 import java.util.List;
@@ -13,6 +14,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.google.common.base.Stopwatch;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
@@ -84,9 +87,16 @@ public class FillDataBaseWithDataService {
     //TODO: refactor sending step as socket to application
     public ResponseEntity<Void> fillDataBaseWithStocks() {
         for (StockTicker element : StockTicker.values()) {
+            Document doc = null;
+            try {
+                doc = getDocumentFromStooqWeb(element.toString());
+            } catch (IOException e) {
+                logger.error("Error occurs: " + e.getMessage());
+            }
             Stock stock = new Stock();
             stock.setTicker(element);
-            stock = stockParser.setNameAndShortName(stock);
+            stock.setStockName(stockParser.getStockNameFromWeb(doc));
+            stock.setStockShortName(stockParser.getStockShortNameFromWeb(doc));
             stockRepository.save(stock);
         }
         fillDataStatusRepository.updateType(Type.STOCK.toString());
@@ -152,6 +162,11 @@ public class FillDataBaseWithDataService {
         stockFinanceEventRepository.save(stockFinanceEventFromWeb);
         fillDataStatusRepository.updateType(Type.STOCK_FINANCE_EVENTS.toString());
         return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    private Document getDocumentFromStooqWeb(String ticker) throws IOException {
+        Document doc = Jsoup.connect("http://stooq.pl/q/?s=" + ticker).get();
+        return doc;
     }
 
     private synchronized void increaseStep() {

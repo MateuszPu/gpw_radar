@@ -44,12 +44,11 @@ public class StooqFiveMinutesProcessor implements StockFiveMinutesDetailsProcess
 
     private List<Stock> stocksInApp;
     private List<StockFiveMinutesDetails> lastStockFiveMinuteDetails = new ArrayList<>();
-    ;
     private List<StockFiveMinutesIndicators> fiveMinutesIndicators;
 
     public List<StockFiveMinutesDetails> processDetailsByTime(LocalTime lookingTime) {
         List<StockFiveMinutesDetails> processedDetails = new ArrayList<StockFiveMinutesDetails>();
-        processedDetails = getCurrentFiveMinutesStockDetails(getInputStreamReader(), lookingTime);
+        processedDetails = getCurrentFiveMinutesStockDetails(urlStreamsGetterService.getInputStreamReaderFromUrl(prepareUrl()), lookingTime);
         processedDetails = fillEmptyTimeWithData(processedDetails, lastStockFiveMinuteDetails);
         processedDetails = calculateCumulatedVolume(processedDetails, lookingTime);
         processedDetails = setStockToEachDetail(processedDetails);
@@ -159,11 +158,6 @@ public class StooqFiveMinutesProcessor implements StockFiveMinutesDetailsProcess
                 .get().getAverageVolume()));
 
         return stockFiveMinutesDetails;
-    }
-
-    public InputStreamReader getInputStreamReader() {
-        InputStreamReader inputStreamReader = urlStreamsGetterService.getInputStreamReaderFromUrl(prepareUrl());
-        return inputStreamReader;
     }
 
     private String prepareUrl() {

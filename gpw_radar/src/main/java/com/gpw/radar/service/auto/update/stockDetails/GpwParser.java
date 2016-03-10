@@ -87,7 +87,7 @@ public class GpwParser implements StockDetailsParser {
                 std.setVolume(Long.valueOf(getElement(select, indexOfVolume)));
             } catch (NumberFormatException ex) {
                 // if string is not a valid presentation of number that means
-                // the stockdetails was not quoted
+                // the stockdetails was not quoted and we have to set last price to all details
                 std.setOpenPrice(new BigDecimal(getElement(select, indexOfLastClosePrice)));
                 std.setMaxPrice(new BigDecimal(getElement(select, indexOfLastClosePrice)));
                 std.setMinPrice(new BigDecimal(getElement(select, indexOfLastClosePrice)));

@@ -36,7 +36,7 @@ public class CorrelationService {
 
 	public ResponseEntity<TreeSet<StockStatistic>> computeCorrelation(StockTicker correlationForTicker, int period, CorrelationType correlationType) {
 		if (period != 10 && period != 20 && period != 30 && period != 60 && period != 90) {
-			return new ResponseEntity<>(new TreeSet<StockStatistic>() , HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		Objects.requireNonNull(correlationForTicker);
 		Objects.requireNonNull(correlationType);

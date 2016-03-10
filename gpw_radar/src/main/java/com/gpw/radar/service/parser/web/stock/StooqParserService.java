@@ -17,41 +17,18 @@ public class StooqParserService implements StockParser {
 
     private final Logger logger = LoggerFactory.getLogger(StooqParserService.class);
 
-    public Stock setNameAndShortName(Stock stock) {
-
-        Document doc = null;
-        try {
-            doc = getDocumentFromStooqWeb(stock.getTicker().toString());
-        } catch (IOException e) {
-            logger.error("Error occurs: " + e.getMessage());
-        }
-
-        String stockName = getStockNameFromWeb(doc);
-        stock.setStockName(stockName);
-
-        String stockShortName = getStockShortNameFromWeb(doc);
-        stock.setStockShortName(stockShortName);
-
-        return stock;
-    }
-
-    private String getStockNameFromWeb(Document doc) {
+    public String getStockNameFromWeb(Document doc) {
         String title = doc.title();
         String stockName = title.substring(title.indexOf("- ") + 2, title.indexOf("- Stooq"));
         String stockNameOutOfSpacesAndUpperCase = stockName.trim().toUpperCase();
         return stockNameOutOfSpacesAndUpperCase;
     }
 
-    private String getStockShortNameFromWeb(Document doc) {
+    public String getStockShortNameFromWeb(Document doc) {
         Elements links = doc.select("meta");
         Element table = links.get(1);
         String attr = table.attr("content");
         String stockShortName = attr.substring(0, attr.indexOf(","));
         return stockShortName;
-    }
-
-    private Document getDocumentFromStooqWeb(String ticker) throws IOException {
-        Document doc = Jsoup.connect("http://stooq.pl/q/?s=" + ticker).get();
-        return doc;
     }
 }

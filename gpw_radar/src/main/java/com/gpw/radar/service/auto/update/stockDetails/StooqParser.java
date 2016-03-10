@@ -24,6 +24,13 @@ import java.util.List;
 @Component("stooqParser")
 public class StooqParser implements StockDetailsParser {
 
+    private static final int indexOfOpenPrice = 3;
+    private static final int indexOfMaxPrice = 4;
+    private static final int indexOfMinPrice = 5;
+    private static final int indexOfClosePrice = 6;
+    // private final int indexOfTransactionCount = 20;
+    private static final int indexOfVolume = 7;
+
     @Inject
     private StockRepository stockRepository;
 
@@ -83,12 +90,12 @@ public class StooqParser implements StockDetailsParser {
 
     private StockDetails getNewValuesOfStockDetails(StockDetails stockDetails, String[] stockDetailsFromCsv) {
         stockDetails.setDate(dateAndTimeParserService.parseLocalDateFromString(stockDetailsFromCsv[1]));
-        stockDetails.setOpenPrice(new BigDecimal(stockDetailsFromCsv[3]));
-        stockDetails.setMaxPrice(new BigDecimal(stockDetailsFromCsv[4]));
-        stockDetails.setMinPrice(new BigDecimal(stockDetailsFromCsv[5]));
-        stockDetails.setClosePrice(new BigDecimal(stockDetailsFromCsv[6]));
+        stockDetails.setOpenPrice(new BigDecimal(stockDetailsFromCsv[indexOfOpenPrice]));
+        stockDetails.setMaxPrice(new BigDecimal(stockDetailsFromCsv[indexOfMaxPrice]));
+        stockDetails.setMinPrice(new BigDecimal(stockDetailsFromCsv[indexOfMinPrice]));
+        stockDetails.setClosePrice(new BigDecimal(stockDetailsFromCsv[indexOfClosePrice]));
         if (stockDetailsFromCsv.length == 8) {
-            stockDetails.setVolume(Long.valueOf(stockDetailsFromCsv[7]));
+            stockDetails.setVolume(Long.valueOf(stockDetailsFromCsv[indexOfVolume]));
         } else {
             stockDetails.setVolume(0l);
         }
