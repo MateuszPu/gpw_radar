@@ -10,20 +10,16 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
-import com.google.common.base.Stopwatch;
+import com.gpw.radar.service.parser.web.stock.StockDataParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
-import org.springframework.data.jpa.repository.JpaContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.gpw.radar.domain.database.Type;
 import com.gpw.radar.domain.enumeration.StockTicker;
@@ -40,7 +36,6 @@ import com.gpw.radar.repository.stock.StockFiveMinutesIndicatorsRepository;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.parser.file.stockDetails.StockDetailsParser;
 import com.gpw.radar.service.parser.file.stockFiveMinutesDetails.StockFiveMinutesDetailsParser;
-import com.gpw.radar.service.parser.web.stock.StockParser;
 import com.gpw.radar.service.parser.web.stockFinanceEvent.StockFinanceEventParser;
 
 @Service
@@ -72,14 +67,14 @@ public class FillDataBaseWithDataService {
     private int step;
     private ClassLoader classLoader = getClass().getClassLoader();
     private StockFinanceEventParser stockFinanceEventParser;
-    private StockParser stockParser;
+    private StockDataParser stockDataParser;
     private StockDetailsParser stockDetailsParser;
     private StockFiveMinutesDetailsParser stockFiveMinutesDetailsParser;
 
     @PostConstruct
     public void initParsers() {
         stockFinanceEventParser = beanFactory.getBean("stockwatchParserService", StockFinanceEventParser.class);
-        stockParser = beanFactory.getBean("stooqParserService", StockParser.class);
+        stockDataParser = beanFactory.getBean("stooqParserService", StockDataParser.class);
         stockDetailsParser = beanFactory.getBean("fileStockDetailsParserService", StockDetailsParser.class);
         stockFiveMinutesDetailsParser = beanFactory.getBean("fileStockFiveMinutesDetailsParserService", StockFiveMinutesDetailsParser.class);
     }
@@ -95,8 +90,8 @@ public class FillDataBaseWithDataService {
             }
             Stock stock = new Stock();
             stock.setTicker(element);
-            stock.setStockName(stockParser.getStockNameFromWeb(doc));
-            stock.setStockShortName(stockParser.getStockShortNameFromWeb(doc));
+            stock.setStockName(stockDataParser.getStockNameFromWeb(doc));
+            stock.setStockShortName(stockDataParser.getStockShortNameFromWeb(doc));
             stockRepository.save(stock);
         }
         fillDataStatusRepository.updateType(Type.STOCK.toString());
