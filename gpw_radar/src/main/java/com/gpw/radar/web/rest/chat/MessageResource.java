@@ -1,6 +1,5 @@
 package com.gpw.radar.web.rest.chat;
 
-import com.gpw.radar.domain.chat.ChatMessage;
 import com.gpw.radar.security.AuthoritiesConstants;
 import com.gpw.radar.service.chat.ChatMessageLoader;
 import com.gpw.radar.web.rest.dto.chat.ChatMessageDTO;

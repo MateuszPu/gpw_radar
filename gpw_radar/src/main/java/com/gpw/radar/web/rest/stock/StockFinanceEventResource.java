@@ -1,6 +1,5 @@
 package com.gpw.radar.web.rest.stock;
 
-import com.gpw.radar.domain.stock.StockFinanceEvent;
 import com.gpw.radar.security.AuthoritiesConstants;
 import com.gpw.radar.service.stock.StockFinanceEventService;
 import com.gpw.radar.web.rest.dto.stock.StockWithStockFinanceEventDTO;

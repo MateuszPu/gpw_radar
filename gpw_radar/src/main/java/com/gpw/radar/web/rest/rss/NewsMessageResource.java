@@ -1,7 +1,6 @@
 package com.gpw.radar.web.rest.rss;
 
 import com.gpw.radar.domain.enumeration.RssType;
-import com.gpw.radar.domain.rss.NewsMessage;
 import com.gpw.radar.security.AuthoritiesConstants;
 import com.gpw.radar.service.rss.NewsMessageService;
 import com.gpw.radar.web.rest.dto.rssNews.NewsDetailsDTO;

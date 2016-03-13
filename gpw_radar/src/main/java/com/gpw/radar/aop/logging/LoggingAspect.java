@@ -1,7 +1,6 @@
 package com.gpw.radar.aop.logging;
 
 import com.gpw.radar.config.Constants;
-
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;

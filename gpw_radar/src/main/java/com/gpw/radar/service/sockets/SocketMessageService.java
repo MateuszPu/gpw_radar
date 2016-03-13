@@ -14,9 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.time.LocalTime;
-import java.util.ArrayDeque;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class SocketMessageService implements RssObserver, SocketMessageHandler {

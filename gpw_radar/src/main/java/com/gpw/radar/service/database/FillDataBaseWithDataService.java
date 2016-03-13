@@ -1,17 +1,14 @@
 package com.gpw.radar.service.database;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-
+import com.gpw.radar.domain.database.Type;
+import com.gpw.radar.domain.enumeration.StockTicker;
+import com.gpw.radar.domain.stock.*;
+import com.gpw.radar.repository.auto.update.FillDataStatusRepository;
+import com.gpw.radar.repository.stock.*;
+import com.gpw.radar.service.parser.file.stockDetails.StockDetailsParser;
+import com.gpw.radar.service.parser.file.stockFiveMinutesDetails.StockFiveMinutesDetailsParser;
 import com.gpw.radar.service.parser.web.stock.StockDataParser;
+import com.gpw.radar.service.parser.web.stockFinanceEvent.StockFinanceEventParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
@@ -21,22 +18,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.gpw.radar.domain.database.Type;
-import com.gpw.radar.domain.enumeration.StockTicker;
-import com.gpw.radar.domain.stock.Stock;
-import com.gpw.radar.domain.stock.StockDetails;
-import com.gpw.radar.domain.stock.StockFinanceEvent;
-import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
-import com.gpw.radar.domain.stock.StockFiveMinutesIndicators;
-import com.gpw.radar.repository.auto.update.FillDataStatusRepository;
-import com.gpw.radar.repository.stock.StockDetailsRepository;
-import com.gpw.radar.repository.stock.StockFinanceEventRepository;
-import com.gpw.radar.repository.stock.StockFiveMinutesDetailsRepository;
-import com.gpw.radar.repository.stock.StockFiveMinutesIndicatorsRepository;
-import com.gpw.radar.repository.stock.StockRepository;
-import com.gpw.radar.service.parser.file.stockDetails.StockDetailsParser;
-import com.gpw.radar.service.parser.file.stockFiveMinutesDetails.StockFiveMinutesDetailsParser;
-import com.gpw.radar.service.parser.web.stockFinanceEvent.StockFinanceEventParser;
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class FillDataBaseWithDataService {

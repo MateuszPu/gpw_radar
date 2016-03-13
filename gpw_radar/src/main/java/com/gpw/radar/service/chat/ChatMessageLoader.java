@@ -1,6 +1,5 @@
 package com.gpw.radar.service.chat;
 
-import com.gpw.radar.domain.chat.ChatMessage;
 import com.gpw.radar.web.rest.dto.chat.ChatMessageDTO;
 import org.springframework.http.ResponseEntity;
 

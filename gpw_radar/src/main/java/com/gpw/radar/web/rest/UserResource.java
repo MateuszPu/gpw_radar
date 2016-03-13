@@ -1,21 +1,20 @@
 package com.gpw.radar.web.rest;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.security.Principal;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.annotation.security.RolesAllowed;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-
+import com.codahale.metrics.annotation.Timed;
+import com.gpw.radar.domain.Authority;
+import com.gpw.radar.domain.User;
+import com.gpw.radar.repository.AuthorityRepository;
+import com.gpw.radar.repository.UserRepository;
+import com.gpw.radar.security.AuthoritiesConstants;
+import com.gpw.radar.service.UserService;
+import com.gpw.radar.service.mail.MailSender;
 import com.gpw.radar.service.stock.StockFinanceEventService;
 import com.gpw.radar.service.stock.StockService;
+import com.gpw.radar.web.rest.dto.ManagedUserDTO;
 import com.gpw.radar.web.rest.dto.stock.StockDTO;
 import com.gpw.radar.web.rest.dto.stock.StockWithStockFinanceEventDTO;
+import com.gpw.radar.web.rest.util.HeaderUtil;
+import com.gpw.radar.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -26,25 +25,17 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.codahale.metrics.annotation.Timed;
-import com.gpw.radar.domain.Authority;
-import com.gpw.radar.domain.User;
-import com.gpw.radar.domain.stock.Stock;
-import com.gpw.radar.domain.stock.StockFinanceEvent;
-import com.gpw.radar.repository.AuthorityRepository;
-import com.gpw.radar.repository.UserRepository;
-import com.gpw.radar.security.AuthoritiesConstants;
-import com.gpw.radar.service.UserService;
-import com.gpw.radar.service.mail.MailSender;
-import com.gpw.radar.web.rest.dto.ManagedUserDTO;
-import com.gpw.radar.web.rest.util.HeaderUtil;
-import com.gpw.radar.web.rest.util.PaginationUtil;
+import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing users.

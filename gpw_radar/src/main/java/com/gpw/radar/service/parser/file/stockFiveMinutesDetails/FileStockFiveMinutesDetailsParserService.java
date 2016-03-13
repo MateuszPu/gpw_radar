@@ -1,11 +1,9 @@
 package com.gpw.radar.service.parser.file.stockFiveMinutesDetails;
 
 import com.gpw.radar.domain.stock.Stock;
-import com.gpw.radar.domain.stock.StockDetails;
 import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
 import com.gpw.radar.domain.stock.StockFiveMinutesIndicators;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
-import com.gpw.radar.service.parser.file.stockDetails.StockDetailsParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -15,12 +13,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service

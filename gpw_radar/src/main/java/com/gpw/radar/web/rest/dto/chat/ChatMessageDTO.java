@@ -1,7 +1,5 @@
 package com.gpw.radar.web.rest.dto.chat;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.ZonedDateTime;
 
 public class ChatMessageDTO {

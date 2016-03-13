@@ -2,11 +2,9 @@ package com.gpw.radar.web.rest.stock;
 
 import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.enumeration.TrendDirection;
-import com.gpw.radar.domain.stock.StockIndicators;
 import com.gpw.radar.security.AuthoritiesConstants;
 import com.gpw.radar.service.stock.StockService;
 import com.gpw.radar.web.rest.dto.stock.StockWithStockIndicatorsDTO;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

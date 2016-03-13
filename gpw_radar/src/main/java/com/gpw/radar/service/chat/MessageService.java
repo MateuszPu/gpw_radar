@@ -1,7 +1,6 @@
 package com.gpw.radar.service.chat;
 
 import com.gpw.radar.domain.User;
-import com.gpw.radar.domain.chat.ChatMessage;
 import com.gpw.radar.domain.chat.UserMessage;
 import com.gpw.radar.repository.UserRepository;
 import com.gpw.radar.repository.chat.MessageRepository;

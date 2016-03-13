@@ -6,7 +6,6 @@ import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.auto.update.stockDetails.GpwParser;
-import com.gpw.radar.service.auto.update.stockDetails.StooqParser;
 import com.gpw.radar.service.builders.StockBuilder;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

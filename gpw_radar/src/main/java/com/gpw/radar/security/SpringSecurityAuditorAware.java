@@ -1,7 +1,6 @@
 package com.gpw.radar.security;
 
 import com.gpw.radar.config.Constants;
-
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 

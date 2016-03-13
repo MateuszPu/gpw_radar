@@ -2,7 +2,6 @@ package com.gpw.radar.repository;
 
 import com.gpw.radar.config.audit.AuditEventConverter;
 import com.gpw.radar.domain.PersistentAuditEvent;
-
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.boot.actuate.audit.AuditEventRepository;
 import org.springframework.context.annotation.Bean;

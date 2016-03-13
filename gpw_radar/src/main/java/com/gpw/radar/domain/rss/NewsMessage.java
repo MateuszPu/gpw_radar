@@ -1,7 +1,6 @@
 package com.gpw.radar.domain.rss;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gpw.radar.domain.User;
 import com.gpw.radar.domain.chat.ChatMessage;
 import com.gpw.radar.domain.enumeration.RssType;
 import com.gpw.radar.domain.stock.Stock;
@@ -9,7 +8,6 @@ import com.gpw.radar.domain.stock.Stock;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "NEWS_MESSAGE")

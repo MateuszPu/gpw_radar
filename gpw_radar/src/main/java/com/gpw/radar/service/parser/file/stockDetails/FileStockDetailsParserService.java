@@ -2,7 +2,6 @@ package com.gpw.radar.service.parser.file.stockDetails;
 
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;
-import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,11 +13,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service

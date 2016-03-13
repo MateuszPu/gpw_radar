@@ -21,9 +21,8 @@ public class StooqDataParserService implements StockDataParser {
         String title = doc.title();
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(title);
-        String stockName ="";
-        if (matcher.find())
-        {
+        String stockName = "";
+        if (matcher.find()) {
             stockName = matcher.group(0);
         }
         String stockNameOutOfSpacesAndUpperCase = stockName.trim().toUpperCase();

@@ -1,12 +1,11 @@
 package com.gpw.radar.service.mail;
 
-import java.util.List;
-import java.util.Locale;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.mail.internet.MimeMessage;
-
+import com.gpw.radar.config.JHipsterProperties;
+import com.gpw.radar.domain.User;
+import com.gpw.radar.domain.rss.NewsMessage;
+import com.gpw.radar.repository.UserRepository;
+import com.gpw.radar.service.chat.RssObserver;
+import com.gpw.radar.service.rss.RssObservable;
 import org.apache.commons.lang.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,12 +17,11 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
-import com.gpw.radar.config.JHipsterProperties;
-import com.gpw.radar.domain.User;
-import com.gpw.radar.domain.rss.NewsMessage;
-import com.gpw.radar.repository.UserRepository;
-import com.gpw.radar.service.chat.RssObserver;
-import com.gpw.radar.service.rss.RssObservable;
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+import javax.mail.internet.MimeMessage;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Service for sending e-mails.

@@ -2,11 +2,9 @@ package com.gpw.radar.repository;
 
 import com.gpw.radar.domain.User;
 import com.gpw.radar.domain.stock.Stock;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.ZonedDateTime;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findOneByActivationKey(String activationKey);
 
     List<User> findAllByActivatedIsFalseAndCreatedDateBefore(ZonedDateTime dateTime);
-    
+
     List<User> findAllByStocks(Stock stock);
 
     Optional<User> findOneByResetKey(String resetKey);
