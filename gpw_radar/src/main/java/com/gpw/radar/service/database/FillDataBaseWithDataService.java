@@ -64,7 +64,7 @@ public class FillDataBaseWithDataService {
     @PostConstruct
     public void initParsers() {
         stockFinanceEventParser = beanFactory.getBean("stockwatchParserService", StockFinanceEventParser.class);
-        stockDataParser = beanFactory.getBean("stooqParserService", StockDataParser.class);
+        stockDataParser = beanFactory.getBean("stooqDataParserService", StockDataParser.class);
         stockDetailsParser = beanFactory.getBean("fileStockDetailsParserService", StockDetailsParser.class);
         stockFiveMinutesDetailsParser = beanFactory.getBean("fileStockFiveMinutesDetailsParserService", StockFiveMinutesDetailsParser.class);
     }
