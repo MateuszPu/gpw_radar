@@ -67,16 +67,10 @@ angular.module('gpwRadarApp')
         }
 
         //followed stocks part
-        $scope.showDetailsOfStocksFollowed = function(){
-        	$scope.getAllStocksFollowed();
-        };
-
-    	$scope.getAllStocksFollowed = function(){
-	    	StocksFollowed.getStocksFollowed().then(function(response) {
-	    		$scope.smartTableSafeCopy = response;
-    			$scope.stocksFollowedByUserList = [].concat($scope.smartTableSafeCopy);
-	    	});
-        };
+        StocksFollowed.getStocksFollowed().then(function(response) {
+            $scope.smartTableSafeCopy = response;
+            $scope.stocksFollowedByUserList = [].concat($scope.smartTableSafeCopy);
+        });
 
         //calendar part
         $scope.financeEvents = [];
