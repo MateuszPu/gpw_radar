@@ -12,21 +12,6 @@ angular.module('gpwRadarApp')
         //scope for main page
         $scope.stocksFollowedByUserList = [];
 
-    	$scope.followStock = function(id){
-    		StocksFollowed.followStock(id);
-    		$scope.showDetailsOfStocksFollowed
-    	};
-
-    	$scope.stopFollowStock = function(id){
-    		StocksFollowed.stopFollowStock(id);
-    		$scope.showDetailsOfStocksFollowed();
-    	};
-
-    	$scope.isFollowed = function(id){
-    		var found = $filter('getById')($scope.stocksFollowedByUser, id);
-    		return found;
-    	};
-
     	//application status part
     	$scope.showApplicationStatus = function(){
     		$scope.getStatusOfUpdating();
@@ -64,13 +49,17 @@ angular.module('gpwRadarApp')
                     }
                 });
             })();
-        }
+        };
 
         //followed stocks part
-        StocksFollowed.getStocksFollowed().then(function(response) {
-            $scope.smartTableSafeCopy = response;
-            $scope.stocksFollowedByUserList = [].concat($scope.smartTableSafeCopy);
-        });
+        $scope.getAllStocksFollowed = function() {
+            StocksFollowed.getStocksFollowed().then(function(response) {
+                $scope.smartTableSafeCopy = response;
+                $scope.stocksFollowedByUserList = [].concat($scope.smartTableSafeCopy);
+            });
+        };
+
+        $scope.getAllStocksFollowed();
 
         //calendar part
         $scope.financeEvents = [];
