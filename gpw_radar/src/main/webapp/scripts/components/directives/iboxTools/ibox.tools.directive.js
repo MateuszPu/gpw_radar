@@ -20,10 +20,11 @@ angular.module('gpwRadarApp')
 	                }, 50);
 	            },
 	                // Function for close ibox
-	                $scope.closebox = function () {
-	                    var ibox = $element.closest('div.ibox');
-	                    ibox.remove();
-	                }
+                $scope.closebox = function () {
+                    var ibox = $element.closest('div.ibox');
+                    ibox.remove();
+                },
+                $scope.showhide();
 	        }
 	    };
 	});
