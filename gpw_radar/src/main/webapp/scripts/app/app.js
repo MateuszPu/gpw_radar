@@ -8,7 +8,8 @@ angular.module('gpwRadarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pasca
     'ngResource', 'daterangepicker'
     ])
 
-    .run(function ($rootScope, $location, $timeout, $window, $http, $state, $translate, Language, Auth, Principal, ENV, VERSION, amMoment, Websocket) {
+    .run(function ($rootScope, $location, $timeout, $window, $http, $state, $translate, Language, Auth,
+                   Principal, ENV, VERSION, amMoment, Websocket, StocksFollowed) {
         // update the window title using params in the following
         // precendence
         // 1. titleKey parameter
@@ -90,6 +91,14 @@ angular.module('gpwRadarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pasca
                 $state.go($rootScope.previousStateName, $rootScope.previousStateParams);
             }
         };
+
+        $rootScope.stocksFollowedByUser = [];
+        $rootScope.getStocksFollowedByUser = function(){
+            StocksFollowed.getStocksFollowed().then(function(data) {
+                $rootScope.stocksFollowedByUser = data;
+            });
+        };
+
     })
     .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider, $translateProvider, tmhDynamicLocaleProvider, httpRequestInterceptorCacheBusterProvider, AlertServiceProvider) {
         // uncomment below to make alerts look like toast

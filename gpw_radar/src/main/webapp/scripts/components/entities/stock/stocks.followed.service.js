@@ -35,3 +35,16 @@ angular.module('gpwRadarApp').filter('getById', function() {
 		return null;
 	}
 });
+
+angular.module('gpwRadarApp').filter('removeById', function() {
+    return function(input, id) {
+        var i=0, len=input.length;
+        for (; i<len; i++) {
+            if (+input[i].stockId == +id) {
+                input.splice(i, 1);
+                return;
+            }
+        }
+        return null;
+    }
+});

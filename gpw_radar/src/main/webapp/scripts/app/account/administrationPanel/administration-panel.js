@@ -17,6 +17,9 @@ angular.module('gpwRadarApp')
                     }
                 },
                 resolve: {
+                    promise: function($rootScope) {
+                        $rootScope.getStocksFollowedByUser();
+                    },
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('administrationPanel');
                         return $translate.refresh();

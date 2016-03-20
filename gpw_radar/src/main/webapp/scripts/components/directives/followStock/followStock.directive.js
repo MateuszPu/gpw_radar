@@ -2,8 +2,7 @@ angular.module('gpwRadarApp')
     .directive('followStock', function() {
         return {
             scope: {
-                id: '=',
-                updateData: '&'
+                stock: '='
             },
             controller: 'FollowStockController',
             restrict: 'E',

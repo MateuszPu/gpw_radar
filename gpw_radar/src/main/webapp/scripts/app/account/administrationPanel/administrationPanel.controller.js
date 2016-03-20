@@ -1,5 +1,5 @@
 angular.module('gpwRadarApp')
-.controller('AdministrationPanelController', function ($scope, $http, $timeout, $filter,
+.controller('AdministrationPanelController', function ($scope, $rootScope, $http, $timeout, $filter,
     		StocksFollowed, ApplicationStatus, StockFinanceEvent, DateUtils) {
         //scope for app status
     	$scope.isApplicationUpdating = false;
@@ -8,9 +8,6 @@ angular.module('gpwRadarApp')
         $scope.stepOfUpdate = 0;
         $scope.topDateOfStock;
         $scope.differenceBetweenDaysAndDB;
-
-        //scope for main page
-        $scope.stocksFollowedByUserList = [];
 
     	//application status part
     	$scope.showApplicationStatus = function(){
@@ -51,15 +48,9 @@ angular.module('gpwRadarApp')
             })();
         };
 
-        //followed stocks part
-        $scope.getAllStocksFollowed = function() {
-            StocksFollowed.getStocksFollowed().then(function(response) {
-                $scope.smartTableSafeCopy = response;
-                $scope.stocksFollowedByUserList = [].concat($scope.smartTableSafeCopy);
-            });
-        };
-
-        $scope.getAllStocksFollowed();
+        //followed stock part
+        $scope.smartTableSafeCopy = $rootScope.stocksFollowedByUser;
+        $scope.stocksFollowedByUserList = [].concat($scope.smartTableSafeCopy);
 
         //calendar part
         $scope.financeEvents = [];

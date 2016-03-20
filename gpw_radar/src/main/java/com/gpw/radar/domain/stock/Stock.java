@@ -4,8 +4,12 @@ package com.gpw.radar.domain.stock;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gpw.radar.domain.User;
 import com.gpw.radar.domain.enumeration.StockTicker;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -37,6 +41,7 @@ public class Stock implements Serializable {
 
     @JsonIgnore
 	@ManyToMany(mappedBy = "stocks")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 	private Set<User> users = new HashSet<>();
 
     public Long getId() {
