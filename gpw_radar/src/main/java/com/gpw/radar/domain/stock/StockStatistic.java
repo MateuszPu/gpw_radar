@@ -1,23 +1,23 @@
 package com.gpw.radar.domain.stock;
 
-import com.gpw.radar.domain.enumeration.Ticker;
+import com.gpw.radar.domain.enumeration.StockTicker;
 
 
 public final class StockStatistic implements Comparable<Object>{
 
-    private Ticker gpwStockTicker;
+    private StockTicker gpwStockTicker;
     private double statisticValue;
 
-    public StockStatistic(double statisticValue, Ticker gpwStockTicker) {
+    public StockStatistic(double statisticValue, StockTicker gpwStockTicker) {
         this.statisticValue = statisticValue;
         this.gpwStockTicker = gpwStockTicker;
     }
 
-    public Ticker getGpwStockTicker() {
+    public StockTicker getGpwStockTicker() {
         return gpwStockTicker;
     }
 
-    public void setGpwStockTicker(Ticker gpwStockTicker) {
+    public void setGpwStockTicker(StockTicker gpwStockTicker) {
         this.gpwStockTicker = gpwStockTicker;
     }
 

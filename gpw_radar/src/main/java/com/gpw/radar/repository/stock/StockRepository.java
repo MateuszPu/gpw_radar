@@ -1,7 +1,7 @@
 package com.gpw.radar.repository.stock;
 
 import com.gpw.radar.domain.User;
-import com.gpw.radar.domain.enumeration.Ticker;
+import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockStatistic;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,7 +16,7 @@ import java.util.Set;
  */
 public interface StockRepository extends JpaRepository<Stock, Long> {
 
-	Stock findByTicker(Ticker ticker);
+	Stock findByTicker(StockTicker ticker);
 	List<Stock> findAllByOrderByTickerAsc();
     Set<Stock> findByUsers(User user);
 	Optional<Stock> findByStockName(String stockName);
