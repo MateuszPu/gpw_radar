@@ -4,6 +4,7 @@ import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;
 import org.joda.time.LocalDate;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,6 +16,7 @@ public interface StockDetailsRepository extends JpaRepository<StockDetails, Long
 
     List<StockDetails> findByStockTickerOrderByDateAsc(StockTicker ticker);
 
+    @Cacheable(value = "stockDetailsByTickerCache")
     Page<StockDetails> findByStockTickerOrderByDateDesc(StockTicker ticker, Pageable pageable);
 
     StockDetails findTopByOrderByDateDesc();

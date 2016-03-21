@@ -57,7 +57,7 @@ public class StandardStockIndicatorsCalculator implements StockIndicatorsCalcula
 		}
 		prepareVeriables(stock);
 
-		stockIndicators.setPercentReturn(calculatePercentReturn(closePrice));
+        stockIndicators.setPercentReturn(calculatePercentReturn(closePrice));
 		stockIndicators.setAverageVolume10Days(calculateAverageVolume(volume, 10));
 		stockIndicators.setAverageVolume30Days(calculateAverageVolume(volume, 30));
 		stockIndicators.setVolumeRatio10(calculateVolumeRation(volume, 10));

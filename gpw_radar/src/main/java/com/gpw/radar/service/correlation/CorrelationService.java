@@ -4,6 +4,7 @@ import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.StockDetails;
 import com.gpw.radar.domain.stock.StockStatistic;
 import com.gpw.radar.repository.stock.StockDetailsRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Page;
@@ -33,8 +34,9 @@ public class CorrelationService {
 	private int step;
 	private boolean isComputing;
 
+    @Cacheable(value = "correlationCache")
 	public ResponseEntity<TreeSet<StockStatistic>> computeCorrelation(StockTicker correlationForTicker, int period, CorrelationType correlationType) {
-		if (period != 10 && period != 20 && period != 30 && period != 60 && period != 90) {
+        if (period != 10 && period != 20 && period != 30 && period != 60 && period != 90) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		Objects.requireNonNull(correlationForTicker);

@@ -10,17 +10,23 @@ import com.gpw.radar.service.auto.update.stockDetails.indicators.StockIndicators
 import com.gpw.radar.service.parser.DateAndTimeParserService;
 import com.gpw.radar.service.stock.StockDetailsService;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
-//@RestController
-//@RequestMapping("/api")
+@RestController
+@RequestMapping("/api")
 @RolesAllowed(AuthoritiesConstants.ADMIN)
 @Service
 public class StocksDetailsUpdater {
@@ -47,9 +53,10 @@ public class StocksDetailsUpdater {
 	private StockIndicatorsCalculator stockIndicatorsCalculator;
 
 
-//	@RequestMapping(value = "/update/db", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//	@Transactional
+	@RequestMapping(value = "/update/db", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
 	@Scheduled(cron = "0 30 17 ? * MON-FRI")
+    @CacheEvict(cacheNames={"stockDetailsByTickerCache", "correlationCache"}, allEntries=true)
 	public void updateStockDetails() throws IOException, InterruptedException {
 		LocalDate lastQuotedDateFromDataBase = stockDetailsService.findLastTopDate().getBody();
 		LocalDate lastQuotedDateFromStooqWeb = dateAndTimeParserService.getLastDateWig20FromStooqWebsite();

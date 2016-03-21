@@ -34,11 +34,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findOneByLoginFetchStocks(@Param("login") String login);
 
     @Modifying
-    @Query(value="insert into USER_STOCKS (user_id, stock_id) values ((SELECT id from USERS where login= :login), :stockId)", nativeQuery = true)
+    @Query(value = "insert into USER_STOCKS (user_id, stock_id) values ((SELECT id from USERS where login= :login), :stockId)", nativeQuery = true)
     void createAssociationWithStock(@Param("login") String login, @Param("stockId") Long stockId);
 
     @Modifying
-    @Query(value="delete from USER_STOCKS where user_id= (SELECT id from USERS where login= :login) and stock_id= :stockId", nativeQuery = true)
+    @Query(value = "delete from USER_STOCKS where user_id= (SELECT id from USERS where login= :login) and stock_id= :stockId", nativeQuery = true)
     void deleteAssociationWithStock(@Param("login") String login, @Param("stockId") Long stockId);
 
     @Override

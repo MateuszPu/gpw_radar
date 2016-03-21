@@ -16,23 +16,26 @@ import java.util.Set;
  */
 public interface StockRepository extends JpaRepository<Stock, Long> {
 
-	Stock findByTicker(StockTicker ticker);
-	List<Stock> findAllByOrderByTickerAsc();
+    Stock findByTicker(StockTicker ticker);
+
+    List<Stock> findAllByOrderByTickerAsc();
+
     Set<Stock> findByUsers(User user);
-	Optional<Stock> findByStockName(String stockName);
 
-	@Query(value = "SELECT s.ticker, COUNT(s.ticker)\n"
-			+ "FROM stock s INNER JOIN user_stocks us ON s.id = us.stock_id \n"
-			+ "INNER JOIN user u on us.user_id = u.id GROUP BY s.ticker ORDER BY count(*) DESC LIMIT 5", nativeQuery = true)
-	List<StockStatistic> getTop5MostFollowedStocks();
+    Optional<Stock> findByStockName(String stockName);
 
-	@Query("select count(si) from StockIndicators si where si.percentReturn > 0")
-	Long countUpStocks();
+    @Query(value = "SELECT s.ticker, COUNT(s.ticker)\n"
+        + "FROM stock s INNER JOIN user_stocks us ON s.id = us.stock_id \n"
+        + "INNER JOIN user u on us.user_id = u.id GROUP BY s.ticker ORDER BY count(*) DESC LIMIT 5", nativeQuery = true)
+    List<StockStatistic> getTop5MostFollowedStocks();
 
-	@Query("select count(si) from StockIndicators si where si.percentReturn < 0")
-	Long countDownStocks();
+    @Query("select count(si) from StockIndicators si where si.percentReturn > 0")
+    Long countUpStocks();
 
-	@Query("select count(si) from StockIndicators si where si.percentReturn = 0")
-	Long countNoChangeStocks();
+    @Query("select count(si) from StockIndicators si where si.percentReturn < 0")
+    Long countDownStocks();
+
+    @Query("select count(si) from StockIndicators si where si.percentReturn = 0")
+    Long countNoChangeStocks();
 
 }
