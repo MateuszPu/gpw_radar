@@ -3,6 +3,6 @@
 angular.module('gpwRadarApp')
     .factory('StockFiveMinutesDetails', function ($resource, DateUtils) {
         return $resource('', {}, {
-            'getTodaysDetails': { method: 'GET', url:'api/get/5/minutes/stocks/today', isArray: true},
+            'getTodaysDetails': { method: 'GET', url:'api/5/minutes/stocks/most/active'}
         });
     });

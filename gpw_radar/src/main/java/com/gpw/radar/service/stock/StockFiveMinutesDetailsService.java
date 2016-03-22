@@ -3,16 +3,15 @@ package com.gpw.radar.service.stock;
 import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
 import com.gpw.radar.domain.stock.TimeStockFiveMinuteDetails;
 import com.gpw.radar.repository.stock.StockFiveMinutesDetailsRepository;
+import com.gpw.radar.service.parser.DateAndTimeParserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
+import java.time.*;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class StockFiveMinutesDetailsService {
@@ -20,20 +19,29 @@ public class StockFiveMinutesDetailsService {
     @Inject
     private StockFiveMinutesDetailsRepository stockFiveMinutesDetailsRepository;
 
-    public ResponseEntity<List<TimeStockFiveMinuteDetails>> findTodaysStockFiveMinutesDetails(LocalDate date) {
-        List<StockFiveMinutesDetails> std = stockFiveMinutesDetailsRepository.findByDate(date);
-        List<TimeStockFiveMinuteDetails> st = new ArrayList<>();
-        if (!std.isEmpty()) {
-            for (LocalTime time = LocalTime.of(9, 5); time.isBefore(LocalTime.of(16, 55)); time = time.plusMinutes(5)) {
-                LocalTime t = time;
-                TimeStockFiveMinuteDetails timeAndStock = new TimeStockFiveMinuteDetails();
-                timeAndStock.setTime(time);
-                timeAndStock.setListOfDetails(std.stream().filter(a -> a.getTime().equals(t)).collect(Collectors.toList()));
-                if (!timeAndStock.getListOfDetails().isEmpty()) {
-                    st.add(timeAndStock);
-                }
-            }
+    @Inject
+    private DateAndTimeParserService dateAndTimeParserService;
+
+    public ResponseEntity<TimeStockFiveMinuteDetails> findTodaysStockFiveMinutesDetails(Long dateTime) {
+        ZonedDateTime zonedDateTime = Instant.ofEpochMilli(dateTime).atZone(ZoneId.systemDefault());
+        LocalDate date = zonedDateTime.toLocalDate();
+        LocalTime time = dateAndTimeParserService.getFiveMinutesTime(zonedDateTime.toLocalTime());
+        return getTimeStockFiveMinuteDetailsResponseEntity(date, time);
+    }
+
+    private ResponseEntity<TimeStockFiveMinuteDetails> getTimeStockFiveMinuteDetailsResponseEntity(LocalDate date, LocalTime time) {
+        TimeStockFiveMinuteDetails timeStockFiveMinuteDetails = new TimeStockFiveMinuteDetails();
+        Optional<List<StockFiveMinutesDetails>> std = stockFiveMinutesDetailsRepository.findByDateAndTime(date, time);
+        if (std.isPresent()) {
+            timeStockFiveMinuteDetails = getDetails(std.get(), time);
         }
-        return new ResponseEntity<List<TimeStockFiveMinuteDetails>>(st, HttpStatus.OK);
+        return new ResponseEntity<TimeStockFiveMinuteDetails>(timeStockFiveMinuteDetails, HttpStatus.OK);
+    }
+
+    private TimeStockFiveMinuteDetails getDetails(List<StockFiveMinutesDetails> std, LocalTime time) {
+        TimeStockFiveMinuteDetails result = new TimeStockFiveMinuteDetails();
+        result.setTime(time);
+        result.setListOfDetails(std);
+        return result;
     }
 }

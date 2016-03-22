@@ -44,7 +44,7 @@ public class StockFiveMinutesDetails {
     @Transient
     private StockTicker stockTicker;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="stock_id", foreignKey = @ForeignKey(name="FK_stock"))
     private Stock stock;
 
