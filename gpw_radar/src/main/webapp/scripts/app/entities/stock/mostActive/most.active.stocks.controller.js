@@ -17,6 +17,10 @@ angular.module('gpwRadarApp')
             $scope.fiveMinutesEarlier.setSeconds(0);
             $scope.time = $scope.fiveMinutesEarlier.getTime() - 5 * $scope.miliSecondsInMinutes;
 
+            if($scope.events.length == 0 || ($scope.lastTime[0] < 9 && $scope.lastTime[1] < 5)) {
+                return;
+            }
+
             StockFiveMinutesDetails.getTodaysDetails({time: $scope.time}, function (result) {
                 $scope.events.push(result);
             });
