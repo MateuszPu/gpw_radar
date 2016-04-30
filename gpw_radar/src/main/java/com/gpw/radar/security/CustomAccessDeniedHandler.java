@@ -28,9 +28,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response,
             AccessDeniedException accessDeniedException) throws IOException, ServletException {
 
-        System.out.println("--------------------------------------------");
-        System.out.println("CustomAccessDeniedHandler AccessDeniedHandler");
-        System.out.println("--------------------------------------------");
         if (accessDeniedException instanceof CsrfException && !response.isCommitted()) {
             // Remove the session cookie so that client knows it's time to obtain a new CSRF token
             String pCookieName = "CSRF-TOKEN";

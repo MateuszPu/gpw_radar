@@ -22,8 +22,8 @@ spring:
         driver-class-name: org.postgresql.ds.PGSimpleDataSource
         url: jdbc:postgresql://localhost:5432/gpw_radar
         name:
-        username: postgres
-        password: postgres
+        username: pulkownik
+        password: pulkownik
     jpa:
         database-platform: com.gpw.radar.domain.util.FixedPostgreSQL82Dialect
         database: POSTGRESQL
