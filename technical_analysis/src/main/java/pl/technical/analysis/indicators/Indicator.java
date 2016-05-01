@@ -33,30 +33,26 @@ public abstract class Indicator {
 
     protected List<BigDecimal> getMaxPrices() {
         List<Tickable> ticks = this.ticks.getTicks();
-        List<BigDecimal> closesPrices = ticks.stream().map(el -> el.getMaxPrice()).collect(Collectors.toList());
 
-        return closesPrices;
+        return ticks.stream().map(el -> el.getMaxPrice()).collect(Collectors.toList());
     }
 
     protected List<BigDecimal> getMinPrices() {
         List<Tickable> ticks = this.ticks.getTicks();
-        List<BigDecimal> closesPrices = ticks.stream().map(el -> el.getMinPrice()).collect(Collectors.toList());
 
-        return closesPrices;
+        return ticks.stream().map(el -> el.getMinPrice()).collect(Collectors.toList());
     }
 
     protected List<BigDecimal> getOpenPrices() {
         List<Tickable> ticks = this.ticks.getTicks();
-        List<BigDecimal> closesPrices = ticks.stream().map(el -> el.getOpenPrice()).collect(Collectors.toList());
 
-        return closesPrices;
+        return ticks.stream().map(el -> el.getOpenPrice()).collect(Collectors.toList());
     }
 
     protected List<Long> getVolumens() {
         List<Tickable> ticks = this.ticks.getTicks();
-        List<Long> closesPrices = ticks.stream().map(el -> el.getVolume()).collect(Collectors.toList());
 
-        return closesPrices;
+        return ticks.stream().map(el -> el.getVolume()).collect(Collectors.toList());
     }
 
     public List<Double> getIndicators() {
