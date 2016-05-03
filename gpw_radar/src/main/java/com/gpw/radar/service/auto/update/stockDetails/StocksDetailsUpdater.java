@@ -1,5 +1,6 @@
 package com.gpw.radar.service.auto.update.stockDetails;
 
+import com.gpw.radar.config.CacheConfiguration;
 import com.gpw.radar.domain.stock.StockDetails;
 import com.gpw.radar.domain.stock.StockIndicators;
 import com.gpw.radar.repository.auto.update.DailyStockDetailsParserRepository;
@@ -25,8 +26,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
-@RestController
-@RequestMapping("/api")
 @RolesAllowed(AuthoritiesConstants.ADMIN)
 @Service
 public class StocksDetailsUpdater {
@@ -53,10 +52,9 @@ public class StocksDetailsUpdater {
 	private StockIndicatorsCalculator stockIndicatorsCalculator;
 
 
-	@RequestMapping(value = "/update/db", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@Transactional
 	@Scheduled(cron = "0 30 17 ? * MON-FRI")
-    @CacheEvict(cacheNames={"stockDetailsByTickerCache", "correlationCache"}, allEntries=true)
+    @CacheEvict(cacheNames={CacheConfiguration.STOCK_DETAILS_BY_TICKER_CACHE}, allEntries=true)
 	public void updateStockDetails() throws IOException, InterruptedException {
 		LocalDate lastQuotedDateFromDataBase = stockDetailsService.findLastTopDate().getBody();
 		LocalDate lastQuotedDateFromStooqWeb = dateAndTimeParserService.getLastDateWig20FromStooqWebsite();

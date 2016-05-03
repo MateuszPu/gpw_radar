@@ -3,6 +3,7 @@ package com.gpw.radar.web.rest.rss;
 import com.gpw.radar.domain.enumeration.RssType;
 import com.gpw.radar.security.AuthoritiesConstants;
 import com.gpw.radar.service.rss.NewsMessageService;
+import com.gpw.radar.service.rss.NewsMessageServiceable;
 import com.gpw.radar.web.rest.dto.rssNews.NewsDetailsDTO;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,16 +26,15 @@ import java.util.List;
 public class NewsMessageResource {
 
 	@Inject
-	private NewsMessageService newsMessageService;
+	private NewsMessageServiceable newsMessageServiceable;
 
 	@RequestMapping(value = "/latest", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<NewsDetailsDTO>> getNewsMessageByType(@RequestParam RssType type, @RequestParam int page, @RequestParam  int size) {
-        Pageable pageable = new PageRequest(page, size, Sort.Direction.DESC, "createdDate");
-        return newsMessageService.getLatestNewsMessageByType(type, pageable);
+    public ResponseEntity<List<NewsDetailsDTO>> getNewsMessageByType(@RequestParam RssType type) {
+        return newsMessageServiceable.getLatestNewsMessageByType(type);
     }
 
     @RequestMapping(value = "/range", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<NewsDetailsDTO>> getNewsMessageByTypeAndDateRange(@RequestParam RssType type, @RequestParam String startDate, @RequestParam  String endDate) {
-        return newsMessageService.getMessagesByTypeBetweenDates(type, ZonedDateTime.parse(startDate.replaceAll("\"", "")), ZonedDateTime.parse(endDate.replaceAll("\"", "")));
+        return newsMessageServiceable.getMessagesByTypeBetweenDates(type, ZonedDateTime.parse(startDate.replaceAll("\"", "")), ZonedDateTime.parse(endDate.replaceAll("\"", "")));
     }
 }

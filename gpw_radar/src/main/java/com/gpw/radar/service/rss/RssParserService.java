@@ -13,7 +13,6 @@ import com.rometools.fetcher.impl.HttpURLFeedFetcher;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
-import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
@@ -24,8 +23,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,13 +51,13 @@ public class RssParserService implements RssObservable {
         observers = new HashSet<>();
         feedFetcher = new HttpURLFeedFetcher();
 
-        LocalDateTime date = new LocalDateTime();
-        rssLinks.put(RssType.CHALLENGE, new LocalDateTime(date));
-        rssLinks.put(RssType.EBI, new LocalDateTime(date));
-        rssLinks.put(RssType.ESPI, new LocalDateTime(date));
-        rssLinks.put(RssType.PAP, new LocalDateTime(date));
-        rssLinks.put(RssType.RECOMMENDATIONS, new LocalDateTime(date));
-        rssLinks.put(RssType.RESULTS, new LocalDateTime(date));
+        LocalDateTime date = LocalDateTime.now();
+        rssLinks.put(RssType.CHALLENGE, date);
+        rssLinks.put(RssType.EBI, date);
+        rssLinks.put(RssType.ESPI, date);
+        rssLinks.put(RssType.PAP, date);
+        rssLinks.put(RssType.RECOMMENDATIONS, date);
+        rssLinks.put(RssType.RESULTS, date);
     }
 
     @Override
@@ -89,11 +87,13 @@ public class RssParserService implements RssObservable {
             List<SyndEntry> syndFeedItems = feed.getEntries();
 
             int indexOfLatestItem = 0;
-            LocalDateTime dt = new LocalDateTime(syndFeedItems.get(indexOfLatestItem).getPublishedDate());
+            Instant instant = Instant.ofEpochMilli(syndFeedItems.get(indexOfLatestItem).getPublishedDate().getTime());
+            LocalDateTime dt = LocalDateTime.ofInstant(instant, ZoneOffset.systemDefault());
 
             for (Object syndFeedEntry : syndFeedItems) {
                 SyndEntry syndEntry = (SyndEntry) syndFeedEntry;
-                LocalDateTime syndEntryPublishDate = new LocalDateTime(syndEntry.getPublishedDate());
+                Instant inst = Instant.ofEpochMilli(syndFeedItems.get(indexOfLatestItem).getPublishedDate().getTime());
+                LocalDateTime syndEntryPublishDate = LocalDateTime.ofInstant(inst, ZoneOffset.systemDefault());
                 if (syndEntryPublishDate.isAfter(date)) {
                     NewsMessage message = parseNewsMessageFromRssChannel(syndEntry, rssType);
                     rssNewsMessages.add(message);

@@ -1,5 +1,6 @@
 package com.gpw.radar.repository.stock;
 
+import com.gpw.radar.config.CacheConfiguration;
 import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;
@@ -16,7 +17,7 @@ public interface StockDetailsRepository extends JpaRepository<StockDetails, Long
 
     List<StockDetails> findByStockTickerOrderByDateAsc(StockTicker ticker);
 
-    @Cacheable(value = "stockDetailsByTickerCache")
+    @Cacheable(value = CacheConfiguration.STOCK_DETAILS_BY_TICKER_CACHE)
     Page<StockDetails> findByStockTickerOrderByDateDesc(StockTicker ticker, Pageable pageable);
 
     StockDetails findTopByOrderByDateDesc();
