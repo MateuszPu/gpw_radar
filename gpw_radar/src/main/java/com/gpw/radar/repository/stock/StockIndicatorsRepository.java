@@ -12,7 +12,7 @@ import java.util.List;
 public interface StockIndicatorsRepository extends JpaRepository<StockIndicators, Long>{
 	StockIndicators findByStock(Stock stock);
 
-	@Query("from StockIndicators si right join fetch si.stock")
+	@Query("from StockIndicators si right outer join si.stock")
 	List<StockIndicators> findAllStocksFetchStockIndicators();
 
 	@Query(value = "from StockIndicators si join fetch si.stock where si.slopeSimpleRegression10Days > 1 order by si.slopeSimpleRegression10Days desc", countQuery = "select count(si.stock) from StockIndicators si where si.slopeSimpleRegression10Days > 1")

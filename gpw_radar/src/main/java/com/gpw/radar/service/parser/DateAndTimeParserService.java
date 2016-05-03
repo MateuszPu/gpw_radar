@@ -59,6 +59,17 @@ public class DateAndTimeParserService {
         return LocalTime.parse(time, localTimeFormatterMap.get(key));
     }
 
+    public LocalTime getFiveMinutesTime(LocalTime timeToProcess) {
+        LocalTime time = timeToProcess;
+        if(time.isAfter(LocalTime.of(16,50))) {
+            time = LocalTime.of(16,50);
+        }
+        else {
+            time = LocalTime.of(time.getHour(), (time.getMinute()/5)*5);
+        }
+        return time;
+    }
+
     public LocalDate getLastDateWig20FromStooqWebsite() {
         String line = "";
         String cvsSplitBy = ",";

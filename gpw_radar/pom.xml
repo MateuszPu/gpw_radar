@@ -395,8 +395,8 @@
         </dependency>
         <!-- technical indicators dependency -->
         <dependency>
-            <groupId>technical.analysis.indicators</groupId>
-            <artifactId>technical_analysis_indicators</artifactId>
+            <groupId>pl.technical.analysis</groupId>
+            <artifactId>technical-analysis</artifactId>
             <version>${technical.analysis.indicators.version}</version>
         </dependency>
         <!-- dto -->

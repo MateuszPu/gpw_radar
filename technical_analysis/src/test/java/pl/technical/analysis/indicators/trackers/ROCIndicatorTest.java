@@ -1,14 +1,13 @@
 package pl.technical.analysis.indicators.trackers;
 
-import static org.assertj.core.api.StrictAssertions.assertThat;
-
-import java.util.List;
-
 import org.junit.Test;
-
 import pl.technical.analysis.ResourcesGetter;
 import pl.technical.analysis.Tickable;
 import pl.technical.analysis.indicators.Indicator;
+
+import java.util.List;
+
+import static org.assertj.core.api.StrictAssertions.assertThat;
 
 public class ROCIndicatorTest {
 	private List<Tickable> tickers = ResourcesGetter.getTickers("kgh.txt");

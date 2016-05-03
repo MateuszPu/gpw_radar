@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @Component("stooqFiveMinutesProcessor")
 public class StooqFiveMinutesProcessor implements StockFiveMinutesDetailsProcessor {
 
-    //    http://stooq.pl/db/d/?d=20151125&t=5&u=17407230
+    //    http://stooq.pl/db/d/?d=20160502&t=5&u=17407230
     private final Logger logger = LoggerFactory.getLogger(StooqFiveMinutesProcessor.class);
 
     @Inject

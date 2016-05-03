@@ -1,11 +1,11 @@
 package pl.technical.analysis.indicators.trackers;
 
+import pl.technical.analysis.Tickable;
+import pl.technical.analysis.indicators.Indicator;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
-
-import pl.technical.analysis.Tickable;
-import pl.technical.analysis.indicators.Indicator;
 
 /**
  * Relative strength index indicator.

@@ -8,15 +8,15 @@
                     <h1><span translate="stock.mostActiveStocks.title">Stocks analyzed on the website</span>
                     </h1>
                 </div>
-                <div class="ibox-content">
-                    <div id="vertical-timeline" class="vertical-container dark-timeline" ng-repeat="event in events | orderBy:'-time'" ng-init="numLimit= 5">
+                <div class="ibox-content" infinite-scroll="loadMore()">
+                    <div id="vertical-timeline" class="vertical-container dark-timeline" ng-repeat="event in events | orderBy:'-time'" ng-init="numLimit= 10">
                         <div class="vertical-timeline-block">
                             <div class="vertical-timeline-time ocean-bg">
                                 <i>{{event.time}}</i>
                             </div>
                             <div class="vertical-timeline-content">
                                 <div class="table-responsive">
-                                    <button  class="btn btn-default btn-block" ng-hide="numLimit<6" ng-click = "numLimit = numLimit-5"><span translate="stock.mostActiveStocks.list.less">Less</span></button>
+                                    <button  class="btn btn-default btn-block" ng-hide="numLimit<11" ng-click = "numLimit = numLimit-10"><span translate="stock.mostActiveStocks.list.less">Less</span></button>
                                     <table class="table table-striped table-hover">
                                         <tbody>
                                         <tr ng-repeat="stock in event.listOfDetails | orderBy:'-ratioVolume' | limitTo: numLimit">
@@ -38,8 +38,8 @@
                                         </tr>
                                         </tbody>
                                     </table>
-                                    <button  class="btn btn-default btn-block" ng-click = "numLimit = numLimit+5"><span translate="stock.mostActiveStocks.list.more">More</span></button>
-                                    <button  class="btn btn-default btn-block" ng-hide="numLimit<6" ng-click = "numLimit = numLimit-5"><span translate="stock.mostActiveStocks.list.less">Less</span></button>
+                                    <button  class="btn btn-default btn-block" ng-click = "numLimit = numLimit+10"><span translate="stock.mostActiveStocks.list.more">More</span></button>
+                                    <button  class="btn btn-default btn-block" ng-hide="numLimit<11" ng-click = "numLimit = numLimit-10"><span translate="stock.mostActiveStocks.list.less">Less</span></button>
                                 </div>
                             </div>
                         </div>

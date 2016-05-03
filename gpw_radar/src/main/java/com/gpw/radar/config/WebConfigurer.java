@@ -5,13 +5,12 @@ import com.codahale.metrics.servlet.InstrumentedFilter;
 import com.codahale.metrics.servlets.MetricsServlet;
 import com.gpw.radar.web.filter.CachingHttpHeadersFilter;
 import com.gpw.radar.web.filter.StaticResourcesProductionFilter;
+import org.apache.coyote.AbstractProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
-import org.springframework.boot.context.embedded.MimeMappings;
-import org.springframework.boot.context.embedded.ServletContextInitializer;
+import org.springframework.boot.context.embedded.*;
+import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -137,5 +136,17 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
             source.registerCorsConfiguration("/oauth/**", config);
         }
         return new CorsFilter(source);
+    }
+
+    @Bean
+    public EmbeddedServletContainerFactory servletContainerFactory() {
+        TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory();
+
+        factory.addConnectorCustomizers(connector ->
+            ((AbstractProtocol) connector.getProtocolHandler()).setConnectionTimeout(9000000));
+
+        // configure some more properties
+
+        return factory;
     }
 }

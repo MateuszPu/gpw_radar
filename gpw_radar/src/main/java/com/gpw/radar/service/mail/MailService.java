@@ -132,6 +132,9 @@ public class MailService implements RssObserver, MailSender {
             return;
         }
         List<User> usersToSendEmail = userRepository.findAllByStocks(message.getStock());
+        if(usersToSendEmail.isEmpty()) {
+            return;
+        }
         String[] emails = usersToSendEmail.stream().map(e -> e.getEmail()).toArray(size -> new String[size]);
         String mailTopic = "[Kanal: " + message.getType().toString() + "] [" + message.getStock().getTicker().toString().toUpperCase() + "]" + message.getMessage();
 

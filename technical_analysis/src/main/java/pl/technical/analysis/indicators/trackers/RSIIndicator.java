@@ -17,7 +17,6 @@ public class RSIIndicator extends Indicator {
 
     private BigDecimal averageGain = BigDecimal.ZERO;
     private BigDecimal averageLoss = BigDecimal.ZERO;
-    private final int scale = 5;
 
     public RSIIndicator(List<Tickable> ticks, int period) {
         super(ticks, period);
@@ -42,6 +41,7 @@ public class RSIIndicator extends Indicator {
     private BigDecimal calculateRsIndicator(List<BigDecimal> closesPrices, int i) {
         List<BigDecimal> gains = calculateGains(closesPrices);
         List<BigDecimal> periodGains = gains.subList(i, super.period + i);
+        int scale = 5;
         if (i == 0) {
             averageGain = calculateAverageGain(periodGains);
             averageLoss = calculateAverageLoss(periodGains);
@@ -86,13 +86,12 @@ public class RSIIndicator extends Indicator {
 
     private BigDecimal calculateAverageGain(List<BigDecimal> gains) {
         BigDecimal divider = BigDecimal.valueOf(super.period);
-        BigDecimal averageGain = gains
+
+        return gains
                 .stream()
                 .filter(e -> e.doubleValue() >= 0)
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
                 .divide(divider, 10, RoundingMode.HALF_UP);
-
-        return averageGain;
 
     }
 }
