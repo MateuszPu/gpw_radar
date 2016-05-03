@@ -80,7 +80,7 @@ public class RssParserService implements RssObservable {
     }
 
     private List<NewsMessage> getNewsMessagesFromUrl(RssType rssType, LocalDateTime date) {
-        SyndFeed feed = null;
+        SyndFeed feed;
         List<NewsMessage> rssNewsMessages = new ArrayList<>();
         try {
             feed = feedFetcher.retrieveFeed(new URL(rssType.getUrl()));
