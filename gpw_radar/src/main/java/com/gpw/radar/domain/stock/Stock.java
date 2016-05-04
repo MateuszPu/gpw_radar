@@ -18,8 +18,6 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "STOCK")
-@NamedEntityGraph(name = "Stock.indicators",
-    attributeNodes = @NamedAttributeNode("stockIndicators"))
 public class Stock implements Serializable {
 
     @Id

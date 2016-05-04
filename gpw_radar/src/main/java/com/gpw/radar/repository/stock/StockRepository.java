@@ -4,7 +4,6 @@ import com.gpw.radar.domain.User;
 import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockStatistic;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -22,9 +21,6 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
     List<Stock> findAllByOrderByTickerAsc();
 
     Set<Stock> findByUsers(User user);
-
-    @EntityGraph(value = "Stock.indicators", type = EntityGraph.EntityGraphType.LOAD)
-    List<Stock> findAll();
 
     @Query("from Stock st left outer join fetch st.stockIndicators")
     List<Stock> findAllFetchIndicators();

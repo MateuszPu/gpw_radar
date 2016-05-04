@@ -26,7 +26,9 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.lang.reflect.Type;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class StockService {
@@ -98,7 +100,8 @@ public class StockService {
 
     private List<StockWithStockIndicatorsDTO> getStockWithStockIndicatorsDTOs(List<?> stocks) {
         ModelMapper modelMapper = new ModelMapper();
-        Type dtoType = new TypeToken<List<StockWithStockIndicatorsDTO>>() {}.getType();
+        Type dtoType = new TypeToken<List<StockWithStockIndicatorsDTO>>() {
+        }.getType();
         return modelMapper.map(stocks, dtoType);
     }
 
