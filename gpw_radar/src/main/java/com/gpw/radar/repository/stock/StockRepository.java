@@ -1,9 +1,11 @@
 package com.gpw.radar.repository.stock;
 
+import com.gpw.radar.config.CacheConfiguration;
 import com.gpw.radar.domain.User;
 import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockStatistic;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -20,6 +22,7 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
 
     List<Stock> findAllByOrderByTickerAsc();
 
+    @Cacheable(value = CacheConfiguration.STOCKS_FOLLOWED_BY_USER_CACHE, key = "#p0.login")
     Set<Stock> findByUsers(User user);
 
     @Query("from Stock st left outer join fetch st.stockIndicators")

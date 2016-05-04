@@ -54,7 +54,7 @@ public class StocksDetailsUpdater {
 
 	@Transactional
 	@Scheduled(cron = "0 30 17 ? * MON-FRI")
-    @CacheEvict(cacheNames={CacheConfiguration.STOCK_DETAILS_BY_TICKER_CACHE}, allEntries=true)
+    @CacheEvict(cacheNames={CacheConfiguration.STOCK_DETAILS_BY_TICKER_CACHE, CacheConfiguration.ALL_STOCKS_FETCH_INDICATORS_CACHE}, allEntries=true)
 	public void updateStockDetails() throws IOException, InterruptedException {
 		LocalDate lastQuotedDateFromDataBase = stockDetailsService.findLastTopDate().getBody();
 		LocalDate lastQuotedDateFromStooqWeb = dateAndTimeParserService.getLastDateWig20FromStooqWebsite();

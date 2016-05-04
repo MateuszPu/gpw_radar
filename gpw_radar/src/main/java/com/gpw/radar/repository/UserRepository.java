@@ -1,7 +1,10 @@
 package com.gpw.radar.repository;
 
+import com.gpw.radar.config.CacheConfiguration;
 import com.gpw.radar.domain.User;
 import com.gpw.radar.domain.stock.Stock;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -35,10 +38,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Modifying
     @Query(value = "insert into USER_STOCKS (user_id, stock_id) values ((SELECT id from USERS where login= :login), :stockId)", nativeQuery = true)
+    @CacheEvict(cacheNames = CacheConfiguration.STOCKS_FOLLOWED_BY_USER_CACHE, key = "#p0")
     void createAssociationWithStock(@Param("login") String login, @Param("stockId") Long stockId);
 
     @Modifying
     @Query(value = "delete from USER_STOCKS where user_id= (SELECT id from USERS where login= :login) and stock_id= :stockId", nativeQuery = true)
+    @CacheEvict(cacheNames = CacheConfiguration.STOCKS_FOLLOWED_BY_USER_CACHE, key = "#p0")
     void deleteAssociationWithStock(@Param("login") String login, @Param("stockId") Long stockId);
 
     @Override

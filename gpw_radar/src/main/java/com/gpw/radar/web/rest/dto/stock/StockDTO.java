@@ -1,18 +1,21 @@
 package com.gpw.radar.web.rest.dto.stock;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class StockDTO {
 
-    private Long stockId;
+    @JsonProperty("stockId")
+    private Long id;
     private String stockName;
     private String stockTicker;
     private String stockShortName;
 
-    public Long getStockId() {
-        return stockId;
+    public Long getId() {
+        return id;
     }
 
-    public void setStockId(Long stockId) {
-        this.stockId = stockId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getStockName() {

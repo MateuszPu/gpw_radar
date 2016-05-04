@@ -28,6 +28,9 @@ public class CacheConfiguration {
     private final Logger log = LoggerFactory.getLogger(CacheConfiguration.class);
     public static final String STOCK_DETAILS_BY_TICKER_CACHE = "stockDetailsByTickerCache";
     public static final String RSS_NEWS_BY_TYPE_CACHE = "rssNewsByTypeCache";
+    public static final String ALL_STOCKS_FETCH_INDICATORS_CACHE = "allStocksFetchIndicatorsCache";
+    public static final String STOCKS_FOLLOWED_BY_USER_CACHE = "stocksFollowedByUserCache";
+
 
     @Bean
     public CacheManager cacheManager() {
@@ -35,6 +38,8 @@ public class CacheConfiguration {
         List<String> caches = new ArrayList<>();
         caches.add(STOCK_DETAILS_BY_TICKER_CACHE);
         caches.add(RSS_NEWS_BY_TYPE_CACHE);
+        caches.add(ALL_STOCKS_FETCH_INDICATORS_CACHE);
+        caches.add(STOCKS_FOLLOWED_BY_USER_CACHE);
         cacheManager.setCacheNames(caches);
         return cacheManager;
     }

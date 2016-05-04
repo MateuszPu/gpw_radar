@@ -1,11 +1,9 @@
 package com.gpw.radar.service.correlation;
 
-import com.gpw.radar.config.CacheConfiguration;
 import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.StockDetails;
 import com.gpw.radar.domain.stock.StockStatistic;
 import com.gpw.radar.repository.stock.StockDetailsRepository;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.Page;

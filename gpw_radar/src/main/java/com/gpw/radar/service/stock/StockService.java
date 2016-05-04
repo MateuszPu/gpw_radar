@@ -1,5 +1,6 @@
 package com.gpw.radar.service.stock;
 
+import com.gpw.radar.config.CacheConfiguration;
 import com.gpw.radar.domain.User;
 import com.gpw.radar.domain.enumeration.TrendDirection;
 import com.gpw.radar.domain.stock.Stock;
@@ -16,6 +17,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -47,6 +49,7 @@ public class StockService {
     @Inject
     private UserRepository userRepository;
 
+    @Cacheable(value = CacheConfiguration.ALL_STOCKS_FETCH_INDICATORS_CACHE)
     public ResponseEntity<List<StockWithStockIndicatorsDTO>> getAllStocksFetchStockIndicators() throws URISyntaxException {
         List<Stock> stocks = stockRepository.findAllFetchIndicators();
         return new ResponseEntity<List<StockWithStockIndicatorsDTO>>(getStockWithStockIndicatorsDTOs(stocks), HttpStatus.OK);
