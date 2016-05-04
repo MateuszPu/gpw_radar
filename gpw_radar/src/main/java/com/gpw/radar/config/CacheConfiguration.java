@@ -30,7 +30,8 @@ public class CacheConfiguration {
     public static final String RSS_NEWS_BY_TYPE_CACHE = "rssNewsByTypeCache";
     public static final String ALL_STOCKS_FETCH_INDICATORS_CACHE = "allStocksFetchIndicatorsCache";
     public static final String STOCKS_FOLLOWED_BY_USER_CACHE = "stocksFollowedByUserCache";
-
+    public static final String TRENDING_STOCKS_CACHE = "trendingStocksCache";
+    public static final String USER_DETAILS_CACHE = "userDetailsCache";
 
     @Bean
     public CacheManager cacheManager() {
@@ -40,6 +41,8 @@ public class CacheConfiguration {
         caches.add(RSS_NEWS_BY_TYPE_CACHE);
         caches.add(ALL_STOCKS_FETCH_INDICATORS_CACHE);
         caches.add(STOCKS_FOLLOWED_BY_USER_CACHE);
+        caches.add(TRENDING_STOCKS_CACHE);
+        caches.add(USER_DETAILS_CACHE);
         cacheManager.setCacheNames(caches);
         return cacheManager;
     }

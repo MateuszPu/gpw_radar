@@ -55,6 +55,7 @@ public class StockService {
         return new ResponseEntity<List<StockWithStockIndicatorsDTO>>(getStockWithStockIndicatorsDTOs(stocks), HttpStatus.OK);
     }
 
+    @Cacheable(value = CacheConfiguration.TRENDING_STOCKS_CACHE)
     public ResponseEntity<List<StockWithStockIndicatorsDTO>> getTrendingStocks(TrendDirection trendDirection, int days, int offset, int limit) throws URISyntaxException {
         switch (trendDirection) {
             case UP:
@@ -110,22 +111,22 @@ public class StockService {
 
     @Transactional
     public ResponseEntity<Void> followStock(long stockId) throws URISyntaxException {
-        String username = SecurityUtils.getCurrentUser().getUsername();
-        userRepository.createAssociationWithStock(username, stockId);
+        User user = userService.getUserWithAuthorities();
+        userRepository.createAssociationWithStock(user.getId(), stockId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     @Transactional
     public ResponseEntity<Void> stopFollowStock(long stockId) throws URISyntaxException {
-        String username = SecurityUtils.getCurrentUser().getUsername();
-        userRepository.deleteAssociationWithStock(username, stockId);
+        User user = userService.getUserWithAuthorities();
+        userRepository.deleteAssociationWithStock(user.getId(), stockId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     @Transactional
     public ResponseEntity<List<StockDTO>> getStocksFollowedByUser() {
         User user = userService.getUserWithAuthorities();
-        Set<Stock> followedStocks = stockRepository.findByUsers(user);
+        List<Stock> followedStocks = stockRepository.findStocksByUserId(user.getId());
         return new ResponseEntity<List<StockDTO>>(getStockDTOs(followedStocks), HttpStatus.OK);
     }
 

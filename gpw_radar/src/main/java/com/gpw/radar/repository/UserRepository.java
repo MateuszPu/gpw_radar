@@ -29,22 +29,24 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findOneByEmail(String email);
 
+    @Cacheable(value = CacheConfiguration.USER_DETAILS_CACHE, key = "#p0")
     Optional<User> findOneByLogin(String login);
 
+    @Cacheable(value = CacheConfiguration.USER_DETAILS_CACHE, key = "#p0")
     Optional<User> findOneById(Long userId);
 
     @Query(value = "from User u join fetch u.stocks where u.login = :login")
     User findOneByLoginFetchStocks(@Param("login") String login);
 
     @Modifying
-    @Query(value = "insert into USER_STOCKS (user_id, stock_id) values ((SELECT id from USERS where login= :login), :stockId)", nativeQuery = true)
+    @Query(value = "insert into USER_STOCKS (user_id, stock_id) values (:userId, :stockId)", nativeQuery = true)
     @CacheEvict(cacheNames = CacheConfiguration.STOCKS_FOLLOWED_BY_USER_CACHE, key = "#p0")
-    void createAssociationWithStock(@Param("login") String login, @Param("stockId") Long stockId);
+    void createAssociationWithStock(@Param("userId") Long userId, @Param("stockId") Long stockId);
 
     @Modifying
-    @Query(value = "delete from USER_STOCKS where user_id= (SELECT id from USERS where login= :login) and stock_id= :stockId", nativeQuery = true)
+    @Query(value = "delete from USER_STOCKS where user_id= :userId and stock_id= :stockId", nativeQuery = true)
     @CacheEvict(cacheNames = CacheConfiguration.STOCKS_FOLLOWED_BY_USER_CACHE, key = "#p0")
-    void deleteAssociationWithStock(@Param("login") String login, @Param("stockId") Long stockId);
+    void deleteAssociationWithStock(@Param("userId") Long userId, @Param("stockId") Long stockId);
 
     @Override
     void delete(User t);

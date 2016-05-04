@@ -38,7 +38,7 @@ public class Stock implements Serializable {
     private String stockShortName;
 
     @JsonIgnore
-	@ManyToMany(mappedBy = "stocks")
+	@ManyToMany(mappedBy = "stocks", fetch = FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 	private Set<User> users = new HashSet<>();
 
