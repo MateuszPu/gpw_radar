@@ -26,9 +26,7 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.lang.reflect.Type;
 import java.net.URISyntaxException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class StockService {
@@ -48,8 +46,8 @@ public class StockService {
     private UserRepository userRepository;
 
     public ResponseEntity<List<StockWithStockIndicatorsDTO>> getAllStocksFetchStockIndicators() throws URISyntaxException {
-        List<StockIndicators> stockIndicators = stockIndicatorsRepository.findAllStocksFetchStockIndicators();
-        return new ResponseEntity<List<StockWithStockIndicatorsDTO>>(getStockWithStockIndicatorsDTOs(stockIndicators), HttpStatus.OK);
+        List<Stock> stocks = stockRepository.findAllFetchIndicators();
+        return new ResponseEntity<List<StockWithStockIndicatorsDTO>>(getStockWithStockIndicatorsDTOs(stocks), HttpStatus.OK);
     }
 
     public ResponseEntity<List<StockWithStockIndicatorsDTO>> getTrendingStocks(TrendDirection trendDirection, int days, int offset, int limit) throws URISyntaxException {
@@ -98,10 +96,10 @@ public class StockService {
         return new ResponseEntity<List<StockWithStockIndicatorsDTO>>(HttpStatus.NO_CONTENT);
     }
 
-    private List<StockWithStockIndicatorsDTO> getStockWithStockIndicatorsDTOs(List<StockIndicators> stockIndicators) {
+    private List<StockWithStockIndicatorsDTO> getStockWithStockIndicatorsDTOs(List<?> stocks) {
         ModelMapper modelMapper = new ModelMapper();
         Type dtoType = new TypeToken<List<StockWithStockIndicatorsDTO>>() {}.getType();
-        return modelMapper.map(stockIndicators, dtoType);
+        return modelMapper.map(stocks, dtoType);
     }
 
     @Transactional

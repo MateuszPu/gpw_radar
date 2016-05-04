@@ -26,7 +26,6 @@
          <column name="volume_ratio_30" type="NUMBER(10, 2)">
             <constraints nullable="false"/>
          </column>
-         <column name="stock_id" type="BIGINT"/>
       </createTable>
    </changeSet>
    <changeSet author="mateusz" id="20150817192416-2">
@@ -79,15 +78,6 @@
                                referencedColumnNames="id"
                                referencedTableName="USERS"/>
    </changeSet>
-   <changeSet author="mateusz" id="20150817192416-9">
-      <addForeignKeyConstraint baseColumnNames="stock_id"
-                               baseTableName="STOCK_INDICATORS"
-                               constraintName="FK_indicators_to_stock"
-                               deferrable="false"
-                               initiallyDeferred="false"
-                               referencedColumnNames="id"
-                               referencedTableName="STOCK"/>
-   </changeSet>
    <changeSet author="mateusz" id="20150817192416-10">
       <addForeignKeyConstraint baseColumnNames="stock_id"
                                baseTableName="USER_STOCKS"
@@ -118,4 +108,18 @@
          </column>
       </addColumn>
    </changeSet>
+    <changeSet author="mateusz (generated)" id="1462352439226-1">
+        <addColumn tableName="STOCK_INDICATORS">
+            <column name="stock_id" type="int8"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="mateusz (generated)" id="1462352439226-2">
+        <addForeignKeyConstraint baseColumnNames="stock_id"
+                                 baseTableName="STOCK_INDICATORS"
+                                 constraintName="fk_stock_id"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 referencedColumnNames="id"
+                                 referencedTableName="STOCK"/>
+    </changeSet>
 </databaseChangeLog>

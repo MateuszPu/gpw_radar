@@ -18,6 +18,8 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "STOCK")
+@NamedEntityGraph(name = "Stock.indicators",
+    attributeNodes = @NamedAttributeNode("stockIndicators"))
 public class Stock implements Serializable {
 
     @Id
@@ -41,6 +43,9 @@ public class Stock implements Serializable {
 	@ManyToMany(mappedBy = "stocks")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 	private Set<User> users = new HashSet<>();
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "stock", cascade = CascadeType.ALL)
+    private StockIndicators stockIndicators;
 
     public Long getId() {
         return id;
@@ -82,7 +87,16 @@ public class Stock implements Serializable {
 		this.users = users;
 	}
 
-	@Override
+    public StockIndicators getStockIndicators() {
+        return stockIndicators;
+    }
+
+    public void setStockIndicators(StockIndicators stockIndicators) {
+        this.stockIndicators = stockIndicators;
+    }
+
+
+    @Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
