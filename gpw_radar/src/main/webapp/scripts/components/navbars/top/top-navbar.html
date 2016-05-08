@@ -54,10 +54,6 @@
                         &#xA0;<span translate="global.menu.account.sessions">Sessions</span></a></li>
                     <li ng-switch-when="true"><a ui-sref="administrationPanel"><span class="fa fa-briefcase"></span>
                         &#xA0;<span translate="global.menu.account.administrationPanel">Administration Panel</span></a></li>
-                    <li ng-switch-when="true"><a ng-click="logout()"><span class="fa fa-sign-out"></span>
-                        &#xA0;<span translate="global.menu.account.logout">Log out</span></a></li>
-                    <li ng-switch-when="false"><a ui-sref="login"><span class="fa fa-sign-in"></span>
-                        &#xA0;<span translate="global.menu.account.login">Log in</span></a></li>
                     <li ng-hide="inProduction" ng-switch-when="false"><a ui-sref="register"><span class="fa fa-user-plus"></span>
                         &#xA0;<span translate="global.menu.account.register">Register</span></a></li>
                 </ul>
@@ -65,7 +61,7 @@
             <li class="dropdown pointer" ng-controller="LanguageController">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="">
                     <span>
-                        <span class="fa fa--flag"></span>
+                        <span class="fa fa-flag"></span>
                         <span class="hidden-tablet" translate="global.menu.language">Language</span>
                         <b class="caret"></b>
                     </span>
@@ -76,6 +72,10 @@
                     </li>
                 </ul>
             </li>
+            <li ng-switch-when="true"><a ng-click="logout()"><span class="fa fa-sign-out"></span>
+                &#xA0;<span translate="global.menu.account.logout">Log out</span></a></li>
+            <li ng-switch-when="false"><a ui-sref="login"><span class="fa fa-sign-in"></span>
+                &#xA0;<span translate="global.menu.account.login">Log in</span></a></li>
         </ul>
 
     </nav>

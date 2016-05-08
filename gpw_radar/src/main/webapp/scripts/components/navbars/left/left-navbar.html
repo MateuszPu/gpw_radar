@@ -1,28 +1,21 @@
 <nav class="navbar-default navbar-static-side" role="navigation">
     <div class="sidebar-collapse">
         <ul side-navigation class="nav" id="side-menu">
-<!--            <li class="nav-header">
-                <div class="dropdown profile-element" dropdown>
-                    <a class="dropdown-toggle" dropdown-toggle>
-			            <span class="clear">
-			            <span class="block m-t-xs">
-			          		<strong class="font-bold">David Williams</strong>
-			             </span>
-			                <span class="text-muted text-xs block">Art Director <b class="caret"></b></span>
-			            </span>
+            <li class="nav-header">
+                <div class="dropdown profile-element" dropdown style="margin-left: auto; margin-right: auto; width: 6em;">
+                    <a class="dropdown-toggle" ui-sref="settings">
+                        <img alt="image" class="img-circle" src="assets/images/default-user.png"/>
+                        <span class="clear">
+                            <span class="block m-t-xs">
+                                <strong class="font-bold">{{account.login}}</strong>
+                         </span>
+                        </span>
                     </a>
-                    <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                        <li><a ui-sref="profile">Profile</a></li>
-                        <li><a ui-sref="contacts">Contacts</a></li>
-                        <li><a ui-sref="inbox">Mailbox</a></li>
-                        <li class="divider"></li>
-                        <li><a href="../login.html">Logout</a></li>
-                    </ul>
                 </div>
                 <div class="logo-element">
                     IN+
                 </div>
-            </li>-->
+            </li>
             <li ng-class="{active: $state.includes('dashboards')}">
                 <a ui-sref="home">
                 	<i class="fa fa-th-large"></i>

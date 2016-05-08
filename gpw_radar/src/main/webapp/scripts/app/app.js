@@ -120,7 +120,8 @@ angular.module('gpwRadarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pasca
                     controller: 'NavbarController'
                 },
                 'leftNavbar@':{
-                    templateUrl: 'scripts/components/navbars/left/left-navbar.html'
+                    templateUrl: 'scripts/components/navbars/left/left-navbar.html',
+                    controller: 'NavbarController'
                 }
             },
             resolve: {
