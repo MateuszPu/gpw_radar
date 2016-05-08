@@ -15,6 +15,8 @@ import java.util.List;
 public interface NewsMessageRepository extends JpaRepository<NewsMessage, Long> {
 
 
+    //do not use this to pageable result, as the cache will break it
+    //TODO: consider to refactor
     @Cacheable(cacheNames = CacheConfiguration.RSS_NEWS_BY_TYPE_CACHE, key = "#p0")
     Page<NewsMessage> findByType(RssType type, Pageable pageable);
 

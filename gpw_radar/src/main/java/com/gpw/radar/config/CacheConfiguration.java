@@ -32,6 +32,7 @@ public class CacheConfiguration {
     public static final String STOCKS_FOLLOWED_BY_USER_CACHE = "stocksFollowedByUserCache";
     public static final String TRENDING_STOCKS_CACHE = "trendingStocksCache";
     public static final String USER_DETAILS_CACHE = "userDetailsCache";
+    public static final String RSS_NEWS_BY_TYPE_AND_DATE_CACHE = "rssNewsByTypeAndDateCache";
 
     @Bean
     public CacheManager cacheManager() {

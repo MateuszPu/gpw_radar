@@ -1,5 +1,6 @@
 package com.gpw.radar.service.rss;
 
+import com.gpw.radar.config.CacheConfiguration;
 import com.gpw.radar.domain.enumeration.RssType;
 import com.gpw.radar.domain.rss.NewsMessage;
 import com.gpw.radar.repository.rss.NewsMessageRepository;
@@ -7,6 +8,8 @@ import com.gpw.radar.service.chat.RssObserver;
 import com.gpw.radar.web.rest.dto.rssNews.NewsDetailsDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -18,6 +21,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.lang.reflect.Type;
 import java.time.ZonedDateTime;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -28,6 +32,9 @@ public class NewsMessageService implements RssObserver, NewsMessageServiceable {
 
     @Inject
     private RssObservable rssParserService;
+
+    @Inject
+    private CacheManager cacheManager;
 
     @PostConstruct
     private void init() {
@@ -59,10 +66,7 @@ public class NewsMessageService implements RssObserver, NewsMessageServiceable {
 
     @Override
     public void updateRssNewsMessage(List<NewsMessage> parsedRssNewsMessage) {
-        parsedRssNewsMessage.forEach(this::save);
+        parsedRssNewsMessage.forEach(nws -> newsMessageRepository.save(nws));
     }
 
-    public void save(NewsMessage news) {
-        newsMessageRepository.save(news);
-    }
 }
