@@ -1,8 +1,10 @@
 angular.module('gpwRadarApp')
 	.directive('iboxTools', function($timeout) {
 		return {
-	        restrict: 'A',
-	        scope: true,
+	        restrict: 'AE',
+	        scope: {
+                hideTools: '=?'
+            },
 	        templateUrl: 'scripts/components/directives/iboxTools/ibox-tools.html',
 	        controller: function ($scope, $element) {
 	            // Function for collapse ibox
@@ -24,7 +26,14 @@ angular.module('gpwRadarApp')
                     var ibox = $element.closest('div.ibox');
                     ibox.remove();
                 },
-                $scope.showhide();
-	        }
+                $scope.hideTools = angular.isDefined($scope.hideTools) ? $scope.hideTools : true;
+                $scope.checkShowHide = function() {
+                    console.log($scope.hideTools);
+                    if($scope.hideTools == true) {
+                        $scope.showhide();
+                    }
+                },
+                $scope.checkShowHide();
+            }
 	    };
 	});
