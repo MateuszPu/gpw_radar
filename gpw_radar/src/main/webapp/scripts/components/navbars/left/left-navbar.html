@@ -5,7 +5,7 @@
                 <div class="dropdown profile-element" dropdown style="margin-left: auto; margin-right: auto; width: 6em;">
                     <a class="dropdown-toggle" ui-sref="settings">
                         <img alt="image" class="img-circle" src="assets/images/default-user.png"/>
-                        <span class="clear">
+                        <span class="clear" ng-show="isAuthenticated()">
                             <span class="block m-t-xs">
                                 <strong class="font-bold">{{account.login}}</strong>
                          </span>

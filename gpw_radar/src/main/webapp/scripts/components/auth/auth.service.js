@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('gpwRadarApp')
-    .factory('Auth', function Auth($rootScope, $state, $q, $translate, $window, Principal, AuthServerProvider, Account, Register, Activate, Password, PasswordResetInit, PasswordResetFinish, Websocket, amMoment) {
+    .factory('Auth', function Auth($rootScope, $state, $q, $translate, Principal, AuthServerProvider, Account, Register, Activate, Password, PasswordResetInit, PasswordResetFinish, Websocket, amMoment) {
         return {
             login: function (credentials, callback) {
                 var cb = callback || angular.noop;
@@ -14,7 +14,6 @@ angular.module('gpwRadarApp')
                         // the language selected by the user during his registration
                     	amMoment.changeLocale(account.langKey);
                     	Websocket.connect();
-                        $window.location.reload(true);
                         $translate.use(account.langKey).then(function(){
                             $translate.refresh();
                         });
@@ -36,7 +35,6 @@ angular.module('gpwRadarApp')
                 }
                 AuthServerProvider.logout();
                 Principal.authenticate(null);
-                $window.location.reload(true);
                 // Reset state memory
                 $rootScope.previousStateName = undefined;
                 $rootScope.previousStateNameParams = undefined;
