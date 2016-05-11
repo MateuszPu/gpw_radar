@@ -1,6 +1,5 @@
 package com.gpw.radar.domain.stock;
 
-import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.util.LocalTimeConverter;
 
 import javax.persistence.*;
@@ -42,10 +41,10 @@ public class StockFiveMinutesDetails {
     private double ratioVolume;
 
     @Transient
-    private StockTicker stockTicker;
+    private String stockTicker;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="stock_id", foreignKey = @ForeignKey(name="FK_stock"))
+    @JoinColumn(name = "stock_id", foreignKey = @ForeignKey(name = "FK_stock"))
     private Stock stock;
 
     public Long getId() {
@@ -96,11 +95,11 @@ public class StockFiveMinutesDetails {
         this.ratioVolume = ratioVolume;
     }
 
-    public StockTicker getStockTicker() {
+    public String getStockTicker() {
         return stockTicker;
     }
 
-    public void setStockTicker(StockTicker stockTicker) {
+    public void setStockTicker(String stockTicker) {
         this.stockTicker = stockTicker;
     }
 

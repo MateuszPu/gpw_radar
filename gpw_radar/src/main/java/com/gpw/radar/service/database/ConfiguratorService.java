@@ -22,9 +22,6 @@ public class ConfiguratorService {
     @Inject
     private FillDataStatusRepository fillDataStatusRepository;
 
-    @Inject
-    private FillDataBaseWithDataService fillDataBaseWithDataService;
-
     public void changeStockDetailsParserMethod(ParserMethod stockDetailsParserMethod) {
         dailyStockDetailsParserRepository.setStockDetailsParserMethod(stockDetailsParserMethod.toString());
     }

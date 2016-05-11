@@ -1,7 +1,6 @@
 package com.gpw.radar.service.stockFinanceEvents;
 
 import com.gpw.radar.Application;
-import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockFinanceEvent;
 import com.gpw.radar.repository.stock.StockRepository;
@@ -46,7 +45,7 @@ public class StockwatchParserServiceTest {
 
     private void initDB() {
         stockRepository.deleteAll();
-        Stock stock = StockBuilder.sampleStock().ticker(StockTicker.pkn).stockShortName("pknorlen").build();
+        Stock stock = StockBuilder.sampleStock().ticker("pkn").stockShortName("pknorlen").build();
         stockRepository.save(stock);
     }
 

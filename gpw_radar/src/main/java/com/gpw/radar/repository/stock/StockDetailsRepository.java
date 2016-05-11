@@ -1,7 +1,6 @@
 package com.gpw.radar.repository.stock;
 
 import com.gpw.radar.config.CacheConfiguration;
-import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;
 import org.joda.time.LocalDate;
@@ -13,18 +12,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface StockDetailsRepository extends JpaRepository<StockDetails, Long> {
-    List<StockDetails> findByStockTickerOrderByDateDesc(StockTicker ticker);
+    List<StockDetails> findByStockTickerOrderByDateDesc(String ticker);
 
-    List<StockDetails> findByStockTickerOrderByDateAsc(StockTicker ticker);
+    List<StockDetails> findByStockTickerOrderByDateAsc(String ticker);
 
     @Cacheable(value = CacheConfiguration.STOCK_DETAILS_BY_TICKER_CACHE)
-    Page<StockDetails> findByStockTickerOrderByDateDesc(StockTicker ticker, Pageable pageable);
+    Page<StockDetails> findByStockTickerOrderByDateDesc(String ticker, Pageable pageable);
 
     StockDetails findTopByOrderByDateDesc();
 
     StockDetails findTopByStockOrderByDateDesc(Stock stock);
 
-    List<StockDetails> findByStockTicker(StockTicker ticker);
+    List<StockDetails> findByStockTicker(String ticker);
 
     List<StockDetails> findByStock(Stock stock);
 

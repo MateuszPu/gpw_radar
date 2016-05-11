@@ -12,9 +12,9 @@ import java.util.regex.Pattern;
 
 //Data downloading from stooq.pl using jsoup library
 @Service
-public class StooqDataParserService implements StockDataParser {
+public class StooqDataNameParserService implements StockDataNameParser {
 
-    private final Logger logger = LoggerFactory.getLogger(StooqDataParserService.class);
+    private final Logger logger = LoggerFactory.getLogger(StooqDataNameParserService.class);
     private final String regex = "(?<=\\)\\s-)(.*?)(?=-)";
 
     public String getStockNameFromWeb(Document doc) {

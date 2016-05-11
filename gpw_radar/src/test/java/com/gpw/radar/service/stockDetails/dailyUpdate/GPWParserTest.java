@@ -1,7 +1,6 @@
 package com.gpw.radar.service.stockDetails.dailyUpdate;
 
 import com.gpw.radar.Application;
-import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;
 import com.gpw.radar.repository.stock.StockRepository;
@@ -53,8 +52,8 @@ public class GPWParserTest {
 
     private void prepareStockInDb() {
         List<Stock> stocks = new LinkedList<>();
-        Stock abcStock = StockBuilder.sampleStock().ticker(StockTicker.abc).build();
-        Stock froStock = StockBuilder.sampleStock().ticker(StockTicker.fro).build();
+        Stock abcStock = StockBuilder.sampleStock().ticker("abc").build();
+        Stock froStock = StockBuilder.sampleStock().ticker("fro").build();
         stocks.add(froStock);
         stocks.add(abcStock);
         stockRepository.save(stocks);
@@ -82,7 +81,7 @@ public class GPWParserTest {
         Stock stock = StockBuilder.sampleStock().build();
         stockDetails.stream().filter(details -> details.getStock() == null).forEach(det -> det.setStock(stock));
 
-        StockDetails froStockDetails = stockDetails.stream().filter(details -> details.getStock().getTicker().equals(StockTicker.fro)).findAny().get();
+        StockDetails froStockDetails = stockDetails.stream().filter(details -> details.getStock().getTicker().equals("fro")).findAny().get();
         assertThat(froStockDetails.getVolume()).isEqualTo(1020);
         assertThat(froStockDetails.getClosePrice()).isEqualTo(new BigDecimal("10.79"));
         assertThat(froStockDetails.getMinPrice()).isEqualTo(new BigDecimal("10.79"));
@@ -90,7 +89,7 @@ public class GPWParserTest {
         assertThat(froStockDetails.getOpenPrice()).isEqualTo(new BigDecimal("10.98"));
         assertThat(froStockDetails.getDate()).isEqualTo(LocalDate.of(2016, 3, 9));
 
-        StockDetails abcStockDetails = stockDetails.stream().filter(details -> details.getStock().getTicker().equals(StockTicker.abc)).findAny().get();
+        StockDetails abcStockDetails = stockDetails.stream().filter(details -> details.getStock().getTicker().equals("abc")).findAny().get();
         assertThat(abcStockDetails.getVolume()).isEqualTo(14061);
         assertThat(abcStockDetails.getClosePrice()).isEqualTo(new BigDecimal("3.33"));
         assertThat(abcStockDetails.getMinPrice()).isEqualTo(new BigDecimal("3.29"));

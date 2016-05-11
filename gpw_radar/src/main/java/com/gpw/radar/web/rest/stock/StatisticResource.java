@@ -1,6 +1,5 @@
 package com.gpw.radar.web.rest.stock;
 
-import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.StockStatistic;
 import com.gpw.radar.security.AuthoritiesConstants;
 import com.gpw.radar.service.correlation.CorrelationService;
@@ -26,40 +25,40 @@ import java.util.TreeSet;
 @RequestMapping("/api/statistic")
 public class StatisticResource {
 
-	@Inject
-	private CorrelationService correlationService;
+    @Inject
+    private CorrelationService correlationService;
 
-	@Inject
-	private StatisticService statisticService;
+    @Inject
+    private StatisticService statisticService;
 
-	@RequestMapping(value = "/stock/correlation", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@RolesAllowed(AuthoritiesConstants.USER)
-	public ResponseEntity<TreeSet<StockStatistic>> getCorrelationForSelectedTicker(@RequestParam(value = "correlation_type", required = true) CorrelationType correlationType, @RequestParam(value = "ticker", required = true) StockTicker ticker, @RequestParam(value = "period", required = true) int period) {
-		return correlationService.computeCorrelation(ticker, period, correlationType);
-	}
+    @RequestMapping(value = "/stock/correlation", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RolesAllowed(AuthoritiesConstants.USER)
+    public ResponseEntity<TreeSet<StockStatistic>> getCorrelationForSelectedTicker(@RequestParam(value = "correlation_type", required = true) CorrelationType correlationType, @RequestParam(value = "ticker", required = true) String ticker, @RequestParam(value = "period", required = true) int period) {
+        return correlationService.computeCorrelation(ticker, period, correlationType);
+    }
 
-	@RequestMapping(value = "/stock/correlation/step", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@RolesAllowed(AuthoritiesConstants.USER)
-	public ResponseEntity<Integer> getStep() {
-		return new ResponseEntity<Integer>(correlationService.getStep(), HttpStatus.OK);
-	}
+    @RequestMapping(value = "/stock/correlation/step", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RolesAllowed(AuthoritiesConstants.USER)
+    public ResponseEntity<Integer> getStep() {
+        return new ResponseEntity<Integer>(correlationService.getStep(), HttpStatus.OK);
+    }
 
-	@RequestMapping(value = "/stocks/up", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Long> getStocksUp() {
-		return statisticService.countStocksUp();
-	}
+    @RequestMapping(value = "/stocks/up", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Long> getStocksUp() {
+        return statisticService.countStocksUp();
+    }
 
-	@RequestMapping(value = "/stocks/down", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Long> getStocksDown() {
-		return statisticService.countStocksDown();
-	}
+    @RequestMapping(value = "/stocks/down", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Long> getStocksDown() {
+        return statisticService.countStocksDown();
+    }
 
-	@RequestMapping(value = "/stocks/no/change", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Long> getStocksNoChange() {
-		return statisticService.countStocksNoChange();
-	}
+    @RequestMapping(value = "/stocks/no/change", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Long> getStocksNoChange() {
+        return statisticService.countStocksNoChange();
+    }
 
-	@RequestMapping(value = "all/type/correlation", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "all/type/correlation", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EnumSet<CorrelationType>> getAllCorrelationTypes() {
         return new ResponseEntity<EnumSet<CorrelationType>>(EnumSet.allOf(CorrelationType.class), HttpStatus.OK);
     }

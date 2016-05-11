@@ -1,7 +1,6 @@
 package com.gpw.radar.service.stockDetails;
 
 import com.gpw.radar.Application;
-import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;
 import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
@@ -43,9 +42,9 @@ public class FileStockDetailsParserServiceTest {
 
     @Before
     public void init() {
-        stock = StockBuilder.sampleStock().ticker(StockTicker.cdr).stockName("cdr").stockShortName("CDR").build();
-        String stockDetailsFilePath = "/stocks_data/daily/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
-        String stockFiveMinutesDetailsFilePath = "/stocks_data/5min/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
+        stock = StockBuilder.sampleStock().ticker("cdr").stockName("cdr").stockShortName("CDR").build();
+        String stockDetailsFilePath = "/stocks_data/daily/pl/wse_stocks/" + stock.getTicker() + ".txt";
+        String stockFiveMinutesDetailsFilePath = "/stocks_data/5min/pl/wse_stocks/" + stock.getTicker() + ".txt";
         inputStreamOfStockDetails = getClass().getResourceAsStream(stockDetailsFilePath);
         inputStreamOfStockFiveMinutesDetails = getClass().getResourceAsStream(stockFiveMinutesDetailsFilePath);
     }
@@ -71,7 +70,7 @@ public class FileStockDetailsParserServiceTest {
         assertThat(firstStockDetails.getMaxPrice()).isEqualTo(new BigDecimal("18.38"));
         assertThat(firstStockDetails.getMinPrice()).isEqualTo(new BigDecimal("17.81"));
         assertThat(firstStockDetails.getClosePrice()).isEqualTo(new BigDecimal("17.87"));
-        assertThat(firstStockDetails.getDate()).isEqualTo(LocalDate.of(2014,12,03));
+        assertThat(firstStockDetails.getDate()).isEqualTo(LocalDate.of(2014, 12, 03));
         assertThat(firstStockDetails.getStock()).isNotNull();
     }
 
@@ -86,8 +85,8 @@ public class FileStockDetailsParserServiceTest {
         List<StockFiveMinutesDetails> list = fileStockFiveMinutesDetailsParserService.parseStockFiveMinutesDetails(stock, inputStreamOfStockFiveMinutesDetails);
         StockFiveMinutesDetails stockFiveMinutesDetails = list.get(0);
         assertThat(stockFiveMinutesDetails.getVolume()).isEqualTo(1417);
-        assertThat(stockFiveMinutesDetails.getTime()).isEqualTo(LocalTime.of(9,5));
-        assertThat(stockFiveMinutesDetails.getDate()).isEqualTo(LocalDate.of(2015,11,10));
+        assertThat(stockFiveMinutesDetails.getTime()).isEqualTo(LocalTime.of(9, 5));
+        assertThat(stockFiveMinutesDetails.getDate()).isEqualTo(LocalDate.of(2015, 11, 10));
         assertThat(stockFiveMinutesDetails.getStock()).isNotNull();
     }
 
@@ -105,12 +104,12 @@ public class FileStockDetailsParserServiceTest {
         StockFiveMinutesDetails firstStockFiveMinutesDetails = filledList.stream().findFirst().get();
         StockFiveMinutesDetails thirdStockFiveMinutesDetails = filledList.get(2);
         StockFiveMinutesDetails stockFiveMinutesDetails = filledList.stream()
-            .filter(dt -> dt.getTime().equals(LocalTime.of(10,15)))
+            .filter(dt -> dt.getTime().equals(LocalTime.of(10, 15)))
             .findFirst()
             .get();
         assertThat(firstStockFiveMinutesDetails.getCumulatedVolume()).isEqualTo(1417);
         assertThat(thirdStockFiveMinutesDetails.getVolume()).isEqualTo(0);
-        assertThat(thirdStockFiveMinutesDetails.getTime()).isEqualTo(LocalTime.of(9,15));
+        assertThat(thirdStockFiveMinutesDetails.getTime()).isEqualTo(LocalTime.of(9, 15));
         assertThat(stockFiveMinutesDetails.getCumulatedVolume()).isEqualTo(20359);
         assertThat(stockFiveMinutesDetails.getVolume()).isEqualTo(0);
     }

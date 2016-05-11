@@ -2,7 +2,6 @@ package com.gpw.radar.service.stockFiveMinutesDetails;
 
 
 import com.gpw.radar.Application;
-import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
 import com.gpw.radar.domain.stock.StockFiveMinutesIndicators;
@@ -45,8 +44,8 @@ public class CalculateIndicatorsFiveMinutesStockDetailsTest {
     public void setup() throws Exception {
         this.testContextManager = new TestContextManager(getClass());
         this.testContextManager.prepareTestInstance(this);
-        Stock stock = StockBuilder.sampleStock().ticker(StockTicker.kgh).stockName("KGH").stockShortName("KGH").build();
-        String stockFiveMinutesDetailsFilePath = "/stocks_data/5min/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
+        Stock stock = StockBuilder.sampleStock().ticker("kgh").stockName("KGH").stockShortName("KGH").build();
+        String stockFiveMinutesDetailsFilePath = "/stocks_data/5min/pl/wse_stocks/" + stock.getTicker() + ".txt";
         InputStream inputStreamOfStockFiveMinutesDetails = getClass().getResourceAsStream(stockFiveMinutesDetailsFilePath);
         List<StockFiveMinutesDetails> stockFiveMinutesDetails = fileStockFiveMinutesDetailsParserService.parseStockFiveMinutesDetails(stock, inputStreamOfStockFiveMinutesDetails);
         List<StockFiveMinutesDetails> filledStockFiveMinutesDetails = fileStockFiveMinutesDetailsParserService.fillEmptyTimeAndCumulativeVolume(stockFiveMinutesDetails);
@@ -60,15 +59,15 @@ public class CalculateIndicatorsFiveMinutesStockDetailsTest {
 
     @Parameterized.Parameters
     public static Collection primeNumbers() {
-        return Arrays.asList(new Object[][] {
-            { LocalTime.of(9,05), 57965.00 },
-            { LocalTime.of(10,00), 293880.81 },
-            { LocalTime.of(11,00), 430844.90 },
-            { LocalTime.of(12,20), 564788 },
-            { LocalTime.of(13,00), 625414 },
-            { LocalTime.of(14,30), 796119.09},
-            { LocalTime.of(15,00), 874832.18 },
-            { LocalTime.of(16, 15), 1080512.63 }
+        return Arrays.asList(new Object[][]{
+            {LocalTime.of(9, 05), 57965.00},
+            {LocalTime.of(10, 00), 293880.81},
+            {LocalTime.of(11, 00), 430844.90},
+            {LocalTime.of(12, 20), 564788},
+            {LocalTime.of(13, 00), 625414},
+            {LocalTime.of(14, 30), 796119.09},
+            {LocalTime.of(15, 00), 874832.18},
+            {LocalTime.of(16, 15), 1080512.63}
         });
     }
 

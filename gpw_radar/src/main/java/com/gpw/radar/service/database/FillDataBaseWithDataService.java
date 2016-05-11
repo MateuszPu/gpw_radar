@@ -1,13 +1,14 @@
 package com.gpw.radar.service.database;
 
 import com.gpw.radar.domain.database.Type;
-import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.*;
 import com.gpw.radar.repository.auto.update.FillDataStatusRepository;
 import com.gpw.radar.repository.stock.*;
 import com.gpw.radar.service.parser.file.stockDetails.StockDetailsParser;
 import com.gpw.radar.service.parser.file.stockFiveMinutesDetails.StockFiveMinutesDetailsParser;
-import com.gpw.radar.service.parser.web.stock.StockDataParser;
+import com.gpw.radar.service.parser.web.stock.GpwTickerParserService;
+import com.gpw.radar.service.parser.web.stock.StockDataNameParser;
+import com.gpw.radar.service.parser.web.stock.StockTickerParser;
 import com.gpw.radar.service.parser.web.stockFinanceEvent.StockFinanceEventParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -57,31 +59,35 @@ public class FillDataBaseWithDataService {
     private int step;
     private ClassLoader classLoader = getClass().getClassLoader();
     private StockFinanceEventParser stockFinanceEventParser;
-    private StockDataParser stockDataParser;
+    private StockDataNameParser stockDataNameParser;
     private StockDetailsParser stockDetailsParser;
     private StockFiveMinutesDetailsParser stockFiveMinutesDetailsParser;
+    private StockTickerParser stockTickerParser;
 
     @PostConstruct
     public void initParsers() {
+        stockTickerParser = beanFactory.getBean("gpwTickerParserService", StockTickerParser.class);
         stockFinanceEventParser = beanFactory.getBean("stockwatchParserService", StockFinanceEventParser.class);
-        stockDataParser = beanFactory.getBean("stooqDataParserService", StockDataParser.class);
+        stockDataNameParser = beanFactory.getBean("stooqDataNameParserService", StockDataNameParser.class);
         stockDetailsParser = beanFactory.getBean("fileStockDetailsParserService", StockDetailsParser.class);
         stockFiveMinutesDetailsParser = beanFactory.getBean("fileStockFiveMinutesDetailsParserService", StockFiveMinutesDetailsParser.class);
     }
 
     //TODO: refactor sending step as socket to application
     public ResponseEntity<Void> fillDataBaseWithStocks() {
-        for (StockTicker element : StockTicker.values()) {
+        Set<String> tickers = stockTickerParser.fetchAllTickers(null);
+
+        for (String element : tickers) {
             Document doc = null;
             try {
-                doc = getDocumentFromStooqWeb(element.toString());
+                doc = getDocumentFromStooqWeb(element);
             } catch (IOException e) {
                 logger.error("Error occurs: " + e.getMessage());
             }
             Stock stock = new Stock();
             stock.setTicker(element);
-            stock.setStockName(stockDataParser.getStockNameFromWeb(doc));
-            stock.setStockShortName(stockDataParser.getStockShortNameFromWeb(doc));
+            stock.setStockName(stockDataNameParser.getStockNameFromWeb(doc));
+            stock.setStockShortName(stockDataNameParser.getStockShortNameFromWeb(doc));
             stockRepository.save(stock);
         }
         fillDataStatusRepository.updateType(Type.STOCK.toString());
@@ -90,13 +96,13 @@ public class FillDataBaseWithDataService {
 
     public ResponseEntity<Void> fillDataBaseWithStockDetails() {
         step = 0;
-        EnumSet<StockTicker> tickers = EnumSet.allOf(StockTicker.class);
+        Set<String> tickers = stockRepository.findAllTickers();
         ExecutorService executor = Executors.newFixedThreadPool(4);
 
-        for (StockTicker ticker : tickers) {
+        for (String ticker : tickers) {
             executor.execute(() -> {
                 Stock stock = stockRepository.findByTicker(ticker);
-                String filePath = "stocks_data/daily/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
+                String filePath = "stocks_data/daily/pl/wse_stocks/" + stock.getTicker() + ".txt";
                 InputStream st = classLoader.getResourceAsStream(filePath);
                 List<StockDetails> stockDetails = stockDetailsParser.parseStockDetails(stock, st);
                 stockDetailsRepository.save(stockDetails);
@@ -115,13 +121,13 @@ public class FillDataBaseWithDataService {
 
     public ResponseEntity<Void> fillDataBaseWithStockFiveMinutesDetails() {
         step = 0;
-        EnumSet<StockTicker> tickers = EnumSet.allOf(StockTicker.class);
+        Set<String> tickers = stockRepository.findAllTickers();
         ExecutorService executor = Executors.newFixedThreadPool(4);
 
-        for (StockTicker ticker : tickers) {
+        for (String ticker : tickers) {
             executor.execute(() -> {
                 Stock stock = stockRepository.findByTicker(ticker);
-                String filePath = "stocks_data/5min/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
+                String filePath = "stocks_data/5min/pl/wse_stocks/" + stock.getTicker() + ".txt";
                 InputStream inputStream = classLoader.getResourceAsStream(filePath);
                 List<StockFiveMinutesDetails> stockFiveMinutesDetails = stockFiveMinutesDetailsParser.parseStockFiveMinutesDetails(stock, inputStream);
                 List<StockFiveMinutesDetails> filledStockFiveMinutesDetails = stockFiveMinutesDetailsParser.fillEmptyTimeAndCumulativeVolume(stockFiveMinutesDetails);

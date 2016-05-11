@@ -29,10 +29,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findOneByEmail(String email);
 
-    @Cacheable(value = CacheConfiguration.USER_DETAILS_CACHE, key = "#p0")
     Optional<User> findOneByLogin(String login);
 
-    @Cacheable(value = CacheConfiguration.USER_DETAILS_CACHE, key = "#p0")
     Optional<User> findOneById(Long userId);
 
     @Query(value = "from User u join fetch u.stocks where u.login = :login")

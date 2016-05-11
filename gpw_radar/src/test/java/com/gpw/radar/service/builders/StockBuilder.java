@@ -1,7 +1,6 @@
 package com.gpw.radar.service.builders;
 
 import com.gpw.radar.domain.User;
-import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.Stock;
 
 import java.util.HashSet;
@@ -9,7 +8,7 @@ import java.util.Set;
 
 public class StockBuilder {
 
-    private StockTicker ticker;
+    private String ticker;
     private String stockName;
     private String stockShortName;
     private Set<User> users = new HashSet<>();
@@ -19,10 +18,10 @@ public class StockBuilder {
     }
 
     public static StockBuilder sampleStock() {
-        return stockBuilder().ticker(StockTicker.kgh).stockName("KGH name").stockShortName("KGH short name").users(new HashSet<>());
+        return stockBuilder().ticker("kgh").stockName("KGH name").stockShortName("KGH short name").users(new HashSet<>());
     }
 
-    public StockBuilder ticker(StockTicker ticker) {
+    public StockBuilder ticker(String ticker) {
         this.ticker = ticker;
         return this;
     }
