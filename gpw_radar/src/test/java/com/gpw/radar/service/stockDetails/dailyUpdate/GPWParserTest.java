@@ -8,7 +8,6 @@ import com.gpw.radar.service.auto.update.stockDetails.GpwParser;
 import com.gpw.radar.service.builders.StockBuilder;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

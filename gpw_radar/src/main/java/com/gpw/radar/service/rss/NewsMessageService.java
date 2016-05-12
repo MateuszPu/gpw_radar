@@ -1,6 +1,5 @@
 package com.gpw.radar.service.rss;
 
-import com.gpw.radar.config.CacheConfiguration;
 import com.gpw.radar.domain.enumeration.RssType;
 import com.gpw.radar.domain.rss.NewsMessage;
 import com.gpw.radar.repository.rss.NewsMessageRepository;
@@ -8,7 +7,6 @@ import com.gpw.radar.service.chat.RssObserver;
 import com.gpw.radar.web.rest.dto.rssNews.NewsDetailsDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +19,6 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.lang.reflect.Type;
 import java.time.ZonedDateTime;
-import java.util.Collection;
 import java.util.List;
 
 @Service

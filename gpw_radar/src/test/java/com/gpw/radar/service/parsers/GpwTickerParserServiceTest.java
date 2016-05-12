@@ -1,6 +1,11 @@
 package com.gpw.radar.service.parsers;
 
-import static org.assertj.core.api.StrictAssertions.assertThat;
+import com.gpw.radar.service.parser.web.stock.GpwTickerParserService;
+import com.gpw.radar.service.parser.web.stock.StockTickerParser;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,13 +13,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Set;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.gpw.radar.service.parser.web.stock.GpwTickerParserService;
-import com.gpw.radar.service.parser.web.stock.StockTickerParser;
+import static org.assertj.core.api.StrictAssertions.assertThat;
 
 
 public class GpwTickerParserServiceTest {
