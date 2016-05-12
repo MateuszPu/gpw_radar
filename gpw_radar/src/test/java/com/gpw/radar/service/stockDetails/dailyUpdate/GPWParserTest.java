@@ -42,7 +42,7 @@ public class GPWParserTest {
 
     private InputStream inputStreamOfStockDetails;
     private BufferedReader bufferedReader;
-    private Elements tableRows;
+    private Document doc;
 
     @Before
     public void init() throws IOException {
@@ -65,8 +65,7 @@ public class GPWParserTest {
         bufferedReader = new BufferedReader(new InputStreamReader(inputStreamOfStockDetails));
         StringBuilder sb = new StringBuilder();
         bufferedReader.lines().forEach(line -> sb.append(line));
-        Document doc = Jsoup.parse(sb.toString());
-        tableRows = doc.select("tr");
+        doc = Jsoup.parse(sb.toString());
     }
 
     @After
@@ -77,7 +76,7 @@ public class GPWParserTest {
 
     @Test
     public void stockDetailsResult() throws IOException {
-        List<StockDetails> stockDetails = gpwParser.getStockDetailsFromWeb(tableRows, LocalDate.of(2016, 3, 9));
+        List<StockDetails> stockDetails = gpwParser.getStockDetailsFromWeb(doc, LocalDate.of(2016, 3, 9));
         Stock stock = StockBuilder.sampleStock().build();
         stockDetails.stream().filter(details -> details.getStock() == null).forEach(det -> det.setStock(stock));
 

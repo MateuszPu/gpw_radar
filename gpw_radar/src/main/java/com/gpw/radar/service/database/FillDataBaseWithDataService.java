@@ -6,11 +6,11 @@ import com.gpw.radar.repository.auto.update.FillDataStatusRepository;
 import com.gpw.radar.repository.stock.*;
 import com.gpw.radar.service.parser.file.stockDetails.StockDetailsParser;
 import com.gpw.radar.service.parser.file.stockFiveMinutesDetails.StockFiveMinutesDetailsParser;
-import com.gpw.radar.service.parser.web.stock.GpwTickerParserService;
+import com.gpw.radar.service.parser.web.GpwSiteDataParserService;
+import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
 import com.gpw.radar.service.parser.web.stock.StockDataNameParser;
 import com.gpw.radar.service.parser.web.stock.StockTickerParser;
 import com.gpw.radar.service.parser.web.stockFinanceEvent.StockFinanceEventParser;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -54,6 +52,12 @@ public class FillDataBaseWithDataService {
     private StockFiveMinutesDetailsRepository stockFiveMinutesDetailsRepository;
 
     @Inject
+    private UrlStreamsGetterService urlStreamsGetterService;
+
+    @Inject
+    private GpwSiteDataParserService gpwSiteDataParserService;
+
+    @Inject
     private BeanFactory beanFactory;
 
     private int step;
@@ -75,15 +79,12 @@ public class FillDataBaseWithDataService {
 
     //TODO: refactor sending step as socket to application
     public ResponseEntity<Void> fillDataBaseWithStocks() {
-        Set<String> tickers = stockTickerParser.fetchAllTickers(null);
+        InputStream inputStreamFromUrl = urlStreamsGetterService.getInputStreamFromUrl("https://www.gpw.pl/ajaxindex.php?action=GPWQuotations&start=showTable&tab=all&lang=PL&full=1");
+        Document document = gpwSiteDataParserService.getDocumentFromInputStream(inputStreamFromUrl);
+        Set<String> tickers = stockTickerParser.fetchAllTickers(document);
 
         for (String element : tickers) {
-            Document doc = null;
-            try {
-                doc = getDocumentFromStooqWeb(element);
-            } catch (IOException e) {
-                logger.error("Error occurs: " + e.getMessage());
-            }
+            Document doc = urlStreamsGetterService.getDocFromUrl("http://stooq.pl/q/?s=" + element);
             Stock stock = new Stock();
             stock.setTicker(element);
             stock.setStockName(stockDataNameParser.getStockNameFromWeb(doc));
@@ -153,11 +154,6 @@ public class FillDataBaseWithDataService {
         stockFinanceEventRepository.save(stockFinanceEventFromWeb);
         fillDataStatusRepository.updateType(Type.STOCK_FINANCE_EVENTS.toString());
         return new ResponseEntity<Void>(HttpStatus.OK);
-    }
-
-    private Document getDocumentFromStooqWeb(String ticker) throws IOException {
-        Document doc = Jsoup.connect("http://stooq.pl/q/?s=" + ticker).get();
-        return doc;
     }
 
     private synchronized void increaseStep() {

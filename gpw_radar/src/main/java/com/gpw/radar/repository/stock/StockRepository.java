@@ -19,6 +19,7 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
 
     Stock findByTicker(String ticker);
 
+    @Cacheable(value = CacheConfiguration.STOCK_TICKERS_CACHE)
     @Query(value = "SELECT ticker from Stock", nativeQuery = true)
     Set<String> findAllTickers();
 

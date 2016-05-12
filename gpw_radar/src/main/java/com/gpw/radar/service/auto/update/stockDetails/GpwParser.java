@@ -3,8 +3,8 @@ package com.gpw.radar.service.auto.update.stockDetails;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;
 import com.gpw.radar.repository.stock.StockRepository;
+import com.gpw.radar.service.parser.web.GpwSiteDataParserService;
 import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
@@ -12,10 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -35,6 +32,9 @@ public class GpwParser implements StockDetailsParser {
     @Inject
     private UrlStreamsGetterService urlStreamsGetterService;
 
+    @Inject
+    private GpwSiteDataParserService gpwSiteDataParserService;
+
     private static final int indexOfTicker = 3;
     private static final int indexOfOpenPrice = 8;
     private static final int indexOfMinPrice = 9;
@@ -49,11 +49,12 @@ public class GpwParser implements StockDetailsParser {
     public List<StockDetails> getCurrentStockDetails() {
         LocalDate date = getCurrentDateOfStockDetails();
         InputStream inputStreamFromUrl = urlStreamsGetterService.getInputStreamFromUrl("https://www.gpw.pl/ajaxindex.php?action=GPWQuotations&start=showTable&tab=all&lang=PL&full=1");
-        Elements tableRows = getTableRowsContentFromWeb(inputStreamFromUrl);
-        return getStockDetailsFromWeb(tableRows, date);
+        Document doc = gpwSiteDataParserService.getDocumentFromInputStream(inputStreamFromUrl);
+        return getStockDetailsFromWeb(doc, date);
     }
 
-    public List<StockDetails> getStockDetailsFromWeb(Elements tableRows, LocalDate date) {
+    public List<StockDetails> getStockDetailsFromWeb(Document doc, LocalDate date) {
+        Elements tableRows = doc.select("tr");
         List<StockDetails> stockDetails = new ArrayList<StockDetails>();
         Set<String> tickers = stockRepository.findAllTickers();
         String ticker;
@@ -101,32 +102,8 @@ public class GpwParser implements StockDetailsParser {
         return select.get(indexOfElement).text().replace(",", ".").replace("\u00a0", "");
     }
 
-    private Elements getTableRowsContentFromWeb(InputStream inputStream) {
-        String htmlContent = getHtmlContent(inputStream);
-        Document doc = Jsoup.parse(htmlContent);
-        Elements tableRows = doc.select("tr");
-        return tableRows;
-    }
-
-    private String getHtmlContent(InputStream inputStream) {
-        String htmlContent = "";
-
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
-            htmlContent = bufferedReader.lines().filter(s -> s.startsWith("<table")).findAny().get();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return htmlContent;
-    }
-
     private LocalDate getCurrentDateOfStockDetails() {
-        Document doc = null;
-        try {
-            doc = Jsoup.connect("http://www.gpw.pl/akcje_i_pda_notowania_ciagle_pelna_wersja#all").get();
-        } catch (IOException e) {
-            logger.error("Error occurs: " + e.getMessage());
-        }
-
+        Document doc = urlStreamsGetterService.getDocFromUrl("http://www.gpw.pl/akcje_i_pda_notowania_ciagle_pelna_wersja#all");
         Elements el = doc.select("div[class=\"colFL\"]");
         LocalDate date = LocalDate.parse(el.first().text(), dtfType);
         return date;
