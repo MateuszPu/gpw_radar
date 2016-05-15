@@ -12,11 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.TreeSet;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -31,6 +30,9 @@ public class CorrelationService {
     @Inject
     private StockRepository stockRepository;
 
+    private LocalDate sourceStartDate;
+    private LocalDate sourceEndDate;
+
     private int step;
     private boolean isComputing;
 
@@ -44,25 +46,29 @@ public class CorrelationService {
         this.step = 0;
         isComputing = true;
 
-        Correlator correlator = getCorrelatorImpl(correlationType);
+        Correlator correlator = getCorrelatorImpl(correlationType).get();
         TreeSet<StockStatistic> correlationTreeSet = new TreeSet<StockStatistic>();
-        Set<String> allTickers = stockRepository.findAllTickers();
-        allTickers.remove(correlationForTicker);
-        final Set<String> tickersToScan = allTickers;
-        final double[] sourceClosePrices = getClosePrices(getContent(correlationForTicker, period));
+        Set<String> tickersToScan = new HashSet<String>(stockRepository.findAllTickers());
+        tickersToScan.remove(correlationForTicker);
+        List<StockDetails> content = getContent(correlationForTicker, period);
+        sourceEndDate = content.get(0).getDate();
+        sourceStartDate = content.get(content.size() - 1).getDate();
+        final double[] sourceClosePrices = getClosePrices(content);
 
         ExecutorService executor = Executors.newFixedThreadPool(2);
 
         for (String ticker : tickersToScan) {
             executor.submit(() -> {
                 double[] targetClosePrices = getClosePrices(getContent(ticker, period));
+                if(targetClosePrices.length == 0) {
+                    return;
+                }
                 double correlation = correlator.correlate(sourceClosePrices, targetClosePrices);
                 StockStatistic statistic = new StockStatistic(correlation, ticker);
                 correlationTreeSet.add(statistic);
                 increaseStep();
             });
         }
-
         executor.shutdown();
 
         try {
@@ -77,14 +83,18 @@ public class CorrelationService {
     }
 
     private double[] getClosePrices(List<StockDetails> stockDetails) {
-        double[] closePrices = new double[stockDetails.size()];
+        double[] result = new double[0];
+        LocalDate endDate = stockDetails.get(0).getDate();
+        LocalDate startDate = stockDetails.get(stockDetails.size() - 1).getDate();
 
-        int index = 0;
-        for (StockDetails stds : stockDetails) {
-            closePrices[index++] = stds.getClosePrice().doubleValue();
+        if(startDate.equals(sourceStartDate) && endDate.equals(sourceEndDate)) {
+            result = new double[stockDetails.size()];
+            int index = 0;
+            for (StockDetails stds : stockDetails) {
+                result[index++] = stds.getClosePrice().doubleValue();
+            }
         }
-
-        return closePrices;
+        return result;
     }
 
     private List<StockDetails> getContent(String ticker, int period) {
@@ -94,16 +104,17 @@ public class CorrelationService {
         return stockDetails;
     }
 
-    private Correlator getCorrelatorImpl(CorrelationType correlationType) {
+    private Optional<Correlator> getCorrelatorImpl(CorrelationType correlationType) {
         switch (correlationType) {
             case KENDALLS:
-                return new KendallsCorrelator();
+                return Optional.of(new KendallsCorrelator());
             case PEARSONS:
-                return new PearsonCorrelator();
+                return Optional.of(new PearsonCorrelator());
             case SPEARMANS:
-                return new SpearmansCorrelator();
+                return Optional.of(new SpearmansCorrelator());
+            default:
+                return Optional.empty();
         }
-        return null;
     }
 
     public int getStep() {

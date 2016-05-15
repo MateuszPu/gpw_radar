@@ -134,4 +134,5 @@ public class StockService {
         }.getType();
         return modelMapper.map(stocks, dto);
     }
+
 }
