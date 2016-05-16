@@ -7,6 +7,10 @@
             "period": "Wybierz okres...",
             "type": "Wybierz typ..."
         },
+        "infoPanel": {
+            "title": "Dlaczego wynik nie uwzględnia wszsytkich spółek?",
+            "content": "Korelacja jest obliczana tylko dla spółek który były notowane tego samego dnia co wybrana spółka."
+        },
         "table":{
             "search": "Szukaj...",
             "ticker": "Ticker",

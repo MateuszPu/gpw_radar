@@ -7,6 +7,10 @@
             "period": "Select period...",
             "type": "Select type..."
         },
+        "infoPanel": {
+            "title": "Why result does not include all stocks?",
+            "content": "Correlation is computing only for stocks which has been quoted at the same date as the source stock."
+        },
         "table":{
             "search": "Search...",
             "ticker": "Ticker",

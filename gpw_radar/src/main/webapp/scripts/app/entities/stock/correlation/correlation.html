@@ -19,7 +19,7 @@
                                 </ui-select-choices>
                             </ui-select>
                         </div>
-                        <div class = "col-md-4">
+                        <div class = "col-md-3">
                             <ui-select  ng-model="selected.period" theme="bootstrap">
                                 <ui-select-match placeholder="{{'correlation.search.period' | translate}}">
                                     {{$select.selected}}
@@ -39,12 +39,24 @@
                                 </ui-select-choices>
                             </ui-select>
                         </div>
-                        <button class="btn btn-success pull-right" ng-disabled="!(selected.ticker && selected.period)" ng-click="computeCorrelation()"><span translate="correlation.compute">Compute</span></button>
+                        <div class = "col-md-1">
+                            <button class="btn btn-success pull-right" ng-disabled="!(selected.ticker && selected.period)" ng-click="computeCorrelation()"><span translate="correlation.compute">Compute</span></button>
+                        </div>
                     </div>
                     <hr ng-show="isComputing"></hr>
                     <progressbar ng-show="isComputing" animate="true" class="progress-striped" value='stepOfCorrelation/tickers.length*100' type="warning">{{stepOfCorrelation/tickers.length*100 | number:0}}% completed</progressbar>
 
                     <div class = "row" ng-if="correlationList">
+
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <i class="fa fa-info-circle"></i> <b><span translate="correlation.infoPanel.title">Warning!</span></b>
+                            </div>
+                            <div class="panel-body">
+                                <p translate="correlation.infoPanel.content">Content</p>
+                            </div>
+                        </div>
+
                         <table st-table="correlationList" st-safe-src="smartTableSafeCopy"
                                class="table table-striped">
                             <thead>
