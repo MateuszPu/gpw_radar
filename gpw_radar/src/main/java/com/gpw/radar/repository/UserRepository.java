@@ -4,7 +4,6 @@ import com.gpw.radar.config.CacheConfiguration;
 import com.gpw.radar.domain.User;
 import com.gpw.radar.domain.stock.Stock;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -29,10 +28,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findOneByEmail(String email);
 
-    @Cacheable(value = CacheConfiguration.USER_DETAILS_CACHE, key = "#p0")
     Optional<User> findOneByLogin(String login);
 
-    @Cacheable(value = CacheConfiguration.USER_DETAILS_CACHE, key = "#p0")
     Optional<User> findOneById(Long userId);
 
     @Query(value = "from User u join fetch u.stocks where u.login = :login")

@@ -8,7 +8,6 @@ import com.gpw.radar.domain.stock.StockIndicators;
 import com.gpw.radar.repository.UserRepository;
 import com.gpw.radar.repository.stock.StockIndicatorsRepository;
 import com.gpw.radar.repository.stock.StockRepository;
-import com.gpw.radar.security.SecurityUtils;
 import com.gpw.radar.service.UserService;
 import com.gpw.radar.web.rest.dto.stock.StockDTO;
 import com.gpw.radar.web.rest.dto.stock.StockWithStockIndicatorsDTO;
@@ -30,7 +29,6 @@ import java.lang.reflect.Type;
 import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class StockService {
@@ -136,4 +134,5 @@ public class StockService {
         }.getType();
         return modelMapper.map(stocks, dto);
     }
+
 }

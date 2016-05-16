@@ -1,6 +1,6 @@
 package com.gpw.radar.service.parsers;
 
-import com.gpw.radar.service.parser.web.stock.StooqDataParserService;
+import com.gpw.radar.service.parser.web.stock.StooqDataNameParserService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Before;
@@ -13,7 +13,7 @@ import static org.assertj.core.api.StrictAssertions.assertThat;
 
 public class StooqParserServiceTest {
 
-    private StooqDataParserService stooqParserService = new StooqDataParserService();
+    private StooqDataNameParserService stooqParserService = new StooqDataNameParserService();
 
     private Document htmlDoc;
 

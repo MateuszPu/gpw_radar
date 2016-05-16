@@ -1,7 +1,6 @@
 package com.gpw.radar.web.rest.stock;
 
 import com.gpw.radar.domain.stock.TimeStockFiveMinuteDetails;
-import com.gpw.radar.service.parser.DateAndTimeParserService;
 import com.gpw.radar.service.stock.StockFiveMinutesDetailsService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

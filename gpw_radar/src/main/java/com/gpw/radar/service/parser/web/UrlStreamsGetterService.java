@@ -1,5 +1,7 @@
 package com.gpw.radar.service.parser.web;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -38,5 +40,15 @@ public class UrlStreamsGetterService {
             logger.error("Error occurs: " + e.getMessage());
         }
         return inputStream;
+    }
+
+    public Document getDocFromUrl(String url) {
+        Document doc = null;
+        try {
+            doc = Jsoup.connect(url).get();
+        } catch (IOException e) {
+            logger.error("Error occurs: " + e.getMessage());
+        }
+        return doc;
     }
 }

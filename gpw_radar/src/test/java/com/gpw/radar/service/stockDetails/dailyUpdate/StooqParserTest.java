@@ -1,7 +1,6 @@
 package com.gpw.radar.service.stockDetails.dailyUpdate;
 
 import com.gpw.radar.Application;
-import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;
 import com.gpw.radar.service.auto.update.stockDetails.StooqParser;
@@ -35,7 +34,7 @@ public class StooqParserTest {
 
     @Before
     public void init() {
-        stock = StockBuilder.sampleStock().ticker(StockTicker.kgh).stockName("KGH").stockShortName("kgh").build();
+        stock = StockBuilder.sampleStock().ticker("kgh").stockName("KGH").stockShortName("kgh").build();
         String exampleDataPath = "/stocks_data/daily/pl/wse_stocks/daily_stooq_site_kgh.csv";
         inputStreamOfStockDetails = getClass().getResourceAsStream(exampleDataPath);
     }

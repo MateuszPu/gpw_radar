@@ -12,12 +12,8 @@ import com.gpw.radar.service.parser.DateAndTimeParserService;
 import com.gpw.radar.service.stock.StockDetailsService;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;

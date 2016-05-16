@@ -2,12 +2,8 @@ package com.gpw.radar.web.rest.rss;
 
 import com.gpw.radar.domain.enumeration.RssType;
 import com.gpw.radar.security.AuthoritiesConstants;
-import com.gpw.radar.service.rss.NewsMessageService;
 import com.gpw.radar.service.rss.NewsMessageServiceable;
 import com.gpw.radar.web.rest.dto.rssNews.NewsDetailsDTO;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;

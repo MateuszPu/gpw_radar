@@ -12,9 +12,6 @@ public class PearsonCorrelator implements Correlator {
 
 	@Override
 	public double correlate(double[] sourceClosePrices, double[] targetClosePrices) {
-		if (sourceClosePrices.length != targetClosePrices.length) {
-            return 0.0;
-        }
 		return pearsonsCorrelation.correlation(sourceClosePrices, targetClosePrices);
 	}
 }

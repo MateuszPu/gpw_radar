@@ -3,7 +3,6 @@ package com.gpw.radar.domain.stock;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gpw.radar.domain.User;
-import com.gpw.radar.domain.enumeration.StockTicker;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -27,9 +26,8 @@ public class Stock implements Serializable {
     private Long id;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
     @Column(name = "ticker", nullable = false)
-    private StockTicker ticker;
+    private String ticker;
 
     @Column(name = "stock_name")
     private String stockName;
@@ -38,9 +36,9 @@ public class Stock implements Serializable {
     private String stockShortName;
 
     @JsonIgnore
-	@ManyToMany(mappedBy = "stocks", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "stocks", fetch = FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	private Set<User> users = new HashSet<>();
+    private Set<User> users = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "stock", cascade = CascadeType.ALL)
     private StockIndicators stockIndicators;
@@ -53,11 +51,11 @@ public class Stock implements Serializable {
         this.id = id;
     }
 
-    public StockTicker getTicker() {
+    public String getTicker() {
         return ticker;
     }
 
-    public void setTicker(StockTicker ticker) {
+    public void setTicker(String ticker) {
         this.ticker = ticker;
     }
 
@@ -77,13 +75,13 @@ public class Stock implements Serializable {
         this.stockShortName = stockShortName;
     }
 
-	public Set<User> getUsers() {
-		return users;
-	}
+    public Set<User> getUsers() {
+        return users;
+    }
 
-	public void setUsers(Set<User> users) {
-		this.users = users;
-	}
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
 
     public StockIndicators getStockIndicators() {
         return stockIndicators;
@@ -95,42 +93,42 @@ public class Stock implements Serializable {
 
 
     @Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((stockName == null) ? 0 : stockName.hashCode());
-		result = prime * result + ((stockShortName == null) ? 0 : stockShortName.hashCode());
-		result = prime * result + ((ticker == null) ? 0 : ticker.hashCode());
-		return result;
-	}
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((stockName == null) ? 0 : stockName.hashCode());
+        result = prime * result + ((stockShortName == null) ? 0 : stockShortName.hashCode());
+        result = prime * result + ((ticker == null) ? 0 : ticker.hashCode());
+        return result;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Stock other = (Stock) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (stockName == null) {
-			if (other.stockName != null)
-				return false;
-		} else if (!stockName.equals(other.stockName))
-			return false;
-		if (stockShortName == null) {
-			if (other.stockShortName != null)
-				return false;
-		} else if (!stockShortName.equals(other.stockShortName))
-			return false;
-		if (ticker != other.ticker)
-			return false;
-		return true;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Stock other = (Stock) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        if (stockName == null) {
+            if (other.stockName != null)
+                return false;
+        } else if (!stockName.equals(other.stockName))
+            return false;
+        if (stockShortName == null) {
+            if (other.stockShortName != null)
+                return false;
+        } else if (!stockShortName.equals(other.stockShortName))
+            return false;
+        if (ticker != other.ticker)
+            return false;
+        return true;
+    }
 }

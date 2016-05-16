@@ -1,15 +1,16 @@
 package com.gpw.radar.service.database;
 
 import com.gpw.radar.domain.database.Type;
-import com.gpw.radar.domain.enumeration.StockTicker;
 import com.gpw.radar.domain.stock.*;
 import com.gpw.radar.repository.auto.update.FillDataStatusRepository;
 import com.gpw.radar.repository.stock.*;
 import com.gpw.radar.service.parser.file.stockDetails.StockDetailsParser;
 import com.gpw.radar.service.parser.file.stockFiveMinutesDetails.StockFiveMinutesDetailsParser;
-import com.gpw.radar.service.parser.web.stock.StockDataParser;
+import com.gpw.radar.service.parser.web.GpwSiteDataParserService;
+import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
+import com.gpw.radar.service.parser.web.stock.StockDataNameParser;
+import com.gpw.radar.service.parser.web.stock.StockTickerParser;
 import com.gpw.radar.service.parser.web.stockFinanceEvent.StockFinanceEventParser;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +21,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -52,36 +52,43 @@ public class FillDataBaseWithDataService {
     private StockFiveMinutesDetailsRepository stockFiveMinutesDetailsRepository;
 
     @Inject
+    private UrlStreamsGetterService urlStreamsGetterService;
+
+    @Inject
+    private GpwSiteDataParserService gpwSiteDataParserService;
+
+    @Inject
     private BeanFactory beanFactory;
 
     private int step;
     private ClassLoader classLoader = getClass().getClassLoader();
     private StockFinanceEventParser stockFinanceEventParser;
-    private StockDataParser stockDataParser;
+    private StockDataNameParser stockDataNameParser;
     private StockDetailsParser stockDetailsParser;
     private StockFiveMinutesDetailsParser stockFiveMinutesDetailsParser;
+    private StockTickerParser stockTickerParser;
 
     @PostConstruct
     public void initParsers() {
+        stockTickerParser = beanFactory.getBean("gpwTickerParserService", StockTickerParser.class);
         stockFinanceEventParser = beanFactory.getBean("stockwatchParserService", StockFinanceEventParser.class);
-        stockDataParser = beanFactory.getBean("stooqDataParserService", StockDataParser.class);
+        stockDataNameParser = beanFactory.getBean("stooqDataNameParserService", StockDataNameParser.class);
         stockDetailsParser = beanFactory.getBean("fileStockDetailsParserService", StockDetailsParser.class);
         stockFiveMinutesDetailsParser = beanFactory.getBean("fileStockFiveMinutesDetailsParserService", StockFiveMinutesDetailsParser.class);
     }
 
     //TODO: refactor sending step as socket to application
     public ResponseEntity<Void> fillDataBaseWithStocks() {
-        for (StockTicker element : StockTicker.values()) {
-            Document doc = null;
-            try {
-                doc = getDocumentFromStooqWeb(element.toString());
-            } catch (IOException e) {
-                logger.error("Error occurs: " + e.getMessage());
-            }
+        InputStream inputStreamFromUrl = urlStreamsGetterService.getInputStreamFromUrl("https://www.gpw.pl/ajaxindex.php?action=GPWQuotations&start=showTable&tab=all&lang=PL&full=1");
+        Document document = gpwSiteDataParserService.getDocumentFromInputStream(inputStreamFromUrl);
+        Set<String> tickers = stockTickerParser.fetchAllTickers(document);
+
+        for (String element : tickers) {
+            Document doc = urlStreamsGetterService.getDocFromUrl("http://stooq.pl/q/?s=" + element);
             Stock stock = new Stock();
             stock.setTicker(element);
-            stock.setStockName(stockDataParser.getStockNameFromWeb(doc));
-            stock.setStockShortName(stockDataParser.getStockShortNameFromWeb(doc));
+            stock.setStockName(stockDataNameParser.getStockNameFromWeb(doc));
+            stock.setStockShortName(stockDataNameParser.getStockShortNameFromWeb(doc));
             stockRepository.save(stock);
         }
         fillDataStatusRepository.updateType(Type.STOCK.toString());
@@ -90,13 +97,13 @@ public class FillDataBaseWithDataService {
 
     public ResponseEntity<Void> fillDataBaseWithStockDetails() {
         step = 0;
-        EnumSet<StockTicker> tickers = EnumSet.allOf(StockTicker.class);
+        Set<String> tickers = stockRepository.findAllTickers();
         ExecutorService executor = Executors.newFixedThreadPool(4);
 
-        for (StockTicker ticker : tickers) {
+        for (String ticker : tickers) {
             executor.execute(() -> {
                 Stock stock = stockRepository.findByTicker(ticker);
-                String filePath = "stocks_data/daily/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
+                String filePath = "stocks_data/daily/pl/wse_stocks/" + stock.getTicker() + ".txt";
                 InputStream st = classLoader.getResourceAsStream(filePath);
                 List<StockDetails> stockDetails = stockDetailsParser.parseStockDetails(stock, st);
                 stockDetailsRepository.save(stockDetails);
@@ -115,13 +122,13 @@ public class FillDataBaseWithDataService {
 
     public ResponseEntity<Void> fillDataBaseWithStockFiveMinutesDetails() {
         step = 0;
-        EnumSet<StockTicker> tickers = EnumSet.allOf(StockTicker.class);
+        Set<String> tickers = stockRepository.findAllTickers();
         ExecutorService executor = Executors.newFixedThreadPool(4);
 
-        for (StockTicker ticker : tickers) {
+        for (String ticker : tickers) {
             executor.execute(() -> {
                 Stock stock = stockRepository.findByTicker(ticker);
-                String filePath = "stocks_data/5min/pl/wse_stocks/" + stock.getTicker().name() + ".txt";
+                String filePath = "stocks_data/5min/pl/wse_stocks/" + stock.getTicker() + ".txt";
                 InputStream inputStream = classLoader.getResourceAsStream(filePath);
                 List<StockFiveMinutesDetails> stockFiveMinutesDetails = stockFiveMinutesDetailsParser.parseStockFiveMinutesDetails(stock, inputStream);
                 List<StockFiveMinutesDetails> filledStockFiveMinutesDetails = stockFiveMinutesDetailsParser.fillEmptyTimeAndCumulativeVolume(stockFiveMinutesDetails);
@@ -147,11 +154,6 @@ public class FillDataBaseWithDataService {
         stockFinanceEventRepository.save(stockFinanceEventFromWeb);
         fillDataStatusRepository.updateType(Type.STOCK_FINANCE_EVENTS.toString());
         return new ResponseEntity<Void>(HttpStatus.OK);
-    }
-
-    private Document getDocumentFromStooqWeb(String ticker) throws IOException {
-        Document doc = Jsoup.connect("http://stooq.pl/q/?s=" + ticker).get();
-        return doc;
     }
 
     private synchronized void increaseStep() {
