@@ -26,6 +26,8 @@ public class CacheConfiguration {
     public static final String STOCKS_FOLLOWED_BY_USER_CACHE = "stocksFollowedByUserCache";
     public static final String TRENDING_STOCKS_CACHE = "trendingStocksCache";
     public static final String STOCK_TICKERS_CACHE = "stockTickersCache";
+    public static final String ALL_STOCK_FINANCE_EVENTS_CACHE = "allStocksFinanceEventsCache";
+    public static final String LAST_QUTED_DATE = "lastQutedDateCache";
     public static final String RSS_NEWS_BY_TYPE_AND_DATE_CACHE = "rssNewsByTypeAndDateCache";
 
     @Bean
@@ -38,6 +40,8 @@ public class CacheConfiguration {
         caches.add(STOCKS_FOLLOWED_BY_USER_CACHE);
         caches.add(TRENDING_STOCKS_CACHE);
         caches.add(STOCK_TICKERS_CACHE);
+        caches.add(ALL_STOCK_FINANCE_EVENTS_CACHE);
+        caches.add(LAST_QUTED_DATE);
         cacheManager.setCacheNames(caches);
         return cacheManager;
     }

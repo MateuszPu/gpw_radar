@@ -26,52 +26,53 @@ import java.util.List;
 @Service
 public class StocksDetailsUpdater {
 
-	@Inject
-	private StockDetailsService stockDetailsService;
+    @Inject
+    private StockDetailsService stockDetailsService;
 
-	@Inject
-	private DateAndTimeParserService dateAndTimeParserService;
+    @Inject
+    private DateAndTimeParserService dateAndTimeParserService;
 
-	@Inject
-	private DailyStockDetailsParserRepository configuratorRepository;
+    @Inject
+    private DailyStockDetailsParserRepository configuratorRepository;
 
-	@Inject
-	private StockDetailsRepository stockDetailsRepository;
+    @Inject
+    private StockDetailsRepository stockDetailsRepository;
 
-	@Inject
-	private StockIndicatorsRepository stockIndicatorsRepository;
+    @Inject
+    private StockIndicatorsRepository stockIndicatorsRepository;
 
-	@Inject
-	private BeanFactory beanFactory;
+    @Inject
+    private BeanFactory beanFactory;
 
-	private StockDetailsParser stockDetailsParser;
-	private StockIndicatorsCalculator stockIndicatorsCalculator;
+    private StockDetailsParser stockDetailsParser;
+    private StockIndicatorsCalculator stockIndicatorsCalculator;
 
 
-	@Transactional
-	@Scheduled(cron = "0 30 17 ? * MON-FRI")
-    @CacheEvict(cacheNames={CacheConfiguration.TRENDING_STOCKS_CACHE, CacheConfiguration.STOCK_DETAILS_BY_TICKER_CACHE, CacheConfiguration.ALL_STOCKS_FETCH_INDICATORS_CACHE}, allEntries=true)
-	public void updateStockDetails() throws IOException, InterruptedException {
-		LocalDate lastQuotedDateFromDataBase = stockDetailsService.findLastTopDate().getBody();
-		LocalDate lastQuotedDateFromStooqWeb = dateAndTimeParserService.getLastDateWig20FromStooqWebsite();
-		stockIndicatorsCalculator = beanFactory.getBean("standardStockIndicatorsCalculator", StockIndicatorsCalculator.class);
+    @Transactional
+    @Scheduled(cron = "0 30 17 ? * MON-FRI")
+    @CacheEvict(cacheNames = {CacheConfiguration.TRENDING_STOCKS_CACHE, CacheConfiguration.STOCK_DETAILS_BY_TICKER_CACHE,
+        CacheConfiguration.ALL_STOCKS_FETCH_INDICATORS_CACHE, CacheConfiguration.LAST_QUTED_DATE}, allEntries = true)
+    public void updateStockDetails() throws IOException, InterruptedException {
+        LocalDate lastQuotedDateFromDataBase = stockDetailsService.findLastTopDate().getBody();
+        LocalDate lastQuotedDateFromStooqWeb = dateAndTimeParserService.getLastDateWig20FromStooqWebsite();
+        stockIndicatorsCalculator = beanFactory.getBean("standardStockIndicatorsCalculator", StockIndicatorsCalculator.class);
 
-		switch (configuratorRepository.findMethod().getParserMethod()) {
-		case GPW:
-			stockDetailsParser = beanFactory.getBean("gpwParser", StockDetailsParser.class);
-			break;
-		case STOOQ:
-			stockDetailsParser = beanFactory.getBean("stooqParser", StockDetailsParser.class);
-			stockDetailsParser.setQuotesDate(lastQuotedDateFromStooqWeb);
-			break;
-		}
+        switch (configuratorRepository.findMethod().getParserMethod()) {
+            case GPW:
+                stockDetailsParser = beanFactory.getBean("gpwParser", StockDetailsParser.class);
+                break;
+            case STOOQ:
+                stockDetailsParser = beanFactory.getBean("stooqParser", StockDetailsParser.class);
+                stockDetailsParser.setQuotesDate(lastQuotedDateFromStooqWeb);
+                break;
+        }
 
-		if (!lastQuotedDateFromDataBase.isEqual(lastQuotedDateFromStooqWeb)) {
+        if (!lastQuotedDateFromDataBase.isEqual(lastQuotedDateFromStooqWeb)) {
             List<StockDetails> currentStockDetails = stockDetailsParser.getCurrentStockDetails();
             stockDetailsRepository.save(currentStockDetails);
 
             List<StockIndicators> stockIndicators = stockIndicatorsCalculator.calculateCurrentStockIndicators();
             stockIndicatorsRepository.save(stockIndicators);
-		}
-	}
+        }
+    }
 }
