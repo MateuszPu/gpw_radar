@@ -9,7 +9,6 @@ import com.gpw.radar.repository.stock.StockIndicatorsRepository;
 import com.gpw.radar.security.AuthoritiesConstants;
 import com.gpw.radar.service.auto.update.stockDetails.indicators.StockIndicatorsCalculator;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
-import com.gpw.radar.service.stock.StockDetailsService;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -25,9 +24,6 @@ import java.util.List;
 @RolesAllowed(AuthoritiesConstants.ADMIN)
 @Service
 public class StocksDetailsUpdater {
-
-    @Inject
-    private StockDetailsService stockDetailsService;
 
     @Inject
     private DateAndTimeParserService dateAndTimeParserService;
@@ -53,7 +49,7 @@ public class StocksDetailsUpdater {
     @CacheEvict(cacheNames = {CacheConfiguration.TRENDING_STOCKS_CACHE, CacheConfiguration.STOCK_DETAILS_BY_TICKER_CACHE,
         CacheConfiguration.ALL_STOCKS_FETCH_INDICATORS_CACHE, CacheConfiguration.LAST_QUTED_DATE}, allEntries = true)
     public void updateStockDetails() throws IOException, InterruptedException {
-        LocalDate lastQuotedDateFromDataBase = stockDetailsService.findLastTopDate().getBody();
+        LocalDate lastQuotedDateFromDataBase = stockDetailsRepository.findTopDate();
         LocalDate lastQuotedDateFromStooqWeb = dateAndTimeParserService.getLastDateWig20FromStooqWebsite();
         stockIndicatorsCalculator = beanFactory.getBean("standardStockIndicatorsCalculator", StockIndicatorsCalculator.class);
 

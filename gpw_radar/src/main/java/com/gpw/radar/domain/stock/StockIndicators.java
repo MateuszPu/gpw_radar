@@ -2,6 +2,7 @@ package com.gpw.radar.domain.stock;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "STOCK_INDICATORS")
@@ -43,9 +44,12 @@ public class StockIndicators {
     @Column(name = "volume_value_30_days", precision = 25, scale = 2)
     private BigDecimal volumeValue30Days;
 
+    private LocalDate date;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stock_id", foreignKey = @ForeignKey(name = "fk_stock_id"))
     private Stock stock;
+
 
     public Long getId() {
         return id;
@@ -134,6 +138,14 @@ public class StockIndicators {
 
     public void setVolumeValue30Days(BigDecimal volumeValue30Days) {
         this.volumeValue30Days = volumeValue30Days;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public Stock getStock() {

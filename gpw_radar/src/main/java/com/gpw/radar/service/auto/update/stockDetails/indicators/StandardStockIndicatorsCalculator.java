@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,6 +38,7 @@ public class StandardStockIndicatorsCalculator implements StockIndicatorsCalcula
     private double[] maxPrice;
     private double[] closePrice;
     private double[] volume;
+    private LocalDate date;
 
     @Override
     public List<StockIndicators> calculateCurrentStockIndicators() {
@@ -66,8 +68,11 @@ public class StandardStockIndicatorsCalculator implements StockIndicatorsCalcula
         stockIndicators.setSlopeSimpleRegression30Days(calculateSlopeSimpleRegression(closePrice, 30));
         stockIndicators.setSlopeSimpleRegression60Days(calculateSlopeSimpleRegression(closePrice, 60));
         stockIndicators.setSlopeSimpleRegression90Days(calculateSlopeSimpleRegression(closePrice, 90));
+        if (date != null) {
+            stockIndicators.setDate(LocalDate.from(date));
+        }
         stockIndicators.setStock(stock);
-
+        date = null;
         return stockIndicators;
     }
 
@@ -81,6 +86,9 @@ public class StandardStockIndicatorsCalculator implements StockIndicatorsCalcula
         maxPrice = new double[size];
         closePrice = new double[size];
         volume = new double[size];
+        if (stockDetails.getContent().get(0).getVolume() != 0) {
+            date = stockDetails.getContent().get(0).getDate();
+        }
         getStockDetails(stockDetails, size);
     }
 

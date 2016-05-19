@@ -122,4 +122,10 @@
                                  referencedColumnNames="id"
                                  referencedTableName="STOCK"/>
     </changeSet>
+    <changeSet id="20160517203015" author="mateusz">
+        <addColumn tableName="STOCK_INDICATORS">
+            <column name="date" type="date">
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
