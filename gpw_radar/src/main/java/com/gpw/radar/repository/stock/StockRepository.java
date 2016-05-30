@@ -34,10 +34,10 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
 
     Optional<Stock> findByStockName(String stockName);
 
-    @Query(value = "SELECT s.ticker, COUNT(s.ticker)\n"
-        + "FROM stock s INNER JOIN user_stocks us ON s.id = us.stock_id \n"
-        + "INNER JOIN user u on us.user_id = u.id GROUP BY s.ticker ORDER BY count(*) DESC LIMIT 5", nativeQuery = true)
-    List<StockStatistic> getTop5MostFollowedStocks();
+    @Query(value = "SELECT COUNT(us.stock_id), st.ticker" +
+        "  FROM user_stocks us inner join stock st on us.stock_id = st.id" +
+        " GROUP BY st.ticker order by COUNT(us.stock_id) desc limit 5", nativeQuery = true)
+    List<Object[]> getTop5MostFollowedStocks();
 
     @Query("select count(si) from StockIndicators si where si.percentReturn > 0")
     Long countUpStocks();

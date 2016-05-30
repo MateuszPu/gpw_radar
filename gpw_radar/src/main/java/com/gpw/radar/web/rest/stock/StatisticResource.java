@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.TreeSet;
 
 /**
@@ -56,6 +57,11 @@ public class StatisticResource {
     @RequestMapping(value = "/stocks/no/change", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> getStocksNoChange() {
         return statisticService.countStocksNoChange();
+    }
+
+    @RequestMapping(value = "/five/most/followed/stocks", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<StockStatistic>> getFiveMostFollowedStocks() {
+        return statisticService.getFiveMostFollowedStocks();
     }
 
     @RequestMapping(value = "all/type/correlation", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
