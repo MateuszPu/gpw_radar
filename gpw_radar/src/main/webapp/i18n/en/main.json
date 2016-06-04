@@ -1,22 +1,9 @@
 {
     "main": {
-        "title": "Welcome, Java Hipster!",
-        "widgetsTitle": "At {{date}}:",
-        "stocksUp" : "There were stocks rising up: {{stocksUp}}",
-        "stocksDown" : "There were stocks falling  down: {{stocksDown}}",
-        "stocksNoChange": "There were stocks no change: {{stocksNoChange}}",
-        "subtitle": "This is your homepage",
-        "logged": {
-            "message": "You are logged in as user \"{{username}}\"."
-        },
-        "question": "If you have any question on JHipster:",
-        "link": {
-            "homepage": "JHipster homepage",
-            "stackoverflow": "JHipster on Stack Overflow",
-            "bugtracker": "JHipster bug tracker",
-            "contact": "contact @java_hipster on Twitter"
-        },
-        "like": "If you like JHipster, don't forget to give us a star on",
-        "github": "Github"
+        "up": "Rising",
+        "down": "Falling",
+        "noChange": "No change",
+        "topFollowed": "Top 5 followed",
+        "top5News": "Top 5 news"
     }
 }

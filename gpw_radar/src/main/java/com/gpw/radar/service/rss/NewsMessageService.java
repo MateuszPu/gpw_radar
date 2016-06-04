@@ -19,7 +19,9 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.lang.reflect.Type;
 import java.time.ZonedDateTime;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class NewsMessageService implements RssObserver, NewsMessageServiceable {
@@ -53,7 +55,12 @@ public class NewsMessageService implements RssObserver, NewsMessageServiceable {
         return new ResponseEntity<List<NewsDetailsDTO>>(mapToDTO(latestNewsMessageDateRange), HttpStatus.OK);
     }
 
-    private List<NewsDetailsDTO> mapToDTO(List<NewsMessage> messages) {
+    public ResponseEntity<List<NewsDetailsDTO>> getLatestTop5NewsMessage() {
+        Set<NewsMessage> latestNewsMessage = newsMessageRepository.findTop5ByOrderByCreatedDateDesc();
+        return new ResponseEntity<List<NewsDetailsDTO>>(mapToDTO(latestNewsMessage), HttpStatus.OK);
+    }
+
+    private List<NewsDetailsDTO> mapToDTO(Collection<NewsMessage> messages) {
         ModelMapper modelMapper = new ModelMapper();
         Type dtoType = new TypeToken<List<NewsDetailsDTO>>() {
         }.getType();

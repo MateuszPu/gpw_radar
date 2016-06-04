@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('gpwRadarApp')
-    .factory('Stock', function ($resource, DateUtils) {
+    .factory('Stock', function ($resource) {
         return $resource('api/stocks/:id', {}, {
             'query': { method: 'GET', isArray: true},
             'get': {

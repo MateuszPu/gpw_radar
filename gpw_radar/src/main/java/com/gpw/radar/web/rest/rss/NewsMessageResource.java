@@ -21,16 +21,22 @@ import java.util.List;
 @RolesAllowed(AuthoritiesConstants.USER)
 public class NewsMessageResource {
 
-	@Inject
-	private NewsMessageServiceable newsMessageServiceable;
+    @Inject
+    private NewsMessageServiceable newsMessageServiceable;
 
-	@RequestMapping(value = "/latest", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/latest", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<NewsDetailsDTO>> getNewsMessageByType(@RequestParam RssType type) {
         return newsMessageServiceable.getLatestNewsMessageByType(type);
     }
 
     @RequestMapping(value = "/range", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<NewsDetailsDTO>> getNewsMessageByTypeAndDateRange(@RequestParam RssType type, @RequestParam String startDate, @RequestParam  String endDate) {
+    public ResponseEntity<List<NewsDetailsDTO>> getNewsMessageByTypeAndDateRange(@RequestParam RssType type, @RequestParam String startDate, @RequestParam String endDate) {
         return newsMessageServiceable.getMessagesByTypeBetweenDates(type, ZonedDateTime.parse(startDate.replaceAll("\"", "")), ZonedDateTime.parse(endDate.replaceAll("\"", "")));
     }
+
+    @RequestMapping(value = "/top/five/latest", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<NewsDetailsDTO>> getTopFiveLatestNewsMessage() {
+        return newsMessageServiceable.getLatestTop5NewsMessage();
+    }
+
 }
