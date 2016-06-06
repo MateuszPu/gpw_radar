@@ -1,5 +1,6 @@
 package com.gpw.radar.service;
 
+import com.gpw.radar.config.CacheConfiguration;
 import com.gpw.radar.domain.Authority;
 import com.gpw.radar.domain.User;
 import com.gpw.radar.repository.AuthorityRepository;
@@ -10,6 +11,7 @@ import com.gpw.radar.service.util.RandomUtil;
 import com.gpw.radar.web.rest.dto.ManagedUserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -86,6 +88,7 @@ public class UserService {
             });
     }
 
+    @CacheEvict(cacheNames = CacheConfiguration.USER_INFO_CACHE, key = "#p0")
     public User createUserInformation(String login, String password, String firstName, String lastName, String email,
         String langKey) {
 
