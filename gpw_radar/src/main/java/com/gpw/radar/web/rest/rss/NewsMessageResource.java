@@ -18,18 +18,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/news/message")
-@RolesAllowed(AuthoritiesConstants.USER)
 public class NewsMessageResource {
 
     @Inject
     private NewsMessageServiceable newsMessageServiceable;
 
     @RequestMapping(value = "/latest", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RolesAllowed(AuthoritiesConstants.USER)
     public ResponseEntity<List<NewsDetailsDTO>> getNewsMessageByType(@RequestParam RssType type) {
         return newsMessageServiceable.getLatestNewsMessageByType(type);
     }
 
     @RequestMapping(value = "/range", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RolesAllowed(AuthoritiesConstants.USER)
     public ResponseEntity<List<NewsDetailsDTO>> getNewsMessageByTypeAndDateRange(@RequestParam RssType type, @RequestParam String startDate, @RequestParam String endDate) {
         return newsMessageServiceable.getMessagesByTypeBetweenDates(type, ZonedDateTime.parse(startDate.replaceAll("\"", "")), ZonedDateTime.parse(endDate.replaceAll("\"", "")));
     }
