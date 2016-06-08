@@ -41,7 +41,7 @@ Then navigate to [http://localhost:8080](http://localhost:8080) in your browser.
 # Run from IDE
 
 If you want to run project from IDE (Intellij in my case), you should navigate to gpw-radar module and run main method from Application class.
-Before run you should edit run configuration: in [working directory][] you should provide [path to the gpw-radar module[][], instead of that application will be not working correctly.
+Before run you should edit run configuration: in `working directory` you should provide `path to the gpw-radar module`, instead of that application will be not working correctly.
 
 [JHipster]: https://jhipster.github.io/
 [Node.js]: https://nodejs.org/
