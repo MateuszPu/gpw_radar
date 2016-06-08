@@ -17,6 +17,7 @@ import java.util.Set;
  */
 public interface StockRepository extends JpaRepository<Stock, Long> {
 
+    @Cacheable(value = CacheConfiguration.STOCK_CACHE)
     Stock findByTicker(String ticker);
 
     @Cacheable(value = CacheConfiguration.STOCK_TICKERS_CACHE)
