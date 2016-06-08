@@ -12,23 +12,20 @@ After installing Node, you should be able to run the following command to instal
 
     npm install
 
-We use [Grunt][] as our build system. Install the grunt command-line tool globally with:
+We use [Grunt][] as our build system (Only if you want to use grunt, without it project works correctly). Install the grunt command-line tool globally with:
 
     npm install -g grunt-cli
-
-Run the following commands in two separate terminals to create a blissful development experience where your browser
-auto-refreshes when files change on your hard drive.
-
-    mvn
-    grunt
 
 Bower is used to manage CSS and JavaScript dependencies used in this application. You can upgrade dependencies by
 specifying a newer version in `bower.json`. You can also run `bower update` and `bower install` to manage dependencies.
 Add the `-h` flag on any command to see how you can use it. For example, `bower update -h`.
 
+As the all front-end dependencies are not included on this repository. You have to install bower, go to catalog ../projectPath/gpw_radar, and run bower install command.
+All dependencies should be downloaded by bower.
+
 # Building for production
 
-To optimize the gpwRadar client for production, run:
+To optimize the gpwRadar client for production (here you will need grunt), run:
 
     mvn -Pprod clean package
 
@@ -41,38 +38,9 @@ To ensure everything worked, run:
 
 Then navigate to [http://localhost:8080](http://localhost:8080) in your browser.
 
-# Testing
+If you want to run project from IDE (Intellij in my case), you should navigate to gpw-radar module and run main method from Application class.
+Before run you should edit run configuration: in working directory you should provide path to the gpw-radar module, instead of that application will be not working correctly.
 
-Unit tests are run by [Karma][] and written with [Jasmine][]. They're located in `src/test/javascript` and can be run with:
-
-    grunt test
-
-UI end-to-end tests are powered by [Protractor][], which is built on top of WebDriverJS. They're located in `src/test/javascript/e2e`
-and can be run by starting Spring Boot in one terminal (`mvn spring-boot:run`) and running the tests (`grunt itest`) in a second one.
-
-# Continuous Integration
-
-To setup this project in Jenkins, use the following configuration:
-
-* Project name: `gpwRadar`
-* Source Code Management
-    * Git Repository: `git@github.com:xxxx/gpwRadar.git`
-    * Branches to build: `*/master`
-    * Additional Behaviours: `Wipe out repository & force clone`
-* Build Triggers
-    * Poll SCM / Schedule: `H/5 * * * *`
-* Build
-    * Invoke Maven / Tasks: `-Pprod clean package`
-    * Execute Shell / Command:
-        ````
-        mvn spring-boot:run &
-        bootPid=$!
-        sleep 30s
-        grunt itest
-        kill $bootPid
-        ````
-* Post-build Actions
-    * Publish JUnit test result report / Test Report XMLs: `build/test-results/*.xml,build/reports/e2e/*.xml`
 
 [JHipster]: https://jhipster.github.io/
 [Node.js]: https://nodejs.org/
