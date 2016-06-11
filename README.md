@@ -23,6 +23,9 @@ Add the `-h` flag on any command to see how you can use it. For example, `bower 
 As the all front-end dependencies are not included on this repository. You have to install bower, go to catalog ../projectPath/gpw_radar, and run bower install command.
 All dependencies should be downloaded by bower.
 
+Project use postgersql database. You should have working client of postgres. By default the name of the database is: `gpw_radar`, login and password: `postgres`.
+If you want to change the default setting go to: `/gpw_radar/src/main/resources/config` and edit `application-dev.yml` or `application-prod.yml` config file.
+
 # Building for production
 
 To optimize the gpwRadar client for production (here you will need grunt), run:
@@ -42,6 +45,9 @@ Then navigate to [http://localhost:8080](http://localhost:8080) in your browser.
 
 If you want to run project from IDE (Intellij in my case), you should navigate to gpw-radar module and run main method from Application class.
 Before run you should edit run configuration: in `working directory` you should provide `path to the gpw-radar module`, instead of that application will be not working correctly.
+
+# Issue/task tracker
+Under following link (https://trello.com/b/P8ASjAks/gpw-radar) I manage my work on the project.
 
 [JHipster]: https://jhipster.github.io/
 [Node.js]: https://nodejs.org/
