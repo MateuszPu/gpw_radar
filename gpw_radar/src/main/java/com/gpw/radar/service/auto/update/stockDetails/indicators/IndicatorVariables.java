@@ -33,12 +33,14 @@ public class IndicatorVariables {
 
 
     public BigDecimal calculatePercentReturn() {
-        BigDecimal todayClose = stockDetails.get(0).getClosePrice();
-        BigDecimal previousClose = stockDetails.get(1).getClosePrice();
-        BigDecimal divide = todayClose.divide(previousClose, 6, BigDecimal.ROUND_HALF_UP);
-        BigDecimal subtract = divide.subtract(BigDecimal.ONE);
-        BigDecimal result = subtract.multiply(multiplicand);
-
+        BigDecimal result = BigDecimal.ZERO;
+        if(stockDetails.size() > 1) {
+            BigDecimal todayClose = stockDetails.get(0).getClosePrice();
+            BigDecimal previousClose = stockDetails.get(1).getClosePrice();
+            BigDecimal divide = todayClose.divide(previousClose, 6, BigDecimal.ROUND_HALF_UP);
+            BigDecimal subtract = divide.subtract(BigDecimal.ONE);
+            result = subtract.multiply(multiplicand);
+        }
         return result.setScale(2, RoundingMode.HALF_UP);
     }
 

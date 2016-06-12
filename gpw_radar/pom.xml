@@ -92,6 +92,7 @@
         <springfox.version>2.0.3</springfox.version>
         <technical.analysis.indicators.version>1.0-SNAPSHOT</technical.analysis.indicators.version>
         <modelmapper.version>0.7.5</modelmapper.version>
+        <mockito.version>1.10.19</mockito.version>
     </properties>
 
     <dependencies>
@@ -431,7 +432,11 @@
             <artifactId>modelmapper</artifactId>
             <version>${modelmapper.version}</version>
         </dependency>
-        <!-- jhipster-needle-maven-add-dependency -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>${mockito.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <defaultGoal>spring-boot:run</defaultGoal>

@@ -44,7 +44,7 @@ public class StockDetails implements Serializable {
     @Column(name = "volume", nullable = false)
     private Long volume;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name="stock_id", foreignKey = @ForeignKey(name="FK_stock"))
     private Stock stock;
 

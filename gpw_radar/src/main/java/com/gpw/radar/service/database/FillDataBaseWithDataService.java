@@ -6,10 +6,10 @@ import com.gpw.radar.repository.auto.update.FillDataStatusRepository;
 import com.gpw.radar.repository.stock.*;
 import com.gpw.radar.service.parser.file.stockDetails.StockDetailsParser;
 import com.gpw.radar.service.parser.file.stockFiveMinutesDetails.StockFiveMinutesDetailsParser;
-import com.gpw.radar.service.parser.web.GpwSiteDataParserService;
 import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
 import com.gpw.radar.service.parser.web.stock.StockDataNameParser;
-import com.gpw.radar.service.parser.web.stock.StockTickerParser;
+import com.gpw.radar.service.parser.web.stock.StockBatchWebParser;
+import com.gpw.radar.service.parser.web.stock.StockDetailsWebParser;
 import com.gpw.radar.service.parser.web.stockFinanceEvent.StockFinanceEventParser;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
@@ -55,33 +55,29 @@ public class FillDataBaseWithDataService {
     private UrlStreamsGetterService urlStreamsGetterService;
 
     @Inject
-    private GpwSiteDataParserService gpwSiteDataParserService;
-
-    @Inject
     private BeanFactory beanFactory;
 
     private int step;
     private ClassLoader classLoader = getClass().getClassLoader();
     private StockFinanceEventParser stockFinanceEventParser;
-    private StockDataNameParser stockDataNameParser;
+    private StockDetailsWebParser stockDataNameParser;
     private StockDetailsParser stockDetailsParser;
     private StockFiveMinutesDetailsParser stockFiveMinutesDetailsParser;
-    private StockTickerParser stockTickerParser;
+    private StockBatchWebParser stockBatchWebParser;
 
     @PostConstruct
     public void initParsers() {
-        stockTickerParser = beanFactory.getBean("gpwTickerParserService", StockTickerParser.class);
+        stockBatchWebParser = beanFactory.getBean("gpwSiteDataParserService", StockBatchWebParser.class);
         stockFinanceEventParser = beanFactory.getBean("stockwatchParserService", StockFinanceEventParser.class);
-        stockDataNameParser = beanFactory.getBean("stooqDataNameParserService", StockDataNameParser.class);
+        stockDataNameParser = beanFactory.getBean("stooqDataParserService", StockDetailsWebParser.class);
         stockDetailsParser = beanFactory.getBean("fileStockDetailsParserService", StockDetailsParser.class);
         stockFiveMinutesDetailsParser = beanFactory.getBean("fileStockFiveMinutesDetailsParserService", StockFiveMinutesDetailsParser.class);
     }
 
     //TODO: refactor sending step as socket to application
     public ResponseEntity<Void> fillDataBaseWithStocks() {
-        InputStream inputStreamFromUrl = urlStreamsGetterService.getInputStreamFromUrl("https://www.gpw.pl/ajaxindex.php?action=GPWQuotations&start=showTable&tab=all&lang=PL&full=1");
-        Document document = gpwSiteDataParserService.getDocumentFromInputStream(inputStreamFromUrl);
-        Set<String> tickers = stockTickerParser.fetchAllTickers(document);
+        Document document = stockBatchWebParser.getDocumentForAllStocks();
+        Set<String> tickers = stockBatchWebParser.fetchAllTickers(document);
 
         for (String element : tickers) {
             Document doc = urlStreamsGetterService.getDocFromUrl("http://stooq.pl/q/?s=" + element);

@@ -4,6 +4,7 @@ import com.gpw.radar.config.CacheConfiguration;
 import com.gpw.radar.config.JHipsterProperties;
 import com.gpw.radar.domain.User;
 import com.gpw.radar.domain.stock.Stock;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -31,7 +32,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findOneByEmail(String email);
 
     @Cacheable(cacheNames = CacheConfiguration.USER_INFO_CACHE)
-    Optional<User> findOneByLogin(String login);
+    @Query(value = "from User u join fetch u.authorities where u.login = :login")
+    Optional<User> findOneByLogin(@Param("login") String login);
 
     Optional<User> findOneById(Long userId);
 

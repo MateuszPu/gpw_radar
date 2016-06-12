@@ -34,7 +34,7 @@ public class StandardStockIndicatorsCalculator implements StockIndicatorsCalcula
         return stockIndicators;
     }
 
-    private StockIndicators calculateStockIndicator(String stockTicker) {
+    public StockIndicators calculateStockIndicator(String stockTicker) {
         Stock stock = stockRepository.findByTicker(stockTicker);
 
         StockIndicators stockIndicators = stockIndicatorsRepository.findByStock(stock);

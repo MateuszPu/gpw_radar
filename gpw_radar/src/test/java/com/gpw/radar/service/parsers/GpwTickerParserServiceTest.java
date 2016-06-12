@@ -1,7 +1,7 @@
 package com.gpw.radar.service.parsers;
 
-import com.gpw.radar.service.parser.web.stock.GpwTickerParserService;
-import com.gpw.radar.service.parser.web.stock.StockTickerParser;
+import com.gpw.radar.service.parser.web.GpwSiteDataParserService;
+import com.gpw.radar.service.parser.web.stock.StockBatchWebParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Before;
@@ -15,12 +15,10 @@ import java.util.Set;
 
 import static org.assertj.core.api.StrictAssertions.assertThat;
 
-
 public class GpwTickerParserServiceTest {
 
-    private StockTickerParser stockTickerParser = new GpwTickerParserService();
+    private StockBatchWebParser stockBatchWebParser = new GpwSiteDataParserService();
     private Document doc;
-
 
     @Before
     public void prepareHtmlFile() {
@@ -41,7 +39,7 @@ public class GpwTickerParserServiceTest {
 
     @Test
     public void tickerParserResult() throws IOException {
-        Set<String> tickers = stockTickerParser.fetchAllTickers(doc);
+        Set<String> tickers = stockBatchWebParser.fetchAllTickers(doc);
         assertThat(tickers.contains("abc")).isEqualTo(true);
         assertThat(tickers.contains("fgt")).isEqualTo(true);
         assertThat(tickers.contains("fro")).isEqualTo(true);

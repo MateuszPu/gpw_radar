@@ -3,8 +3,8 @@ package com.gpw.radar.service.auto.update.stockDetails;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;
 import com.gpw.radar.repository.stock.StockRepository;
-import com.gpw.radar.service.parser.web.GpwSiteDataParserService;
 import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
+import com.gpw.radar.service.parser.web.stock.StockBatchWebParser;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -33,7 +32,7 @@ public class GpwParser implements StockDetailsParser {
     private UrlStreamsGetterService urlStreamsGetterService;
 
     @Inject
-    private GpwSiteDataParserService gpwSiteDataParserService;
+    private StockBatchWebParser gpwSiteDataParserService;
 
     private static final int indexOfTicker = 3;
     private static final int indexOfOpenPrice = 8;
@@ -48,9 +47,8 @@ public class GpwParser implements StockDetailsParser {
     @Override
     public List<StockDetails> getCurrentStockDetails() {
         LocalDate date = getCurrentDateOfStockDetails();
-        InputStream inputStreamFromUrl = urlStreamsGetterService.getInputStreamFromUrl("https://www.gpw.pl/ajaxindex.php?action=GPWQuotations&start=showTable&tab=all&lang=PL&full=1");
-        Document doc = gpwSiteDataParserService.getDocumentFromInputStream(inputStreamFromUrl);
-        return getStockDetailsFromWeb(doc, date);
+        Document doc = gpwSiteDataParserService.getDocumentForAllStocks();
+        return getStockDetailsFromWeb(new Document("as"), date);
     }
 
     public List<StockDetails> getStockDetailsFromWeb(Document doc, LocalDate date) {
