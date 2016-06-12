@@ -64,6 +64,7 @@ public class StockTickerUpdaterTest {
 
     @Before
     public void init() throws IOException {
+        stockRepository.deleteAll();
         stockRepository.save(StockBuilder.stockBuilder().ticker("abc").build());
         stockRepository.save(StockBuilder.stockBuilder().ticker("def").build());
 

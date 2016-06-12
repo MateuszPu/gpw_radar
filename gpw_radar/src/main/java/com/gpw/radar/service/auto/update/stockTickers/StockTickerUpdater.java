@@ -55,8 +55,7 @@ public class StockTickerUpdater {
 
     @Scheduled(cron = "0 30 23 ? * MON-FRI")
     @Transactional
-    public boolean updateStockTickers() {
-        boolean updated = false;
+    public void updateStockTickers() {
         Set<String> tickersInDb = stockRepository.findAllTickers();
         Document document = stockBatchWebParser.getDocumentForAllStocks();
         Set<String> tickers = stockBatchWebParser.fetchAllTickers(document);
@@ -67,10 +66,8 @@ public class StockTickerUpdater {
             Document doc = urlStreamsGetterService.getDocFromUrl("http://stooq.pl/q/?s=" + ticker);
             Stock stock = createStock(ticker, doc);
             StockDetails stockDetails = stockDetailsRepository.save(createStockDetails(stock, doc));
-            updated = true;
         }
         cleanCache();
-        return updated;
     }
 
     public Stock createStock(String ticker, Document doc) {
