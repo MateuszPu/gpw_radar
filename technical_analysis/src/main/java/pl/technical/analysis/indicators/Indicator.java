@@ -60,7 +60,20 @@ public abstract class Indicator {
     }
 
     public double getLast() {
-        return indicators.get(indicators.size() - 1);
+        return get(1);
+    }
+
+    /**
+     * @param shift number of indicators back in time from the fresh one. shift 1 - return last, shift 2 -return indicator before last etc...
+     * @return value of the indicator base on shift parameter
+     */
+    public double get(int shift) {
+        int indicatorsSize = indicators.size();
+        if(shift > indicatorsSize || shift < 1) {
+            throw new IllegalArgumentException("Invalid shift parameter");
+        }
+
+        return indicators.get(indicatorsSize - shift);
     }
 
     protected abstract void calculateIndicator();

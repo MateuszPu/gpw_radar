@@ -1,4 +1,4 @@
-package pl.technical.analysis.indicators.trackers;
+package pl.technical.analysis.indicators.trackers.sma;
 
 import pl.technical.analysis.Tickable;
 import pl.technical.analysis.indicators.Indicator;
