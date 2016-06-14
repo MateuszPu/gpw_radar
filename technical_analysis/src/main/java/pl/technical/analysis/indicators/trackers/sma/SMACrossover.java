@@ -9,16 +9,16 @@ public class SMACrossover {
     private SMAIndicator fasterSMA;
     private SMAIndicator slowerSMA;
 
-    public SMACrossover(List<Tickable> ticks, int periodOfFasterSMA, int periodOfSlowerSMA) {
-        if (periodOfFasterSMA > periodOfSlowerSMA) {
-            this.fasterSMA = new SMAIndicator(ticks, periodOfFasterSMA);
-            this.slowerSMA = new SMAIndicator(ticks, periodOfSlowerSMA);
+    public SMACrossover(List<Tickable> ticks, int fasterSMAPeriod, int slowerSMAPeriod) {
+        if (fasterSMAPeriod > slowerSMAPeriod) {
+            this.fasterSMA = new SMAIndicator(ticks, fasterSMAPeriod);
+            this.slowerSMA = new SMAIndicator(ticks, slowerSMAPeriod);
         }
-        if (periodOfFasterSMA < periodOfSlowerSMA) {
-            this.fasterSMA = new SMAIndicator(ticks, periodOfSlowerSMA);
-            this.slowerSMA = new SMAIndicator(ticks, periodOfFasterSMA);
+        if (fasterSMAPeriod < slowerSMAPeriod) {
+            this.fasterSMA = new SMAIndicator(ticks, slowerSMAPeriod);
+            this.slowerSMA = new SMAIndicator(ticks, fasterSMAPeriod);
         }
-        if (periodOfFasterSMA == periodOfSlowerSMA) {
+        if (fasterSMAPeriod == slowerSMAPeriod) {
             throw new IllegalArgumentException("period of SMA should be different");
         }
         fasterSMA.calculateIndicator();

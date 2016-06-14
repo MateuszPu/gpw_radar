@@ -11,11 +11,11 @@ import java.util.stream.Collectors;
 public abstract class Indicator {
 
     protected final BigDecimal hundred = BigDecimal.valueOf(100);
-	protected final AscendingSortedTicks ticks;
+    protected final AscendingSortedTicks ticks;
     protected final int period;
     protected List<Double> indicators = new ArrayList<>();
 
-    public Indicator(List<Tickable> ticks, int period) {
+    protected Indicator(List<Tickable> ticks, int period) {
         if (period < 2) {
             throw new IllegalArgumentException("Period cannot be shorter than 2");
         }
@@ -25,34 +25,48 @@ public abstract class Indicator {
     }
 
     protected List<BigDecimal> getClosePrices() {
-        List<Tickable> ticks = this.ticks.getTicks();
-        List<BigDecimal> closesPrices = ticks.stream().map(el -> el.getClosePrice()).collect(Collectors.toList());
+        return this.ticks.getTicks().stream().map(el -> el.getClosePrice()).collect(Collectors.toList());
+    }
 
-        return closesPrices;
+    public double getClosePrice(int shift) {
+        validateShiftLength(shift);
+        return getClosePrices().get(ticks.size() - shift).doubleValue();
     }
 
     protected List<BigDecimal> getMaxPrices() {
-        List<Tickable> ticks = this.ticks.getTicks();
+        return this.ticks.getTicks().stream().map(el -> el.getMaxPrice()).collect(Collectors.toList());
+    }
 
-        return ticks.stream().map(el -> el.getMaxPrice()).collect(Collectors.toList());
+    public double getMaxPrice(int shift) {
+        validateShiftLength(shift);
+        return getMaxPrices().get(ticks.size() - shift).doubleValue();
     }
 
     protected List<BigDecimal> getMinPrices() {
-        List<Tickable> ticks = this.ticks.getTicks();
+        return this.ticks.getTicks().stream().map(el -> el.getMinPrice()).collect(Collectors.toList());
+    }
 
-        return ticks.stream().map(el -> el.getMinPrice()).collect(Collectors.toList());
+    public double getMinPrice(int shift) {
+        validateShiftLength(shift);
+        return getMinPrices().get(ticks.size() - shift).doubleValue();
     }
 
     protected List<BigDecimal> getOpenPrices() {
-        List<Tickable> ticks = this.ticks.getTicks();
-
-        return ticks.stream().map(el -> el.getOpenPrice()).collect(Collectors.toList());
+        return this.ticks.getTicks().stream().map(el -> el.getOpenPrice()).collect(Collectors.toList());
     }
 
-    protected List<Long> getVolumens() {
-        List<Tickable> ticks = this.ticks.getTicks();
+    public double getOpenPrice(int shift) {
+        validateShiftLength(shift);
+        return getOpenPrices().get(ticks.size() - shift).doubleValue();
+    }
 
-        return ticks.stream().map(el -> el.getVolume()).collect(Collectors.toList());
+    protected List<Long> getVolumes() {
+        return this.ticks.getTicks().stream().map(el -> el.getVolume()).collect(Collectors.toList());
+    }
+
+    public long getVolumePrice(int shift) {
+        validateShiftLength(shift);
+        return getVolumes().get(ticks.size() - shift).longValue();
     }
 
     public List<Double> getIndicators() {
@@ -68,12 +82,14 @@ public abstract class Indicator {
      * @return value of the indicator base on shift parameter
      */
     public double get(int shift) {
-        int indicatorsSize = indicators.size();
-        if(shift > indicatorsSize || shift < 1) {
+        validateShiftLength(shift);
+        return indicators.get(indicators.size() - shift);
+    }
+
+    private void validateShiftLength(int shift) {
+        if (shift > indicators.size() || shift < 1) {
             throw new IllegalArgumentException("Invalid shift parameter");
         }
-
-        return indicators.get(indicatorsSize - shift);
     }
 
     protected abstract void calculateIndicator();

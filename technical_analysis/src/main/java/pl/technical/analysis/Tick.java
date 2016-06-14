@@ -13,11 +13,11 @@ public final class Tick implements Tickable {
     private final long volume;
     private final int numberOfTransaction;
 
-    public Tick(LocalDate date, BigDecimal openPrice, BigDecimal minPrice, BigDecimal maxPrice, BigDecimal closePrice, long volume, int numberOfTransaction) {
+    public Tick(LocalDate date, BigDecimal openPrice, BigDecimal maxPrice, BigDecimal minPrice,  BigDecimal closePrice, long volume, int numberOfTransaction) {
         this.date = date;
         this.openPrice = openPrice;
-        this.minPrice = minPrice;
         this.maxPrice = maxPrice;
+        this.minPrice = minPrice;
         this.closePrice = closePrice;
         this.volume = volume;
         this.numberOfTransaction = numberOfTransaction;

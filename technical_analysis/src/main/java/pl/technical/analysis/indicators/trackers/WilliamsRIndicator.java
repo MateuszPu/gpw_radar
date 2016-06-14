@@ -17,8 +17,8 @@ public class WilliamsRIndicator extends Indicator {
     @Override
     protected void calculateIndicator() {
         List<BigDecimal> closesPrices = super.getClosePrices();
-        List<BigDecimal> minPrices = super.getMaxPrices();
-        List<BigDecimal> maxPrices = super.getMinPrices();
+        List<BigDecimal> maxPrices = super.getMaxPrices();
+        List<BigDecimal> minPrices = super.getMinPrices();
 
         for (int i = 0; i < closesPrices.size() - super.period + 1; i++) {
             List<BigDecimal> periodlyClosesPrices = closesPrices.subList(i, super.period + i);
