@@ -26,7 +26,6 @@ public class SMACrossover {
 
     }
 
-
     public boolean isFastSMACrossSlowerFromAbove() {
         return slowerSMA.get(1) < fasterSMA.get(1) && slowerSMA.get(2) > fasterSMA.get(2);
     }

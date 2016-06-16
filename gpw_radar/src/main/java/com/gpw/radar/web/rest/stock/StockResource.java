@@ -32,7 +32,7 @@ public class StockResource {
     @RequestMapping(value = "/stocks/get/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @RolesAllowed(AuthoritiesConstants.USER)
     public ResponseEntity<List<StockWithStockIndicatorsDTO>> getAllWithOutPagination() throws URISyntaxException {
-        return stockService.getAllStocksFetchStockIndicators();
+        return new ResponseEntity<List<StockWithStockIndicatorsDTO>>(stockService.getAllStocksFetchStockIndicators(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/stocks/trends/{direction}/days", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

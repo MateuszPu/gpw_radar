@@ -54,9 +54,9 @@ public class StockService {
     private UserRepository userRepository;
 
     @Cacheable(value = CacheConfiguration.ALL_STOCKS_FETCH_INDICATORS_CACHE)
-    public ResponseEntity<List<StockWithStockIndicatorsDTO>> getAllStocksFetchStockIndicators() throws URISyntaxException {
+    public List<StockWithStockIndicatorsDTO> getAllStocksFetchStockIndicators() {
         List<Stock> stocks = stockRepository.findAllFetchIndicators();
-        return new ResponseEntity<List<StockWithStockIndicatorsDTO>>(getStockWithStockIndicatorsDTOs(stocks), HttpStatus.OK);
+        return getStockWithStockIndicatorsDTOs(stocks);
     }
 
     @Cacheable(value = CacheConfiguration.TRENDING_STOCKS_CACHE)
