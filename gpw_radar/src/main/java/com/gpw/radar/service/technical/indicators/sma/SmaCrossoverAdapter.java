@@ -1,4 +1,4 @@
-package com.gpw.radar.service.technical.indicators;
+package com.gpw.radar.service.technical.indicators.sma;
 
 import pl.technical.analysis.indicators.trackers.sma.SMACrossover;
 
