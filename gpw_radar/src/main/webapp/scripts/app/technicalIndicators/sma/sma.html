@@ -1,0 +1,170 @@
+<breadcrumbs translate-path="sma.title"></breadcrumbs>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h1>
+                        <span translate="sma.crossover">sma crossover</span>
+                    </h1>
+                </div>
+                <div class="ibox-content">
+                    <div class = "row">
+                        <div class = "col-md-9">
+                            <rzslider rz-slider-model="sliderCrossover.fasterSma"
+                                      rz-slider-high="sliderCrossover.slowerSma"
+                                      rz-slider-options="sliderCrossover.options"></rzslider>
+                        </div>
+                        <div class = "col-md-2">
+                            <br>
+                            <div class="radio radio-success radio-inline">
+                                <input type="radio" id="inlineRadio1" ng-model="crossoverType" value="FROM_BELOW">
+                                <label for="inlineRadio1"><span translate="sma.fromBelow">From below</span></label>
+                            </div>
+                            <div class="radio radio-danger radio-inline">
+                                <input type="radio" id="inlineRadio2" ng-model="crossoverType" value="FROM_ABOVE">
+                                <label for="inlineRadio2"><span translate="sma.fromAbove">From Above</span></label>
+                            </div>
+                        </div>
+                        <div class = "col-md-1">
+                            <br>
+                            <button class="btn btn-success pull-right" ng-disabled="false" ng-click="findCrossover()"><span translate="sma.search">search</span></button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="jumbotron" ng-hide="smaCrossover.length != 0">
+                        <h1 class="text-center"><span translate="sma.noData"></span></h1>
+                    </div>
+                    <table st-table="smaCrossover" st-safe-src="smaCrossoverSafeCopy"
+                           class="table table-striped" ng-hide="smaCrossover.length == 0">
+                        <thead>
+                        <tr>
+                            <th st-sort="stockTicker" st-sort-default="true" st-skip-natural="true" class="col-xs-2"><a href=""><span
+                                translate="stock.ticker">Ticker</span></a></th>
+                            <th st-sort="stockName" class="col-xs-4"><a href=""><span
+                                translate="stock.stockName">Name</span></a></th>
+                            <th st-sort="percentReturn" class="col-xs-2"><a href=""><span
+                                translate="stock.change">Percent return</span></a></th>
+                            <th class="col-xs-2"><span translate="stock.list.follow">Follow</span></th>
+                            <th class="col-xs-2"><span translate="stock.list.externalwebsites">External websites</span>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th colspan="5"><input st-search="" class="form-control"
+                                                   placeholder="{{'stock.list.search' | translate}}" type="text"/></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="stock in smaCrossover">
+                            <td>{{stock.stockTicker}}</td>
+                            <td>{{stock.stockName}}</td>
+                            <td>{{stock.percentReturn | number:2}}%</td>
+                            <td>
+                                <follow-stock stock="stock"></follow-stock>
+                            </td>
+                            <td>
+                                <a href="http://stooq.pl/q/a/?s={{stock.stockTicker}}"
+                                   target="_blank" translate="stock.list.technical">A. technical</a> <br>
+                                <a href="http://www.stockwatch.pl/gpw/{{stock.stockShortName}},komunikaty,wyniki.aspx"
+                                   target="_blank" translate="stock.list.fundamental">A. fundamental</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="5" class="text-center">
+                                <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="8"></div>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h1>
+                        <span translate="sma.priceCrossSma">sma crossover</span>
+                    </h1>
+                </div>
+                <div class="ibox-content">
+                    <div class = "row">
+                        <div class = "col-md-9">
+                            <rzslider rz-slider-model="sliderPriceCrossSma.sma"
+                                      rz-slider-options="sliderPriceCrossSma.options"></rzslider>
+                        </div>
+                        <div class = "col-md-2">
+                            <br>
+                            <div class="radio radio-success radio-inline">
+                                <input type="radio" id="inlineRadio3" ng-model="smaCrossPriceType" value="FROM_BELOW">
+                                <label for="inlineRadio3"><span translate="sma.fromBelow">From below</span></label>
+                            </div>
+                            <div class="radio radio-danger radio-inline">
+                                <input type="radio" id="inlineRadio4" ng-model="smaCrossPriceType" value="FROM_ABOVE">
+                                <label for="inlineRadio4"><span translate="sma.fromAbove">From Above</span></label>
+                            </div>
+                        </div>
+                        <div class = "col-md-1">
+                            <br>
+                            <button class="btn btn-success pull-right" ng-disabled="false" ng-click="findPriceCrossSma()"><span translate="sma.search">search</span></button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="jumbotron" ng-hide="priceCrossSma.length != 0">
+                        <h1 class="text-center"><span translate="sma.noData"></span></h1>
+                    </div>
+                    <table st-table="priceCrossSma" st-safe-src="priceCrossSmaSafeCopy"
+                           class="table table-striped" ng-hide="priceCrossSma.length == 0">
+                        <thead>
+                        <tr>
+                            <th st-sort="stockTicker" st-sort-default="true" st-skip-natural="true" class="col-xs-2"><a href=""><span
+                                translate="stock.ticker">Ticker</span></a></th>
+                            <th st-sort="stockName" class="col-xs-4"><a href=""><span
+                                translate="stock.stockName">Name</span></a></th>
+                            <th st-sort="percentReturn" class="col-xs-2"><a href=""><span
+                                translate="stock.change">Percent return</span></a></th>
+                            <th class="col-xs-2"><span translate="stock.list.follow">Follow</span></th>
+                            <th class="col-xs-2"><span translate="stock.list.externalwebsites">External websites</span>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th colspan="5"><input st-search="" class="form-control"
+                                                   placeholder="{{'stock.list.search' | translate}}" type="text"/></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="stock in priceCrossSma">
+                            <td>{{stock.stockTicker}}</td>
+                            <td>{{stock.stockName}}</td>
+                            <td>{{stock.percentReturn | number:2}}%</td>
+                            <td>
+                                <follow-stock stock="stock"></follow-stock>
+                            </td>
+                            <td>
+                                <a href="http://stooq.pl/q/a/?s={{stock.stockTicker}}"
+                                   target="_blank" translate="stock.list.technical">A. technical</a> <br>
+                                <a href="http://www.stockwatch.pl/gpw/{{stock.stockShortName}},komunikaty,wyniki.aspx"
+                                   target="_blank" translate="stock.list.fundamental">A. fundamental</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="5" class="text-center">
+                                <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="5"></div>
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

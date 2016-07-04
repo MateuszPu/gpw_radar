@@ -3,6 +3,7 @@ package com.gpw.radar.web.rest.technical.indicators.sma;
 import com.gpw.radar.security.AuthoritiesConstants;
 import com.gpw.radar.service.technical.indicators.sma.CrossDirection;
 import com.gpw.radar.service.technical.indicators.sma.SmaIndicatorService;
+import com.gpw.radar.web.rest.dto.stock.StockIndicatorsWithStocksDTO;
 import com.gpw.radar.web.rest.dto.stock.StockWithStockIndicatorsDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

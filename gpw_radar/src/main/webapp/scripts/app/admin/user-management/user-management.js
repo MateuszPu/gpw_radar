@@ -18,7 +18,7 @@ angular.module('gpwRadarApp')
                 },
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('user.management');
+                        $translatePartialLoader.addPart('userManagement');
                         return $translate.refresh();
                     }]
                 }
@@ -38,7 +38,7 @@ angular.module('gpwRadarApp')
                 },
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('user.management');
+                        $translatePartialLoader.addPart('userManagement');
                         return $translate.refresh();
                     }]
                 }

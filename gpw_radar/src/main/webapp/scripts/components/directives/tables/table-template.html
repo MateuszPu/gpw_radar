@@ -13,7 +13,7 @@
         <td>{{stockIndicators.stockTicker}}</td>
         <td>{{stockIndicators.percentReturn | number:2}}%</td>
         <td>
-            <follow-stock id="stockIndicators.stockId"></follow-stock>
+            <follow-stock stock="stockIndicators"></follow-stock>
         </td>
         <td><a href="http://stooq.pl/q/a/?s={{stockIndicators.stockTicker}}"
                target="_blank" translate="stock.list.technical">A. technical</a> <br>

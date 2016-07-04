@@ -4,6 +4,7 @@ import com.gpw.radar.domain.enumeration.TrendDirection;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.security.AuthoritiesConstants;
 import com.gpw.radar.service.stock.StockService;
+import com.gpw.radar.web.rest.dto.stock.StockIndicatorsWithStocksDTO;
 import com.gpw.radar.web.rest.dto.stock.StockWithStockIndicatorsDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,8 +38,8 @@ public class StockResource {
 
     @RequestMapping(value = "/stocks/trends/{direction}/days", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @RolesAllowed(AuthoritiesConstants.USER)
-    public ResponseEntity<List<StockWithStockIndicatorsDTO>> getStocksTrend(@PathVariable TrendDirection direction, @RequestParam int days, @RequestParam(value = "page") Integer offset,
-                                                                            @RequestParam(value = "per_page") Integer limit) throws URISyntaxException {
+    public ResponseEntity<List<StockIndicatorsWithStocksDTO>> getStocksTrend(@PathVariable TrendDirection direction, @RequestParam int days, @RequestParam(value = "page") Integer offset,
+                                                                             @RequestParam(value = "per_page") Integer limit) throws URISyntaxException {
         return stockService.getTrendingStocks(direction, days, offset, limit);
     }
 

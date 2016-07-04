@@ -11,6 +11,7 @@
             },
             "technicalAnalysis": {
                 "title": "Analiza techniczna",
+                "sma": "SMA",
                 "trends": {
                     "title": "Trendy",
                     "trendUp" : "Trend wzrostowy",

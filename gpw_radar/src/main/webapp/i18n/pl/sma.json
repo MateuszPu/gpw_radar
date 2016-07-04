@@ -1,0 +1,14 @@
+{
+    "sma": {
+        "title": "SMA - prosta średnia krocząca",
+        "crossover": "SMA - szybsza średnia przecina wolniejszą",
+        "priceCrossSma": "SMA - cena przecina średnią",
+        "slower": "wolniejsza SMA",
+        "faster": "szybsza SMA",
+        "direction": "kierunek",
+        "search": "Szukaj",
+        "noData": "brak danych",
+        "fromAbove": "Od góry",
+        "fromBelow": "Od dołu"
+    }
+}

@@ -28,7 +28,6 @@ angular.module('gpwRadarApp')
                 },
                 $scope.hideTools = angular.isDefined($scope.hideTools) ? $scope.hideTools : true;
                 $scope.checkShowHide = function() {
-                    console.log($scope.hideTools);
                     if($scope.hideTools == true) {
                         $scope.showhide();
                     }

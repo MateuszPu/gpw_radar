@@ -1,0 +1,14 @@
+{
+    "sma": {
+        "title": "SMA - simple moving average",
+        "crossover": "SMA - faster average crossover the slower one",
+        "priceCrossSma": "SMA - price cross the sma",
+        "slower": "slower SMA period",
+        "faster": "faster SMA period",
+        "direction": "direction",
+        "search": "Search",
+        "noData": "No data",
+        "fromAbove": "From above",
+        "fromBelow": "From bellow"
+    }
+}

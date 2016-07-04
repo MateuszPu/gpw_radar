@@ -4,30 +4,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 
-public class StockWithStockIndicatorsDTO {
+public class StockIndicatorsWithStocksDTO {
 
-    @JsonProperty("percentReturn")
-    private BigDecimal stockIndicatorsPercentReturn;
+    private BigDecimal percentReturn;
     @JsonProperty("stockId")
-    private Long id;
+    private Long stockId;
     private String stockName;
     private String stockTicker;
     private String stockShortName;
 
-    public BigDecimal getStockIndicatorsPercentReturn() {
-        return stockIndicatorsPercentReturn;
+    public BigDecimal getPercentReturn() {
+        return percentReturn;
     }
 
-    public void setStockIndicatorsPercentReturn(BigDecimal stockIndicatorsPercentReturn) {
-        this.stockIndicatorsPercentReturn = stockIndicatorsPercentReturn;
+    public void setPercentReturn(BigDecimal percentReturn) {
+        this.percentReturn = percentReturn;
     }
 
-    public Long getId() {
-        return id;
+    public Long getStockId() {
+        return stockId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setStockId(Long stockId) {
+        this.stockId = stockId;
     }
 
     public String getStockName() {

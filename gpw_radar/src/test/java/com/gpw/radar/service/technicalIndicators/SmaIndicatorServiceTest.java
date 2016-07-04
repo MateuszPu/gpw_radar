@@ -12,6 +12,7 @@ import com.gpw.radar.service.parser.file.stockDetails.FileStockDetailsParserServ
 import com.gpw.radar.service.stock.StockService;
 import com.gpw.radar.service.technical.indicators.sma.CrossDirection;
 import com.gpw.radar.service.technical.indicators.sma.SmaIndicatorService;
+import com.gpw.radar.web.rest.dto.stock.StockIndicatorsWithStocksDTO;
 import com.gpw.radar.web.rest.dto.stock.StockWithStockIndicatorsDTO;
 import org.junit.Before;
 import org.junit.Test;
