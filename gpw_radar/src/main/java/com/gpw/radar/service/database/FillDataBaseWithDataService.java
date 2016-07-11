@@ -4,10 +4,8 @@ import com.gpw.radar.domain.database.Type;
 import com.gpw.radar.domain.stock.*;
 import com.gpw.radar.repository.auto.update.FillDataStatusRepository;
 import com.gpw.radar.repository.stock.*;
-import com.gpw.radar.service.parser.file.stockDetails.StockDetailsParser;
 import com.gpw.radar.service.parser.file.stockFiveMinutesDetails.StockFiveMinutesDetailsParser;
 import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
-import com.gpw.radar.service.parser.web.stock.StockDataNameParser;
 import com.gpw.radar.service.parser.web.stock.StockBatchWebParser;
 import com.gpw.radar.service.parser.web.stock.StockDetailsWebParser;
 import com.gpw.radar.service.parser.web.stockFinanceEvent.StockFinanceEventParser;
@@ -61,7 +59,7 @@ public class FillDataBaseWithDataService {
     private ClassLoader classLoader = getClass().getClassLoader();
     private StockFinanceEventParser stockFinanceEventParser;
     private StockDetailsWebParser stockDataNameParser;
-    private StockDetailsParser stockDetailsParser;
+//    private StockDetailsParser stockDetailsParser;
     private StockFiveMinutesDetailsParser stockFiveMinutesDetailsParser;
     private StockBatchWebParser stockBatchWebParser;
 
@@ -70,7 +68,7 @@ public class FillDataBaseWithDataService {
         stockBatchWebParser = beanFactory.getBean("gpwSiteDataParserService", StockBatchWebParser.class);
         stockFinanceEventParser = beanFactory.getBean("stockwatchParserService", StockFinanceEventParser.class);
         stockDataNameParser = beanFactory.getBean("stooqDataParserService", StockDetailsWebParser.class);
-        stockDetailsParser = beanFactory.getBean("fileStockDetailsParserService", StockDetailsParser.class);
+//        stockDetailsParser = beanFactory.getBean("fileStockDetailsParserService", StockDetailsParser.class);
         stockFiveMinutesDetailsParser = beanFactory.getBean("fileStockFiveMinutesDetailsParserService", StockFiveMinutesDetailsParser.class);
     }
 
@@ -101,8 +99,8 @@ public class FillDataBaseWithDataService {
                 Stock stock = stockRepository.findByTicker(ticker);
                 String filePath = "stocks_data/daily/pl/wse_stocks/" + stock.getTicker() + ".txt";
                 InputStream st = classLoader.getResourceAsStream(filePath);
-                List<StockDetails> stockDetails = stockDetailsParser.parseStockDetails(stock, st);
-                stockDetailsRepository.save(stockDetails);
+//                List<StockDetails> stockDetails = stockDetailsParser.parseStockDetails(stock, st);
+//                stockDetailsRepository.save(stockDetails);
             });
         }
 
