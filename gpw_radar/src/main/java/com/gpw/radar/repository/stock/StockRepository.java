@@ -48,5 +48,4 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
 
     @Query("select count(si) from StockIndicators si where si.percentReturn = 0")
     Long countNoChangeStocks();
-
 }

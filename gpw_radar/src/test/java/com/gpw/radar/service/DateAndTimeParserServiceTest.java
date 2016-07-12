@@ -1,26 +1,45 @@
 package com.gpw.radar.service;
 
-import com.gpw.radar.Application;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
+import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.mockito.Mockito;
 
-import javax.inject.Inject;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 import static org.assertj.core.api.StrictAssertions.assertThat;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.when;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
-@WebAppConfiguration
 public class DateAndTimeParserServiceTest {
 
-    @Inject
     private DateAndTimeParserService dateAndTimeParserService;
+    private UrlStreamsGetterService mockedUrlStreamsGetterService;
+
+    @Before
+    public void init() {
+        mockService();
+        dateAndTimeParserService = new DateAndTimeParserService(mockedUrlStreamsGetterService);
+        dateAndTimeParserService.init();
+    }
+
+    private void mockService() {
+        String exampleDataPath = "/stocks_data/daily/pl/wse_stocks/daily_stooq_site_kgh.csv";
+        InputStream inputStreamOfStockDetails = getClass().getResourceAsStream(exampleDataPath);
+        mockedUrlStreamsGetterService = Mockito.mock(UrlStreamsGetterService.class);
+        when(mockedUrlStreamsGetterService.getInputStreamReaderFromUrl(anyObject())).thenReturn(new InputStreamReader(inputStreamOfStockDetails));
+    }
+
+    @Test
+    public void getDateFromScvFileTest() {
+        LocalDate result = dateAndTimeParserService.getLastDateWig20FromStooqWebsite();
+        LocalDate expectedResult = LocalDate.of(2016, 3, 9);
+        assertThat(result).isEqualTo(expectedResult);
+    }
 
     @Test
     public void getLocalDateFromStringFormatOne() {
@@ -63,5 +82,16 @@ public class DateAndTimeParserServiceTest {
 
         localTime = dateAndTimeParserService.getFiveMinutesTime(LocalTime.of(15, 2, 56));
         assertThat(localTime).isEqualTo(LocalTime.of(15, 0, 0));
+
+        localTime = dateAndTimeParserService.getFiveMinutesTime(LocalTime.of(16, 55, 56));
+        assertThat(localTime).isEqualTo(LocalTime.of(16, 50, 0));
+    }
+
+    @Test
+    public void getStringFromDate() {
+        LocalDate input = LocalDate.of(2015, 5, 19);
+        String expectedResult = "2015-05-19";
+        String result = dateAndTimeParserService.getStringFromDate(input);
+        assertThat(result).isEqualTo(expectedResult);
     }
 }

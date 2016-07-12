@@ -93,6 +93,7 @@
         <technical.analysis.indicators.version>1.0-SNAPSHOT</technical.analysis.indicators.version>
         <modelmapper.version>0.7.5</modelmapper.version>
         <mockito.version>1.10.19</mockito.version>
+        <apache.poi.version>3.14</apache.poi.version>
     </properties>
 
     <dependencies>
@@ -436,6 +437,11 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
             <version>${mockito.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${apache.poi.version}</version>
         </dependency>
     </dependencies>
     <build>

@@ -13,6 +13,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+
 import static org.assertj.core.api.StrictAssertions.assertThat;
 
 
@@ -36,5 +37,6 @@ public class StockDetailsParserServiceTest {
         assertThat(stockDetails.getMaxPrice()).isEqualTo(new BigDecimal("68,6"));
         assertThat(stockDetails.getMinPrice()).isEqualTo(new BigDecimal("67,68"));
         assertThat(stockDetails.getClosePrice()).isEqualTo(new BigDecimal("68,01"));
+        assertThat(stockDetails.getTransactionsNumber()).isEqualTo(5841);
     }
 }

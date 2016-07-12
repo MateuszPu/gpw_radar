@@ -3,10 +3,10 @@ package com.gpw.radar.service.parser;
 import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -20,26 +20,22 @@ public class DateAndTimeParserService {
 
     private final Logger logger = LoggerFactory.getLogger(DateAndTimeParserService.class);
 
-    @Inject
-    private UrlStreamsGetterService urlStreamsGetterService;
-
-    //    private final DateTimeFormatter dtfTypeOne = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//    private final DateTimeFormatter dtfTypeTwo = DateTimeFormatter.ofPattern("yyyyMMdd");
-//    private final DateTimeFormatter localTimeTypeOne = DateTimeFormatter.ofPattern("HH:mm:ss");
-//    private final DateTimeFormatter localTimeTypeTwo = DateTimeFormatter.ofPattern("HHmmss");
-//    private LocalDate date;
-//    private LocalTime time;
+    private final UrlStreamsGetterService urlStreamsGetterService;
     private final String yearRegex = "[1-9][0-9]{3}";
     private final String monthRegex = "[0-1][0-9]";
     private final String dayRegex = "[0-3][0-9]";
     private final String hourRegex = "([01]?[0-9]|2[0-3])";
     private final String minutesSecondsRegex = "[0-5][0-9]";
-
     private Map<String, DateTimeFormatter> dataTimeFormatterMap;
     private Map<String, DateTimeFormatter> localTimeFormatterMap;
 
+    @Autowired
+    public DateAndTimeParserService(final UrlStreamsGetterService urlStreamsGetterService) {
+        this.urlStreamsGetterService = urlStreamsGetterService;
+    }
+
     @PostConstruct
-    private void init() {
+    public void init() {
         dataTimeFormatterMap = new HashMap<String, DateTimeFormatter>();
         dataTimeFormatterMap.put(yearRegex + "-" + monthRegex + "-" + dayRegex, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         dataTimeFormatterMap.put(yearRegex + monthRegex + dayRegex, DateTimeFormatter.ofPattern("yyyyMMdd"));
@@ -61,11 +57,10 @@ public class DateAndTimeParserService {
 
     public LocalTime getFiveMinutesTime(LocalTime timeToProcess) {
         LocalTime time = timeToProcess;
-        if(time.isAfter(LocalTime.of(16,50))) {
-            time = LocalTime.of(16,50);
-        }
-        else {
-            time = LocalTime.of(time.getHour(), (time.getMinute()/5)*5);
+        if (time.isAfter(LocalTime.of(16, 50))) {
+            time = LocalTime.of(16, 50);
+        } else {
+            time = LocalTime.of(time.getHour(), (time.getMinute() / 5) * 5);
         }
         return time;
     }
@@ -75,7 +70,7 @@ public class DateAndTimeParserService {
         String cvsSplitBy = ",";
         LocalDate date = null;
         String url = "http://stooq.pl/q/l/?s=wig20&f=sd2t2ohlcv&h&e=csv";
-        try (BufferedReader bufferedReader = new BufferedReader(urlStreamsGetterService.getInputStreamReaderFromUrl(url))){
+        try (BufferedReader bufferedReader = new BufferedReader(urlStreamsGetterService.getInputStreamReaderFromUrl(url))) {
             // skip first line as there are a headers
             bufferedReader.readLine();
             line = bufferedReader.readLine();
@@ -85,5 +80,10 @@ public class DateAndTimeParserService {
             logger.error("Error occurs: " + e.getMessage());
         }
         return date;
+    }
+
+    public String getStringFromDate(LocalDate date) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return date.format(dateTimeFormatter);
     }
 }

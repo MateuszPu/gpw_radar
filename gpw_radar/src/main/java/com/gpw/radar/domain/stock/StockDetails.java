@@ -41,6 +41,10 @@ public class StockDetails implements Serializable {
     private BigDecimal closePrice;
 
     @NotNull
+    @Column(name = "transactions_number", nullable = false)
+    private Long transactionsNumber;
+
+    @NotNull
     @Column(name = "volume", nullable = false)
     private Long volume;
 
@@ -94,6 +98,14 @@ public class StockDetails implements Serializable {
 
     public void setClosePrice(BigDecimal closePrice) {
         this.closePrice = closePrice;
+    }
+
+    public Long getTransactionsNumber() {
+        return transactionsNumber;
+    }
+
+    public void setTransactionsNumber(Long transactionsNumber) {
+        this.transactionsNumber = transactionsNumber;
     }
 
     public Long getVolume() {
