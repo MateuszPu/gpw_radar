@@ -1,18 +1,23 @@
 package com.gpw.radar.service.database;
 
 import com.gpw.radar.domain.database.Type;
-import com.gpw.radar.domain.stock.*;
+import com.gpw.radar.domain.stock.Stock;
+import com.gpw.radar.domain.stock.StockFinanceEvent;
+import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
+import com.gpw.radar.domain.stock.StockFiveMinutesIndicators;
 import com.gpw.radar.repository.auto.update.FillDataStatusRepository;
 import com.gpw.radar.repository.stock.*;
 import com.gpw.radar.service.parser.file.stockFiveMinutesDetails.StockFiveMinutesDetailsParser;
 import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
 import com.gpw.radar.service.parser.web.stock.StockBatchWebParser;
 import com.gpw.radar.service.parser.web.stock.StockDetailsWebParser;
+import com.gpw.radar.service.parser.web.stockDetails.StockDetailsParser;
 import com.gpw.radar.service.parser.web.stockFinanceEvent.StockFinanceEventParser;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -59,7 +64,7 @@ public class FillDataBaseWithDataService {
     private ClassLoader classLoader = getClass().getClassLoader();
     private StockFinanceEventParser stockFinanceEventParser;
     private StockDetailsWebParser stockDataNameParser;
-//    private StockDetailsParser stockDetailsParser;
+    private StockDetailsParser stockDetailsParser;
     private StockFiveMinutesDetailsParser stockFiveMinutesDetailsParser;
     private StockBatchWebParser stockBatchWebParser;
 
@@ -68,7 +73,7 @@ public class FillDataBaseWithDataService {
         stockBatchWebParser = beanFactory.getBean("gpwSiteDataParserService", StockBatchWebParser.class);
         stockFinanceEventParser = beanFactory.getBean("stockwatchParserService", StockFinanceEventParser.class);
         stockDataNameParser = beanFactory.getBean("stooqDataParserService", StockDetailsWebParser.class);
-//        stockDetailsParser = beanFactory.getBean("fileStockDetailsParserService", StockDetailsParser.class);
+        stockDetailsParser = beanFactory.getBean("gpwSiteStockDetailsParser", StockDetailsParser.class);
         stockFiveMinutesDetailsParser = beanFactory.getBean("fileStockFiveMinutesDetailsParserService", StockFiveMinutesDetailsParser.class);
     }
 
@@ -91,18 +96,18 @@ public class FillDataBaseWithDataService {
 
     public ResponseEntity<Void> fillDataBaseWithStockDetails() {
         step = 0;
-        Set<String> tickers = stockRepository.findAllTickers();
+        List<Stock> stocks = stockRepository.findAll();
         ExecutorService executor = Executors.newFixedThreadPool(4);
 
-        for (String ticker : tickers) {
-            executor.execute(() -> {
-                Stock stock = stockRepository.findByTicker(ticker);
-                String filePath = "stocks_data/daily/pl/wse_stocks/" + stock.getTicker() + ".txt";
-                InputStream st = classLoader.getResourceAsStream(filePath);
-//                List<StockDetails> stockDetails = stockDetailsParser.parseStockDetails(stock, st);
-//                stockDetailsRepository.save(stockDetails);
-            });
-        }
+//        for (String ticker : tickers) {
+//            executor.execute(() -> {
+//                Stock stock = stockRepository.findByTicker(ticker);
+//                String filePath = "stocks_data/daily/pl/wse_stocks/" + stock.getTicker() + ".txt";
+//                InputStream st = classLoader.getResourceAsStream(filePath);
+////                List<StockDetails> stockDetails = stockDetailsParser.parseStockDetails(stock, st);
+////                stockDetailsRepository.save(stockDetails);
+//            });
+//        }
 
         executor.shutdown();
         try {

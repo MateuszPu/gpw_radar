@@ -2,11 +2,12 @@ package com.gpw.radar.service.parsers;
 
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;
+import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.builders.StockBuilder;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
 import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
+import com.gpw.radar.service.parser.web.stockDetails.GpwSiteStockDetailsParser;
 import com.gpw.radar.service.parser.web.stockDetails.StockDetailsParser;
-import com.gpw.radar.service.parser.web.stockDetails.StockDetailsParserImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -26,15 +27,15 @@ public class StockDetailsParserServiceTest {
 
     private StockDetailsParser stockDetailsParserImpl;
     private UrlStreamsGetterService mockedUrlStreamsGetterService;
+    private StockRepository mockedStockRepository;
 
     @Before
     public void init() {
         mockUrlStreamsGetterService();
+        mockStockRepository();
         DateAndTimeParserService dateAndTimeParserService = new DateAndTimeParserService(null);
         dateAndTimeParserService.init();
-        stockDetailsParserImpl = new StockDetailsParserImpl(dateAndTimeParserService,
-            mockedUrlStreamsGetterService,
-            getStocks());
+        stockDetailsParserImpl = new GpwSiteStockDetailsParser(dateAndTimeParserService, mockedUrlStreamsGetterService, mockedStockRepository);
     }
 
     private void mockUrlStreamsGetterService() {
@@ -44,25 +45,44 @@ public class StockDetailsParserServiceTest {
         when(mockedUrlStreamsGetterService.getInputStreamFromUrl(anyObject())).thenReturn(inputStreamOfStockDetails);
     }
 
-    private List<Stock> getStocks() {
+    private void mockStockRepository() {
         List<Stock> mockedStocksInDb = new ArrayList<>();
-        Stock st = StockBuilder.sampleStock().stockShortName("KGHM").build();
-        mockedStocksInDb.add(st);
-        return mockedStocksInDb;
+        Stock kghm = StockBuilder.sampleStock().stockShortName("KGHM").build();
+        Stock abadonre = StockBuilder.sampleStock().stockShortName("ABADONRE").build();
+        mockedStocksInDb.add(kghm);
+        mockedStocksInDb.add(abadonre);
+        mockedStockRepository = Mockito.mock(StockRepository.class);
+        when(mockedStockRepository.findAll()).thenReturn(mockedStocksInDb);
+    }
+
+
+    @Test
+    public void parseQutedStockDetails() throws IOException {
+        LocalDate testDate = LocalDate.of(2016, 7, 8);
+        List<StockDetails> details = stockDetailsParserImpl.parseStockDetails(testDate);
+        StockDetails KghmStockDetails = details.stream().filter(dt -> dt.getStock().getStockShortName().equals("KGHM")).findAny().get();
+
+        assertThat(KghmStockDetails.getDate()).isEqualTo(testDate);
+        assertThat(KghmStockDetails.getVolume()).isEqualTo(1016818);
+        assertThat(KghmStockDetails.getOpenPrice()).isEqualTo(new BigDecimal("68.00"));
+        assertThat(KghmStockDetails.getMaxPrice()).isEqualTo(new BigDecimal("68.60"));
+        assertThat(KghmStockDetails.getMinPrice()).isEqualTo(new BigDecimal("67.68"));
+        assertThat(KghmStockDetails.getClosePrice()).isEqualTo(new BigDecimal("68.01"));
+        assertThat(KghmStockDetails.getTransactionsNumber()).isEqualTo(5841);
     }
 
     @Test
-    public void getStockDetailsTest() throws IOException {
+    public void parseNotQutedStockDetails() throws IOException {
         LocalDate testDate = LocalDate.of(2016, 7, 8);
         List<StockDetails> details = stockDetailsParserImpl.parseStockDetails(testDate);
-        StockDetails stockDetails = details.stream().filter(dt -> dt.getStock().getStockShortName().equals("KGHM")).findAny().get();
 
-        assertThat(stockDetails.getDate()).isEqualTo(testDate);
-        assertThat(stockDetails.getVolume()).isEqualTo(1016818);
-        assertThat(stockDetails.getOpenPrice()).isEqualTo(new BigDecimal("68.00"));
-        assertThat(stockDetails.getMaxPrice()).isEqualTo(new BigDecimal("68.60"));
-        assertThat(stockDetails.getMinPrice()).isEqualTo(new BigDecimal("67.68"));
-        assertThat(stockDetails.getClosePrice()).isEqualTo(new BigDecimal("68.01"));
-        assertThat(stockDetails.getTransactionsNumber()).isEqualTo(5841);
+        StockDetails AbadonreStockDetails = details.stream().filter(dt -> dt.getStock().getStockShortName().equals("ABADONRE")).findAny().get();
+        assertThat(AbadonreStockDetails.getDate()).isEqualTo(testDate);
+        assertThat(AbadonreStockDetails.getVolume()).isEqualTo(0);
+        assertThat(AbadonreStockDetails.getOpenPrice()).isEqualTo(new BigDecimal("1.68"));
+        assertThat(AbadonreStockDetails.getMaxPrice()).isEqualTo(new BigDecimal("1.68"));
+        assertThat(AbadonreStockDetails.getMinPrice()).isEqualTo(new BigDecimal("1.68"));
+        assertThat(AbadonreStockDetails.getClosePrice()).isEqualTo(new BigDecimal("1.68"));
+        assertThat(AbadonreStockDetails.getTransactionsNumber()).isEqualTo(0);
     }
 }
