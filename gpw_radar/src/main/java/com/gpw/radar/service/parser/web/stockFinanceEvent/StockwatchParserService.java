@@ -34,10 +34,12 @@ public class StockwatchParserService implements StockFinanceEventParser {
 
     private List<Stock> stockInApp = new ArrayList<>();
 
+    @Override
     public List<StockFinanceEvent> getStockFinanceEventFromWeb() {
         return getStockFinanceEvents(getDocumentsFromStockWatchWeb());
     }
 
+    @Override
     public List<StockFinanceEvent> getStockFinanceEvents(List<Document> documents) {
         List<StockFinanceEvent> stockFinanceEventParsed = new ArrayList<>();
         List<Elements> financeEventsElements = getAllFinanceEvents(documents);
