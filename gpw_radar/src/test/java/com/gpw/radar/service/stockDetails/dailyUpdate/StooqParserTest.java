@@ -54,6 +54,7 @@ public class StooqParserTest {
         assertThat(stockDetails.getMinPrice()).isEqualTo(new BigDecimal("71.83"));
         assertThat(stockDetails.getMaxPrice()).isEqualTo(new BigDecimal("74.39"));
         assertThat(stockDetails.getOpenPrice()).isEqualTo(new BigDecimal("73"));
+        assertThat(stockDetails.getTransactionsNumber()).isEqualTo(0L);
         assertThat(stockDetails.getDate()).isEqualTo(LocalDate.of(2016, 3, 9));
     }
 }

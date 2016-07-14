@@ -25,31 +25,30 @@ public class StockDetails implements Serializable {
     private LocalDate date;
 
     @NotNull
-    @Column(name = "open_price", precision=10, scale=2, nullable = false)
+    @Column(name = "open_price", precision = 10, scale = 2, nullable = false)
     private BigDecimal openPrice;
 
     @NotNull
-    @Column(name = "max_price", precision=10, scale=2, nullable = false)
+    @Column(name = "max_price", precision = 10, scale = 2, nullable = false)
     private BigDecimal maxPrice;
 
     @NotNull
-    @Column(name = "min_price", precision=10, scale=2, nullable = false)
+    @Column(name = "min_price", precision = 10, scale = 2, nullable = false)
     private BigDecimal minPrice;
 
     @NotNull
-    @Column(name = "close_price", precision=10, scale=2, nullable = false)
+    @Column(name = "close_price", precision = 10, scale = 2, nullable = false)
     private BigDecimal closePrice;
 
-    @NotNull
     @Column(name = "transactions_number", nullable = false)
-    private Long transactionsNumber;
+    private Long transactionsNumber = 0L;
 
     @NotNull
     @Column(name = "volume", nullable = false)
     private Long volume;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name="stock_id", foreignKey = @ForeignKey(name="FK_stock"))
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "stock_id", foreignKey = @ForeignKey(name = "FK_stock"))
     private Stock stock;
 
     public Long getId() {
@@ -116,11 +115,11 @@ public class StockDetails implements Serializable {
         this.volume = volume;
     }
 
-	public Stock getStock() {
-		return stock;
-	}
+    public Stock getStock() {
+        return stock;
+    }
 
-	public void setStock(Stock stock) {
-		this.stock = stock;
-	}
+    public void setStock(Stock stock) {
+        this.stock = stock;
+    }
 }

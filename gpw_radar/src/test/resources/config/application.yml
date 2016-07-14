@@ -79,3 +79,5 @@ jhipster:
         contact:
         license:
         licenseUrl:
+
+fill.database.stockDetails.period: 400
