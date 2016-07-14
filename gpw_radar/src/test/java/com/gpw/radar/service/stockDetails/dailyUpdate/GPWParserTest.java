@@ -85,6 +85,7 @@ public class GPWParserTest {
         assertThat(froStockDetails.getMinPrice()).isEqualTo(new BigDecimal("10.79"));
         assertThat(froStockDetails.getMaxPrice()).isEqualTo(new BigDecimal("10.98"));
         assertThat(froStockDetails.getOpenPrice()).isEqualTo(new BigDecimal("10.98"));
+        assertThat(froStockDetails.getTransactionsNumber()).isEqualTo(2);
         assertThat(froStockDetails.getDate()).isEqualTo(LocalDate.of(2016, 3, 9));
 
         StockDetails abcStockDetails = stockDetails.stream().filter(details -> details.getStock().getTicker().equals("abc")).findAny().get();
@@ -93,6 +94,7 @@ public class GPWParserTest {
         assertThat(abcStockDetails.getMinPrice()).isEqualTo(new BigDecimal("3.29"));
         assertThat(abcStockDetails.getMaxPrice()).isEqualTo(new BigDecimal("3.35"));
         assertThat(abcStockDetails.getOpenPrice()).isEqualTo(new BigDecimal("3.33"));
+        assertThat(abcStockDetails.getTransactionsNumber()).isEqualTo(22);
         assertThat(abcStockDetails.getDate()).isEqualTo(LocalDate.of(2016, 3, 9));
     }
 

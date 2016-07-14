@@ -39,7 +39,7 @@ public class GpwParser implements StockDetailsParser {
     private static final int indexOfMinPrice = 9;
     private static final int indexOfMaxPrice = 10;
     private static final int indexOfClosePrice = 11;
-    // private final int indexOfTransactionCount = 20;
+    private final int indexOfTransactionsNumber = 20;
     private static final int indexOfVolume = 21;
     private static final int indexOfLastClosePrice = 6;
     private static final DateTimeFormatter dtfType = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -81,6 +81,7 @@ public class GpwParser implements StockDetailsParser {
                 std.setMaxPrice(new BigDecimal(getElement(select, indexOfMaxPrice)));
                 std.setMinPrice(new BigDecimal(getElement(select, indexOfMinPrice)));
                 std.setClosePrice(new BigDecimal(getElement(select, indexOfClosePrice)));
+                std.setTransactionsNumber(Long.valueOf(getElement(select, indexOfTransactionsNumber)));
                 std.setVolume(Long.valueOf(getElement(select, indexOfVolume)));
             } catch (NumberFormatException ex) {
                 // if string is not a valid presentation of number that means
@@ -89,6 +90,7 @@ public class GpwParser implements StockDetailsParser {
                 std.setMaxPrice(new BigDecimal(getElement(select, indexOfLastClosePrice)));
                 std.setMinPrice(new BigDecimal(getElement(select, indexOfLastClosePrice)));
                 std.setClosePrice(new BigDecimal(getElement(select, indexOfLastClosePrice)));
+                std.setTransactionsNumber(0L);
                 std.setVolume(0l);
             }
             stockDetails.add(std);
