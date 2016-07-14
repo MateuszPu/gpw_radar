@@ -2,19 +2,12 @@ package com.gpw.radar.service.parser.web.stockDetails;
 
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;
-import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
 import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -25,24 +18,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
-@Service("gpwSiteStockDetailsParser")
 public class GpwSiteStockDetailsParser implements StockDetailsParser {
-
-    private String urlSource = "https://www.gpw.pl/notowania_archiwalne?type=10&date=" + this.date + "&fetch.x=12&fetch.y=16";
-    //format YYYY-MM-DD
-    private String date = "";
 
     private final UrlStreamsGetterService urlStreamsGetterService;
     private final DateAndTimeParserService dateAndTimeParserService;
-    private final StockRepository stockRepository;
+    private final List<Stock> stocks;
 
-    @Autowired
     public GpwSiteStockDetailsParser(final DateAndTimeParserService dateAndTimeParserService,
                                      final UrlStreamsGetterService urlStreamsGetterService,
-                                     final StockRepository stockRepository) {
+                                     final List<Stock> stocks) {
         this.urlStreamsGetterService = urlStreamsGetterService;
         this.dateAndTimeParserService = dateAndTimeParserService;
-        this.stockRepository = stockRepository;
+        this.stocks = stocks;
     }
 
     @Override
@@ -64,7 +51,8 @@ public class GpwSiteStockDetailsParser implements StockDetailsParser {
     }
 
     private HSSFSheet getWorkBookSource(LocalDate date) throws IOException {
-        this.date = dateAndTimeParserService.getStringFromDate(date);
+        String parsedDate = dateAndTimeParserService.getStringFromDate(date);
+        String urlSource = "https://www.gpw.pl/notowania_archiwalne?type=10&date=" + parsedDate + "&fetch.x=12&fetch.y=16";
         InputStream inputStreamData = urlStreamsGetterService.getInputStreamFromUrl(urlSource);
         HSSFWorkbook workbook = new HSSFWorkbook(inputStreamData);
         return workbook.getSheetAt(0);
@@ -90,8 +78,7 @@ public class GpwSiteStockDetailsParser implements StockDetailsParser {
 
     private Optional<Stock> getStockFrom(Row row) {
         String shortStockName = row.getCell(XlsMapping.STOCK_SHORT_NAME.getCellNumber()).getStringCellValue();
-        List<Stock> all = stockRepository.findAll();
-        Optional<Stock> stock = all.stream().filter(e -> e.getStockShortName().equals(shortStockName)).findAny();
+        Optional<Stock> stock = stocks.stream().filter(e -> e.getStockShortName().equals(shortStockName)).findAny();
         return stock;
     }
 
@@ -103,7 +90,7 @@ public class GpwSiteStockDetailsParser implements StockDetailsParser {
         double value = row.getCell(cellNumber).getNumericCellValue();
         BigDecimal result = new BigDecimal(value);
         result = result.setScale(2, RoundingMode.HALF_UP);
-        if(result.equals(new BigDecimal("0.00"))) {
+        if (result.equals(new BigDecimal("0.00"))) {
             return getBigDecimalFrom(row, XlsMapping.CLOSE_PRICE.getCellNumber());
         }
         return result;

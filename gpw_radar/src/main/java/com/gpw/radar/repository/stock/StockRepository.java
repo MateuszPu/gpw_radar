@@ -24,8 +24,6 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
     @Query(value = "SELECT ticker from Stock", nativeQuery = true)
     Set<String> findAllTickers();
 
-    List<Stock> findAllByOrderByTickerAsc();
-
     @Cacheable(value = CacheConfiguration.STOCKS_FOLLOWED_BY_USER_CACHE, key = "#p0")
     @Query(value = "SELECT * from stock where id in (select stock_id from user_stocks where user_id = :userId)", nativeQuery = true)
     List<Stock> findStocksByUserId(@Param("userId") Long userId);

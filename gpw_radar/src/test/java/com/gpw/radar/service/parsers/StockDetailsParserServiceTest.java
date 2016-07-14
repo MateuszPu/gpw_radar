@@ -27,15 +27,13 @@ public class StockDetailsParserServiceTest {
 
     private StockDetailsParser stockDetailsParserImpl;
     private UrlStreamsGetterService mockedUrlStreamsGetterService;
-    private StockRepository mockedStockRepository;
 
     @Before
     public void init() {
         mockUrlStreamsGetterService();
-        mockStockRepository();
         DateAndTimeParserService dateAndTimeParserService = new DateAndTimeParserService(null);
         dateAndTimeParserService.init();
-        stockDetailsParserImpl = new GpwSiteStockDetailsParser(dateAndTimeParserService, mockedUrlStreamsGetterService, mockedStockRepository);
+        stockDetailsParserImpl = new GpwSiteStockDetailsParser(dateAndTimeParserService, mockedUrlStreamsGetterService, getStocksInDb());
     }
 
     private void mockUrlStreamsGetterService() {
@@ -45,14 +43,13 @@ public class StockDetailsParserServiceTest {
         when(mockedUrlStreamsGetterService.getInputStreamFromUrl(anyObject())).thenReturn(inputStreamOfStockDetails);
     }
 
-    private void mockStockRepository() {
+    private List<Stock> getStocksInDb() {
         List<Stock> mockedStocksInDb = new ArrayList<>();
         Stock kghm = StockBuilder.sampleStock().stockShortName("KGHM").build();
         Stock abadonre = StockBuilder.sampleStock().stockShortName("ABADONRE").build();
         mockedStocksInDb.add(kghm);
         mockedStocksInDb.add(abadonre);
-        mockedStockRepository = Mockito.mock(StockRepository.class);
-        when(mockedStockRepository.findAll()).thenReturn(mockedStocksInDb);
+        return mockedStocksInDb;
     }
 
 
