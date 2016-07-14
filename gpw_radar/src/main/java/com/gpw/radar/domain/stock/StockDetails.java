@@ -40,6 +40,7 @@ public class StockDetails implements Serializable {
     @Column(name = "close_price", precision = 10, scale = 2, nullable = false)
     private BigDecimal closePrice;
 
+    @NotNull
     @Column(name = "transactions_number", nullable = false)
     private Long transactionsNumber = 0L;
 
