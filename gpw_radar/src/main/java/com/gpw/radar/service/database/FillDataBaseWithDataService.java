@@ -101,8 +101,9 @@ public class FillDataBaseWithDataService {
     }
 
     public ResponseEntity<Void> fillDataBaseWithStockDetails() {
+        List<Stock> all = stockRepository.findAll();
         StockDetailsParser stockDetailsParser = new GpwSiteStockDetailsParser(dateAndTimeParserService,
-            urlStreamsGetterService, stockRepository.findAll());
+            urlStreamsGetterService, all);
         step = 0;
         LocalDate now = LocalDate.now();
         LocalDate daysAgo = now.minusDays(period);

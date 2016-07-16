@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface StockDetailsRepository extends JpaRepository<StockDetails, Long> {
+public interface StockDetailsRepository extends JpaRepository<StockDetails, String> {
     List<StockDetails> findByStockTickerOrderByDateDesc(String ticker);
 
     List<StockDetails> findByStockTickerOrderByDateAsc(String ticker);

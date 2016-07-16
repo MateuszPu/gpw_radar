@@ -1,5 +1,8 @@
 package com.gpw.radar.domain.stock;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gpw.radar.service.util.RandomUtil;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -15,10 +18,7 @@ import java.time.LocalDate;
 public class StockDetails implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "idGenerator")
-    @TableGenerator(table = "hibernate_sequences_table", name = "idGenerator", pkColumnName = "pk",
-        valueColumnName = "value", pkColumnValue = "stock_details")
-    private Long id;
+    private String id = RandomUtil.generateId();
 
     @NotNull
     @Column(name = "date", nullable = false)
@@ -48,15 +48,16 @@ public class StockDetails implements Serializable {
     @Column(name = "volume", nullable = false)
     private Long volume;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "stock_id", foreignKey = @ForeignKey(name = "FK_stock"))
     private Stock stock;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
