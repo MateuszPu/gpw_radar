@@ -33,19 +33,19 @@
          <column name="user_id" type="BIGINT">
             <constraints nullable="false"/>
          </column>
-         <column name="stock_id" type="BIGINT">
+         <column name="stock_id" type="varchar(64)">
             <constraints nullable="false"/>
          </column>
       </createTable>
    </changeSet>
    <changeSet author="mateusz" id="20150817192416-3">
       <addColumn tableName="STOCK_DETAILS">
-         <column name="stock_id" type="int8"/>
+         <column name="stock_id" type="varchar(64)"/>
       </addColumn>
    </changeSet>
    <changeSet author="mateusz" id="20150817192416-4">
       <addColumn tableName="STOCK_FINANCE_EVENT">
-         <column name="stock_id" type="int8"/>
+         <column name="stock_id" type="varchar(64)"/>
       </addColumn>
    </changeSet>
    <changeSet author="mateusz" id="20150817192416-5">
@@ -110,7 +110,7 @@
    </changeSet>
     <changeSet author="mateusz (generated)" id="1462352439226-1">
         <addColumn tableName="STOCK_INDICATORS">
-            <column name="stock_id" type="int8"/>
+            <column name="stock_id" type="varchar(64)"/>
         </addColumn>
     </changeSet>
     <changeSet author="mateusz (generated)" id="1462352439226-2">

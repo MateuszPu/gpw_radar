@@ -8,7 +8,7 @@ public class StockIndicatorsWithStocksDTO {
 
     private BigDecimal percentReturn;
     @JsonProperty("stockId")
-    private Long stockId;
+    private String stockId;
     private String stockName;
     private String stockTicker;
     private String stockShortName;
@@ -21,11 +21,11 @@ public class StockIndicatorsWithStocksDTO {
         this.percentReturn = percentReturn;
     }
 
-    public Long getStockId() {
+    public String getStockId() {
         return stockId;
     }
 
-    public void setStockId(Long stockId) {
+    public void setStockId(String stockId) {
         this.stockId = stockId;
     }
 

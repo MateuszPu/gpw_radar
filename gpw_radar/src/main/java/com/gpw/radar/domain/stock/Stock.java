@@ -3,6 +3,7 @@ package com.gpw.radar.domain.stock;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gpw.radar.domain.User;
+import com.gpw.radar.service.util.RandomUtil;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -20,10 +21,7 @@ import java.util.Set;
 public class Stock implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "idGenerator")
-    @TableGenerator(table = "hibernate_sequences_table", name = "idGenerator", pkColumnName = "pk",
-        valueColumnName = "value", pkColumnValue = "stock")
-    private Long id;
+    private String id = RandomUtil.generateId();
 
     @NotNull
     @Column(name = "ticker", nullable = false)
@@ -43,11 +41,11 @@ public class Stock implements Serializable {
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "stock", cascade = CascadeType.ALL)
     private StockIndicators stockIndicators;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

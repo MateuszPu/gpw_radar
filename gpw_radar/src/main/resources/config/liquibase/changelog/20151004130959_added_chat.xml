@@ -19,7 +19,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="type" type="VARCHAR(255)"/>
-            <column name="stock_id" type="BIGINT"/>
+            <column name="stock_id" type="varchar(64)"/>
         </createTable>
     </changeSet>
 

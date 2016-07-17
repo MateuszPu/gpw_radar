@@ -15,7 +15,7 @@ import java.util.Set;
 /**
  * Spring Data JPA repository for the Stock entity.
  */
-public interface StockRepository extends JpaRepository<Stock, Long> {
+public interface StockRepository extends JpaRepository<Stock, String> {
 
     @Cacheable(value = CacheConfiguration.STOCK_CACHE)
     Stock findByTicker(String ticker);

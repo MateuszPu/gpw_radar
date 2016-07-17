@@ -20,7 +20,7 @@
                <constraints nullable="false"/>
            </column>
            <column name="ratio_volme" type="float8"/>
-           <column name="stock_id" type="BIGINT"/>
+           <column name="stock_id" type="varchar(64)"/>
        </createTable>
    </changeSet>
 </databaseChangeLog>

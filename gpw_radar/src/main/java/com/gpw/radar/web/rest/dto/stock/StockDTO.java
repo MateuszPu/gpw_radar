@@ -5,16 +5,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class StockDTO {
 
     @JsonProperty("stockId")
-    private Long id;
+    private String id;
     private String stockName;
     private String stockTicker;
     private String stockShortName;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
