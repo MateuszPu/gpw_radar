@@ -4,8 +4,8 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
    <changeSet author="mateusz" id="20151114114953-1">
        <createTable tableName="STOCK_FIVE_MINUTES_DETAILS">
-           <column name="id" type="BIGINT">
-               <constraints primaryKey="true" primaryKeyName="STOCK_FIVE_MINUTES_DETAILSPK"/>
+           <column name="id" type="varchar(64)">
+               <constraints primaryKey="true" nullable="true" primaryKeyName="STOCK_FIVE_MINUTES_DETAILSPK"/>
            </column>
            <column name="cumulated_volume" type="BIGINT">
                <constraints nullable="false"/>
