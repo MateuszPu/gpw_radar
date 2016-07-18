@@ -1,5 +1,7 @@
 package com.gpw.radar.domain.stock;
 
+import com.gpw.radar.service.util.RandomUtil;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -14,10 +16,7 @@ import java.time.LocalDate;
 public class StockFinanceEvent implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "idGenerator")
-    @TableGenerator(table = "hibernate_sequences_table", name = "idGenerator", pkColumnName = "pk",
-        valueColumnName = "value", pkColumnValue = "stock_finance_event")
-    private Long id;
+    private String id = RandomUtil.generateId();
 
     @NotNull
     @Column(name = "date", nullable = false)
@@ -31,11 +30,11 @@ public class StockFinanceEvent implements Serializable {
     @JoinColumn(name="stock_id", foreignKey = @ForeignKey(name="FK_finance_event_to_stock"))
     private Stock stock;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

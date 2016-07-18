@@ -6,7 +6,7 @@
 
     <changeSet id="20150803183322" author="mateusz">
         <createTable tableName="STOCK_FINANCE_EVENT">
-            <column name="id" type="bigint">
+            <column name="id" type="varchar(64)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="date" type="date">
