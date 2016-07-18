@@ -4,8 +4,8 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
    <changeSet author="mateusz" id="20150817192416-1">
       <createTable tableName="STOCK_INDICATORS">
-         <column name="id" type="BIGINT">
-            <constraints primaryKey="true" primaryKeyName="STOCK_INDICATORSPK"/>
+         <column name="id" type="varchar(64)">
+            <constraints primaryKey="true" nullable="false" primaryKeyName="STOCK_INDICATORSPK"/>
          </column>
          <column name="average_volume_10_days" type="NUMBER(10, 2)">
             <constraints nullable="false"/>

@@ -116,14 +116,14 @@ public class StockService {
     }
 
     @Transactional
-    public ResponseEntity<Void> followStock(long stockId) throws URISyntaxException {
+    public ResponseEntity<Void> followStock(String stockId) throws URISyntaxException {
         User user = userService.getUserWithAuthorities();
         userRepository.createAssociationWithStock(user.getId(), stockId);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     @Transactional
-    public ResponseEntity<Void> stopFollowStock(long stockId) throws URISyntaxException {
+    public ResponseEntity<Void> stopFollowStock(String stockId) throws URISyntaxException {
         User user = userService.getUserWithAuthorities();
         userRepository.deleteAssociationWithStock(user.getId(), stockId);
         return new ResponseEntity<Void>(HttpStatus.OK);

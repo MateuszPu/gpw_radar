@@ -45,13 +45,13 @@ public class StockResource {
 
     @RequestMapping(value = "/stock/follow", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @RolesAllowed(AuthoritiesConstants.USER)
-    public ResponseEntity<Void> followStock(@RequestBody long id) throws URISyntaxException {
+    public ResponseEntity<Void> followStock(@RequestBody String id) throws URISyntaxException {
         return stockService.followStock(id);
     }
 
     @RequestMapping(value = "/stock/stop/follow", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @RolesAllowed(AuthoritiesConstants.USER)
-    public ResponseEntity<Void> stopFollowStock(@RequestBody long id) throws URISyntaxException {
+    public ResponseEntity<Void> stopFollowStock(@RequestBody String id) throws URISyntaxException {
         return stockService.stopFollowStock(id);
     }
 
