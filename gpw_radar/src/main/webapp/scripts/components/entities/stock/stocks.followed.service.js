@@ -28,7 +28,7 @@ angular.module('gpwRadarApp').filter('getById', function() {
 	return function(input, id) {
 		var i=0, len=input.length;
 			for (; i<len; i++) {
-				if (+input[i].stockId == +id) {
+				if (input[i].stockId == id) {
 					return input[i];
 				}
 			}
@@ -40,7 +40,7 @@ angular.module('gpwRadarApp').filter('removeById', function() {
     return function(input, id) {
         var i=0, len=input.length;
         for (; i<len; i++) {
-            if (+input[i].stockId == +id) {
+            if (input[i].stockId == id) {
                 input.splice(i, 1);
                 return;
             }
