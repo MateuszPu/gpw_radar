@@ -5,7 +5,7 @@
 
     <changeSet author="mateusz" id="20151004130959-1">
         <createTable tableName="NEWS_MESSAGE">
-            <column name="id" type="BIGINT">
+            <column name="id" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
             <column name="created_date" type="timestamp">
@@ -25,7 +25,7 @@
 
     <changeSet author="mateusz" id="20151004130959-2">
         <createTable tableName="USER_MESSAGE">
-            <column name="id" type="BIGINT">
+            <column name="id" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
             <column name="created_date" type="timestamp">

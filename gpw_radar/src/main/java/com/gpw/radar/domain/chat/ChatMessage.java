@@ -2,6 +2,7 @@ package com.gpw.radar.domain.chat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gpw.radar.domain.User;
+import com.gpw.radar.service.util.RandomUtil;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,10 +13,7 @@ import java.time.ZonedDateTime;
 public abstract class ChatMessage {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "idGenerator")
-    @TableGenerator(table = "hibernate_sequences_table", name = "idGenerator", pkColumnName = "pk",
-        valueColumnName = "value", pkColumnValue = "chat_message")
-	private long id;
+    private String id = RandomUtil.generateId();
 
 	@ManyToOne
 	@NotNull
@@ -29,11 +27,11 @@ public abstract class ChatMessage {
 
 	public abstract String getChatMessage();
 
-	public long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

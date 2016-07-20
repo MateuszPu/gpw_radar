@@ -51,7 +51,7 @@ public class RssParserService implements RssObservable {
         observers = new HashSet<>();
         feedFetcher = new HttpURLFeedFetcher();
 
-        LocalDateTime date = LocalDateTime.now();
+        LocalDateTime date = LocalDateTime.of(2016, 5, 2, 1, 1);
         rssLinks.put(RssType.CHALLENGE, date);
         rssLinks.put(RssType.EBI, date);
         rssLinks.put(RssType.ESPI, date);
