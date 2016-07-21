@@ -2,6 +2,7 @@ package com.gpw.radar.domain.stock;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gpw.radar.service.util.RandomUtil;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -18,7 +19,9 @@ import java.time.LocalDate;
 public class StockDetails implements Serializable {
 
     @Id
-    private String id = RandomUtil.generateId();
+    @GenericGenerator(name="seq_id", strategy="com.gpw.radar.domain.generator.StringIdGenerator")
+    @GeneratedValue(generator="seq_id")
+    private String id;
 
     @NotNull
     @Column(name = "date", nullable = false)

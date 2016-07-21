@@ -3,6 +3,7 @@ package com.gpw.radar.domain.chat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gpw.radar.domain.User;
 import com.gpw.radar.service.util.RandomUtil;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,7 +14,9 @@ import java.time.ZonedDateTime;
 public abstract class ChatMessage {
 
     @Id
-    private String id = RandomUtil.generateId();
+    @GenericGenerator(name="seq_id", strategy="com.gpw.radar.domain.generator.StringIdGenerator")
+    @GeneratedValue(generator="seq_id")
+    private String id;
 
 	@ManyToOne
 	@NotNull

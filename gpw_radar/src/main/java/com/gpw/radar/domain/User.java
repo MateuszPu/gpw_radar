@@ -5,6 +5,7 @@ import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.service.util.RandomUtil;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
@@ -25,7 +26,9 @@ import java.util.Set;
 public class User extends AbstractAuditingEntity implements Serializable {
 
     @Id
-    private String id = RandomUtil.generateId();
+    @GenericGenerator(name="seq_id", strategy="com.gpw.radar.domain.generator.StringIdGenerator")
+    @GeneratedValue(generator="seq_id")
+    private String id;
 
     @NotNull
     @Pattern(regexp = "^[a-z0-9]*$|(anonymousUser)")

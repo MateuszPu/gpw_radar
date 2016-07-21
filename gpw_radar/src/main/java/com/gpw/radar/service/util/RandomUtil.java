@@ -11,7 +11,6 @@ import java.security.SecureRandom;
 public final class RandomUtil {
 
     private static final int DEF_COUNT = 20;
-    private static SecureRandom random = new SecureRandom();
 
     private RandomUtil() {
     }
@@ -42,9 +41,4 @@ public final class RandomUtil {
     public static String generateResetKey() {
         return RandomStringUtils.randomNumeric(DEF_COUNT);
     }
-
-    public static String generateId() {
-        return new BigInteger(250, random).toString(32);
-    }
-
 }

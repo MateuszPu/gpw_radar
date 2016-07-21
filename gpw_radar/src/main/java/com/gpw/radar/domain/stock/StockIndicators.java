@@ -1,6 +1,7 @@
 package com.gpw.radar.domain.stock;
 
 import com.gpw.radar.service.util.RandomUtil;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -11,7 +12,9 @@ import java.time.LocalDate;
 public class StockIndicators {
 
     @Id
-    private String id = RandomUtil.generateId();
+    @GenericGenerator(name="seq_id", strategy="com.gpw.radar.domain.generator.StringIdGenerator")
+    @GeneratedValue(generator="seq_id")
+    private String id;
 
     @Column(name = "slope_simple_regression_10")
     private double slopeSimpleRegression10Days;
