@@ -25,7 +25,7 @@
     -->
     <changeSet id="00000000000001" author="mateusz">
         <createTable tableName="USERS">
-            <column name="id" type="bigint">
+            <column name="id" type="varchar(64)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="login" type="varchar(50)">
@@ -75,7 +75,7 @@
         </createTable>
 
         <createTable tableName="USER_AUTHORITY">
-            <column name="user_id" type="bigint">
+            <column name="user_id" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
             <column name="authority_name" type="varchar(50)">
@@ -89,7 +89,7 @@
             <column name="series" type="varchar(255)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="user_id" type="bigint"/>
+            <column name="user_id" type="varchar(64)"/>
             <column name="token_value" type="varchar(255)">
                 <constraints nullable="false" />
             </column>

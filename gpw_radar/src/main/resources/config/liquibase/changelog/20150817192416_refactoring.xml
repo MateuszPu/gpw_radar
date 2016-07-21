@@ -30,7 +30,7 @@
    </changeSet>
    <changeSet author="mateusz" id="20150817192416-2">
       <createTable tableName="USER_STOCKS">
-         <column name="user_id" type="BIGINT">
+         <column name="user_id" type="varchar(64)">
             <constraints nullable="false"/>
          </column>
          <column name="stock_id" type="varchar(64)">

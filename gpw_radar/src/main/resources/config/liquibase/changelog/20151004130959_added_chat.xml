@@ -11,7 +11,7 @@
             <column name="created_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="user_id" type="BIGINT">
+            <column name="user_id" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
             <column name="link" type="VARCHAR(255)"/>
@@ -31,7 +31,7 @@
             <column name="created_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="user_id" type="BIGINT">
+            <column name="user_id" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
             <column name="message" type="VARCHAR(128)">

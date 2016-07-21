@@ -63,7 +63,8 @@ public class UserService {
     public Optional<User> completePasswordReset(String newPassword, String key) {
        log.debug("Reset user password for reset key {}", key);
 
-       return userRepository.findOneByResetKey(key)
+        Optional<User> oneByResetKey = userRepository.findOneByResetKey(key);
+        return oneByResetKey
             .filter(user -> {
                 ZonedDateTime oneDayAgo = ZonedDateTime.now().minusHours(24);
                 return user.getResetDate().isAfter(oneDayAgo);
@@ -109,6 +110,7 @@ public class UserService {
         newUser.setActivationKey(RandomUtil.generateActivationKey());
         authorities.add(authority);
         newUser.setAuthorities(authorities);
+        newUser.setLastModifiedBy("byUFO");
         userRepository.save(newUser);
         log.debug("Created Information for User: {}", newUser);
         return newUser;
@@ -175,7 +177,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public User getUserWithAuthorities(Long id) {
+    public User getUserWithAuthorities(String id) {
         User user = userRepository.findOne(id);
         user.getAuthorities().size(); // eagerly load the association
         return user;

@@ -14,7 +14,7 @@ public interface StockFinanceEventRepository extends JpaRepository<StockFinanceE
     List<StockFinanceEvent> findByStock(Stock stock);
 
     @Query("from StockFinanceEvent se join fetch se.stock st join fetch st.users u where u.id = :userId")
-    List<StockFinanceEvent> getFollowedStockFinanceEvent(@Param("userId") long userId);
+    List<StockFinanceEvent> getFollowedStockFinanceEvent(@Param("userId") String userId);
 
     @Query("from StockFinanceEvent se join fetch se.stock")
     @Cacheable(cacheNames = CacheConfiguration.ALL_STOCK_FINANCE_EVENTS_CACHE)

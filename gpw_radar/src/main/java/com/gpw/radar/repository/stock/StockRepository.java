@@ -26,7 +26,7 @@ public interface StockRepository extends JpaRepository<Stock, String> {
 
     @Cacheable(value = CacheConfiguration.STOCKS_FOLLOWED_BY_USER_CACHE, key = "#p0")
     @Query(value = "SELECT * from stock where id in (select stock_id from user_stocks where user_id = :userId)", nativeQuery = true)
-    List<Stock> findStocksByUserId(@Param("userId") Long userId);
+    List<Stock> findStocksByUserId(@Param("userId") String userId);
 
     @Query("from Stock st left outer join fetch st.stockIndicators")
     List<Stock> findAllFetchIndicators();

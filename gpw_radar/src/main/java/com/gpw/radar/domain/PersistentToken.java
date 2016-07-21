@@ -22,11 +22,7 @@ import java.time.format.DateTimeFormatter;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class PersistentToken implements Serializable {
 
-
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("d MMMM yyyy");
-
-
-
     private static final int MAX_USER_AGENT_LEN = 255;
 
     @Id

@@ -2,6 +2,7 @@ package com.gpw.radar.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gpw.radar.domain.stock.Stock;
+import com.gpw.radar.service.util.RandomUtil;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Email;
@@ -23,11 +24,8 @@ import java.util.Set;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class User extends AbstractAuditingEntity implements Serializable {
 
-	@Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "idGenerator")
-    @TableGenerator(table = "hibernate_sequences_table", name = "idGenerator", pkColumnName = "pk",
-        valueColumnName = "value", pkColumnValue = "users", initialValue = 1000, allocationSize = 1)
-    private Long id;
+    @Id
+    private String id = RandomUtil.generateId();
 
     @NotNull
     @Pattern(regexp = "^[a-z0-9]*$|(anonymousUser)")
@@ -96,11 +94,11 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Stock> stocks = new HashSet<>();
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
