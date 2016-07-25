@@ -190,3 +190,5 @@ src/main/resources/rebel.xml
 /technical_analysis/deploy/**
 /technical_analysis/log/**
 /technical_analysis/target/**
+
+**/target
