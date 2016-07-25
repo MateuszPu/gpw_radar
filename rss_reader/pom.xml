@@ -27,7 +27,7 @@
     <build>
         <resources>
             <resource>
-                <directory>../configs/rabbitmq</directory>
+                <directory>../configs/rabbitmq/properties</directory>
             </resource>
         </resources>
         <plugins>
