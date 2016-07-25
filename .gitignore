@@ -192,3 +192,4 @@ src/main/resources/rebel.xml
 /technical_analysis/target/**
 
 **/.idea
+**/target
