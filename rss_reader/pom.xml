@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.test</groupId>
+    <groupId>gpw.rss.reader</groupId>
     <artifactId>rss_reader</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -16,9 +16,15 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <rometools.version>1.7.0</rometools.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.rometools</groupId>
+            <artifactId>rome-fetcher</artifactId>
+            <version>${rometools.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
@@ -46,7 +52,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-					<mainClass>com.test.App</mainClass>
+					<mainClass>gpw.rss.reader.App</mainClass>
 				</configuration>
             </plugin>
         </plugins>

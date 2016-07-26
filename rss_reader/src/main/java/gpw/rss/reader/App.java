@@ -1,4 +1,4 @@
-package com.test;
+package gpw.rss.reader;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

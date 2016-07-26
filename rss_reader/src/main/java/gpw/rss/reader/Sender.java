@@ -1,4 +1,4 @@
-package com.test;
+package gpw.rss.reader;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class Sender {
 
-    @Value("${rss_reader_fanout_name}")
+    @Value("${rss_reader_fanout_exchange}")
     private String name;
 
     @Autowired
@@ -21,5 +21,4 @@ public class Sender {
         this.template.convertAndSend(name, "", message);
         System.out.println(" [x] Sent '" + message + "'");
     }
-
 }

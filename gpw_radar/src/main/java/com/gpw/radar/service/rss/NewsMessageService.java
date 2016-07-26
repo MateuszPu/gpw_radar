@@ -32,9 +32,6 @@ public class NewsMessageService implements RssObserver, NewsMessageServiceable {
     @Inject
     private RssObservable rssParserService;
 
-    @Inject
-    private CacheManager cacheManager;
-
     @PostConstruct
     private void init() {
         rssParserService.addRssObserver(this);
