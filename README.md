@@ -49,6 +49,9 @@ Before run you should edit run configuration: in `working directory` you should 
 # Issue/task tracker
 Under following link (https://trello.com/b/P8ASjAks/gpw-radar) I manage my work on the project.
 
+# Rabbitmq on Docker
+In this particular project I am using rabbitmq started in docker container [Docker][]. If you are familiar with docer you should go to the folder configs/rabbitmq/docker. There is a dockerfile which create an image using following command: `docker build -t name:version path to dockerfile` after that you can run builded image using command: `docker run name:version`. Please noticed that if you want to use rabbitmq on docker with gpw_radar application you should provide port forwardig at least for port 5672. Currently I am using the following command to run docker image: `docker run -p 5672:5672 -p 15672:15672 name:version`. To verify if everything works you should go to http://docker_ip_machine:15672 and login with admin admin. 
+
 [JHipster]: https://jhipster.github.io/
 [Node.js]: https://nodejs.org/
 [Bower]: http://bower.io/
@@ -57,3 +60,4 @@ Under following link (https://trello.com/b/P8ASjAks/gpw-radar) I manage my work 
 [Karma]: http://karma-runner.github.io/
 [Jasmine]: http://jasmine.github.io/2.0/introduction.html
 [Protractor]: https://angular.github.io/protractor/
+[Docker]: https://docs.docker.com/
