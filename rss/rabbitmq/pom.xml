@@ -4,36 +4,39 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>gpw.rss.reader</groupId>
-    <artifactId>rss_reader</artifactId>
+    <groupId>com.rss.rabbitmq</groupId>
+    <artifactId>rabbitmq</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>rabbitmq</name>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.3.6.RELEASE</version>
+        <groupId>gpw.radar.rss</groupId>
+        <artifactId>parent-module</artifactId>
+        <version>1.0</version>
     </parent>
 
     <properties>
         <java.version>1.8</java.version>
-        <rometools.version>1.7.0</rometools.version>
+        <rss.parser.version>1.0-SNAPSHOT</rss.parser.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>com.rometools</groupId>
-            <artifactId>rome-fetcher</artifactId>
-            <version>${rometools.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.rss.parser</groupId>
+            <artifactId>rss-parser</artifactId>
+            <version>${rss.parser.version}</version>
+        </dependency>
     </dependencies>
+
     <build>
         <resources>
             <resource>
-                <directory>../configs/rabbitmq/properties</directory>
+                <directory>../../configs/rabbitmq/properties</directory>
             </resource>
         </resources>
         <plugins>
@@ -52,7 +55,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-					<mainClass>gpw.rss.reader.App</mainClass>
+					<mainClass>com.rss.rabbitmq.App</mainClass>
 				</configuration>
             </plugin>
         </plugins>
