@@ -1,4 +1,4 @@
-package com.rss.rabbitmq;
+package com.rss.rabbitmq.sender;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ public class Sender {
     @Autowired
     private RabbitTemplate template;
 
-    @Scheduled(fixedDelay = 5000, initialDelay = 500)
     public void send() {
         String message = "Hello World!";
         this.template.convertAndSend(name, "", message);

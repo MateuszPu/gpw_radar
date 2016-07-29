@@ -20,33 +20,14 @@
 //import java.util.List;
 //import java.util.Map;
 //
-//@Service
 //public class Parser {
 //
 //    private final Sender sender;
-//    private Map<RssType, LocalDateTime> rssLinks;
 //
-//    @Autowired
-//    public Parser(Sender sender) {
-//        this.sender = sender;
-//    }
-//
-//    @PostConstruct
-//    private void prepareMapWithLinks() {
-//        rssLinks = new HashMap<>();
-//        LocalDateTime date = LocalDateTime.now();
-//        rssLinks.put(RssType.CHALLENGE, date);
-//        rssLinks.put(RssType.EBI, date);
-//        rssLinks.put(RssType.ESPI, date);
-//        rssLinks.put(RssType.PAP, date);
-//        rssLinks.put(RssType.RECOMMENDATIONS, date);
-//        rssLinks.put(RssType.RESULTS, date);
-//    }
-//
-//    @Scheduled(cron = "*/5 * 8-17 * * MON-FRI")
-//    @Scheduled(cron = "0 */5 18-23 * * MON-FRI")
-//    @Scheduled(cron = "0 */30 0-7 * * MON-FRI")
-//    @Scheduled(cron = "0 */30 * * * SAT,SUN")
+////    @Scheduled(cron = "*/5 * 8-17 * * MON-FRI")
+////    @Scheduled(cron = "0 */5 18-23 * * MON-FRI")
+////    @Scheduled(cron = "0 */30 0-7 * * MON-FRI")
+////    @Scheduled(cron = "0 */30 * * * SAT,SUN")
 //    public void fireCron() {
 //        List<String> parsedRssNewsMessage = new ArrayList<>();
 //        if (isNewRssMessagePresented(parsedRssNewsMessage)) {
