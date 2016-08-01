@@ -1,25 +1,22 @@
 package com.rss.rabbitmq.config;
 
-import com.rss.rabbitmq.types.RssType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Configuration
 public class RssTypeConfig {
 
-    @Bean
-    private Map<RssType, LocalDateTime> rssTypes() {
+    @Bean(name = "rssTypesWithLink")
+    public Map<RssType, LocalDateTime> rssTypesWithLink() {
         Map<RssType, LocalDateTime> rssLinks = new HashMap<>();
-        LocalDateTime date = LocalDateTime.now();
-        rssLinks.put(RssType.CHALLENGE, date);
-        rssLinks.put(RssType.EBI, date);
-        rssLinks.put(RssType.ESPI, date);
-        rssLinks.put(RssType.PAP, date);
-        rssLinks.put(RssType.RECOMMENDATIONS, date);
-        rssLinks.put(RssType.RESULTS, date);
+        List<RssType> rssTypes = Arrays.asList(RssType.values());
+        rssTypes.forEach(e -> rssLinks.put(e, LocalDateTime.now().minusHours(3)));
         return rssLinks;
     }
 }

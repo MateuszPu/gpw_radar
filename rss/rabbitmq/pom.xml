@@ -38,6 +38,9 @@
             <resource>
                 <directory>../../configs/rabbitmq/properties</directory>
             </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
         </resources>
         <plugins>
             <plugin>

@@ -1,7 +1,5 @@
 package com.rss.parser;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
@@ -15,7 +13,6 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Parser implements RssParser {
@@ -26,21 +23,27 @@ public class Parser implements RssParser {
         throw new IllegalStateException("Cannot create parser without url");
     }
 
-    public Parser(String url) throws MalformedURLException {
-        this.url = new URL(url);
+    public Parser(String url) {
+        try {
+            this.url = new URL(url);
+        } catch (MalformedURLException e) {
+            throw new IllegalStateException("s");
+        }
     }
 
     @Override
-    public Optional<String> parseFrom(LocalDateTime dateTime) throws IOException, FeedException {
+    public List<GpwNews> parseBy(LocalDateTime dateTime) {
         SyndFeedInput input = new SyndFeedInput();
-        SyndFeed feed = input.build(new XmlReader(url));
+        SyndFeed feed = null;
+        try {
+            feed = input.build(new XmlReader(url));
+        } catch (FeedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         List<GpwNews> newses = getEntriesAfter(feed, dateTime).stream().map(e -> getNewsFrom(e)).collect(Collectors.toList());
-        return toJson(newses);
-    }
-
-    private Optional<String> toJson(List<GpwNews> newses) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return Optional.of(mapper.writeValueAsString(newses));
+        return newses;
     }
 
     private List<SyndEntry> getEntriesAfter(SyndFeed feed, LocalDateTime dateTime) {
@@ -51,9 +54,7 @@ public class Parser implements RssParser {
         LocalDateTime date = getDateFrom(syndEntry);
         String message = syndEntry.getTitle();
         String link = syndEntry.getLink();
-
-        GpwNews parsedNews = new GpwNews(date, message, link);
-        return parsedNews;
+        return new GpwNews(date, message, link);
     }
 
     private LocalDateTime getDateFrom(SyndEntry syndEntry) {
