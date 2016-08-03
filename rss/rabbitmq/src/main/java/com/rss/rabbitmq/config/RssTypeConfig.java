@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -15,10 +16,10 @@ import java.util.stream.Collectors;
 public class RssTypeConfig {
 
     @Bean(name = "rssTypeTimeMap")
-    public Map<RssType, LocalDateTime> rssTypeTimeMap() {
-        Map<RssType, LocalDateTime> rssLinks = new HashMap<>();
+    public Map<RssType, ZonedDateTime> rssTypeTimeMap() {
+        Map<RssType, ZonedDateTime> rssLinks = new HashMap<>();
         List<RssType> rssTypes = Arrays.asList(RssType.values());
-        rssTypes.forEach(e -> rssLinks.put(e, LocalDateTime.now().minusHours(3)));
+        rssTypes.forEach(e -> rssLinks.put(e, ZonedDateTime.now().minusHours(3)));
         return rssLinks;
     }
 

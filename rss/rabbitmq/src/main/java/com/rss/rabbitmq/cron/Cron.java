@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeWithZoneIdSerializer;
 import com.rss.parser.Parser;
 import com.rss.parser.model.GpwNews;
 import com.rss.rabbitmq.config.RssType;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +25,7 @@ import java.util.Map;
 public class Cron {
 
     @Resource(name = "rssTypeTimeMap")
-    private Map<RssType, LocalDateTime> rssTypeTimeMap;
+    private Map<RssType, ZonedDateTime> rssTypeTimeMap;
 
     @Resource(name = "rssTypeParserMap")
     Map<RssType, Parser> rssTypeParserMap;
@@ -44,7 +46,7 @@ public class Cron {
             Parser parser = rssTypeParserMap.get(rss);
             List<GpwNews> gpwNewses = parser.parseBy(this.rssTypeTimeMap.get(rss));
             if (!gpwNewses.isEmpty()) {
-                LocalDateTime dateTime = gpwNewses.stream().max((e1, e2) -> e1.getTimeNews().compareTo(e2.getTimeNews())).get().getTimeNews();
+                ZonedDateTime dateTime = gpwNewses.stream().max((e1, e2) -> e1.getTimeNews().compareTo(e2.getTimeNews())).get().getTimeNews();
                 rssTypeTimeMap.put(rss, dateTime);
                 sender.send(convertToJson(gpwNewses), rss.name());
             }

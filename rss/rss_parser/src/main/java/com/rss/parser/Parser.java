@@ -12,6 +12,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,7 @@ public class Parser implements RssParser {
     }
 
     @Override
-    public List<GpwNews> parseBy(LocalDateTime dateTime) {
+    public List<GpwNews> parseBy(ZonedDateTime dateTime) {
         SyndFeedInput input = new SyndFeedInput();
         SyndFeed feed = null;
         try {
@@ -46,18 +47,18 @@ public class Parser implements RssParser {
         return newses;
     }
 
-    private List<SyndEntry> getEntriesAfter(SyndFeed feed, LocalDateTime dateTime) {
+    private List<SyndEntry> getEntriesAfter(SyndFeed feed, ZonedDateTime dateTime) {
         return feed.getEntries().stream().filter(e -> getDateFrom(e).isAfter(dateTime)).collect(Collectors.toList());
     }
 
     private GpwNews getNewsFrom(SyndEntry syndEntry) {
-        LocalDateTime date = getDateFrom(syndEntry);
+        ZonedDateTime date = getDateFrom(syndEntry);
         String message = syndEntry.getTitle();
         String link = syndEntry.getLink();
         return new GpwNews(date, message, link);
     }
 
-    private LocalDateTime getDateFrom(SyndEntry syndEntry) {
-        return LocalDateTime.ofInstant(syndEntry.getPublishedDate().toInstant(), ZoneId.systemDefault());
+    private ZonedDateTime getDateFrom(SyndEntry syndEntry) {
+        return ZonedDateTime.ofInstant(syndEntry.getPublishedDate().toInstant(), ZoneId.systemDefault());
     }
 }
