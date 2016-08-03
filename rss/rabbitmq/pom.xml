@@ -58,8 +58,8 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-					<mainClass>com.rss.rabbitmq.App</mainClass>
-				</configuration>
+                    <mainClass>com.rss.rabbitmq.App</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>
