@@ -2,26 +2,24 @@ package com.rss.parser.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 public class GpwNews {
 
-    @JsonSerialize(using = ZonedDateTimeSerializer.class)
-    private final ZonedDateTime timeNews;
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    private final LocalDateTime newsDateTime;
     private final String message;
     private final String link;
 
-    public GpwNews(ZonedDateTime timeNews, String message, String link) {
-        this.timeNews = timeNews;
+    public GpwNews(LocalDateTime newsDateTime, String message, String link) {
+        this.newsDateTime = newsDateTime;
         this.message = message;
         this.link = link;
     }
 
-    public ZonedDateTime getTimeNews() {
-        return timeNews;
+    public LocalDateTime getNewsDateTime() {
+        return newsDateTime;
     }
 
     public String getMessage() {
