@@ -18,7 +18,7 @@ public class RssTypeConfig {
     public Map<RssType, LocalDateTime> rssTypeTimeMap() {
         Map<RssType, LocalDateTime> rssLinks = new HashMap<>();
         List<RssType> rssTypes = Arrays.asList(RssType.values());
-        rssTypes.forEach(e -> rssLinks.put(e, LocalDateTime.now().minusHours(3)));
+        rssTypes.forEach(e -> rssLinks.put(e, LocalDateTime.now().minusDays(1)));
         return rssLinks;
     }
 

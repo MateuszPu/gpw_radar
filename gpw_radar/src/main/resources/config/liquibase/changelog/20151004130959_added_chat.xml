@@ -4,17 +4,16 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
 
     <changeSet author="mateusz" id="20151004130959-1">
-        <createTable tableName="NEWS_MESSAGE">
+        <createTable tableName="STOCK_NEWS_MESSAGE">
             <column name="id" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_date" type="timestamp">
+            <column name="news_date_time" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="user_id" type="varchar(64)">
+            <column name="link" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="link" type="VARCHAR(255)"/>
             <column name="message" type="VARCHAR(1000)">
                 <constraints nullable="false"/>
             </column>
@@ -24,7 +23,7 @@
     </changeSet>
 
     <changeSet author="mateusz" id="20151004130959-2">
-        <createTable tableName="USER_MESSAGE">
+        <createTable tableName="CHAT_MESSAGE">
             <column name="id" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
@@ -34,7 +33,7 @@
             <column name="user_id" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
-            <column name="message" type="VARCHAR(128)">
+            <column name="message" type="VARCHAR(512)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -43,27 +42,17 @@
     <changeSet author="mateusz" id="20151004130959-3">
         <addPrimaryKey columnNames="id"
                        constraintName="NewsMessagePK"
-                       tableName="NEWS_MESSAGE"/>
+                       tableName="STOCK_NEWS_MESSAGE"/>
     </changeSet>
     <changeSet author="mateusz" id="20151004130959-4">
         <addPrimaryKey columnNames="id"
                        constraintName="UserMessagePK"
-                       tableName="USER_MESSAGE"/>
-    </changeSet>
-
-    <changeSet author="mateusz" id="20151004130959-5">
-        <addForeignKeyConstraint baseColumnNames="user_id"
-                                 baseTableName="NEWS_MESSAGE"
-                                 constraintName="FK_NEWS_MESSAGE_USER"
-                                 deferrable="false"
-                                 initiallyDeferred="false"
-                                 referencedColumnNames="id"
-                                 referencedTableName="USERS"/>
+                       tableName="CHAT_MESSAGE"/>
     </changeSet>
 
     <changeSet author="mateusz" id="20151004130959-6">
         <addForeignKeyConstraint baseColumnNames="user_id"
-                                 baseTableName="USER_MESSAGE"
+                                 baseTableName="CHAT_MESSAGE"
                                  constraintName="FK_MESSAGE_USER"
                                  deferrable="false"
                                  initiallyDeferred="false"

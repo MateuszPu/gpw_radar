@@ -1,6 +1,6 @@
 package com.gpw.radar.service.rss;
 
-import com.gpw.radar.domain.enumeration.RssType;
+import com.gpw.radar.rabbitmq.consumer.rss.news.RssType;
 import com.gpw.radar.web.rest.dto.rssNews.NewsDetailsDTO;
 import org.springframework.http.ResponseEntity;
 

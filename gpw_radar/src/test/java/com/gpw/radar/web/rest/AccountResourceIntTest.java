@@ -8,6 +8,7 @@ import com.gpw.radar.repository.UserRepository;
 import com.gpw.radar.security.AuthoritiesConstants;
 import com.gpw.radar.service.UserService;
 import com.gpw.radar.service.mail.MailSender;
+import com.gpw.radar.service.mail.MailService;
 import com.gpw.radar.web.rest.dto.UserDTO;
 import org.junit.Before;
 import org.junit.Test;
@@ -63,7 +64,7 @@ public class AccountResourceIntTest {
     private UserService mockUserService;
 
     @Mock
-    private MailSender mockMailService;
+    private MailService mockMailService;
 
     private MockMvc restUserMockMvc;
 
