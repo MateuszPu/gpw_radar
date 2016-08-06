@@ -2,7 +2,6 @@ package com.gpw.radar.repository.stock;
 
 import com.gpw.radar.config.CacheConfiguration;
 import com.gpw.radar.domain.stock.Stock;
-import com.gpw.radar.domain.stock.StockStatistic;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

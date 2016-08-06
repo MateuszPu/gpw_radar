@@ -20,6 +20,7 @@ public class ChatController {
     private final SimpMessageSendingOperations messagingTemplate;
     private final ChatMessageService chatMessageService;
     private final ChatMessageMapper chatMessageMapper;
+    private Set<String> users = new HashSet<String>();
 
     @Autowired
     public ChatController(SimpMessageSendingOperations messagingTemplate, ChatMessageService chatMessageService,
@@ -28,8 +29,6 @@ public class ChatController {
         this.chatMessageService = chatMessageService;
         this.chatMessageMapper = chatMessageMapper;
     }
-
-    private Set<String> users = new HashSet<String>();
 
     @SubscribeMapping("/webchat/send/message")
     @SendTo("/webchat/recive")

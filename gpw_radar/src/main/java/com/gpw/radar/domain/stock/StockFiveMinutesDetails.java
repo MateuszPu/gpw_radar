@@ -1,7 +1,6 @@
 package com.gpw.radar.domain.stock;
 
 import com.gpw.radar.domain.util.LocalTimeConverter;
-import com.gpw.radar.service.util.RandomUtil;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;

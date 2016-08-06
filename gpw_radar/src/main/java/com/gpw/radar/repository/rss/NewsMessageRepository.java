@@ -1,8 +1,8 @@
 package com.gpw.radar.repository.rss;
 
 import com.gpw.radar.config.CacheConfiguration;
-import com.gpw.radar.rabbitmq.consumer.rss.news.RssType;
 import com.gpw.radar.domain.rss.NewsMessage;
+import com.gpw.radar.rabbitmq.consumer.rss.news.RssType;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;

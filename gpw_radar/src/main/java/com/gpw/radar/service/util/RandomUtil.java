@@ -2,9 +2,6 @@ package com.gpw.radar.service.util;
 
 import org.apache.commons.lang.RandomStringUtils;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
-
 /**
  * Utility class for generating random Strings.
  */

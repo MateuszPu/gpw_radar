@@ -5,7 +5,6 @@ import com.gpw.radar.repository.stock.StockDetailsRepository;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.stock.StockService;
 import com.gpw.radar.service.technical.indicators.TickAdapter;
-import com.gpw.radar.web.rest.dto.stock.StockIndicatorsWithStocksDTO;
 import com.gpw.radar.web.rest.dto.stock.StockWithStockIndicatorsDTO;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -14,11 +13,7 @@ import pl.technical.analysis.indicators.trackers.sma.PriceCrossSMA;
 import pl.technical.analysis.indicators.trackers.sma.SMACrossover;
 
 import javax.inject.Inject;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service

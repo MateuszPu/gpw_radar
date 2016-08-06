@@ -1,7 +1,6 @@
 package com.gpw.radar.domain.chat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gpw.radar.domain.User;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Immutable;

@@ -5,8 +5,8 @@ import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
 import com.gpw.radar.domain.stock.TimeStockFiveMinuteDetails;
 import com.gpw.radar.service.mapper.ChatMessageMapper;
 import com.gpw.radar.web.rest.dto.chat.ChatMessageDTO;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;

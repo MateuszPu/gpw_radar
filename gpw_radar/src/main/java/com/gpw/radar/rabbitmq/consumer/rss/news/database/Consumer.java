@@ -9,7 +9,6 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,6 @@ public class Consumer {
 
     private final String newsTypeHeader;
     private final NewsMessageRepository newsMessageRepository;
-    private final StockRepository stockRepository;
     private final MessageTransformer messageTransformer;
 
     @Autowired
@@ -27,7 +25,6 @@ public class Consumer {
                     @Value("${rss_reader_news_type_header}") String newsTypeHeader,
                     MessageTransformer messageTransformer) {
         this.newsMessageRepository = newsMessageRepository;
-        this.stockRepository = stockRepository;
         this.messageTransformer = messageTransformer;
         this.newsTypeHeader = newsTypeHeader;
     }

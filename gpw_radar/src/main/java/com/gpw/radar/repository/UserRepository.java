@@ -1,10 +1,8 @@
 package com.gpw.radar.repository;
 
 import com.gpw.radar.config.CacheConfiguration;
-import com.gpw.radar.config.JHipsterProperties;
 import com.gpw.radar.domain.User;
 import com.gpw.radar.domain.stock.Stock;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;

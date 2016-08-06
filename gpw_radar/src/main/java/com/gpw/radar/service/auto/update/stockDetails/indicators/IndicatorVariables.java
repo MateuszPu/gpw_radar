@@ -2,8 +2,6 @@ package com.gpw.radar.service.auto.update.stockDetails.indicators;
 
 import com.gpw.radar.domain.stock.StockDetails;
 import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.math3.analysis.interpolation.BivariateGridInterpolator;
-import org.apache.commons.math3.stat.StatUtils;
 import org.apache.commons.math3.stat.regression.SimpleRegression;
 
 import java.math.BigDecimal;
