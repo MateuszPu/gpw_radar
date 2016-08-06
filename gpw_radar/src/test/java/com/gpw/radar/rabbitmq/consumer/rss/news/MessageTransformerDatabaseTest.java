@@ -1,8 +1,6 @@
 package com.gpw.radar.rabbitmq.consumer.rss.news;
 
 import com.gpw.radar.domain.rss.NewsMessage;
-import com.gpw.radar.rabbitmq.consumer.rss.news.database.Consumer;
-import com.gpw.radar.repository.rss.NewsMessageRepository;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.builders.StockBuilder;
 import org.junit.Before;
@@ -10,6 +8,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
+
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,7 +27,6 @@ public class MessageTransformerDatabaseTest {
     @Before
     public void init() {
         mockStockRepo();
-        Mapper<GpwNewsModel, NewsMessage> mapper = new Mapper();
         objectUnderTest = new MessageTransformer(mockedStockRepository);
     }
 

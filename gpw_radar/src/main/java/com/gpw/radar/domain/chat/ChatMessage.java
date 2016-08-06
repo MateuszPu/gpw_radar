@@ -16,24 +16,24 @@ import java.time.ZonedDateTime;
 public class ChatMessage {
 
     @Id
-    @GenericGenerator(name="seq_id", strategy="com.gpw.radar.domain.generator.StringIdGenerator")
-    @GeneratedValue(generator="seq_id")
+    @GenericGenerator(name = "seq_id", strategy = "com.gpw.radar.domain.generator.StringIdGenerator")
+    @GeneratedValue(generator = "seq_id")
     private String id;
 
     @ManyToOne
     @NotNull
     @JsonIgnore
-    @JoinColumn(name="user_id", foreignKey = @ForeignKey(name="FK_user"), nullable = false)
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_user"), nullable = false)
     private User user;
 
     @NotNull
     @Column(name = "created_date", nullable = false)
     private ZonedDateTime createdDate = ZonedDateTime.now();
 
-	@NotNull
-	@Size(min = 1, max = 512)
-	@Column(length = 512, nullable = false)
-	private String message;
+    @NotNull
+    @Size(min = 1, max = 512)
+    @Column(length = 512, nullable = false)
+    private String message;
 
     @Transient
     private String link;

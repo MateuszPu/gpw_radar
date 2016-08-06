@@ -26,7 +26,7 @@ public class Cron {
     private Map<RssType, LocalDateTime> rssTypeTimeMap;
 
     @Resource(name = "rssTypeParserMap")
-    Map<RssType, Parser> rssTypeParserMap;
+    private Map<RssType, Parser> rssTypeParserMap;
 
     private final Sender sender;
 
