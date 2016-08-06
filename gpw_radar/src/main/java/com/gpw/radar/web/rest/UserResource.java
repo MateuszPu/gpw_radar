@@ -8,6 +8,7 @@ import com.gpw.radar.repository.UserRepository;
 import com.gpw.radar.security.AuthoritiesConstants;
 import com.gpw.radar.service.UserService;
 import com.gpw.radar.service.mail.MailSender;
+import com.gpw.radar.service.mail.MailService;
 import com.gpw.radar.service.stock.StockFinanceEventService;
 import com.gpw.radar.service.stock.StockService;
 import com.gpw.radar.web.rest.dto.ManagedUserDTO;
@@ -71,7 +72,7 @@ public class UserResource {
     private UserRepository userRepository;
 
     @Inject
-    private MailSender mailService;
+    private MailService mailService;
 
     @Inject
     private AuthorityRepository authorityRepository;

@@ -44,7 +44,6 @@ public class StatisticService {
     }
 
     public ResponseEntity<Set<NewsMessage>> getFiveLatestNewsMessage() {
-        return new ResponseEntity<Set<NewsMessage>>(newsMessageRepository.findTop5ByOrderByCreatedDateDesc(), HttpStatus.OK);
+        return new ResponseEntity<Set<NewsMessage>>(newsMessageRepository.findTop5ByOrderByNewsDateTimeDesc(), HttpStatus.OK);
     }
-
 }

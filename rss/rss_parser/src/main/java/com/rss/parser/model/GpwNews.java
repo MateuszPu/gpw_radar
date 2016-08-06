@@ -1,24 +1,25 @@
 package com.rss.parser.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+
 import java.time.LocalDateTime;
 
-/**
- * Created by mateusz on 28.07.2016.
- */
 public class GpwNews {
 
-    private final LocalDateTime timeNews;
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    private final LocalDateTime newsDateTime;
     private final String message;
     private final String link;
 
-    public GpwNews(LocalDateTime timeNews, String message, String link) {
-        this.timeNews = timeNews;
+    public GpwNews(LocalDateTime newsDateTime, String message, String link) {
+        this.newsDateTime = newsDateTime;
         this.message = message;
         this.link = link;
     }
 
-    public LocalDateTime getTimeNews() {
-        return timeNews;
+    public LocalDateTime getNewsDateTime() {
+        return newsDateTime;
     }
 
     public String getMessage() {

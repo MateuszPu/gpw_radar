@@ -1,57 +1,81 @@
 package com.gpw.radar.domain.chat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gpw.radar.domain.User;
-import com.gpw.radar.service.util.RandomUtil;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
 
 @Entity
-@Inheritance( strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class ChatMessage {
+@Table(name = "CHAT_MESSAGE")
+@Immutable
+public class ChatMessage {
 
     @Id
     @GenericGenerator(name="seq_id", strategy="com.gpw.radar.domain.generator.StringIdGenerator")
     @GeneratedValue(generator="seq_id")
     private String id;
 
-	@ManyToOne
-	@NotNull
-	@JsonIgnore
+    @ManyToOne
+    @NotNull
+    @JsonIgnore
     @JoinColumn(name="user_id", foreignKey = @ForeignKey(name="FK_user"), nullable = false)
-	private User user;
+    private User user;
 
-	@NotNull
+    @NotNull
     @Column(name = "created_date", nullable = false)
     private ZonedDateTime createdDate = ZonedDateTime.now();
 
-	public abstract String getChatMessage();
+	@NotNull
+	@Size(min = 1, max = 512)
+	@Column(length = 512, nullable = false)
+	private String message;
 
-	public String getId() {
-		return id;
-	}
+    @Transient
+    private String link;
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public ZonedDateTime getCreatedDate() {
-		return createdDate;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public void setCreatedDate(ZonedDateTime createdDate) {
-		this.createdDate = createdDate;
-	}
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
 
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
 }

@@ -38,6 +38,9 @@
             <resource>
                 <directory>../../configs/rabbitmq/properties</directory>
             </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
         </resources>
         <plugins>
             <plugin>
@@ -55,8 +58,8 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-					<mainClass>com.rss.rabbitmq.App</mainClass>
-				</configuration>
+                    <mainClass>com.rss.rabbitmq.App</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -1,33 +1,27 @@
 package com.gpw.radar.service.sockets;
 
 import com.gpw.radar.domain.chat.ChatMessage;
-import com.gpw.radar.domain.rss.NewsMessage;
 import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
 import com.gpw.radar.domain.stock.TimeStockFiveMinuteDetails;
-import com.gpw.radar.service.chat.RssObserver;
-import com.gpw.radar.service.rss.RssObservable;
+import com.gpw.radar.service.mapper.ChatMessageMapper;
 import com.gpw.radar.web.rest.dto.chat.ChatMessageDTO;
-import org.modelmapper.ModelMapper;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 import java.time.LocalTime;
 import java.util.List;
 
 @Service
-public class SocketMessageService implements RssObserver, SocketMessageHandler {
+public class SocketMessageService {
 
-    @Inject
-    private SimpMessageSendingOperations messagingTemplate;
+    private final SimpMessageSendingOperations messagingTemplate;
+    private final ChatMessageMapper chatMessageMapper;
 
-    @Inject
-    private RssObservable rssParserService;
-
-    @PostConstruct
-    private void init() {
-        rssParserService.addRssObserver(this);
+    @Autowired
+    public SocketMessageService(SimpMessageSendingOperations messagingTemplate, ChatMessageMapper chatMessageMapper) {
+        this.messagingTemplate = messagingTemplate;
+        this.chatMessageMapper = chatMessageMapper;
     }
 
     public void sendMostActiveStocksToClient(List<StockFiveMinutesDetails> stockFiveMinutesDetails, LocalTime time) {
@@ -37,17 +31,8 @@ public class SocketMessageService implements RssObserver, SocketMessageHandler {
         messagingTemplate.convertAndSend("/most/active/stocks", timeStockFiveMinuteDetails);
     }
 
-    public void sendToChat(NewsMessage message) {
-        ModelMapper modelMapper = new ModelMapper();
-        ChatMessageDTO chatMessageDTO = modelMapper.map((ChatMessage) message, ChatMessageDTO.class);
-
+    public void sendToChat(ChatMessage message) {
+        ChatMessageDTO chatMessageDTO = chatMessageMapper.mapToDto(message);
         messagingTemplate.convertAndSend("/webchat/recive", chatMessageDTO);
-    }
-
-    @Override
-    public void updateRssNewsMessage(List<NewsMessage> parsedRssNewsMessage) {
-        parsedRssNewsMessage.stream()
-            .sorted((e1, e2) -> e1.getCreatedDate().compareTo(e2.getCreatedDate()))
-            .forEach(e -> sendToChat(e));
     }
 }

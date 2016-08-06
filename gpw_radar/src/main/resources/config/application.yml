@@ -12,6 +12,9 @@
 # ===================================================================
 
 spring:
+    rabbitmq:
+      username: gpw_consumer
+      password: consumer
     jpa:
         open-in-view: false
         hibernate:

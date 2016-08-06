@@ -1,15 +1,15 @@
 package com.gpw.radar.web.sockets;
 
-import com.gpw.radar.domain.chat.UserMessage;
-import com.gpw.radar.service.chat.MessageService;
+import com.gpw.radar.domain.chat.ChatMessage;
+import com.gpw.radar.service.chat.ChatMessageService;
+import com.gpw.radar.service.mapper.ChatMessageMapper;
 import com.gpw.radar.web.rest.dto.chat.ChatMessageDTO;
-import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 
-import javax.inject.Inject;
 import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,49 +17,51 @@ import java.util.Set;
 @Controller
 public class ChatController {
 
-	@Inject
-	private SimpMessageSendingOperations messagingTemplate;
+    private final SimpMessageSendingOperations messagingTemplate;
+    private final ChatMessageService chatMessageService;
+    private final ChatMessageMapper chatMessageMapper;
 
-	@Inject
-	private MessageService messageService;
+    @Autowired
+    public ChatController(SimpMessageSendingOperations messagingTemplate, ChatMessageService chatMessageService,
+                          ChatMessageMapper chatMessageMapper) {
+        this.messagingTemplate = messagingTemplate;
+        this.chatMessageService = chatMessageService;
+        this.chatMessageMapper = chatMessageMapper;
+    }
 
-	private Set<String> users = new HashSet<String>();
+    private Set<String> users = new HashSet<String>();
 
-	@SubscribeMapping("/webchat/send/message")
-	@SendTo("/webchat/recive")
-	public ChatMessageDTO sendChatMessage(Message message, Principal principal) {
-        UserMessage msg = messageService.createUserMessage(message.getMessage(), principal);
+    @SubscribeMapping("/webchat/send/message")
+    @SendTo("/webchat/recive")
+    public ChatMessageDTO sendChatMessage(Message message, Principal principal) {
+        ChatMessage msg = chatMessageService.createUserMessage(message.getMessage(), principal);
+        return chatMessageMapper.mapToDto(msg);
+    }
 
-        ModelMapper modelMapper = new ModelMapper();
-        ChatMessageDTO chatMessageDTO = modelMapper.map(msg, ChatMessageDTO.class);
+    @SubscribeMapping("/webchat/user/login")
+    public void userLogin(Principal principal) throws InterruptedException {
+        users.add(principal.getName());
+        usersCount();
+        messagingTemplate.convertAndSend("/webchat/user", users);
+    }
 
-        return chatMessageDTO;
-	}
+    @SubscribeMapping("/webchat/user/logout")
+    public void userLogout(Principal principal) {
+        String login = principal.getName();
+        users.remove(login);
+        usersCount();
+        messagingTemplate.convertAndSend("/webchat/user", users);
+    }
 
-	@SubscribeMapping("/webchat/user/login")
-	public void userLogin(Principal principal) throws InterruptedException {
-		users.add(principal.getName());
-		usersCount();
-		messagingTemplate.convertAndSend("/webchat/user", users);
-	}
-
-	@SubscribeMapping("/webchat/user/logout")
-	public void userLogout(Principal principal) {
-		String login = principal.getName();
-		users.remove(login);
-		usersCount();
-		messagingTemplate.convertAndSend("/webchat/user", users);
-	}
-
-	@SubscribeMapping("/webchat/user/app/on")
+    @SubscribeMapping("/webchat/user/app/on")
     @SendTo("/webchat/count")
-	public int applicationOn() {
+    public int applicationOn() {
         return users.size();
-	}
+    }
 
-	public void usersCount() {
-		messagingTemplate.convertAndSend("/webchat/count", users.size());
-	}
+    public void usersCount() {
+        messagingTemplate.convertAndSend("/webchat/count", users.size());
+    }
 
     @SubscribeMapping("/websocket/connection/open")
     @SendTo("/websocket/status")
@@ -67,13 +69,15 @@ public class ChatController {
         return true;
     }
 
-	static class Message {
-	    private String message;
-		public String getMessage() {
-			return message;
-		}
-		public void setMessage(String message) {
-			this.message = message;
-		}
-	}
+    static class Message {
+        private String message;
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+    }
 }

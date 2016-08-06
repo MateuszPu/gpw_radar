@@ -4,8 +4,6 @@ import com.gpw.radar.config.JHipsterProperties;
 import com.gpw.radar.domain.User;
 import com.gpw.radar.domain.rss.NewsMessage;
 import com.gpw.radar.repository.UserRepository;
-import com.gpw.radar.service.chat.RssObserver;
-import com.gpw.radar.service.rss.RssObservable;
 import org.apache.commons.lang.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.mail.internet.MimeMessage;
 import java.util.List;
@@ -31,7 +28,7 @@ import java.util.Locale;
  * </p>
  */
 @Service
-public class MailService implements RssObserver, MailSender {
+public class MailService {
 
     private final Logger log = LoggerFactory.getLogger(MailService.class);
 
@@ -50,18 +47,10 @@ public class MailService implements RssObserver, MailSender {
     @Inject
     private UserRepository userRepository;
 
-    @Inject
-    private RssObservable rssParserService;
-
     /**
      * System default email address that sends the e-mails.
      */
     private String from;
-
-    @PostConstruct
-    private void init() {
-        rssParserService.addRssObserver(this);
-    }
 
     @Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
@@ -128,21 +117,13 @@ public class MailService implements RssObserver, MailSender {
     }
 
     public void informUserAboutStockNewsByEmail(NewsMessage message) {
-        if (message.getStock() == null) {
-            return;
-        }
         List<User> usersToSendEmail = userRepository.findAllByStocks(message.getStock());
-        if(usersToSendEmail.isEmpty()) {
+        if (usersToSendEmail.isEmpty()) {
             return;
         }
         String[] emails = usersToSendEmail.stream().map(e -> e.getEmail()).toArray(size -> new String[size]);
         String mailTopic = "[Kanal: " + message.getType().toString() + "] [" + message.getStock().getTicker().toString().toUpperCase() + "]" + message.getMessage();
 
-        sendBccEmail(emails, mailTopic, message.getChatMessage(), false, true);
-    }
-
-    @Override
-    public void updateRssNewsMessage(List<NewsMessage> parsedRssNewsMessage) {
-        parsedRssNewsMessage.forEach(e -> informUserAboutStockNewsByEmail(e));
+        sendBccEmail(emails, mailTopic, "Szczegóły: " + message.getMessage(), false, true);
     }
 }

@@ -1,4 +1,4 @@
-package com.rss.rabbitmq.types;
+package com.rss.rabbitmq.config;
 
 public enum RssType {
     RESULTS("http://biznes.pap.pl/pl/rss/6639"), CHALLENGE("http://biznes.pap.pl/pl/rss/6638"),

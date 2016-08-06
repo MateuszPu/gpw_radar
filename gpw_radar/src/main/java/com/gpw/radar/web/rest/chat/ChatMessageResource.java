@@ -1,7 +1,7 @@
 package com.gpw.radar.web.rest.chat;
 
 import com.gpw.radar.security.AuthoritiesConstants;
-import com.gpw.radar.service.chat.ChatMessageLoader;
+import com.gpw.radar.service.chat.ChatMessageService;
 import com.gpw.radar.web.rest.dto.chat.ChatMessageDTO;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,18 +20,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/chat")
 @RolesAllowed(AuthoritiesConstants.USER)
-public class MessageResource {
+public class ChatMessageResource {
 
-	@Inject
-	private ChatMessageLoader chatMessageService;
+    @Inject
+    private ChatMessageService chatMessageService;
 
-	@RequestMapping(value = "/last/10/messages", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<ChatMessageDTO>> getLastMessages(@RequestParam int page) {
-		return chatMessageService.getLastMessages(page);
-	}
+    @RequestMapping(value = "/last/10/messages", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ChatMessageDTO>> getLastMessages(@RequestParam int page) {
+        return chatMessageService.getLastMessages(page);
+    }
 
-	@RequestMapping(value = "/older/messages", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<ChatMessageDTO>> getOlderMessages(@RequestParam int page) {
-		return chatMessageService.getOlderMessages(page);
-	}
+    @RequestMapping(value = "/older/messages", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<ChatMessageDTO>> getOlderMessages(@RequestParam int page) {
+        return chatMessageService.getOlderMessages(page);
+    }
 }

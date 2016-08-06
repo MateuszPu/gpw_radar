@@ -1,75 +1,63 @@
-//package com.rss.parser;
-//
-//import com.rometools.fetcher.FetcherException;
-//import com.rometools.rome.feed.synd.SyndEntry;
-//import com.rometools.rome.feed.synd.SyndFeed;
-//import com.rometools.rome.io.FeedException;
-//import gpw.rss.reader.Sender;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.scheduling.annotation.Scheduled;
-//import org.springframework.stereotype.Service;
-//
-//import javax.annotation.PostConstruct;
-//import java.io.IOException;
-//import java.net.URL;
-//import java.time.Instant;
-//import java.time.LocalDateTime;
-//import java.time.ZoneOffset;
-//import java.util.ArrayList;
-//import java.util.HashMap;
-//import java.util.List;
-//import java.util.Map;
-//
-//public class Parser {
-//
-//    private final Sender sender;
-//
-////    @Scheduled(cron = "*/5 * 8-17 * * MON-FRI")
-////    @Scheduled(cron = "0 */5 18-23 * * MON-FRI")
-////    @Scheduled(cron = "0 */30 0-7 * * MON-FRI")
-////    @Scheduled(cron = "0 */30 * * * SAT,SUN")
-//    public void fireCron() {
-//        List<String> parsedRssNewsMessage = new ArrayList<>();
-//        if (isNewRssMessagePresented(parsedRssNewsMessage)) {
-//            notifyRssObservers(parsedRssNewsMessage);
-//        }
-//    }
-//
-//    private boolean isNewRssMessagePresented(List<String> parsedRssNewsMessage) {
-//        for (Map.Entry<RssType, LocalDateTime> entry : rssLinks.entrySet()) {
-//            parsedRssNewsMessage.addAll(getNewsMessagesFromUrl(entry.getKey(), entry.getValue()));
-//        }
-//        return !parsedRssNewsMessage.isEmpty();
-//    }
-//
-//    private List<NewsMessage> getNewsMessagesFromUrl(RssType rssType, LocalDateTime date) {
-//        SyndFeed feed;
-//        List<NewsMessage> rssNewsMessages = new ArrayList<>();
-//        try {
-//            feed = feedFetcher.retrieveFeed(new URL(rssType.getUrl()));
-//            List<SyndEntry> syndFeedItems = feed.getEntries();
-//
-//            int indexOfLatestItem = 0;
-//            Instant instant = Instant.ofEpochMilli(syndFeedItems.get(indexOfLatestItem).getPublishedDate().getTime());
-//            LocalDateTime dt = LocalDateTime.ofInstant(instant, ZoneOffset.systemDefault());
-//
-//            for (Object syndFeedEntry : syndFeedItems) {
-//                SyndEntry syndEntry = (SyndEntry) syndFeedEntry;
-//                Instant inst = Instant.ofEpochMilli(syndFeedItems.get(indexOfLatestItem).getPublishedDate().getTime());
-//                LocalDateTime syndEntryPublishDate = LocalDateTime.ofInstant(inst, ZoneOffset.systemDefault());
-//                if (syndEntryPublishDate.isAfter(date)) {
-//                    NewsMessage message = parseNewsMessageFromRssChannel(syndEntry, rssType);
-//                    rssNewsMessages.add(message);
-//                } else {
-//                    break;
-//                }
-//                rssLinks.put(rssType, dt);
-//            }
-//        } catch (IllegalArgumentException | IOException | FeedException | FetcherException e) {
-//            logger.error("error occurs", e.getMessage());
-//        }
-//
-//        return rssNewsMessages;
-//    }
-//
-//}
+package com.rss.parser;
+
+import com.rometools.rome.feed.synd.SyndEntry;
+import com.rometools.rome.feed.synd.SyndFeed;
+import com.rometools.rome.io.FeedException;
+import com.rometools.rome.io.SyndFeedInput;
+import com.rometools.rome.io.XmlReader;
+import com.rss.parser.model.GpwNews;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Parser implements RssParser {
+
+    private final URL url;
+
+    private Parser() {
+        throw new IllegalStateException("Cannot create parser without url");
+    }
+
+    public Parser(String url) {
+        try {
+            this.url = new URL(url);
+        } catch (MalformedURLException e) {
+            throw new IllegalStateException("s");
+        }
+    }
+
+    @Override
+    public List<GpwNews> parseBy(LocalDateTime dateTime) {
+        SyndFeedInput input = new SyndFeedInput();
+        SyndFeed feed = null;
+        try {
+            feed = input.build(new XmlReader(url));
+        } catch (FeedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        List<GpwNews> newses = getEntriesAfter(feed, dateTime).stream().map(e -> getNewsFrom(e)).collect(Collectors.toList());
+        return newses;
+    }
+
+    private List<SyndEntry> getEntriesAfter(SyndFeed feed, LocalDateTime dateTime) {
+        return feed.getEntries().stream().filter(e -> getDateFrom(e).isAfter(dateTime)).collect(Collectors.toList());
+    }
+
+    private GpwNews getNewsFrom(SyndEntry syndEntry) {
+        LocalDateTime date = getDateFrom(syndEntry);
+        String message = syndEntry.getTitle();
+        String link = syndEntry.getLink();
+        return new GpwNews(date, message, link);
+    }
+
+    private LocalDateTime getDateFrom(SyndEntry syndEntry) {
+        return LocalDateTime.ofInstant(syndEntry.getPublishedDate().toInstant(), ZoneId.systemDefault());
+    }
+}

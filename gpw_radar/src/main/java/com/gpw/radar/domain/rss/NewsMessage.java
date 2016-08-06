@@ -1,75 +1,91 @@
 package com.gpw.radar.domain.rss;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gpw.radar.domain.chat.ChatMessage;
-import com.gpw.radar.domain.enumeration.RssType;
 import com.gpw.radar.domain.stock.Stock;
+import com.gpw.radar.rabbitmq.consumer.rss.news.RssType;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "NEWS_MESSAGE")
-public class NewsMessage extends ChatMessage {
+@Table(name = "STOCK_NEWS_MESSAGE")
+public class NewsMessage {
 
-	@NotNull
-	@Size(min = 1, max = 1000)
-	@Column(length = 1000, nullable = false)
-	private String message;
+    @Id
+    @GenericGenerator(name = "seq_id", strategy = "com.gpw.radar.domain.generator.StringIdGenerator")
+    @GeneratedValue(generator = "seq_id")
+    private String id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "stock_id", foreignKey = @ForeignKey(name = "FK_stock"))
-	@JsonIgnore
-	private Stock stock;
+    @NotNull
+    @Size(min = 1, max = 1000)
+    @Column(length = 1000, nullable = false)
+    private String message;
 
-	@NotNull
-	private String link;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "stock_id", foreignKey = @ForeignKey(name = "FK_stock"))
+    @JsonIgnore
+    private Stock stock;
 
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private RssType type;
+    @NotNull
+    private String link;
 
-	public String getMessage() {
-		return message;
-	}
+    @NotNull
+    @Column(name = "news_date_time", nullable = false)
+    private LocalDateTime newsDateTime;
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private RssType type;
 
-	public Stock getStock() {
-		return stock;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setStock(Stock stock) {
-		this.stock = stock;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public String getLink() {
-		return link;
-	}
+    public String getMessage() {
+        return message;
+    }
 
-	public void setLink(String link) {
-		this.link = link;
-	}
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
-	public RssType getType() {
-		return type;
-	}
+    public Stock getStock() {
+        return stock;
+    }
 
-	public void setType(RssType type) {
-		this.type = type;
-	}
+    public void setStock(Stock stock) {
+        this.stock = stock;
+    }
 
-	@Override
-	public String getChatMessage() {
-		StringBuilder str = new StringBuilder();
-		str.append("<a href=\"");
-        str.append(getLink());
-        str.append("\" target=\"_blank\">");
-        str.append(getMessage());
-        str.append("</a> ");
-		return str.toString();
-	}
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public LocalDateTime getNewsDateTime() {
+        return newsDateTime;
+    }
+
+    public void setNewsDateTime(LocalDateTime newsDateTime) {
+        this.newsDateTime = newsDateTime;
+    }
+
+    public RssType getType() {
+        return type;
+    }
+
+    public void setType(RssType type) {
+        this.type = type;
+    }
+
 }
