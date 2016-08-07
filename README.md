@@ -53,7 +53,9 @@ Under following link (https://trello.com/b/P8ASjAks/gpw-radar) I manage my work 
 
 # Rabbitmq on Docker
 In this particular project I am using rabbitmq. It is configured in docker container [Docker][].
+
  For person who is familiar with docker:
+
  1) Go to the folder `configs/rabbitmq/docker`
 
  2) Particular folder contains dockerfile which you should use to build rabbitmq docker image
@@ -65,6 +67,7 @@ In this particular project I am using rabbitmq. It is configured in docker conta
  5) To verify if everything works go to the http://docker_ip_machine:15672 and login with admin admin
 
  For person who is not familiar with docker:
+
  1) Go to the [Rabbitmq][] and install rabitmq locally.
 
  2) Go to the folder `configs/rabbitmq/docker`
