@@ -1,8 +1,7 @@
-# gpwRadar
-
 # Architecture overview
 ![alt tag](https://github.com/MateuszPu/gpw_radar/blob/dev/architecture.png)
 
+# gpwRadar
 This application was generated using JHipster, you can find documentation and help at [https://jhipster.github.io](https://jhipster.github.io).
 
 Before you can build this project, you must install and configure the following dependencies on your machine:
@@ -56,16 +55,24 @@ Under following link (https://trello.com/b/P8ASjAks/gpw-radar) I manage my work 
 In this particular project I am using rabbitmq. It is configured in docker container [Docker][].
  For person who is familiar with docker:
  1) Go to the folder `configs/rabbitmq/docker`
+
  2) Particular folder contains dockerfile which you should use to build rabbitmq docker image
+
  3) Use following command to build image:  `docker build -t name:version path to dockerfile`
+
  4) Run the image with following command: `docker run -p 5672:5672 -p 15672:15672 name:version`
+
  5) To verify if everything works go to the http://docker_ip_machine:15672 and login with admin admin
 
  For person who is not familiar with docker:
  1) Go to the [Rabbitmq][] and install rabitmq locally.
+
  2) Go to the folder `configs/rabbitmq/docker`
+
  3) There is file `init.sh`
+
  4) run it
+
  5) To verify if everything works go to the http://docker_ip_machine:15672 and login with admin admin
 
 [JHipster]: https://jhipster.github.io/
