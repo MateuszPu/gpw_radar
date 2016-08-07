@@ -1,10 +1,13 @@
 # gpwRadar
 
+# Architecture overview
+![alt tag](https://github.com/MateuszPu/gpw_radar/blob/dev/architecture.png)
+
 This application was generated using JHipster, you can find documentation and help at [https://jhipster.github.io](https://jhipster.github.io).
 
 Before you can build this project, you must install and configure the following dependencies on your machine:
 
-1. [Node.js][]: We use Node to run a development web server and build the project.
+[Node.js][]: We use Node to run a development web server and build the project.
    Depending on your system, you can install Node either from source or as a pre-packaged bundle.
 
 After installing Node, you should be able to run the following command to install development tools (like
@@ -50,10 +53,20 @@ Before run you should edit run configuration: in `working directory` you should 
 Under following link (https://trello.com/b/P8ASjAks/gpw-radar) I manage my work on the project.
 
 # Rabbitmq on Docker
-In this particular project I am using rabbitmq started in docker container [Docker][]. If you are familiar with docer you should go to the folder configs/rabbitmq/docker. There is a dockerfile which create an image using following command: `docker build -t name:version path to dockerfile` after that you can run builded image using command: `docker run name:version`. Please noticed that if you want to use rabbitmq on docker with gpw_radar application you should provide port forwardig at least for port 5672. Currently I am using the following command to run docker image: `docker run -p 5672:5672 -p 15672:15672 name:version`. To verify if everything works you should go to http://docker_ip_machine:15672 and login with admin admin. 
+In this particular project I am using rabbitmq. It is configured in docker container [Docker][].
+ For person who is familiar with docker:
+ 1) Go to the folder `configs/rabbitmq/docker`
+ 2) Particular folder contains dockerfile which you should use to build rabbitmq docker image
+ 3) Use following command to build image:  `docker build -t name:version path to dockerfile`
+ 4) Run the image with following command: `docker run -p 5672:5672 -p 15672:15672 name:version`
+ 5) To verify if everything works go to the http://docker_ip_machine:15672 and login with admin admin
 
-# Architecture overview
-![alt tag](https://github.com/MateuszPu/gpw_radar/blob/dev/architecture.png)
+ For person who is not familiar with docker:
+ 1) Go to the [Rabbitmq][] and install rabitmq locally.
+ 2) Go to the folder `configs/rabbitmq/docker`
+ 3) There is file `init.sh`
+ 4) run it
+ 5) To verify if everything works go to the http://docker_ip_machine:15672 and login with admin admin
 
 [JHipster]: https://jhipster.github.io/
 [Node.js]: https://nodejs.org/
@@ -64,3 +77,4 @@ In this particular project I am using rabbitmq started in docker container [Dock
 [Jasmine]: http://jasmine.github.io/2.0/introduction.html
 [Protractor]: https://angular.github.io/protractor/
 [Docker]: https://docs.docker.com/
+[Rabbitmq]: http://www.rabbitmq.com/download.html

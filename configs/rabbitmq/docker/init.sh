@@ -36,7 +36,6 @@ curl -i -u admin:admin -H "Content-Type: application/json" -d '{"routing_key":""
 curl -i -u admin:admin -H "Content-Type: application/json" -d '{"routing_key":""}' -XPOST http://192.168.99.100:15672/api/bindings/gpw_radar/e/rss_fanout/q/rss_chat
 curl -i -u admin:admin -H "Content-Type: application/json" -d '{"routing_key":""}' -XPOST http://192.168.99.100:15672/api/bindings/gpw_radar/e/rss_fanout/q/rss_database
 
-echo "*** User '$RABBITMQ_USER' with password '$RABBITMQ_PASSWORD' completed. ***" ; \
 echo "*** Log in the WebUI at port 15672 ***") &
 
 rabbitmq-server $@
