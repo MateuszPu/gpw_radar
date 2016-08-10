@@ -15,8 +15,8 @@ import java.time.LocalTime;
 public class StockFiveMinutesIndicators {
 
     @Id
-    @GenericGenerator(name="seq_id", strategy="com.gpw.radar.domain.generator.StringIdGenerator")
-    @GeneratedValue(generator="seq_id")
+    @GenericGenerator(name = "seq_id", strategy = "com.gpw.radar.domain.generator.StringIdGenerator")
+    @GeneratedValue(generator = "seq_id")
     private String id;
 
     @NotNull
@@ -29,7 +29,7 @@ public class StockFiveMinutesIndicators {
     private double averageVolume;
 
     @ManyToOne
-    @JoinColumn(name="stock_id", foreignKey = @ForeignKey(name="FK_stock"))
+    @JoinColumn(name = "stock_id", foreignKey = @ForeignKey(name = "FK_stock"))
     private Stock stock;
 
     public String getId() {

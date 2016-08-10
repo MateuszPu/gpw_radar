@@ -32,7 +32,7 @@ public class IndicatorVariables {
 
     public BigDecimal calculatePercentReturn() {
         BigDecimal result = BigDecimal.ZERO;
-        if(stockDetails.size() > 1) {
+        if (stockDetails.size() > 1) {
             BigDecimal todayClose = stockDetails.get(0).getClosePrice();
             BigDecimal previousClose = stockDetails.get(1).getClosePrice();
             BigDecimal divide = todayClose.divide(previousClose, 6, BigDecimal.ROUND_HALF_UP);
@@ -98,8 +98,8 @@ public class IndicatorVariables {
 
     private double[] normalizeArray(List<BigDecimal> closePrices) {
         double[] normalized = new double[closePrices.size()];
-        BigDecimal max = new BigDecimal(closePrices.stream().mapToDouble(e->e.doubleValue()).max().getAsDouble());
-        BigDecimal min = new BigDecimal(closePrices.stream().mapToDouble(e->e.doubleValue()).min().getAsDouble());
+        BigDecimal max = new BigDecimal(closePrices.stream().mapToDouble(e -> e.doubleValue()).max().getAsDouble());
+        BigDecimal min = new BigDecimal(closePrices.stream().mapToDouble(e -> e.doubleValue()).min().getAsDouble());
 
         for (int i = 0; i < closePrices.size(); i++) {
             normalized[i] = (normalizeData(closePrices.get(i), max, min)).doubleValue();

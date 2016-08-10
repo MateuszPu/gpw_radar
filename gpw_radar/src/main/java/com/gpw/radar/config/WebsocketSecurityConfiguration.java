@@ -16,9 +16,9 @@ public class WebsocketSecurityConfiguration extends AbstractSecurityWebSocketMes
             .simpDestMatchers("/webchat/**").authenticated()
             .simpDestMatchers("/websocket/**").authenticated()
             .simpDestMatchers("/most/active/**").authenticated();
-            // (i.e. cannot send messages directly to /topic/, /queue/)
-            // (i.e. cannot subscribe to /topic/messages/* to get messages sent to
-            // /topic/messages-user<id>)
+        // (i.e. cannot send messages directly to /topic/, /queue/)
+        // (i.e. cannot subscribe to /topic/messages/* to get messages sent to
+        // /topic/messages-user<id>)
     }
 
     /**

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 @RestController
@@ -32,7 +31,9 @@ public class NewsMessageResource {
     @RequestMapping(value = "/range", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @RolesAllowed(AuthoritiesConstants.USER)
     public ResponseEntity<List<NewsDetailsDTO>> getNewsMessageByTypeAndDateRange(@RequestParam RssType type, @RequestParam String startDate, @RequestParam String endDate) {
-        return newsMessageServiceable.getMessagesByTypeBetweenDates(type, ZonedDateTime.parse(startDate.replaceAll("\"", "")), ZonedDateTime.parse(endDate.replaceAll("\"", "")));
+        return newsMessageServiceable.getMessagesByTypeBetweenDates(type,
+            startDate,
+            endDate);
     }
 
     @RequestMapping(value = "/top/five/latest", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -68,7 +68,7 @@ public class StooqParser implements StockDetailsParser {
     public StockDetails parseFromWeb(InputStream inputStream, Stock stock) throws IOException {
         StockDetails std = new StockDetails();
 
-        try(BufferedReader in = new BufferedReader(new InputStreamReader(inputStream))) {
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(inputStream))) {
             // skip headers
             in.readLine();
             String line = in.readLine();

@@ -79,7 +79,7 @@ public class StockwatchParserService implements StockFinanceEventParser {
     private List<Elements> getAllFinanceEvents(List<Document> documents) {
         List<Elements> trElements = new ArrayList<>();
 
-        for(Document element: documents) {
+        for (Document element : documents) {
             Elements tr = element.select("tbody").select("tr");
             trElements.add(tr);
         }

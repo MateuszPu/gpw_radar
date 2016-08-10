@@ -16,8 +16,8 @@ import java.time.LocalDate;
 public class StockFinanceEvent implements Serializable {
 
     @Id
-    @GenericGenerator(name="seq_id", strategy="com.gpw.radar.domain.generator.StringIdGenerator")
-    @GeneratedValue(generator="seq_id")
+    @GenericGenerator(name = "seq_id", strategy = "com.gpw.radar.domain.generator.StringIdGenerator")
+    @GeneratedValue(generator = "seq_id")
     private String id;
 
     @NotNull
@@ -29,7 +29,7 @@ public class StockFinanceEvent implements Serializable {
     private String message;
 
     @ManyToOne
-    @JoinColumn(name="stock_id", foreignKey = @ForeignKey(name="FK_finance_event_to_stock"))
+    @JoinColumn(name = "stock_id", foreignKey = @ForeignKey(name = "FK_finance_event_to_stock"))
     private Stock stock;
 
     public String getId() {
@@ -56,11 +56,11 @@ public class StockFinanceEvent implements Serializable {
         this.message = message;
     }
 
-	public Stock getStock() {
-		return stock;
-	}
+    public Stock getStock() {
+        return stock;
+    }
 
-	public void setStock(Stock stock) {
-		this.stock = stock;
-	}
+    public void setStock(Stock stock) {
+        this.stock = stock;
+    }
 }

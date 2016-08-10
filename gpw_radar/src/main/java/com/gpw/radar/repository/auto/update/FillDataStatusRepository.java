@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface FillDataStatusRepository extends JpaRepository<FillDataStatus, Type> {
 
-	@Modifying
-	@Query(value = "update FILLED_DATA_STATUS set filled = true where data_type = :type", nativeQuery = true)
-	void updateType(@Param("type") String type);
+    @Modifying
+    @Query(value = "update FILLED_DATA_STATUS set filled = true where data_type = :type", nativeQuery = true)
+    void updateType(@Param("type") String type);
 }

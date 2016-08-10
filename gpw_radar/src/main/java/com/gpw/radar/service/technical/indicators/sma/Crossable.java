@@ -6,5 +6,6 @@ package com.gpw.radar.service.technical.indicators.sma;
 public interface Crossable {
 
     boolean crossFromAbove();
+
     boolean crossFromBelow();
 }

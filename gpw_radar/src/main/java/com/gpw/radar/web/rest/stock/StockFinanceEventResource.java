@@ -21,12 +21,12 @@ import java.util.List;
 @RequestMapping("/api")
 public class StockFinanceEventResource {
 
-	@Inject
-	private StockFinanceEventService stockFinanceEventService;
+    @Inject
+    private StockFinanceEventService stockFinanceEventService;
 
-	@RequestMapping(value = "/all/finance/event", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@RolesAllowed(AuthoritiesConstants.USER)
-	public ResponseEntity<List<StockWithStockFinanceEventDTO>> getAll() throws URISyntaxException {
-		return stockFinanceEventService.getAllStockFinanceEvent();
-	}
+    @RequestMapping(value = "/all/finance/event", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RolesAllowed(AuthoritiesConstants.USER)
+    public ResponseEntity<List<StockWithStockFinanceEventDTO>> getAll() throws URISyntaxException {
+        return stockFinanceEventService.getAllStockFinanceEvent();
+    }
 }

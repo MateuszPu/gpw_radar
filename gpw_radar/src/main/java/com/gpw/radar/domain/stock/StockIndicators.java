@@ -11,8 +11,8 @@ import java.time.LocalDate;
 public class StockIndicators {
 
     @Id
-    @GenericGenerator(name="seq_id", strategy="com.gpw.radar.domain.generator.StringIdGenerator")
-    @GeneratedValue(generator="seq_id")
+    @GenericGenerator(name = "seq_id", strategy = "com.gpw.radar.domain.generator.StringIdGenerator")
+    @GeneratedValue(generator = "seq_id")
     private String id;
 
     @Column(name = "slope_simple_regression_10")

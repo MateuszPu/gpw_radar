@@ -7,6 +7,8 @@ import java.util.Set;
 
 public interface StockBatchWebParser {
     Set<String> fetchAllTickers(Document doc);
+
     Document getDocumentForAllStocks();
+
     Document getDocumentFromInputStream(InputStream inputStream);
 }

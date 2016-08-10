@@ -5,5 +5,5 @@ import com.gpw.radar.domain.stock.StockIndicators;
 import java.util.List;
 
 public interface StockIndicatorsCalculator {
-	List<StockIndicators> calculateCurrentStockIndicators();
+    List<StockIndicators> calculateCurrentStockIndicators();
 }

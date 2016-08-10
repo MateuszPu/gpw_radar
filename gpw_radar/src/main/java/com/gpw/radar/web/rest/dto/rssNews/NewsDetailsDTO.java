@@ -1,12 +1,19 @@
 package com.gpw.radar.web.rest.dto.rssNews;
 
-import java.time.ZonedDateTime;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+
+import java.time.LocalDateTime;
 
 public class NewsDetailsDTO {
 
     private String message;
     private String link;
-    private ZonedDateTime createdDate;
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime newsDateTime;
 
     public String getMessage() {
         return message;
@@ -24,12 +31,12 @@ public class NewsDetailsDTO {
         this.link = link;
     }
 
-    public ZonedDateTime getCreatedDate() {
-        return createdDate;
+    public LocalDateTime getNewsDateTime() {
+        return newsDateTime;
     }
 
-    public void setCreatedDate(ZonedDateTime createdDate) {
-        this.createdDate = createdDate;
+    public void setNewsDateTime(LocalDateTime newsDateTime) {
+        this.newsDateTime = newsDateTime;
     }
 
     public String getChatMessage() {

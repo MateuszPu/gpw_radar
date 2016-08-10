@@ -33,13 +33,13 @@ public class WebsocketConfiguration extends AbstractWebSocketMessageBrokerConfig
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-    	config.enableSimpleBroker("/webchat", "/websocket","/most/active");
-    	config.setApplicationDestinationPrefixes("/app");
+        config.enableSimpleBroker("/webchat", "/websocket", "/most/active");
+        config.setApplicationDestinationPrefixes("/app");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-    	registry.addEndpoint("/socket")
+        registry.addEndpoint("/socket")
             .setHandshakeHandler(new DefaultHandshakeHandler() {
                 @Override
                 protected Principal determineUser(ServerHttpRequest request, WebSocketHandler wsHandler, Map<String, Object> attributes) {

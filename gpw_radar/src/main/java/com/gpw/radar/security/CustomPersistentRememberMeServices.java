@@ -83,7 +83,7 @@ public class CustomPersistentRememberMeServices extends
     @Override
     @Transactional
     protected UserDetails processAutoLoginCookie(String[] cookieTokens, HttpServletRequest request,
-        HttpServletResponse response) {
+                                                 HttpServletResponse response) {
 
         PersistentToken token = getPersistentToken(cookieTokens);
         String login = token.getUser().getLogin();

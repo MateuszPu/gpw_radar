@@ -44,42 +44,42 @@ public class StooqDataParserService implements StockDetailsWebParser {
     @Override
     public BigDecimal parseOpenPrice(Document doc) {
         String ticker = parseTicker(doc);
-        BigDecimal open = new BigDecimal(doc.getElementById("aq_"+ticker+"_o").ownText());
+        BigDecimal open = new BigDecimal(doc.getElementById("aq_" + ticker + "_o").ownText());
         return open;
     }
 
     @Override
     public BigDecimal parseClosePrice(Document doc) {
         String ticker = parseTicker(doc);
-        BigDecimal close = new BigDecimal(doc.getElementById("aq_"+ticker+"_c2").ownText());
+        BigDecimal close = new BigDecimal(doc.getElementById("aq_" + ticker + "_c2").ownText());
         return close;
     }
 
     @Override
     public BigDecimal parseMaxPrice(Document doc) {
         String ticker = parseTicker(doc);
-        BigDecimal max = new BigDecimal(doc.getElementById("aq_"+ticker+"_h").ownText());
+        BigDecimal max = new BigDecimal(doc.getElementById("aq_" + ticker + "_h").ownText());
         return max;
     }
 
     @Override
     public BigDecimal parseMinPrice(Document doc) {
         String ticker = parseTicker(doc);
-        BigDecimal low = new BigDecimal(doc.getElementById("aq_"+ticker+"_l").ownText());
+        BigDecimal low = new BigDecimal(doc.getElementById("aq_" + ticker + "_l").ownText());
         return low;
     }
 
     @Override
     public LocalDate parseDate(Document doc) {
         String ticker = parseTicker(doc);
-        LocalDate date = LocalDate.parse(doc.getElementById("aq_"+ticker+"_d2").ownText());
+        LocalDate date = LocalDate.parse(doc.getElementById("aq_" + ticker + "_d2").ownText());
         return date;
     }
 
     @Override
     public Long parseVolume(Document doc) {
         String ticker = parseTicker(doc);
-        Long volume = Long.valueOf(doc.getElementById("aq_"+ticker+"_v2").ownText().replace("k", "000"));
+        Long volume = Long.valueOf(doc.getElementById("aq_" + ticker + "_v2").ownText().replace("k", "000"));
         return volume;
     }
 

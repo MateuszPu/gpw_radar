@@ -16,8 +16,8 @@ import java.time.LocalTime;
 public class StockFiveMinutesDetails {
 
     @Id
-    @GenericGenerator(name="seq_id", strategy="com.gpw.radar.domain.generator.StringIdGenerator")
-    @GeneratedValue(generator="seq_id")
+    @GenericGenerator(name = "seq_id", strategy = "com.gpw.radar.domain.generator.StringIdGenerator")
+    @GeneratedValue(generator = "seq_id")
     private String id;
 
     @NotNull

@@ -29,8 +29,8 @@ public class CacheConfiguration {
     public static final String ALL_STOCK_FINANCE_EVENTS_CACHE = "allStocksFinanceEventsCache";
     public static final String LAST_QUTED_DATE = "lastQutedDateCache";
     public static final String RSS_NEWS_BY_TYPE_AND_DATE_CACHE = "rssNewsByTypeAndDateCache";
-    public static final String USER_INFO_CACHE =" userInfoCache";
-    public static final String STOCK_CACHE =" stockCache";
+    public static final String USER_INFO_CACHE = " userInfoCache";
+    public static final String STOCK_CACHE = " stockCache";
 
     @Bean
     public CacheManager cacheManager() {

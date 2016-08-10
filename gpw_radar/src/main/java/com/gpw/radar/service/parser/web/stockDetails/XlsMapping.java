@@ -9,10 +9,10 @@ public enum XlsMapping {
     MIN_PRICE(6),
     CLOSE_PRICE(7),
     VOLUME(9),
-    TRANSACTIONS_NUMBER(10)
-    ;
+    TRANSACTIONS_NUMBER(10);
 
     private final int cellNumber;
+
     XlsMapping(int cellNumber) {
         this.cellNumber = cellNumber;
     }

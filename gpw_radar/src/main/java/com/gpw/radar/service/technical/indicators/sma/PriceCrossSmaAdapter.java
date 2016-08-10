@@ -6,7 +6,7 @@ public class PriceCrossSmaAdapter implements Crossable {
 
     private PriceCrossSMA priceCrossSMA;
 
-    public PriceCrossSmaAdapter(PriceCrossSMA priceCrossSMA){
+    public PriceCrossSmaAdapter(PriceCrossSMA priceCrossSMA) {
         this.priceCrossSMA = priceCrossSMA;
     }
 

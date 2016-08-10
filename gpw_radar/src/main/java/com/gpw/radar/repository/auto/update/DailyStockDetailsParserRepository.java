@@ -9,10 +9,10 @@ import org.springframework.data.repository.query.Param;
 
 public interface DailyStockDetailsParserRepository extends JpaRepository<DailyStockDetailsParser, ParserMethod> {
 
-	@Query(value="select * from stock_details_parser_method limit 1", nativeQuery = true)
-	DailyStockDetailsParser findMethod();
+    @Query(value = "select * from stock_details_parser_method limit 1", nativeQuery = true)
+    DailyStockDetailsParser findMethod();
 
-	@Modifying
-	@Query(value="update stock_details_parser_method set method = :method", nativeQuery = true)
-	void setStockDetailsParserMethod(@Param("method") String method);
+    @Modifying
+    @Query(value = "update stock_details_parser_method set method = :method", nativeQuery = true)
+    void setStockDetailsParserMethod(@Param("method") String method);
 }

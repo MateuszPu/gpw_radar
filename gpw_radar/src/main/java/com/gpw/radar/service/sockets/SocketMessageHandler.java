@@ -11,6 +11,7 @@ import java.util.List;
  */
 public interface SocketMessageHandler {
     void sendMostActiveStocksToClient(List<StockFiveMinutesDetails> stockFiveMinutesDetails, LocalTime time);
+
     void sendToChat(NewsMessage message);
 
 }

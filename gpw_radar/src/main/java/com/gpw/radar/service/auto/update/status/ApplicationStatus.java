@@ -4,22 +4,22 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ApplicationStatus {
-	private boolean updating;
-	private int step;
+    private boolean updating;
+    private int step;
 
-	public boolean isUpdating() {
-		return updating;
-	}
+    public boolean isUpdating() {
+        return updating;
+    }
 
-	public void setUpdating(boolean updating) {
-		this.updating = updating;
-	}
+    public void setUpdating(boolean updating) {
+        this.updating = updating;
+    }
 
-	public int getStep() {
-		return step;
-	}
+    public int getStep() {
+        return step;
+    }
 
-	public void setStep(int step) {
-		this.step = step;
-	}
+    public void setStep(int step) {
+        this.step = step;
+    }
 }

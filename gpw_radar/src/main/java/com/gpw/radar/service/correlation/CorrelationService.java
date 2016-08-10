@@ -59,7 +59,7 @@ public class CorrelationService {
         for (String ticker : tickersToScan) {
             executor.submit(() -> {
                 double[] targetClosePrices = getClosePrices(getContent(ticker, period));
-                if(targetClosePrices.length == 0) {
+                if (targetClosePrices.length == 0) {
                     return;
                 }
                 double correlation = correlator.correlate(sourceClosePrices, targetClosePrices);
@@ -86,7 +86,7 @@ public class CorrelationService {
         LocalDate endDate = stockDetails.get(0).getDate();
         LocalDate startDate = stockDetails.get(stockDetails.size() - 1).getDate();
 
-        if(startDate.equals(sourceStartDate) && endDate.equals(sourceEndDate)) {
+        if (startDate.equals(sourceStartDate) && endDate.equals(sourceEndDate)) {
             result = new double[stockDetails.size()];
             int index = 0;
             for (StockDetails stds : stockDetails) {

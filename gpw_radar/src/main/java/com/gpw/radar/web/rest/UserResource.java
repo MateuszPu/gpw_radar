@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 
 /**
  * REST controller for managing users.
- *
+ * <p>
  * <p>This class accesses the User entity, and needs to fetch its collection of authorities.</p>
  * <p>
  * For a normal use-case, it would be better to have an eager relationship between User and Authority,
@@ -111,14 +111,14 @@ public class UserResource {
         } else {
             User newUser = userService.createUser(managedUserDTO);
             String baseUrl = request.getScheme() + // "http"
-            "://" +                                // "://"
-            request.getServerName() +              // "myhost"
-            ":" +                                  // ":"
-            request.getServerPort() +              // "80"
-            request.getContextPath();              // "/myContextPath" or "" if deployed in root context
+                "://" +                                // "://"
+                request.getServerName() +              // "myhost"
+                ":" +                                  // ":"
+                request.getServerPort() +              // "80"
+                request.getContextPath();              // "/myContextPath" or "" if deployed in root context
             mailService.sendActivationEmail(newUser, baseUrl);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
-                .headers(HeaderUtil.createAlert( "user-management.created", newUser.getLogin()))
+                .headers(HeaderUtil.createAlert("user-management.created", newUser.getLogin()))
                 .body(newUser);
         }
     }
@@ -193,10 +193,11 @@ public class UserResource {
     public ResponseEntity<ManagedUserDTO> getUser(@PathVariable String login) {
         log.debug("REST request to get User : {}", login);
         return userService.getUserWithAuthoritiesByLogin(login)
-                .map(ManagedUserDTO::new)
-                .map(managedUserDTO -> new ResponseEntity<>(managedUserDTO, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+            .map(ManagedUserDTO::new)
+            .map(managedUserDTO -> new ResponseEntity<>(managedUserDTO, HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
     /**
      * DELETE  USER :login -> delete the "login" User.
      */
@@ -208,18 +209,18 @@ public class UserResource {
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
         log.debug("REST request to delete User: {}", login);
         userService.deleteUserInformation(login);
-        return ResponseEntity.ok().headers(HeaderUtil.createAlert( "user-management.deleted", login)).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createAlert("user-management.deleted", login)).build();
     }
 
     @RequestMapping(value = "/users/stocks/followed", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@RolesAllowed(AuthoritiesConstants.USER)
-	public ResponseEntity<List<StockDTO>> getListStocksFollowedByUser() {
-		return stockService.getStocksFollowedByUser();
-	}
+    @RolesAllowed(AuthoritiesConstants.USER)
+    public ResponseEntity<List<StockDTO>> getListStocksFollowedByUser() {
+        return stockService.getStocksFollowedByUser();
+    }
 
-	@RequestMapping(value = "/users/stocks/followed/finance/event", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@RolesAllowed(AuthoritiesConstants.USER)
-	public ResponseEntity<List<StockWithStockFinanceEventDTO>> getListFinanceEventsStocksFollowedByUser() {
-		return stockFinanceEventService.getStocksFinanceEventFollowedByUser();
-	}
+    @RequestMapping(value = "/users/stocks/followed/finance/event", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RolesAllowed(AuthoritiesConstants.USER)
+    public ResponseEntity<List<StockWithStockFinanceEventDTO>> getListFinanceEventsStocksFollowedByUser() {
+        return stockFinanceEventService.getStocksFinanceEventFollowedByUser();
+    }
 }

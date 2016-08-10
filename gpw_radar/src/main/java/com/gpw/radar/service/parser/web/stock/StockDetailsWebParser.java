@@ -8,9 +8,14 @@ import java.time.LocalDate;
 public interface StockDetailsWebParser extends StockDataNameParser {
 
     BigDecimal parseOpenPrice(Document doc);
+
     BigDecimal parseClosePrice(Document doc);
+
     BigDecimal parseMaxPrice(Document doc);
+
     BigDecimal parseMinPrice(Document doc);
+
     LocalDate parseDate(Document doc);
+
     Long parseVolume(Document doc);
 }

@@ -7,9 +7,9 @@ import javax.validation.constraints.NotNull;
 
 /**
  * Properties specific to JHipster.
- *
  * <p>
- *     Properties are configured in the application.yml file.
+ * <p>
+ * Properties are configured in the application.yml file.
  * </p>
  */
 @ConfigurationProperties(prefix = "jhipster", ignoreUnknownFields = false)
@@ -32,7 +32,6 @@ public class JHipsterProperties {
     private final Metrics metrics = new Metrics();
 
     private final CorsConfiguration cors = new CorsConfiguration();
-
 
 
     public Async getAsync() {

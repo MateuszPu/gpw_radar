@@ -7,15 +7,12 @@ import com.gpw.radar.web.rest.dto.rssNews.NewsDetailsDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -31,22 +28,28 @@ public class NewsMessageService implements NewsMessageServiceable {
     }
 
     public ResponseEntity<List<NewsDetailsDTO>> getLatestNewsMessageByType(RssType type) {
-        Pageable pageable = new PageRequest(0, 5, Sort.Direction.DESC, "createdDate");
-        List<NewsMessage> latestNewsMessage = newsMessageRepository.findByType(type, pageable).getContent();
-        return new ResponseEntity<List<NewsDetailsDTO>>(mapToDTO(latestNewsMessage), HttpStatus.OK);
+        List<NewsMessage> latestNewsMessage = newsMessageRepository.findTop5ByTypeOrderByNewsDateTimeDesc(type);
+        return new ResponseEntity<>(mapToDTO(latestNewsMessage), HttpStatus.OK);
     }
 
-    public ResponseEntity<List<NewsDetailsDTO>> getMessagesByTypeBetweenDates(RssType type, ZonedDateTime startDate, ZonedDateTime endDate) {
+    public ResponseEntity<List<NewsDetailsDTO>> getMessagesByTypeBetweenDates(RssType type, String startDateString, String endDateString) {
+        LocalDateTime startDate = getLocalDateTime(startDateString);
+        LocalDateTime endDate = getLocalDateTime(endDateString);
+
         if (startDate.isAfter(endDate)) {
-            return new ResponseEntity<List<NewsDetailsDTO>>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         List<NewsMessage> latestNewsMessageDateRange = newsMessageRepository.findByTypeAndNewsDateTimeAfterAndNewsDateTimeBefore(type, startDate, endDate);
-        return new ResponseEntity<List<NewsDetailsDTO>>(mapToDTO(latestNewsMessageDateRange), HttpStatus.OK);
+        return new ResponseEntity<>(mapToDTO(latestNewsMessageDateRange), HttpStatus.OK);
+    }
+
+    private LocalDateTime getLocalDateTime(String stringDate) {
+        return LocalDateTime.parse(stringDate.replaceAll("\"", "").replaceAll("Z", ""));
     }
 
     public ResponseEntity<List<NewsDetailsDTO>> getLatestTop5NewsMessage() {
         Set<NewsMessage> latestNewsMessage = newsMessageRepository.findTop5ByOrderByNewsDateTimeDesc();
-        return new ResponseEntity<List<NewsDetailsDTO>>(mapToDTO(latestNewsMessage), HttpStatus.OK);
+        return new ResponseEntity<>(mapToDTO(latestNewsMessage), HttpStatus.OK);
     }
 
     private List<NewsDetailsDTO> mapToDTO(Collection<NewsMessage> messages) {

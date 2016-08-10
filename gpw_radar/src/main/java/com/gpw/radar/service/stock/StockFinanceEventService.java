@@ -18,17 +18,17 @@ import java.util.List;
 @Service
 public class StockFinanceEventService {
 
-	@Inject
-	private StockFinanceEventRepository stockFinanceEventRepository;
+    @Inject
+    private StockFinanceEventRepository stockFinanceEventRepository;
 
     @Inject
     private UserService userService;
 
-	public ResponseEntity<List<StockWithStockFinanceEventDTO>> getAllStockFinanceEvent() {
-		List<StockFinanceEvent> list = stockFinanceEventRepository.getAllFetchStock();
+    public ResponseEntity<List<StockWithStockFinanceEventDTO>> getAllStockFinanceEvent() {
+        List<StockFinanceEvent> list = stockFinanceEventRepository.getAllFetchStock();
         List<StockWithStockFinanceEventDTO> dto = getStockWithStockFinanceEventDTOs(list);
-		return new ResponseEntity<List<StockWithStockFinanceEventDTO>>(dto, HttpStatus.OK);
-	}
+        return new ResponseEntity<List<StockWithStockFinanceEventDTO>>(dto, HttpStatus.OK);
+    }
 
     public ResponseEntity<List<StockWithStockFinanceEventDTO>> getStocksFinanceEventFollowedByUser() {
         User user = userService.getUserWithAuthorities();
@@ -39,7 +39,8 @@ public class StockFinanceEventService {
 
     private List<StockWithStockFinanceEventDTO> getStockWithStockFinanceEventDTOs(List<StockFinanceEvent> stockFinanceEventsFollowedByUser) {
         ModelMapper modelMapper = new ModelMapper();
-        Type dtoType = new TypeToken<List<StockWithStockFinanceEventDTO>>() {}.getType();
+        Type dtoType = new TypeToken<List<StockWithStockFinanceEventDTO>>() {
+        }.getType();
         return modelMapper.map(stockFinanceEventsFollowedByUser, dtoType);
     }
 }

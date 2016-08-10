@@ -16,7 +16,7 @@ import java.util.TimeZone;
  * Angular cookie saved the locale with a double quote (%22en%22).
  * So the default CookieLocaleResolver#StringUtils.parseLocaleString(localePart)
  * is not able to parse the locale.
- *
+ * <p>
  * This class will check if a double quote has been added, if so it will remove it.
  */
 public class AngularCookieLocaleResolver extends CookieLocaleResolver {
@@ -79,7 +79,7 @@ public class AngularCookieLocaleResolver extends CookieLocaleResolver {
                 }
             }
             request.setAttribute(LOCALE_REQUEST_ATTRIBUTE_NAME,
-                (locale != null ? locale: determineDefaultLocale(request)));
+                (locale != null ? locale : determineDefaultLocale(request)));
 
             request.setAttribute(TIME_ZONE_REQUEST_ATTRIBUTE_NAME,
                 (timeZone != null ? timeZone : determineDefaultTimeZone(request)));

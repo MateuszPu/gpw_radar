@@ -11,7 +11,9 @@ import java.util.List;
 public interface StockFiveMinutesDetailsParser {
 
     public List<StockFiveMinutesDetails> parseStockFiveMinutesDetails(Stock stock, InputStream st);
+
     public List<StockFiveMinutesDetails> fillEmptyTimeAndCumulativeVolume(List<StockFiveMinutesDetails> stockFiveMinutesDetailsList);
+
     public List<StockFiveMinutesIndicators> calculateIndicatorsFromDetails(List<StockFiveMinutesDetails> filledStockFiveMinutesDetails);
 
 }

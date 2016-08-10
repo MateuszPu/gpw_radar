@@ -8,5 +8,6 @@ import java.util.List;
 public interface StockFinanceEventParser {
 
     List<StockFinanceEvent> getStockFinanceEventFromWeb();
+
     List<StockFinanceEvent> getStockFinanceEvents(List<Document> documents);
 }

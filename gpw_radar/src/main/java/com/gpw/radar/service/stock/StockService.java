@@ -57,7 +57,8 @@ public class StockService {
     public List<StockWithStockIndicatorsDTO> getAllStocksFetchStockIndicators() {
         List<Stock> stocks = stockRepository.findAllFetchIndicators();
         ModelMapper modelMapper = new ModelMapper();
-        Type dtoType = new TypeToken<List<StockWithStockIndicatorsDTO>>() {}.getType();
+        Type dtoType = new TypeToken<List<StockWithStockIndicatorsDTO>>() {
+        }.getType();
         return modelMapper.map(stocks, dtoType);
     }
 
@@ -111,7 +112,8 @@ public class StockService {
 
     private List<StockIndicatorsWithStocksDTO> getStockWithStockIndicatorsDTOs(List<?> stocks) {
         ModelMapper modelMapper = new ModelMapper();
-        Type dtoType = new TypeToken<List<StockIndicatorsWithStocksDTO>>() {}.getType();
+        Type dtoType = new TypeToken<List<StockIndicatorsWithStocksDTO>>() {
+        }.getType();
         return modelMapper.map(stocks, dtoType);
     }
 
