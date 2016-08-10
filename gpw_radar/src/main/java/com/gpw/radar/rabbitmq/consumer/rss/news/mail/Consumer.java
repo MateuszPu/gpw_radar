@@ -1,5 +1,6 @@
 package com.gpw.radar.rabbitmq.consumer.rss.news.mail;
 
+import com.gpw.radar.config.Constants;
 import com.gpw.radar.domain.rss.NewsMessage;
 import com.gpw.radar.rabbitmq.consumer.rss.news.MessageTransformer;
 import com.gpw.radar.service.mail.MailService;
@@ -7,12 +8,14 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
 
 @Service
+@Profile("!" + Constants.SPRING_PROFILE_FAST)
 public class Consumer {
 
     private final MailService mailService;
