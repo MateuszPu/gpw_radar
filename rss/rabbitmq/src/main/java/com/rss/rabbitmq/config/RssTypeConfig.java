@@ -1,6 +1,8 @@
 package com.rss.rabbitmq.config;
 
 import com.rss.parser.Parser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,7 +20,7 @@ public class RssTypeConfig {
     public Map<RssType, LocalDateTime> rssTypeTimeMap() {
         Map<RssType, LocalDateTime> rssLinks = new HashMap<>();
         List<RssType> rssTypes = Arrays.asList(RssType.values());
-        rssTypes.forEach(e -> rssLinks.put(e, LocalDateTime.now()));
+        rssTypes.forEach(e -> rssLinks.put(e, LocalDateTime.now().minusDays(1)));
         return rssLinks;
     }
 
