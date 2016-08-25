@@ -1,5 +1,7 @@
 package com.rss.rabbitmq.sender;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.amqp.core.MessageProperties;
@@ -12,6 +14,8 @@ import java.io.UnsupportedEncodingException;
 
 @Service
 public class Sender {
+
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @Value("${rss_reader_fanout_exchange}")
     private String name;
@@ -30,7 +34,10 @@ public class Sender {
                     .setHeader(newsType, rssChannelName)
                     .build();
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            LOGGER.error("Exception in "
+                    + this.getClass().getName()
+                    + " with clause : "
+                    + e.getCause());
         }
         this.template.convertAndSend(name, "", message);
     }

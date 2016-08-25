@@ -6,9 +6,12 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.rss.parser.Parser;
+import com.rss.parser.RssParser;
 import com.rss.parser.model.GpwNews;
 import com.rss.rabbitmq.config.RssType;
 import com.rss.rabbitmq.sender.Sender;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -22,11 +25,13 @@ import java.util.Map;
 @Service
 public class Cron {
 
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+
     @Resource(name = "rssTypeTimeMap")
     private Map<RssType, LocalDateTime> rssTypeTimeMap;
 
     @Resource(name = "rssTypeParserMap")
-    private Map<RssType, Parser> rssTypeParserMap;
+    private Map<RssType, RssParser> rssTypeParserMap;
 
     private final Sender sender;
 
@@ -35,13 +40,13 @@ public class Cron {
         this.sender = sender;
     }
 
-    @Scheduled(cron = "*/5 * 8-18 * * MON-FRI")
+    @Scheduled(cron = "*/5 * 8-19 * * MON-FRI")
     @Scheduled(cron = "0 */5 19-23 * * MON-FRI")
     @Scheduled(cron = "0 */30 0-7 * * MON-FRI")
     @Scheduled(cron = "0 */30 * * * SAT,SUN")
     public void fireCron() {
         for (RssType rss : rssTypeTimeMap.keySet()) {
-            Parser parser = rssTypeParserMap.get(rss);
+            RssParser parser = rssTypeParserMap.get(rss);
             List<GpwNews> gpwNewses = parser.parseBy(this.rssTypeTimeMap.get(rss));
             if (!gpwNewses.isEmpty()) {
                 LocalDateTime dateTime = gpwNewses.stream()
@@ -63,7 +68,10 @@ public class Cron {
         try {
             result = mapper.writeValueAsString(gpwNewses);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            LOGGER.error("Exception in "
+                    + this.getClass().getName()
+                    + " with clause : "
+                    + e.getCause());
         }
         return result;
     }

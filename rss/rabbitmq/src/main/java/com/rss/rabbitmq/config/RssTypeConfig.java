@@ -1,6 +1,7 @@
 package com.rss.rabbitmq.config;
 
 import com.rss.parser.Parser;
+import com.rss.parser.RssParser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,8 +24,10 @@ public class RssTypeConfig {
     }
 
     @Bean(name = "rssTypeParserMap")
-    public Map<RssType, Parser> rssTypeParserMap() {
-        Map<RssType, Parser> rssTypeParserMap = rssTypeTimeMap().entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> new Parser(e.getKey().getUrl())));
+    public Map<RssType, RssParser> rssTypeParserMap() {
+        Map<RssType, RssParser> rssTypeParserMap = rssTypeTimeMap().entrySet()
+                .stream()
+                .collect(Collectors.toMap(e -> e.getKey(), e -> new Parser(e.getKey().getUrl())));
         return rssTypeParserMap;
     }
 }
