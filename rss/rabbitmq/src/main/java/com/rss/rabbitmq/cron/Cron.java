@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.rss.parser.Parser;
 import com.rss.parser.RssParser;
 import com.rss.parser.model.GpwNews;
 import com.rss.rabbitmq.config.RssType;
