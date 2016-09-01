@@ -1,37 +1,18 @@
 ######################
 # Project Specific
 ######################
-/gpw_radar/src/main/webapp/dist
+/web_app/gpw_radar/src/main/webapp/dist
 
 ######################
 # Node
 ######################
-/gpw_radar/node/**
-/gpw_radar/node_modules/**
+/web_app/gpw_radar/node/**
+/web_app/gpw_radar/node_modules/**
 
 ######################
 # SASS
 ######################
-/gpw_radar/*.sass-cache/**
-
-######################
-# Eclipse
-######################
-*.pydevproject
-/gpw_radar/.project
-/gpw_radar/.metadata
-/gpw_radar/bin/**
-/gpw_radar/tmp/**
-/gpw_radar/tmp/**/*
-/gpw_radar/*.tmp
-/gpw_radar/*.bak
-/gpw_radar/*.swp
-/gpw_radar/*~.nib
-/gpw_radarlocal.properties
-/gpw_radar/.classpath
-/gpw_radar/.settings/**
-/gpw_radar/.loadpath
-/gpw_radar/src/main/resources/rebel.xml
+/web_app/gpw_radar/*.sass-cache/**
 
 .project
 .metadata
@@ -49,44 +30,44 @@ tmp/**/*
 src/main/resources/rebel.xml
 
 # External tool builders
-/gpw_radar/.externalToolBuilders/**
+/web_app/gpw_radar/.externalToolBuilders/**
 
 # Locally stored "Eclipse launch configurations"
-/gpw_radar/*.launch
+/web_app/gpw_radar/*.launch
 
 # CDT-specific
-/gpw_radar/.cproject
+/web_app/gpw_radar/.cproject
 
 # PDT-specific
-/gpw_radar/.buildpath
+/web_app/gpw_radar/.buildpath
 
 *.pydevproject
-/technical_analysis/.project
-/technical_analysis/.metadata
-/technical_analysis/bin/**
-/technical_analysis/tmp/**
-/technical_analysis/tmp/**/*
-/technical_analysis/*.tmp
-/technical_analysis/*.bak
-/technical_analysis/*.swp
-/technical_analysis/*~.nib
-/gpw_radarlocal.properties
-/technical_analysis/.classpath
-/technical_analysis/.settings/**
-/technical_analysis/.loadpath
-/technical_analysis/src/main/resources/rebel.xml
+/web_app/technical_analysis/.project
+/web_app/technical_analysis/.metadata
+/web_app/technical_analysis/bin/**
+/web_app/technical_analysis/tmp/**
+/web_app/technical_analysis/tmp/**/*
+/web_app/technical_analysis/*.tmp
+/web_app/technical_analysis/*.bak
+/web_app/technical_analysis/*.swp
+/web_app/technical_analysis/*~.nib
+/web_app/gpw_radarlocal.properties
+/web_app/technical_analysis/.classpath
+/web_app/technical_analysis/.settings/**
+/web_app/technical_analysis/.loadpath
+/web_app/technical_analysis/src/main/resources/rebel.xml
 
 # External tool builders
-/technical_analysis/.externalToolBuilders/**
+/web_app/technical_analysis/.externalToolBuilders/**
 
 # Locally stored "Eclipse launch configurations"
-/technical_analysis/*.launch
+/web_app/technical_analysis/*.launch
 
 # CDT-specific
-/technical_analysis/.cproject
+/web_app/technical_analysis/.cproject
 
 # PDT-specific
-/technical_analysis/.buildpath
+/web_app/technical_analysis/.buildpath
 
 ######################
 # Intellij
@@ -98,26 +79,19 @@ src/main/resources/rebel.xml
 *.ids
 *.orig
 
-/gpw_radar/.idea/**
-/gpw_radar/*.iml
-/gpw_radar/*.iws
-/gpw_radar/*.ipr
-/gpw_radar/*.ids
-/gpw_radar/*.orig
-
-/technical_analysis/.idea/**
-/technical_analysis/*.iml
-/technical_analysis/*.iws
-/technical_analysis/*.ipr
-/technical_analysis/*.ids
-/technical_analysis/*.orig
+**/.idea/**
+**/*.iml
+**/*.iws
+**/*.ipr
+**/*.ids
+**/*.orig
 
 ######################
 # Maven
 ######################
-/gpw_radar/log/**
-/gpw_radar/target/**
-/gpw_radar/.mvn
+**/log/**
+**/target/**
+**/.mvn
 
 ######################
 # Gradle
@@ -136,10 +110,10 @@ src/main/resources/rebel.xml
 # Windows
 ######################
 # Windows image file caches
-/gpw_radar/Thumbs.db
+/web_app/gpw_radar/Thumbs.db
 
 # Folder config file
-/gpw_radar/Desktop.ini
+/web_app/gpw_radar/Desktop.ini
 
 ######################
 # Mac OSX
@@ -157,10 +131,10 @@ src/main/resources/rebel.xml
 ######################
 # Directories
 ######################
-/gpw_radar/build/**
-/gpw_radar/bin/**
-/gpw_radar/spring_loaded/**
-/gpw_radar/deploy/**
+**/build/**
+**/bin/**
+**/spring_loaded/**
+**/deploy/**
 
 ######################
 # Logs
@@ -178,18 +152,18 @@ src/main/resources/rebel.xml
 ######################
 # bower components
 ######################
-/gpw_radar/src/main/webapp/bower_components
+**/bower_components
 
 
 ######################
 # technical idicators project
 ######################
-/technical_analysis/build/**
-/technical_analysis/bin/**
-/technical_analysis/spring_loaded/**
-/technical_analysis/deploy/**
-/technical_analysis/log/**
-/technical_analysis/target/**
+**/build/**
+**/bin/**
+**/spring_loaded/**
+**/deploy/**
+**/log/**
+**/target/**
 
 **/.idea
 **/target
