@@ -22,10 +22,10 @@ public class IndicatorVariablesTest {
     @Before
     public void init() {
         this.details = new LinkedList<>();
-        this.details.add(StockDetailsBuilder.stockDetailsBuilder().date(LocalDate.of(2016, 1, 1)).volume(123l).closePrice(100).build());
-        this.details.add(StockDetailsBuilder.stockDetailsBuilder().date(LocalDate.of(2015, 1, 1)).volume(456l).closePrice(99).build());
-        this.details.add(StockDetailsBuilder.stockDetailsBuilder().date(LocalDate.of(2014, 1, 1)).volume(234l).closePrice(87).build());
-        this.details.add(StockDetailsBuilder.stockDetailsBuilder().date(LocalDate.of(2018, 1, 1)).volume(652l).closePrice(105.25).build());
+        this.details.add(StockDetailsBuilder.stockDetailsBuilder().date(LocalDate.of(2016, 1, 1)).volume(123l).closePrice("100").build());
+        this.details.add(StockDetailsBuilder.stockDetailsBuilder().date(LocalDate.of(2015, 1, 1)).volume(456l).closePrice("99").build());
+        this.details.add(StockDetailsBuilder.stockDetailsBuilder().date(LocalDate.of(2014, 1, 1)).volume(234l).closePrice("87").build());
+        this.details.add(StockDetailsBuilder.stockDetailsBuilder().date(LocalDate.of(2018, 1, 1)).volume(652l).closePrice("105.25").build());
         this.indicatorVariables = new IndicatorVariables(details);
     }
 

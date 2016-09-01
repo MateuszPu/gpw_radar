@@ -34,7 +34,7 @@ public class StockDetailsBuilder {
         return this;
     }
 
-    public StockDetailsBuilder openPrice(double openPrice) {
+    public StockDetailsBuilder openPrice(String openPrice) {
         this.openPrice = new BigDecimal(openPrice);
         return this;
     }
@@ -44,7 +44,7 @@ public class StockDetailsBuilder {
         return this;
     }
 
-    public StockDetailsBuilder maxPrice(double maxPrice) {
+    public StockDetailsBuilder maxPrice(String maxPrice) {
         this.maxPrice = new BigDecimal(maxPrice);
         return this;
     }
@@ -54,7 +54,7 @@ public class StockDetailsBuilder {
         return this;
     }
 
-    public StockDetailsBuilder minPrice(double minPrice) {
+    public StockDetailsBuilder minPrice(String minPrice) {
         this.minPrice = new BigDecimal(minPrice);
         return this;
     }
@@ -64,7 +64,7 @@ public class StockDetailsBuilder {
         return this;
     }
 
-    public StockDetailsBuilder closePrice(double closePrice) {
+    public StockDetailsBuilder closePrice(String closePrice) {
         this.closePrice = new BigDecimal(closePrice);
         return this;
     }
