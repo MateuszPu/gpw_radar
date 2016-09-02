@@ -105,7 +105,11 @@ public class StockService {
                         Page<StockIndicators> stockIn90DaysTrendDown = stockIndicatorsRepository.findWithStocksIndicators90DaysTrendDown(PaginationUtil.generatePageRequest(offset, limit), date);
                         HttpHeaders headers90DaysTrendDown = PaginationUtil.generatePaginationHttpHeaders(stockIn90DaysTrendDown, "/api/stocks/trends/down/days", offset, limit);
                         return new ResponseEntity<List<StockIndicatorsWithStocksDTO>>(getStockWithStockIndicatorsDTOs(stockIn90DaysTrendDown.getContent()), headers90DaysTrendDown, HttpStatus.OK);
+                    default:
+                        break;
                 }
+            default:
+                break;
         }
         return new ResponseEntity<List<StockIndicatorsWithStocksDTO>>(HttpStatus.NO_CONTENT);
     }

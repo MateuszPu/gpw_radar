@@ -61,6 +61,8 @@ public class StocksDetailsUpdater {
                 stockDetailsParser = beanFactory.getBean("stooqParser", StockDetailsParser.class);
                 stockDetailsParser.setQuotesDate(lastQuotedDateFromStooqWeb);
                 break;
+            default:
+                throw new IllegalStateException("No case handle in switch case");
         }
 
         if (!lastQuotedDateFromDataBase.isEqual(lastQuotedDateFromStooqWeb)) {

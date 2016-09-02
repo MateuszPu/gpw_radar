@@ -87,7 +87,7 @@ public class GpwSiteStockDetailsParser implements StockDetailsParser {
     }
 
     private BigDecimal getBigDecimalFrom(Row row, int cellNumber) {
-        double value = row.getCell(cellNumber).getNumericCellValue();
+        String value = row.getCell(cellNumber).getStringCellValue();
         BigDecimal result = new BigDecimal(value);
         result = result.setScale(2, RoundingMode.HALF_UP);
         if (result.equals(new BigDecimal("0.00"))) {
