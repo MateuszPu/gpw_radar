@@ -31,9 +31,6 @@ public class GpwParser implements StockDetailsParser {
     @Inject
     private UrlStreamsGetterService urlStreamsGetterService;
 
-    @Inject
-    private StockBatchWebParser gpwSiteDataParserService;
-
     private static final int indexOfTicker = 3;
     private static final int indexOfOpenPrice = 8;
     private static final int indexOfMinPrice = 9;
@@ -47,7 +44,6 @@ public class GpwParser implements StockDetailsParser {
     @Override
     public List<StockDetails> getCurrentStockDetails() {
         LocalDate date = getCurrentDateOfStockDetails();
-        Document doc = gpwSiteDataParserService.getDocumentForAllStocks();
         return getStockDetailsFromWeb(new Document("as"), date);
     }
 

@@ -57,9 +57,6 @@ public class StockTickerUpdaterTest {
     @Inject
     private CacheManager cacheManager;
 
-    private StockDetailsWebParser mockStockDetailsWebParser;
-    private StockBatchWebParser mockStockBatchWebParser;
-    private UrlStreamsGetterService mockUrlStreamsGetterService;
     private Document htmlDoc;
 
     @Before
@@ -77,14 +74,14 @@ public class StockTickerUpdaterTest {
     }
 
     private void mockServices() {
-        mockStockDetailsWebParser = Mockito.mock(StockDetailsWebParser.class);
+        StockDetailsWebParser mockStockDetailsWebParser = Mockito.mock(StockDetailsWebParser.class);
         when(mockStockDetailsWebParser.getStockNameFromWeb(anyObject())).thenReturn("AAA AAA");
 
-        mockStockBatchWebParser = Mockito.mock(StockBatchWebParser.class);
+        StockBatchWebParser mockStockBatchWebParser = Mockito.mock(StockBatchWebParser.class);
         when(mockStockBatchWebParser.getDocumentForAllStocks()).thenReturn(new Document("dummy"));
         when(mockStockBatchWebParser.fetchAllTickers(anyObject())).thenReturn(new HashSet<>(Arrays.asList("kgh")));
 
-        mockUrlStreamsGetterService = Mockito.mock(UrlStreamsGetterService.class);
+        UrlStreamsGetterService mockUrlStreamsGetterService = Mockito.mock(UrlStreamsGetterService.class);
         when(mockUrlStreamsGetterService.getDocFromUrl(anyString())).thenReturn(htmlDoc);
 
         stockTickerUpdater = new StockTickerUpdater(stockRepository, stockDetailsRepository,

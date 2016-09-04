@@ -71,7 +71,7 @@ public class AccountResourceIntTest {
     private MockMvc restMvc;
 
     @Before
-    public void setup() {
+    public void init() {
         MockitoAnnotations.initMocks(this);
         doNothing().when(mockMailService).sendActivationEmail((User) anyObject(), anyString());
 

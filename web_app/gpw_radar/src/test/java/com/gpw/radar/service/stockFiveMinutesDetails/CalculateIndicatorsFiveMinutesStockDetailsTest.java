@@ -33,17 +33,15 @@ public class CalculateIndicatorsFiveMinutesStockDetailsTest {
     @Inject
     private FileStockFiveMinutesDetailsParserService fileStockFiveMinutesDetailsParserService;
 
-    private TestContextManager testContextManager;
-
     private double expectedResult;
     private LocalTime time;
     private Percentage perc = Percentage.withPercentage(0.05);
     private List<StockFiveMinutesIndicators> indicatorsList;
 
     @Before
-    public void setup() throws Exception {
-        this.testContextManager = new TestContextManager(getClass());
-        this.testContextManager.prepareTestInstance(this);
+    public void init() throws Exception {
+        TestContextManager testContextManager = new TestContextManager(getClass());
+        testContextManager.prepareTestInstance(this);
         Stock stock = StockBuilder.sampleStock().ticker("kgh").stockName("KGH").stockShortName("KGH").build();
         String stockFiveMinutesDetailsFilePath = "/stocks_data/5min/pl/wse_stocks/" + stock.getTicker() + ".txt";
         InputStream inputStreamOfStockFiveMinutesDetails = getClass().getResourceAsStream(stockFiveMinutesDetailsFilePath);

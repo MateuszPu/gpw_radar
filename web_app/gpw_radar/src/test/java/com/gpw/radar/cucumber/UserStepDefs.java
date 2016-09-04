@@ -30,7 +30,7 @@ public class UserStepDefs {
 	private ResultActions actions;
 
     @Before
-    public void setup() {
+    public void init() {
         this.restUserMockMvc = MockMvcBuilders.standaloneSetup(userResource).build();
     }
 

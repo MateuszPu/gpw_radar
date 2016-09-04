@@ -20,6 +20,7 @@ import java.util.List;
 public class CacheConfiguration {
 
     private final Logger log = LoggerFactory.getLogger(CacheConfiguration.class);
+
     public static final String STOCK_DETAILS_BY_TICKER_CACHE = "stockDetailsByTickerCache";
     public static final String RSS_NEWS_BY_TYPE_CACHE = "rssNewsByTypeCache";
     public static final String ALL_STOCKS_FETCH_INDICATORS_CACHE = "allStocksFetchIndicatorsCache";

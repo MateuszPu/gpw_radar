@@ -25,7 +25,7 @@ public class Consumer {
     private final MessageTransformer messageTransformer;
 
     @Autowired
-    public Consumer(NewsMessageRepository newsMessageRepository, StockRepository stockRepository,
+    public Consumer(NewsMessageRepository newsMessageRepository,
                     @Value("${rss_reader_news_type_header}") String newsTypeHeader,
                     MessageTransformer messageTransformer) {
         this.newsMessageRepository = newsMessageRepository;

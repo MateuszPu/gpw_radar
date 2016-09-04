@@ -5,7 +5,6 @@ import com.gpw.radar.domain.stock.StockDetails;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashSet;
 
 /**
  * Created by mateusz on 28.05.2016.

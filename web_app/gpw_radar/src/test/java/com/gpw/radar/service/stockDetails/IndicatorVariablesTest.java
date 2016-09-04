@@ -16,16 +16,15 @@ import static org.assertj.core.api.StrictAssertions.assertThat;
 
 public class IndicatorVariablesTest {
 
-    private List<StockDetails> details;
-    IndicatorVariables indicatorVariables;
+    private IndicatorVariables indicatorVariables;
 
     @Before
     public void init() {
-        this.details = new LinkedList<>();
-        this.details.add(StockDetailsBuilder.stockDetailsBuilder().date(LocalDate.of(2016, 1, 1)).volume(123l).closePrice("100").build());
-        this.details.add(StockDetailsBuilder.stockDetailsBuilder().date(LocalDate.of(2015, 1, 1)).volume(456l).closePrice("99").build());
-        this.details.add(StockDetailsBuilder.stockDetailsBuilder().date(LocalDate.of(2014, 1, 1)).volume(234l).closePrice("87").build());
-        this.details.add(StockDetailsBuilder.stockDetailsBuilder().date(LocalDate.of(2018, 1, 1)).volume(652l).closePrice("105.25").build());
+        List<StockDetails> details = new LinkedList<>();
+        details.add(StockDetailsBuilder.stockDetailsBuilder().date(LocalDate.of(2016, 1, 1)).volume(123l).closePrice("100").build());
+        details.add(StockDetailsBuilder.stockDetailsBuilder().date(LocalDate.of(2015, 1, 1)).volume(456l).closePrice("99").build());
+        details.add(StockDetailsBuilder.stockDetailsBuilder().date(LocalDate.of(2014, 1, 1)).volume(234l).closePrice("87").build());
+        details.add(StockDetailsBuilder.stockDetailsBuilder().date(LocalDate.of(2018, 1, 1)).volume(652l).closePrice("105.25").build());
         this.indicatorVariables = new IndicatorVariables(details);
     }
 

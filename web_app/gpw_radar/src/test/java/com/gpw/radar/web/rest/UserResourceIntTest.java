@@ -40,7 +40,7 @@ public class UserResourceIntTest {
     private MockMvc restUserMockMvc;
 
     @Before
-    public void setup() {
+    public void init() {
         UserResource userResource = new UserResource();
         ReflectionTestUtils.setField(userResource, "userRepository", userRepository);
         ReflectionTestUtils.setField(userResource, "userService", userService);

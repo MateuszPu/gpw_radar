@@ -40,10 +40,6 @@ public class StocksDetailsUpdater {
     @Inject
     private BeanFactory beanFactory;
 
-    private StockDetailsParser stockDetailsParser;
-    private StockIndicatorsCalculator stockIndicatorsCalculator;
-
-
     @Transactional
     @Scheduled(cron = "0 30 17 ? * MON-FRI")
     @CacheEvict(cacheNames = {CacheConfiguration.TRENDING_STOCKS_CACHE, CacheConfiguration.STOCK_DETAILS_BY_TICKER_CACHE,
@@ -51,7 +47,8 @@ public class StocksDetailsUpdater {
     public void updateStockDetails() throws IOException, InterruptedException {
         LocalDate lastQuotedDateFromDataBase = stockDetailsRepository.findTopDate();
         LocalDate lastQuotedDateFromStooqWeb = dateAndTimeParserService.getLastDateWig20FromStooqWebsite();
-        stockIndicatorsCalculator = beanFactory.getBean("standardStockIndicatorsCalculator", StockIndicatorsCalculator.class);
+        StockIndicatorsCalculator stockIndicatorsCalculator = beanFactory.getBean("standardStockIndicatorsCalculator", StockIndicatorsCalculator.class);
+        StockDetailsParser stockDetailsParser;
 
         switch (configuratorRepository.findMethod().getParserMethod()) {
             case GPW:

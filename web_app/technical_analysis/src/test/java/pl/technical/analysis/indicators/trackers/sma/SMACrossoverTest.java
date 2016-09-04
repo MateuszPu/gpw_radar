@@ -64,6 +64,7 @@ public class SMACrossoverTest {
     public void invalidArgumentTest() {
         exception.expect(IllegalArgumentException.class);
         SMACrossover smaCrossover = new SMACrossover(tickers, 30, 30);
+        assertThat(true).isEqualTo(true);
     }
 
 }
