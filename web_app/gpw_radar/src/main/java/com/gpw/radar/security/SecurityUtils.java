@@ -63,10 +63,8 @@ public final class SecurityUtils {
     public static User getCurrentUser() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        if (authentication != null) {
-            if (authentication.getPrincipal() instanceof User) {
-                return (User) authentication.getPrincipal();
-            }
+        if (authentication != null && authentication.getPrincipal() instanceof User) {
+            return (User) authentication.getPrincipal();
         }
         throw new IllegalStateException("User not found!");
     }

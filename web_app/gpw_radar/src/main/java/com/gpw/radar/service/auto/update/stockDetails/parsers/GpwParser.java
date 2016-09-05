@@ -1,10 +1,9 @@
-package com.gpw.radar.service.auto.update.stockDetails;
+package com.gpw.radar.service.auto.update.stockDetails.parsers;
 
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
-import com.gpw.radar.service.parser.web.stock.StockBatchWebParser;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;

@@ -4,7 +4,6 @@ import com.gpw.radar.config.Constants;
 import com.gpw.radar.domain.rss.NewsMessage;
 import com.gpw.radar.rabbitmq.consumer.rss.news.MessageTransformer;
 import com.gpw.radar.repository.rss.NewsMessageRepository;
-import com.gpw.radar.repository.stock.StockRepository;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;

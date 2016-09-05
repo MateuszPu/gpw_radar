@@ -1,4 +1,4 @@
-package com.gpw.radar.service.auto.update.stockDetails;
+package com.gpw.radar.service.auto.update.stockDetails.parsers;
 
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;

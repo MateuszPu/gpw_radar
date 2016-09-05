@@ -4,7 +4,7 @@ import com.gpw.radar.domain.database.DailyStockDetailsParser;
 import com.gpw.radar.domain.database.FillDataStatus;
 import com.gpw.radar.domain.database.Type;
 import com.gpw.radar.security.AuthoritiesConstants;
-import com.gpw.radar.service.auto.update.stockDetails.ParserMethod;
+import com.gpw.radar.service.auto.update.stockDetails.parsers.ParserMethod;
 import com.gpw.radar.service.database.ConfiguratorService;
 import com.gpw.radar.service.database.FillDataBaseWithDataService;
 import org.springframework.http.HttpStatus;

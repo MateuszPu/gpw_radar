@@ -1,7 +1,7 @@
 package com.gpw.radar.repository.auto.update;
 
 import com.gpw.radar.domain.database.DailyStockDetailsParser;
-import com.gpw.radar.service.auto.update.stockDetails.ParserMethod;
+import com.gpw.radar.service.auto.update.stockDetails.parsers.ParserMethod;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

@@ -27,6 +27,7 @@ public class LoggingAspect {
 
     @Pointcut("within(com.gpw.radar.repository..*) || within(com.gpw.radar.service..*) || within(com.gpw.radar.web.rest..*)")
     public void loggingPointcut() {
+        //empty body, just use this method for specific AOP around method
     }
 
     @AfterThrowing(pointcut = "loggingPointcut()", throwing = "e")

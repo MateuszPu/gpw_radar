@@ -3,7 +3,7 @@ package com.gpw.radar.service.stockDetails.dailyUpdate;
 import com.gpw.radar.Application;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;
-import com.gpw.radar.service.auto.update.stockDetails.StooqParser;
+import com.gpw.radar.service.auto.update.stockDetails.parsers.StooqParser;
 import com.gpw.radar.service.builders.StockBuilder;
 import org.junit.After;
 import org.junit.Before;

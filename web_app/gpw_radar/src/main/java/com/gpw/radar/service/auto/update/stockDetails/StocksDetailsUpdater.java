@@ -8,6 +8,7 @@ import com.gpw.radar.repository.stock.StockDetailsRepository;
 import com.gpw.radar.repository.stock.StockIndicatorsRepository;
 import com.gpw.radar.security.AuthoritiesConstants;
 import com.gpw.radar.service.auto.update.stockDetails.indicators.StockIndicatorsCalculator;
+import com.gpw.radar.service.auto.update.stockDetails.parsers.StockDetailsParser;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.cache.annotation.CacheEvict;
