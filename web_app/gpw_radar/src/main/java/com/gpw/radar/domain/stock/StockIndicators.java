@@ -47,8 +47,7 @@ public class StockIndicators {
 
     private LocalDate date;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "stock_id", foreignKey = @ForeignKey(name = "fk_stock_id"))
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "stockIndicators")
     private Stock stock;
 
 

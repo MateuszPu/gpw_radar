@@ -9,4 +9,18 @@
            </column>
        </addColumn>
    </changeSet>
+
+    <changeSet id="20160907190752-1" author="mateusz">
+        <dropForeignKeyConstraint baseTableName="STOCK_INDICATORS" constraintName="fk_stock_id"/>
+        <dropColumn tableName="STOCK_INDICATORS" columnName="stock_id"/>
+    </changeSet>
+
+    <changeSet id="20160907190752-2" author="mateusz">
+        <addColumn tableName="STOCK">
+            <column name="stock_indicators_id" type="varchar(64)"/>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="STOCK" baseColumnNames="stock_indicators_id" constraintName="fk_stock_indicators_id"
+                                 referencedTableName="STOCK_INDICATORS" referencedColumnNames="id" />
+    </changeSet>
+
 </databaseChangeLog>

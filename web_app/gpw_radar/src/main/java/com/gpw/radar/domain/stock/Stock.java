@@ -40,7 +40,8 @@ public class Stock implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<User> users = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "stock", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "stock_indicators_id", foreignKey = @ForeignKey(name = "fk_stock_indicators_id"))
     private StockIndicators stockIndicators;
 
     public String getId() {

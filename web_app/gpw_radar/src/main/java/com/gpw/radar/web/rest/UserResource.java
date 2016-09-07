@@ -32,6 +32,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -214,8 +215,8 @@ public class UserResource {
 
     @RequestMapping(value = "/users/stocks/followed", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @RolesAllowed(AuthoritiesConstants.USER)
-    public ResponseEntity<List<StockDTO>> getListStocksFollowedByUser() {
-        return stockService.getStocksFollowedByUser();
+    public ResponseEntity<List<StockDTO>> getListStocksFollowedByUser(Principal principal) {
+        return stockService.getStocksFollowedByUser(principal.getName());
     }
 
     @RequestMapping(value = "/users/stocks/followed/finance/event", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

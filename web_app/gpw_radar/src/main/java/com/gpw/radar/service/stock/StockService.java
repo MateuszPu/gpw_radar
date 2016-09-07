@@ -32,6 +32,7 @@ import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class StockService {
@@ -136,10 +137,9 @@ public class StockService {
     }
 
     @Transactional
-    public ResponseEntity<List<StockDTO>> getStocksFollowedByUser() {
-        User user = userService.getUserWithAuthorities();
-        List<Stock> followedStocks = stockRepository.findStocksByUserId(user.getId());
-        return new ResponseEntity<List<StockDTO>>(getStockDTOs(followedStocks), HttpStatus.OK);
+    public ResponseEntity<List<StockDTO>> getStocksFollowedByUser(String login) {
+        Set<Stock> stocksFollowedByUser = userRepository.findOneByLoginFetchStocks(login).getStocks();
+        return new ResponseEntity<List<StockDTO>>(getStockDTOs(stocksFollowedByUser), HttpStatus.OK);
     }
 
     private List<StockDTO> getStockDTOs(Collection<Stock> stocks) {

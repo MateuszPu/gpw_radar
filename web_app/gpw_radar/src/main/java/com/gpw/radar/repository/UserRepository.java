@@ -40,12 +40,10 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     @Modifying
     @Query(value = "insert into USER_STOCKS (user_id, stock_id) values (:userId, :stockId)", nativeQuery = true)
-    @CacheEvict(cacheNames = CacheConfiguration.STOCKS_FOLLOWED_BY_USER_CACHE, key = "#p0")
     void createAssociationWithStock(@Param("userId") String userId, @Param("stockId") String stockId);
 
     @Modifying
     @Query(value = "delete from USER_STOCKS where user_id= :userId and stock_id= :stockId", nativeQuery = true)
-    @CacheEvict(cacheNames = CacheConfiguration.STOCKS_FOLLOWED_BY_USER_CACHE, key = "#p0")
     void deleteAssociationWithStock(@Param("userId") String userId, @Param("stockId") String stockId);
 
     @Override

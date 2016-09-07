@@ -5,7 +5,6 @@ import com.gpw.radar.domain.stock.Stock;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,10 +21,6 @@ public interface StockRepository extends JpaRepository<Stock, String> {
     @Cacheable(value = CacheConfiguration.STOCK_TICKERS_CACHE)
     @Query(value = "SELECT ticker from Stock", nativeQuery = true)
     Set<String> findAllTickers();
-
-    @Cacheable(value = CacheConfiguration.STOCKS_FOLLOWED_BY_USER_CACHE, key = "#p0")
-    @Query(value = "SELECT * from stock where id in (select stock_id from user_stocks where user_id = :userId)", nativeQuery = true)
-    List<Stock> findStocksByUserId(@Param("userId") String userId);
 
     @Query("from Stock st left outer join fetch st.stockIndicators")
     List<Stock> findAllFetchIndicators();
