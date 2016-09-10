@@ -26,15 +26,23 @@ rabbitmqctl set_permissions -p gpw_radar rss_producer  "" ".*" "" ; \
 rabbitmqctl set_permissions -p gpw_radar admin  ".*" ".*" ".*" ; \
 rabbitmqctl set_permissions -p / admin  ".*" "" "" ; \
 
-curl -i -u admin:admin -H "Content-Type: application/json" -d '{"auto_delete": false, "durable": true}' -XPUT http://192.168.99.100:15672/api/queues/gpw_radar/rss_mail
-curl -i -u admin:admin -H "Content-Type: application/json" -d '{"auto_delete": false, "durable": true}' -XPUT http://192.168.99.100:15672/api/queues/gpw_radar/rss_chat
-curl -i -u admin:admin -H "Content-Type: application/json" -d '{"auto_delete": false, "durable": true}' -XPUT http://192.168.99.100:15672/api/queues/gpw_radar/rss_database
+#rss part
+curl -i -u admin:admin -H "Content-Type: application/json" -d '{"auto_delete": false, "durable": true}' -XPUT http://localhost:15672/api/queues/gpw_radar/rss_mail
+curl -i -u admin:admin -H "Content-Type: application/json" -d '{"auto_delete": false, "durable": true}' -XPUT http://localhost:15672/api/queues/gpw_radar/rss_chat
+curl -i -u admin:admin -H "Content-Type: application/json" -d '{"auto_delete": false, "durable": true}' -XPUT http://localhost:15672/api/queues/gpw_radar/rss_database
 
-curl -i -u admin:admin -H "Content-Type: application/json" -d '{"type":"fanout","auto_delete":false,"durable":true,"internal":false}' -XPUT http://192.168.99.100:15672/api/exchanges/gpw_radar/rss_fanout
+curl -i -u admin:admin -H "Content-Type: application/json" -d '{"type":"fanout","auto_delete":false,"durable":true,"internal":false}' -XPUT http://localhost:15672/api/exchanges/gpw_radar/rss_fanout
 
-curl -i -u admin:admin -H "Content-Type: application/json" -d '{"routing_key":""}' -XPOST http://192.168.99.100:15672/api/bindings/gpw_radar/e/rss_fanout/q/rss_mail
-curl -i -u admin:admin -H "Content-Type: application/json" -d '{"routing_key":""}' -XPOST http://192.168.99.100:15672/api/bindings/gpw_radar/e/rss_fanout/q/rss_chat
-curl -i -u admin:admin -H "Content-Type: application/json" -d '{"routing_key":""}' -XPOST http://192.168.99.100:15672/api/bindings/gpw_radar/e/rss_fanout/q/rss_database
+curl -i -u admin:admin -H "Content-Type: application/json" -d '{"routing_key":""}' -XPOST http://localhost:15672/api/bindings/gpw_radar/e/rss_fanout/q/rss_mail
+curl -i -u admin:admin -H "Content-Type: application/json" -d '{"routing_key":""}' -XPOST http://localhost:15672/api/bindings/gpw_radar/e/rss_fanout/q/rss_chat
+curl -i -u admin:admin -H "Content-Type: application/json" -d '{"routing_key":""}' -XPOST http://localhost:15672/api/bindings/gpw_radar/e/rss_fanout/q/rss_database
+
+#stock details updater part
+curl -i -u admin:admin -H "Content-Type: application/json" -d '{"auto_delete": false, "durable": true}' -XPUT http://localhost:15672/api/queues/gpw_radar/stock_details_updater
+
+curl -i -u admin:admin -H "Content-Type: application/json" -d '{"type":"direct","auto_delete":false,"durable":true,"internal":false}' -XPUT http://localhost:15672/api/exchanges/gpw_radar/stock_details_direct
+
+curl -i -u admin:admin -H "Content-Type: application/json" -d '{"routing_key":"stock_details"}' -XPOST http://localhost:15672/api/bindings/gpw_radar/e/stock_details_direct/q/stock_details_updater
 
 echo "*** Log in the WebUI at port 15672 ***") &
 
