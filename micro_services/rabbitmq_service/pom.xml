@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.rss.rabbitmq</groupId>
-    <artifactId>rabbitmq</artifactId>
+    <artifactId>rabbitmq-service</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>rabbitmq</name>
+    <name>rabbitmq_service</name>
 
     <parent>
-        <groupId>gpw.radar.rss</groupId>
-        <artifactId>parent-module</artifactId>
+        <groupId>gpw.radar.rss.micro.services</groupId>
+        <artifactId>micro-services-parent</artifactId>
         <version>1.0</version>
     </parent>
 
