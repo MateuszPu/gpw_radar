@@ -12,7 +12,18 @@ public class StockDetails {
     private BigDecimal maxPrice;
     private BigDecimal minPrice;
     private BigDecimal closePrice;
+    private Long volume = 0L;
     private Long transactionsNumber = 0L;
+
+    public StockDetails() {
+    }
+
+    public StockDetails(String lastPrice) {
+        setOpenPrice(new BigDecimal(lastPrice));
+        setMaxPrice(new BigDecimal(lastPrice));
+        setMinPrice(new BigDecimal(lastPrice));
+        setClosePrice(new BigDecimal(lastPrice));
+    }
 
     public String getStockTicker() {
         return stockTicker;
@@ -68,6 +79,14 @@ public class StockDetails {
 
     public void setClosePrice(BigDecimal closePrice) {
         this.closePrice = closePrice;
+    }
+
+    public Long getVolume() {
+        return volume;
+    }
+
+    public void setVolume(Long volume) {
+        this.volume = volume;
     }
 
     public Long getTransactionsNumber() {

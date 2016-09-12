@@ -21,7 +21,7 @@ public class HtmlParser {
     public String getHtmlContent() {
         StringBuilder htmlContent = new StringBuilder();
         try (BufferedReader bufferedReader = getBufferedReaderFromUrl()) {
-            bufferedReader.lines().forEach(e -> System.out.println(htmlContent.append(e.toString())));
+            bufferedReader.lines().forEach(e -> htmlContent.append(e.toString()));
         } catch (IOException e) {
             e.printStackTrace();
         }
