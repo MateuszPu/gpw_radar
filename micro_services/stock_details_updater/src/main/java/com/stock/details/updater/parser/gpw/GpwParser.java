@@ -27,7 +27,6 @@ public class GpwParser implements StockDetailsParser {
     private static final int TRANSACTIONS_COUNT_INDEX = 20;
     private static final int VOULME_INDEX = 21;
     private static final int LAST_CLOSE_PRICE_INDEX = 6;
-    private static final DateTimeFormatter dtfType = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private static final Pattern NUMBER_REGEX = Pattern.compile("\\d{1,5}\\.\\d{2}");
 
 
@@ -63,13 +62,6 @@ public class GpwParser implements StockDetailsParser {
             stockDetails.add(std);
         }
         return stockDetails;
-    }
-
-    public LocalDate getCurrentDateOfStockDetails() throws IOException {
-        Document doc = Jsoup.connect("http://www.gpw.pl/akcje_i_pda_notowania_ciagle_pelna_wersja#all").get();
-        Elements el = doc.select("div[class=\"colFL\"]");
-        LocalDate date = LocalDate.parse(el.first().text(), dtfType);
-        return date;
     }
 
     private String getElement(Elements select, int indexOfElement) {
