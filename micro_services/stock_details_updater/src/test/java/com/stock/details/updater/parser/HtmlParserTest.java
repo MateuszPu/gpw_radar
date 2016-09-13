@@ -4,7 +4,6 @@ import com.stock.details.updater.parser.gpw.HtmlParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;

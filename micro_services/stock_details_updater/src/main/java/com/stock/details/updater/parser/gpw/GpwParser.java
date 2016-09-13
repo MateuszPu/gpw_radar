@@ -2,14 +2,11 @@ package com.stock.details.updater.parser.gpw;
 
 import com.stock.details.updater.StockDetailsParser;
 import com.stock.details.updater.model.StockDetails;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
