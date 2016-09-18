@@ -19,7 +19,7 @@ public class LoggingAspect {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    @Pointcut("within(com.rss.rabbitmq.cron..*) || within(com.rss.rabbitmq.sender..*) || within(com.rss.parser..*) ")
+    @Pointcut("within(com.rss.rabbitmq.rss.cron..*) || within(com.rss.rabbitmq.rss.sender..*) || within(com.rss.parser..*) ")
     public void loggingPointcut() {
     }
 

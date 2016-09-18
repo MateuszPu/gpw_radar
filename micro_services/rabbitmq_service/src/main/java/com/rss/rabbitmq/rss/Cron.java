@@ -1,4 +1,4 @@
-package com.rss.rabbitmq.cron;
+package com.rss.rabbitmq.rss;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,20 +8,19 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.rss.parser.RssParser;
 import com.rss.parser.model.GpwNews;
 import com.rss.rabbitmq.config.RssType;
-import com.rss.rabbitmq.sender.Sender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-@Service
+@Service("rssCron")
 public class Cron {
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
@@ -35,7 +34,7 @@ public class Cron {
     private final Sender sender;
 
     @Autowired
-    public Cron(Sender sender) {
+    public Cron(@Qualifier("rssService") Sender sender) {
         this.sender = sender;
     }
 
