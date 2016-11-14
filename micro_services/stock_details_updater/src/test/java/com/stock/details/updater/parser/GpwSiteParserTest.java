@@ -1,7 +1,7 @@
 package com.stock.details.updater.parser;
 
 import com.stock.details.updater.model.StockDetails;
-import com.stock.details.updater.parser.gpw.GpwParser;
+import com.stock.details.updater.parser.gpw.GpwSiteParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -17,13 +17,13 @@ import java.util.List;
 import static org.assertj.core.api.StrictAssertions.assertThat;
 
 
-public class GpwParserTest {
+public class GpwSiteParserTest {
 
     private Elements rowElements;
 
     @Before
     public void init() throws IOException {
-        ClassLoader classLoader = GpwParserTest.class.getClassLoader();
+        ClassLoader classLoader = GpwSiteParserTest.class.getClassLoader();
         File file = new File(classLoader.getResource("stock_details.html").getFile());
         Document doc = Jsoup.parse(file, "UTF-8");
         rowElements = doc.select("tr");
@@ -31,7 +31,7 @@ public class GpwParserTest {
 
     @Test
     public void getStockDetailsFromElements() throws IOException {
-        GpwParser parser = new GpwParser();
+        GpwSiteParser parser = new GpwSiteParser();
         LocalDate date = LocalDate.of(2016, 1, 1);
         List<StockDetails> stockDetails = parser.getCurrentStockDetails(rowElements, date);
 

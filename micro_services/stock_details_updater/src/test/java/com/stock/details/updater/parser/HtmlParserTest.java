@@ -29,7 +29,7 @@ public class HtmlParserTest {
     }
 
     private Document getDoc() throws IOException {
-        ClassLoader classLoader = GpwParserTest.class.getClassLoader();
+        ClassLoader classLoader = GpwSiteParserTest.class.getClassLoader();
         File file = new File(classLoader.getResource("gpw_main_site.html").getFile());
         Document doc = Jsoup.parse(file, "UTF-8");
         return doc;

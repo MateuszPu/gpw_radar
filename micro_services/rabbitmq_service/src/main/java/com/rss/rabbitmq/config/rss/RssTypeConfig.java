@@ -1,8 +1,7 @@
-package com.rss.rabbitmq.config;
+package com.rss.rabbitmq.config.rss;
 
 import com.rss.parser.Parser;
 import com.rss.parser.RssParser;
-import com.rss.rabbitmq.config.RssType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

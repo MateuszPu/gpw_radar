@@ -7,7 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.rss.parser.RssParser;
 import com.rss.parser.model.GpwNews;
-import com.rss.rabbitmq.config.RssType;
+import com.rss.rabbitmq.config.rss.RssType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +44,7 @@ public class Cron {
     @Scheduled(cron = "0 */30 * * * SAT,SUN")
     public void fireCron() {
         for (RssType rss : rssTypeTimeMap.keySet()) {
+            System.out.println("______________" + rss);
             RssParser parser = rssTypeParserMap.get(rss);
             List<GpwNews> gpwNewses = parser.parseBy(this.rssTypeTimeMap.get(rss));
             if (!gpwNewses.isEmpty()) {

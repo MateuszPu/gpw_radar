@@ -42,9 +42,13 @@ public class HtmlParser {
     }
 
     public LocalDate getCurrentDateOfStockDetails(Document doc) throws IOException {
-//        Document doc = Jsoup.connect("http://www.gpw.pl/akcje_i_pda_notowania_ciagle_pelna_wersja#all").get();
         Elements el = doc.select("div[class=\"colFL\"]");
         LocalDate date = LocalDate.parse(el.first().text(), dtfType);
         return date;
+    }
+
+    public LocalDate getCurrentDateOfStockDetails() throws IOException {
+        Document doc = Jsoup.connect("http://www.gpw.pl/akcje_i_pda_notowania_ciagle_pelna_wersja#all").get();
+        return getCurrentDateOfStockDetails(doc);
     }
 }

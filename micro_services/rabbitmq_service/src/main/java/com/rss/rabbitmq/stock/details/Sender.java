@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service("stockDetailsSender")
 public class Sender {
@@ -22,14 +24,18 @@ public class Sender {
     @Value("${stock_details_routing_key}")
     private String routingKey;
 
+    @Value("${stock_details_date_header}")
+    private String dateHeader;
+
     @Autowired
     private RabbitTemplate template;
 
-    public void send(String stockDetails) {
+    public void send(String stockDetails, String date) {
         Message message = null;
         try {
             message = MessageBuilder.withBody(stockDetails.getBytes("UTF-8"))
                     .setContentType(MessageProperties.CONTENT_TYPE_TEXT_PLAIN)
+                    .setHeader(dateHeader, date)
                     .build();
         } catch (UnsupportedEncodingException e) {
             LOGGER.error("Exception in "

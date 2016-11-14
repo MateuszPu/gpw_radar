@@ -6,7 +6,7 @@
 
     <groupId>com.stock.details.updater</groupId>
     <artifactId>stock-details-updater</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>stock_details_updater</name>
    

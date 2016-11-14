@@ -6,6 +6,8 @@ import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import com.rss.parser.model.GpwNews;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 
 public class Parser implements RssParser {
 
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
     private final URL url;
 
     private Parser() {
@@ -27,7 +30,7 @@ public class Parser implements RssParser {
         try {
             this.url = new URL(url);
         } catch (MalformedURLException e) {
-            throw new IllegalStateException("s");
+            throw new IllegalStateException("invalid URL");
         }
     }
 
@@ -38,16 +41,28 @@ public class Parser implements RssParser {
         try {
             feed = input.build(new XmlReader(url));
         } catch (FeedException e) {
-            e.printStackTrace();
+            LOGGER.error("Exception in "
+                    + this.getClass().getName()
+                    + " with clause : "
+                    + e.getCause());
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Exception in "
+                    + this.getClass().getName()
+                    + " with clause : "
+                    + e.getCause());
         }
-        List<GpwNews> newses = getEntriesAfter(feed, dateTime).stream().map(e -> getNewsFrom(e)).collect(Collectors.toList());
+        List<GpwNews> newses = getEntriesAfter(feed, dateTime)
+                .stream()
+                .map(e -> getNewsFrom(e))
+                .collect(Collectors.toList());
         return newses;
     }
 
     private List<SyndEntry> getEntriesAfter(SyndFeed feed, LocalDateTime dateTime) {
-        return feed.getEntries().stream().filter(e -> getDateFrom(e).isAfter(dateTime)).collect(Collectors.toList());
+        return feed.getEntries()
+                .stream()
+                .filter(e -> getDateFrom(e).isAfter(dateTime))
+                .collect(Collectors.toList());
     }
 
     private GpwNews getNewsFrom(SyndEntry syndEntry) {
