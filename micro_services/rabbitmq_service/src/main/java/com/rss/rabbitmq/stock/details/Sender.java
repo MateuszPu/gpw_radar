@@ -9,9 +9,8 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
 import java.io.UnsupportedEncodingException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Service("stockDetailsSender")
 public class Sender {
@@ -27,22 +26,25 @@ public class Sender {
     @Value("${stock_details_date_header}")
     private String dateHeader;
 
+    private final RabbitTemplate template;
+
     @Autowired
-    private RabbitTemplate template;
+    public Sender(RabbitTemplate template) {
+        this.template = template;
+    }
 
     public void send(String stockDetails, String date) {
-        Message message = null;
         try {
-            message = MessageBuilder.withBody(stockDetails.getBytes("UTF-8"))
+            Message message = MessageBuilder.withBody(stockDetails.getBytes("UTF-8"))
                     .setContentType(MessageProperties.CONTENT_TYPE_TEXT_PLAIN)
                     .setHeader(dateHeader, date)
                     .build();
+            this.template.convertAndSend(name, routingKey, message);
         } catch (UnsupportedEncodingException e) {
             LOGGER.error("Exception in "
                     + this.getClass().getName()
                     + " with clause : "
                     + e.getCause());
         }
-        this.template.convertAndSend(name, routingKey, message);
     }
 }

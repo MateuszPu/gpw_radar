@@ -1,7 +1,6 @@
 package com.rss.rabbitmq.stock.details;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rss.rabbitmq.service.JsonConverter;
 import com.stock.details.updater.model.StockDetails;
 import com.stock.details.updater.parser.gpw.GpwSiteParser;
 import com.stock.details.updater.parser.gpw.HtmlParser;
@@ -27,11 +26,13 @@ public class Cron {
     private final Sender sender;
     private final HtmlParser htmlParser;
     private final WebStockDetailsParser gpwParser;
+    private final JsonConverter<StockDetails> jsonConverter;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     @Autowired
-    public Cron(@Qualifier("stockDetailsSender") Sender sender) {
+    public Cron(@Qualifier("stockDetailsSender") Sender sender, JsonConverter<StockDetails> jsonConverter) {
         this.sender = sender;
+        this.jsonConverter = jsonConverter;
         this.htmlParser = new HtmlParser();
         this.gpwParser = new GpwSiteParser();
     }
@@ -42,11 +43,7 @@ public class Cron {
         LocalDate currentDateOfStockDetails = htmlParser.getCurrentDateOfStockDetails();
         String stockDetailsDate = currentDateOfStockDetails.format(formatter);
         List<StockDetails> currentStockDetails = gpwParser.getCurrentStockDetails(tableRowsContentFromWeb, currentDateOfStockDetails);
-        sender.send(convertToJson(currentStockDetails), stockDetailsDate);
-    }
-
-    private String convertToJson(List<StockDetails> currentStockDetails) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(currentStockDetails);
+        String json = jsonConverter.convertToJson(currentStockDetails);
+        sender.send(json, stockDetailsDate);
     }
 }

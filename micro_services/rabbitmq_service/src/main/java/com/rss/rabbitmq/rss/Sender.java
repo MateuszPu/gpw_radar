@@ -9,6 +9,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
 import java.io.UnsupportedEncodingException;
 
 @Service("rssService")
@@ -22,22 +23,25 @@ public class Sender {
     @Value("${rss_reader_news_type_header}")
     private String newsType;
 
+    private final RabbitTemplate template;
+
     @Autowired
-    private RabbitTemplate template;
+    public Sender(RabbitTemplate template) {
+        this.template = template;
+    }
 
     public void send(String newses, String rssChannelName) {
-        Message message = null;
         try {
-            message = MessageBuilder.withBody(newses.getBytes("UTF-8"))
+            Message message = MessageBuilder.withBody(newses.getBytes("UTF-8"))
                     .setContentType(MessageProperties.CONTENT_TYPE_TEXT_PLAIN)
                     .setHeader(newsType, rssChannelName)
                     .build();
+            this.template.convertAndSend(name, "", message);
         } catch (UnsupportedEncodingException e) {
             LOGGER.error("Exception in "
                     + this.getClass().getName()
                     + " with clause : "
                     + e.getCause());
         }
-        this.template.convertAndSend(name, "", message);
     }
 }

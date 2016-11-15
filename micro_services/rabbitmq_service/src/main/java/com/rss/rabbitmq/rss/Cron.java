@@ -1,22 +1,18 @@
 package com.rss.rabbitmq.rss;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.rss.parser.RssParser;
 import com.rss.parser.model.GpwNews;
 import com.rss.rabbitmq.config.rss.RssType;
+import com.rss.rabbitmq.service.JsonConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -32,10 +28,12 @@ public class Cron {
     private Map<RssType, RssParser> rssTypeParserMap;
 
     private final Sender sender;
+    private final JsonConverter<GpwNews> jsonConverter;
 
     @Autowired
-    public Cron(@Qualifier("rssService") Sender sender) {
+    public Cron(@Qualifier("rssService") Sender sender, JsonConverter<GpwNews> jsonConverter) {
         this.sender = sender;
+        this.jsonConverter = jsonConverter;
     }
 
     @Scheduled(cron = "*/5 * 8-19 * * MON-FRI")
@@ -44,7 +42,6 @@ public class Cron {
     @Scheduled(cron = "0 */30 * * * SAT,SUN")
     public void fireCron() {
         for (RssType rss : rssTypeTimeMap.keySet()) {
-            System.out.println("______________" + rss);
             RssParser parser = rssTypeParserMap.get(rss);
             List<GpwNews> gpwNewses = parser.parseBy(this.rssTypeTimeMap.get(rss));
             if (!gpwNewses.isEmpty()) {
@@ -52,26 +49,9 @@ public class Cron {
                         .max((e1, e2) -> e1.getNewsDateTime().compareTo(e2.getNewsDateTime()))
                         .get().getNewsDateTime();
                 rssTypeTimeMap.put(rss, dateTime);
-                sender.send(convertToJson(gpwNewses), rss.name());
+                String json = jsonConverter.convertToJson(gpwNewses);
+                sender.send(json, rss.name());
             }
         }
-    }
-
-    private String convertToJson(List<GpwNews> gpwNewses) {
-        ObjectMapper mapper = new ObjectMapper();
-        JavaTimeModule javaTimeModule = new JavaTimeModule();
-        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ISO_DATE_TIME));
-        mapper.registerModule(javaTimeModule);
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        String result = null;
-        try {
-            result = mapper.writeValueAsString(gpwNewses);
-        } catch (JsonProcessingException e) {
-            LOGGER.error("Exception in "
-                    + this.getClass().getName()
-                    + " with clause : "
-                    + e.getCause());
-        }
-        return result;
     }
 }
