@@ -14,6 +14,10 @@ public class CustomLocalDateSerializer extends JsonSerializer<LocalDate> {
     private static DateTimeFormatter formatter =
             DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+    public CustomLocalDateSerializer(String localDateFormat) {
+        formatter = DateTimeFormatter.ofPattern(localDateFormat);
+    }
+
     @Override
     public void serialize(LocalDate localDateTime, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
         jsonGenerator.writeString(formatter.format(localDateTime));

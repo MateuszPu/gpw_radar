@@ -1,7 +1,9 @@
-package com.gpw.radar.rabbitmq.consumer.rss.news;
+package com.gpw.radar.rabbitmq;
 
 import com.gpw.radar.domain.rss.NewsMessage;
 import com.gpw.radar.domain.stock.Stock;
+import com.gpw.radar.rabbitmq.consumer.rss.news.GpwNewsModel;
+import com.gpw.radar.rabbitmq.consumer.rss.news.RssType;
 import com.gpw.radar.repository.stock.StockRepository;
 import org.springframework.amqp.core.Message;
 import org.springframework.beans.factory.annotation.Autowired;

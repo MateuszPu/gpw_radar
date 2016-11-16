@@ -1,6 +1,7 @@
 package com.gpw.radar.rabbitmq.consumer.rss.news;
 
 import com.gpw.radar.domain.chat.ChatMessage;
+import com.gpw.radar.rabbitmq.Mapper;
 import com.gpw.radar.rabbitmq.consumer.rss.news.chat.Consumer;
 import com.gpw.radar.repository.chat.ChatMessageRepository;
 import com.gpw.radar.service.sockets.SocketMessageService;
