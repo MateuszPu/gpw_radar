@@ -32,7 +32,7 @@ public class Consumer {
     }
 
     @RabbitListener(queues = "${rss_reader_mail_queue}")
-    public void reciveMessage(Message message) throws InterruptedException, IOException {
+    public void consumeMessage(Message message) throws InterruptedException, IOException {
         List<NewsMessage> newsMessages = messageTransformer.getNewsMessages(message, newsTypeHeader);
         newsMessages.forEach(e -> e.setMessage(messageTransformer.transformMessage(e.getLink(), e.getMessage())));
         newsMessages.stream().filter(e -> e.getStock() != null).forEach(e -> mailService.informUserAboutStockNewsByEmail(e));

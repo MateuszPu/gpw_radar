@@ -5,7 +5,7 @@ import org.jsoup.nodes.Document;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public interface StockDetailsWebParser extends StockDataNameParser {
+public interface StockDataDetailsWebParser extends StockDataNameParser {
 
     BigDecimal parseOpenPrice(Document doc);
 

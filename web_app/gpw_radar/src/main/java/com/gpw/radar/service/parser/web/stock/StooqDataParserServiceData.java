@@ -14,9 +14,9 @@ import java.util.regex.Pattern;
 
 //Data downloading from stooq.pl using jsoup library
 @Service("stooqDataParserService")
-public class StooqDataParserService implements StockDetailsWebParser {
+public class StooqDataParserServiceData implements StockDataDetailsWebParser {
 
-    private final Logger logger = LoggerFactory.getLogger(StooqDataParserService.class);
+    private final Logger logger = LoggerFactory.getLogger(StooqDataParserServiceData.class);
     private final String regex = "(?<=\\)\\s-)(.*?)(?=-)";
 
     @Override

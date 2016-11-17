@@ -27,12 +27,12 @@ public class Cron {
     @Resource(name = "rssTypeParserMap")
     private Map<RssType, RssParser> rssTypeParserMap;
 
-    private final Sender sender;
+    private final Producer producer;
     private final JsonConverter<GpwNews> jsonConverter;
 
     @Autowired
-    public Cron(@Qualifier("rssService") Sender sender, JsonConverter<GpwNews> jsonConverter) {
-        this.sender = sender;
+    public Cron(@Qualifier("rssService") Producer producer, JsonConverter<GpwNews> jsonConverter) {
+        this.producer = producer;
         this.jsonConverter = jsonConverter;
     }
 
@@ -50,7 +50,7 @@ public class Cron {
                         .get().getNewsDateTime();
                 rssTypeTimeMap.put(rss, dateTime);
                 String json = jsonConverter.convertToJson(gpwNewses);
-                sender.send(json, rss.name());
+                producer.publish(json, rss.name());
             }
         }
     }

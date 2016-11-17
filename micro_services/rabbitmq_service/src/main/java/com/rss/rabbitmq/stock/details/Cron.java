@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service("stockDetailsCron")
 public class Cron {
@@ -29,14 +30,14 @@ public class Cron {
     private String localDateFormat;
 
     private DateTimeFormatter formatter;
-    private final Sender sender;
+    private final Producer producer;
     private final HtmlParser htmlParser;
     private final WebStockDetailsParser gpwParser;
     private final JsonConverter<StockDetails> jsonConverter;
 
     @Autowired
-    public Cron(@Qualifier("stockDetailsSender") Sender sender, JsonConverter<StockDetails> jsonConverter) {
-        this.sender = sender;
+    public Cron(@Qualifier("stockDetailsSender") Producer producer, JsonConverter<StockDetails> jsonConverter) {
+        this.producer = producer;
         this.jsonConverter = jsonConverter;
         this.htmlParser = new HtmlParser();
         this.gpwParser = new GpwSiteParser();
@@ -47,13 +48,21 @@ public class Cron {
         formatter = DateTimeFormatter.ofPattern(localDateFormat);
     }
 
-    @Scheduled(cron = "0 30 17 ? * MON-FRI")
+    @Scheduled(cron = "0 55 19 ? * MON-FRI")
     public void fireCron() throws IOException {
+        List<StockDetails> currentStocksDetails = parseStocksDetailsFromWeb();
+        String stockDetailsDate = currentStocksDetails.get(0).getDate().format(formatter);
+        String json = jsonConverter.convertToJson(currentStocksDetails);
+        producer.publish(json, stockDetailsDate);
+    }
+
+    public List<StockDetails> parseStocksDetailsFromWeb() throws IOException {
         Elements tableRowsContentFromWeb = htmlParser.getTableRowsContentFromWeb();
         LocalDate currentDateOfStockDetails = htmlParser.getCurrentDateOfStockDetails();
-        String stockDetailsDate = currentDateOfStockDetails.format(formatter);
-        List<StockDetails> currentStockDetails = gpwParser.getCurrentStockDetails(tableRowsContentFromWeb, currentDateOfStockDetails);
-        String json = jsonConverter.convertToJson(currentStockDetails);
-        sender.send(json, stockDetailsDate);
+        List<StockDetails> currentStocksDetails = gpwParser.getCurrentStockDetails(tableRowsContentFromWeb, currentDateOfStockDetails);
+        currentStocksDetails = currentStocksDetails.stream()
+                .filter(e -> !e.getStockName().endsWith("PDA"))
+                .collect(Collectors.toList());
+        return currentStocksDetails;
     }
 }

@@ -10,7 +10,7 @@ import com.gpw.radar.service.auto.update.stockTickers.StockTickerUpdater;
 import com.gpw.radar.service.builders.StockBuilder;
 import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
 import com.gpw.radar.service.parser.web.stock.StockBatchWebParser;
-import com.gpw.radar.service.parser.web.stock.StockDetailsWebParser;
+import com.gpw.radar.service.parser.web.stock.StockDataDetailsWebParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Before;
@@ -49,7 +49,7 @@ public class StockTickerUpdaterTest {
 
     @Inject
     @Qualifier("stooqDataParserService")
-    private StockDetailsWebParser detailsParser;
+    private StockDataDetailsWebParser detailsParser;
 
     @Inject
     private StockDetailsRepository stockDetailsRepository;
@@ -74,8 +74,8 @@ public class StockTickerUpdaterTest {
     }
 
     private void mockServices() {
-        StockDetailsWebParser mockStockDetailsWebParser = Mockito.mock(StockDetailsWebParser.class);
-        when(mockStockDetailsWebParser.getStockNameFromWeb(anyObject())).thenReturn("AAA AAA");
+        StockDataDetailsWebParser mockStockDataDetailsWebParser = Mockito.mock(StockDataDetailsWebParser.class);
+        when(mockStockDataDetailsWebParser.getStockNameFromWeb(anyObject())).thenReturn("AAA AAA");
 
         StockBatchWebParser mockStockBatchWebParser = Mockito.mock(StockBatchWebParser.class);
         when(mockStockBatchWebParser.getDocumentForAllStocks()).thenReturn(new Document("dummy"));

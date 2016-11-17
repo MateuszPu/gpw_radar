@@ -33,7 +33,7 @@ public class Consumer {
     }
 
     @RabbitListener(queues = "${rss_reader_database_queue}")
-    public void reciveMessage(Message message) throws InterruptedException, IOException {
+    public void consumeMessage(Message message) throws InterruptedException, IOException {
         List<NewsMessage> newsMessages = messageTransformer.getNewsMessages(message, newsTypeHeader);
         newsMessageRepository.save(new ArrayList<>(newsMessages));
     }

@@ -36,7 +36,7 @@ public class Consumer {
     }
 
     @RabbitListener(queues = "${rss_reader_chat_queue}")
-    public void reciveMessage(Message message) throws InterruptedException, IOException {
+    public void consumeMessage(Message message) throws InterruptedException, IOException {
         List<ChatMessage> chatMessages = getUserMessages(message);
         List<ChatMessage> save = chatMessageRepository.save(chatMessages);
         sendMessagesToChat(save);

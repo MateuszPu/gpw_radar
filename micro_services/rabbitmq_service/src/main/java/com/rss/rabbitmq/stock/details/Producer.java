@@ -1,4 +1,4 @@
-package com.rss.rabbitmq.rss;
+package com.rss.rabbitmq.stock.details;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,31 +12,34 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 
-@Service("rssService")
-public class Sender {
+@Service("stockDetailsSender")
+public class Producer {
 
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
-    @Value("${rss_reader_fanout_exchange}")
+    @Value("${stock_details_direct_exchange}")
     private String name;
 
-    @Value("${rss_reader_news_type_header}")
-    private String newsType;
+    @Value("${stock_details_routing_key}")
+    private String routingKey;
+
+    @Value("${stock_details_date_header}")
+    private String dateHeader;
 
     private final RabbitTemplate template;
 
     @Autowired
-    public Sender(RabbitTemplate template) {
+    public Producer(RabbitTemplate template) {
         this.template = template;
     }
 
-    public void send(String newses, String rssChannelName) {
+    public void publish(String stockDetails, String date) {
         try {
-            Message message = MessageBuilder.withBody(newses.getBytes("UTF-8"))
+            Message message = MessageBuilder.withBody(stockDetails.getBytes("UTF-8"))
                     .setContentType(MessageProperties.CONTENT_TYPE_TEXT_PLAIN)
-                    .setHeader(newsType, rssChannelName)
+                    .setHeader(dateHeader, date)
                     .build();
-            this.template.convertAndSend(name, "", message);
+            this.template.convertAndSend(name, routingKey, message);
         } catch (UnsupportedEncodingException e) {
             LOGGER.error("Exception in "
                     + this.getClass().getName()
