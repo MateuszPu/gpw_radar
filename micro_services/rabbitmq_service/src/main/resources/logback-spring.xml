@@ -5,7 +5,7 @@
 
     <appender name="FILE_DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>rabbit-mq-logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>90</maxHistory>
         </rollingPolicy>
         <encoder>

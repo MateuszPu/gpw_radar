@@ -48,7 +48,7 @@ public class Cron {
         formatter = DateTimeFormatter.ofPattern(localDateFormat);
     }
 
-    @Scheduled(cron = "0 55 19 ? * MON-FRI")
+    @Scheduled(cron = "0 30 17 ? * MON-FRI")
     public void fireCron() throws IOException {
         List<StockDetails> currentStocksDetails = parseStocksDetailsFromWeb();
         String stockDetailsDate = currentStocksDetails.get(0).getDate().format(formatter);

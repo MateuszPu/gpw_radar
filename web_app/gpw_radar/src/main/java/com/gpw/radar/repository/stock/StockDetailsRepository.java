@@ -35,4 +35,6 @@ public interface StockDetailsRepository extends JpaRepository<StockDetails, Stri
     Page<StockDetails> findByStockAndDateBeforeOrderByDateDesc(Stock stock, LocalDate date, Pageable pageable);
 
     Page<StockDetails> findByStockOrderByDateDesc(Stock stock, Pageable pageable);
+
+
 }

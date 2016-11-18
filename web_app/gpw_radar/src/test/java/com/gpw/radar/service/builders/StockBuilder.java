@@ -8,6 +8,7 @@ import java.util.Set;
 
 public class StockBuilder {
 
+    private String id;
     private String ticker;
     private String stockName;
     private String stockShortName;
@@ -19,6 +20,11 @@ public class StockBuilder {
 
     public static StockBuilder sampleStock() {
         return stockBuilder().ticker("kgh").stockName("KGH name").stockShortName("KGH short name").users(new HashSet<>());
+    }
+
+    public StockBuilder id(String id) {
+        this.id = id;
+        return this;
     }
 
     public StockBuilder ticker(String ticker) {
@@ -43,10 +49,11 @@ public class StockBuilder {
 
     public Stock build() {
         Stock stock = new Stock();
-        stock.setTicker(ticker);
-        stock.setStockShortName(stockShortName);
-        stock.setStockName(stockName);
-        stock.setUsers(users);
+        stock.setId(this.id);
+        stock.setTicker(this.ticker);
+        stock.setStockShortName(this.stockShortName);
+        stock.setStockName(this.stockName);
+        stock.setUsers(this.users);
         return stock;
     }
 }

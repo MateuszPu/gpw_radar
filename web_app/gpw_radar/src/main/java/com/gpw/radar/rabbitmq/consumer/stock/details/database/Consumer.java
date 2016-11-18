@@ -16,9 +16,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -40,7 +42,7 @@ public class Consumer {
     @Autowired
     public Consumer(StockDetailsRepository stockDetailsRepository,
                     StockRepository stockRepository,
-                    StockDataDetailsWebParser detailsParser,
+                    @Qualifier("stooqDataParserService") StockDataDetailsWebParser detailsParser,
                     UrlStreamsGetterService urlStreamsGetterService,
                     Mapper mapper) {
         this.stockDetailsRepository = stockDetailsRepository;
@@ -52,18 +54,30 @@ public class Consumer {
 
     @RabbitListener(queues = "${stock_details_updater_queue}")
     public void consumeMessage(Message message) throws InterruptedException, IOException {
+        processMessage(message);
+    }
+
+    public List<StockDetails> processMessage(Message message) throws IOException {
         List<StockDetails> stocksDetails = mapper.transformFromJsonToDomainObject(message, StockDetailsModel.class, StockDetails.class);
         LocalDate date = stocksDetails.stream().findAny().get().getDate();
+        return processUpdate(stocksDetails, date);
+    }
+
+    @Transactional
+    private List<StockDetails> processUpdate(List<StockDetails> stocksDetails, LocalDate date) {
         LocalDate topDate = stockDetailsRepository.findTopDate();
         List<Stock> stocks = stockRepository.findAll();
 
         if (date.isAfter(topDate)) {
             stocksDetails.forEach(e -> e.setStock(getCorrectStock(getTicker(e), stocks)));
+            stockDetailsRepository.save(stocksDetails);
         } else {
-            logger.warn("Cannot update stock details as the date is invalid");
+            logger.warn("Cannot update stock details as the date is invalid " + topDate);
         }
+
         cleanCache();
         //calculate stock indicators
+        return stocksDetails;
     }
 
     private String getTicker(StockDetails stockDetails) {
@@ -79,7 +93,8 @@ public class Consumer {
         return stock.get();
     }
 
-    public Stock createStock(String ticker, Document doc) {
+    private Stock createStock(String ticker, Document doc) {
+        System.out.println("create stock with ticker " + ticker);
         Stock stock = new Stock();
         stock.setTicker(ticker);
         String stockName = detailsParser.getStockNameFromWeb(doc);
