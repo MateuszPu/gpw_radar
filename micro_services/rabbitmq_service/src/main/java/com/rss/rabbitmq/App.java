@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 @PropertySource("classpath:rabbitmq_config.properties")
+@PropertySource("classpath:shared_config.properties")
 @PropertySource("classpath:application.properties")
 public class App {
 

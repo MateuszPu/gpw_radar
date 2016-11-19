@@ -1,6 +1,6 @@
 package com.gpw.radar.domain.database;
 
-import com.gpw.radar.service.auto.update.stockDetails.parsers.ParserMethod;
+import com.gpw.radar.service.database.ParserMethod;
 
 import javax.persistence.*;
 

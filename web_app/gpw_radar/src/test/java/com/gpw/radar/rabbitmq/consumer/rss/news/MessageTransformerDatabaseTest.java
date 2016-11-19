@@ -1,6 +1,7 @@
 package com.gpw.radar.rabbitmq.consumer.rss.news;
 
 import com.gpw.radar.domain.rss.NewsMessage;
+import com.gpw.radar.rabbitmq.MessageTransformer;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.builders.StockBuilder;
 import org.junit.Before;

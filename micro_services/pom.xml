@@ -19,6 +19,7 @@
     <modules>
         <module>rabbitmq_service</module>
         <module>rss_parser</module>
+        <module>stock_details_updater</module>
     </modules>
 
     <build>

@@ -21,6 +21,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <rss.parser.version>1.1-SNAPSHOT</rss.parser.version>
+        <stock-details-updater.version>1.1-SNAPSHOT</stock-details-updater.version>
     </properties>
 
     <dependencies>
@@ -37,12 +38,20 @@
             <artifactId>rss-parser</artifactId>
             <version>${rss.parser.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.stock.details.updater</groupId>
+            <artifactId>stock-details-updater</artifactId>
+            <version>${stock-details-updater.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
         <resources>
             <resource>
                 <directory>../../configs/rabbitmq/properties</directory>
+            </resource>
+            <resource>
+                <directory>../../configs/shared</directory>
             </resource>
             <resource>
                 <directory>src/main/resources</directory>

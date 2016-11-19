@@ -92,17 +92,20 @@ public class SmaIndicatorServiceTest extends AbstractCleaner {
 
     private void prepareDb(LocalDate dateOne, LocalDate dateTwo) {
         InputStream inputStreamOfStockDetails = getClass().getResourceAsStream("/stocks_data/daily/pl/wse_stocks/kgh.txt");
-        Stock stockOne = StockBuilder.stockBuilder().ticker("kgh").build();
+        Stock stockOne = StockBuilder.stockBuilder().id("1").ticker("kgh").build();
+        stockOne = stockRepository.save(stockOne);
         List<StockDetails> stockDetailsOne = parseStockDetails(stockOne,  inputStreamOfStockDetails);
         stockDetailsRepository.save(stockDetailsOne);
 
         inputStreamOfStockDetails = getClass().getResourceAsStream("/stocks_data/daily/pl/wse_stocks/kgh.txt");
-        Stock stockTwo = StockBuilder.stockBuilder().ticker("tpe").build();
+        Stock stockTwo = StockBuilder.stockBuilder().id("2").ticker("tpe").build();
+        stockTwo = stockRepository.save(stockTwo);
         List<StockDetails> stockDetailsTwo = parseStockDetails(stockTwo,  inputStreamOfStockDetails);
         stockDetailsRepository.save(stockDetailsTwo.stream().filter(ti -> ti.getDate().isBefore(dateOne)).collect(Collectors.toList()));
 
         inputStreamOfStockDetails = getClass().getResourceAsStream("/stocks_data/daily/pl/wse_stocks/kgh.txt");
-        Stock stockThree = StockBuilder.stockBuilder().ticker("pko").build();
+        Stock stockThree = StockBuilder.stockBuilder().id("3").ticker("pko").build();
+        stockThree = stockRepository.save(stockThree);
         List<StockDetails> stockDetailsThree = parseStockDetails(stockThree,  inputStreamOfStockDetails);
         stockDetailsRepository.save(stockDetailsThree.stream().filter(ti -> ti.getDate().isBefore(dateTwo)).collect(Collectors.toList()));
     }

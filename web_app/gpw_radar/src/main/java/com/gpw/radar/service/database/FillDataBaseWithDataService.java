@@ -8,7 +8,7 @@ import com.gpw.radar.service.parser.DateAndTimeParserService;
 import com.gpw.radar.service.parser.file.stockFiveMinutesDetails.StockFiveMinutesDetailsParser;
 import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
 import com.gpw.radar.service.parser.web.stock.StockBatchWebParser;
-import com.gpw.radar.service.parser.web.stock.StockDetailsWebParser;
+import com.gpw.radar.service.parser.web.stock.StockDataDetailsWebParser;
 import com.gpw.radar.service.parser.web.stockDetails.GpwSiteStockDetailsParser;
 import com.gpw.radar.service.parser.web.stockDetails.StockDetailsParser;
 import com.gpw.radar.service.parser.web.stockFinanceEvent.StockFinanceEventParser;
@@ -71,7 +71,7 @@ public class FillDataBaseWithDataService {
     private int step;
     private ClassLoader classLoader = getClass().getClassLoader();
     private StockFinanceEventParser stockFinanceEventParser;
-    private StockDetailsWebParser stockDataNameParser;
+    private StockDataDetailsWebParser stockDataNameParser;
     private StockFiveMinutesDetailsParser stockFiveMinutesDetailsParser;
     private StockBatchWebParser stockBatchWebParser;
 
@@ -79,7 +79,7 @@ public class FillDataBaseWithDataService {
     public void initParsers() {
         stockBatchWebParser = beanFactory.getBean("gpwSiteDataParserService", StockBatchWebParser.class);
         stockFinanceEventParser = beanFactory.getBean("stockwatchParserService", StockFinanceEventParser.class);
-        stockDataNameParser = beanFactory.getBean("stooqDataParserService", StockDetailsWebParser.class);
+        stockDataNameParser = beanFactory.getBean("stooqDataParserService", StockDataDetailsWebParser.class);
         stockFiveMinutesDetailsParser = beanFactory.getBean("fileStockFiveMinutesDetailsParserService", StockFiveMinutesDetailsParser.class);
     }
 
