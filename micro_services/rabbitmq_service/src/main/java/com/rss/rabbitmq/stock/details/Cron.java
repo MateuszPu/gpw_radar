@@ -2,12 +2,9 @@ package com.rss.rabbitmq.stock.details;
 
 import com.rss.rabbitmq.service.JsonConverter;
 import com.stock.details.updater.model.StockDetails;
-import com.stock.details.updater.parser.gpw.GpwSiteParser;
 import com.stock.details.updater.parser.gpw.HtmlParser;
 import com.stock.details.updater.parser.gpw.WebStockDetailsParser;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,7 +40,7 @@ public class Cron {
     }
 
     @PostConstruct
-    public void init(){
+    public void init() {
         formatter = DateTimeFormatter.ofPattern(localDateFormat);
     }
 

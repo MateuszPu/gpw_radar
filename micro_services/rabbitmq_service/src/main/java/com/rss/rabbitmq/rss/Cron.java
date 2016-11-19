@@ -4,8 +4,6 @@ import com.rss.parser.RssParser;
 import com.rss.parser.model.GpwNews;
 import com.rss.rabbitmq.config.rss.RssType;
 import com.rss.rabbitmq.service.JsonConverter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,8 +16,6 @@ import java.util.Map;
 
 @Service("rssCron")
 public class Cron {
-
-    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @Resource(name = "rssTypeTimeMap")
     private Map<RssType, LocalDateTime> rssTypeTimeMap;
