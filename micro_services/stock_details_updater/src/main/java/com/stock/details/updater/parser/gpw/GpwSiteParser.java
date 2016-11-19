@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//getting data from http://www.gpw.pl/akcje_i_pda_notowania_ciagle_pelna_wersja#all
+/**
+ * data downloaded from http://www.gpw.pl/akcje_i_pda_notowania_ciagle_pelna_wersja#all
+ */
 public class GpwSiteParser implements WebStockDetailsParser {
 
     private static final int STOCK_NAME_INDEX = 2;

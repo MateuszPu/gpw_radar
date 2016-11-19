@@ -24,8 +24,6 @@ import java.util.stream.Collectors;
 @Service("stockDetailsCron")
 public class Cron {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-
     @Value("${local_date_format}")
     private String localDateFormat;
 

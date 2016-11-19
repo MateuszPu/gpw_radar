@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 @Service("stooqDataParserService")
 public class StooqDataParserServiceData implements StockDataDetailsWebParser {
 
-    private final Logger logger = LoggerFactory.getLogger(StooqDataParserServiceData.class);
     private final String regex = "(?<=\\)\\s-)(.*?)(?=-)";
 
     @Override

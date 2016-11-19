@@ -18,7 +18,7 @@ public class HtmlParser {
 
     public Elements getTableRowsContentFromWeb() {
         String htmlContent = getHtmlContent();
-        org.jsoup.nodes.Document doc = Jsoup.parse(htmlContent);
+        Document doc = Jsoup.parse(htmlContent);
         Elements tableRows = doc.select("tr");
         return tableRows;
     }
