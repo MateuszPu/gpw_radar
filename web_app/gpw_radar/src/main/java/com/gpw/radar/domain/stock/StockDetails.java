@@ -51,7 +51,7 @@ public class StockDetails implements Serializable {
     private Long volume;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "stock_id", foreignKey = @ForeignKey(name = "FK_stock"))
     private Stock stock;
 

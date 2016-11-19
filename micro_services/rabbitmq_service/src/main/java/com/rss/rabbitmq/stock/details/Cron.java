@@ -36,11 +36,12 @@ public class Cron {
     private final JsonConverter<StockDetails> jsonConverter;
 
     @Autowired
-    public Cron(@Qualifier("stockDetailsSender") Producer producer, JsonConverter<StockDetails> jsonConverter) {
+    public Cron(@Qualifier("stockDetailsSender") Producer producer, JsonConverter<StockDetails> jsonConverter,
+                HtmlParser htmlParser, WebStockDetailsParser gpwParser) {
         this.producer = producer;
         this.jsonConverter = jsonConverter;
-        this.htmlParser = new HtmlParser();
-        this.gpwParser = new GpwSiteParser();
+        this.htmlParser = htmlParser;
+        this.gpwParser = gpwParser;
     }
 
     @PostConstruct

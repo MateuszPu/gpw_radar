@@ -101,7 +101,7 @@ public class Consumer {
         String stockShortName = detailsParser.getStockShortNameFromWeb(doc);
         stock.setStockName(stockName);
         stock.setStockShortName(stockShortName);
-        return stock;
+        return stockRepository.save(stock);
     }
 
     @CacheEvict(cacheNames = {CacheConfiguration.STOCK_TICKERS_CACHE}, allEntries = true)
