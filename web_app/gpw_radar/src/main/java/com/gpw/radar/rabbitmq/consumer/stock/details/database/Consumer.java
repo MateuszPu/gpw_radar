@@ -89,6 +89,7 @@ public class Consumer {
         if (!stock.isPresent()) {
             Document doc = urlStreamsGetterService.getDocFromUrl("http://stooq.pl/q/?s=" + ticker);
             stock = Optional.of(createStock(ticker, doc));
+            stockRepository.save(stock.get());
         }
         return stock.get();
     }
@@ -101,7 +102,7 @@ public class Consumer {
         String stockShortName = detailsParser.getStockShortNameFromWeb(doc);
         stock.setStockName(stockName);
         stock.setStockShortName(stockShortName);
-        return stockRepository.save(stock);
+        return stock;
     }
 
     @CacheEvict(cacheNames = {CacheConfiguration.STOCK_TICKERS_CACHE}, allEntries = true)
