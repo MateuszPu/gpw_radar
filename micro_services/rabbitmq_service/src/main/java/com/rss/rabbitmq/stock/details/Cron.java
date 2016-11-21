@@ -56,9 +56,6 @@ public class Cron {
         Elements tableRowsContentFromWeb = htmlParser.getTableRowsContentFromWeb();
         LocalDate currentDateOfStockDetails = htmlParser.getCurrentDateOfStockDetails();
         List<StockDetails> currentStocksDetails = gpwParser.getCurrentStockDetails(tableRowsContentFromWeb, currentDateOfStockDetails);
-        currentStocksDetails = currentStocksDetails.stream()
-                .filter(e -> !e.getStockName().endsWith("PDA"))
-                .collect(Collectors.toList());
         return currentStocksDetails;
     }
 }
