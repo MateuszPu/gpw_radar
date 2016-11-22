@@ -1,5 +1,6 @@
 package com.gpw.radar.service;
 
+import com.gpw.radar.config.CustomDateTimeFormat;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
 import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
 import org.junit.Before;
@@ -23,8 +24,9 @@ public class DateAndTimeParserServiceTest {
     @Before
     public void init() {
         mockService();
-        dateAndTimeParserService = new DateAndTimeParserService(mockedUrlStreamsGetterService);
-        dateAndTimeParserService.init();
+        CustomDateTimeFormat customDateTimeFormat = new CustomDateTimeFormat();
+        dateAndTimeParserService = new DateAndTimeParserService(mockedUrlStreamsGetterService,
+            customDateTimeFormat.localDateTimeFormatter(), customDateTimeFormat.localTimeFormatter());
     }
 
     private void mockService() {

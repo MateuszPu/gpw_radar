@@ -2,6 +2,7 @@ package com.gpw.radar.service.technicalIndicators;
 
 import com.gpw.radar.Application;
 import com.gpw.radar.config.CacheConfiguration;
+import com.gpw.radar.config.CustomDateTimeFormat;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;
 import com.gpw.radar.repository.stock.StockDetailsRepository;
@@ -120,8 +121,9 @@ public class SmaIndicatorServiceTest extends AbstractCleaner {
     }
 
     private StockDetails parse(Stock stock, String ln) {
-        DateAndTimeParserService parser = new DateAndTimeParserService(null);
-        parser.init();
+        CustomDateTimeFormat customDateTimeFormat = new CustomDateTimeFormat();
+        DateAndTimeParserService parser = new DateAndTimeParserService(null,
+            customDateTimeFormat.localDateTimeFormatter(), customDateTimeFormat.localTimeFormatter());
 
         String[] split = ln.split(",");
         StockDetails result = new StockDetails();

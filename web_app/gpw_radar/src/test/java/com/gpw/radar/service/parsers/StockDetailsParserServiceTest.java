@@ -1,5 +1,6 @@
 package com.gpw.radar.service.parsers;
 
+import com.gpw.radar.config.CustomDateTimeFormat;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockDetails;
 import com.gpw.radar.service.builders.StockBuilder;
@@ -29,10 +30,12 @@ public class StockDetailsParserServiceTest {
 
     @Before
     public void init() {
+        CustomDateTimeFormat customDateTimeFormat = new CustomDateTimeFormat();
         mockUrlStreamsGetterService();
-        DateAndTimeParserService dateAndTimeParserService = new DateAndTimeParserService(null);
-        dateAndTimeParserService.init();
-        stockDetailsParserImpl = new GpwSiteStockDetailsParser(dateAndTimeParserService, mockedUrlStreamsGetterService, getStocksInDb());
+        DateAndTimeParserService dateAndTimeParserService = new DateAndTimeParserService(null,
+            customDateTimeFormat.localDateTimeFormatter(), customDateTimeFormat.localTimeFormatter());
+        stockDetailsParserImpl = new GpwSiteStockDetailsParser(dateAndTimeParserService,
+            mockedUrlStreamsGetterService, getStocksInDb());
     }
 
     private void mockUrlStreamsGetterService() {
