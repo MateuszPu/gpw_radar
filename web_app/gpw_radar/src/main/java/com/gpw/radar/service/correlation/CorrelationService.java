@@ -47,7 +47,7 @@ public class CorrelationService {
 
         Correlator correlator = getCorrelatorImpl(correlationType).get();
         TreeSet<StockStatistic> correlationTreeSet = new TreeSet<StockStatistic>();
-        Set<String> tickersToScan = new HashSet<String>(stockRepository.findAllTickers());
+        Set<String> tickersToScan = new HashSet<>(stockRepository.findAllTickers());
         tickersToScan.remove(correlationForTicker);
         List<StockDetails> content = getContent(correlationForTicker, period);
         sourceEndDate = content.get(0).getDate();

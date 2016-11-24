@@ -30,18 +30,15 @@ public class StandardStockIndicatorsCalculator implements StockIndicatorsCalcula
     @Override
     public List<StockIndicators> calculateCurrentStockIndicators() {
         List<StockIndicators> stockIndicators = new ArrayList<StockIndicators>();
-        stockRepository.findAllTickers().stream().forEach(tic -> stockIndicators.add(calculateStockIndicator(tic)));
-        return stockIndicators;
+        List<Stock> dbStocks = stockRepository.findAll();
+        dbStocks.stream()
+            .forEach(st -> stockIndicators.add(calculateStockIndicator(st)));
+        return stockIndicatorsRepository.save(stockIndicators);
     }
 
-    public StockIndicators calculateStockIndicator(String stockTicker) {
-        Stock stock = stockRepository.findByTicker(stockTicker);
-
-        StockIndicators stockIndicators = stockIndicatorsRepository.findByStock(stock);
-        if (stockIndicators == null) {
-            stockIndicators = new StockIndicators();
-        }
-        IndicatorVariables indicatorVariables = prepareVeriables(stock);
+    public StockIndicators calculateStockIndicator(Stock stock) {
+        StockIndicators stockIndicators = stockIndicatorsRepository.findByStock(stock).orElse(new StockIndicators());
+        IndicatorVariables indicatorVariables = prepareVariables(stock);
 
         stockIndicators.setPercentReturn(indicatorVariables.calculatePercentReturn());
         stockIndicators.setAverageVolume10Days(indicatorVariables.calculateAverageVolume(10));
@@ -61,10 +58,9 @@ public class StandardStockIndicatorsCalculator implements StockIndicatorsCalcula
         return stockIndicators;
     }
 
-    private IndicatorVariables prepareVeriables(Stock stock) {
+    private IndicatorVariables prepareVariables(Stock stock) {
         Pageable top100th = new PageRequest(0, 100);
         Page<StockDetails> stockDetails = stockDetailsRepository.findByStockOrderByDateDesc(stock, top100th);
         return new IndicatorVariables(stockDetails.getContent());
     }
-
 }
