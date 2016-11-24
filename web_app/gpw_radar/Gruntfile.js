@@ -373,16 +373,16 @@ module.exports = function (grunt) {
         'watch'
     ]);
 
-    grunt.registerTask('server', function (target) {
-        grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
-        grunt.task.run([target ? ('serve:' + target) : 'serve']);
-    });
+    // grunt.registerTask('server', function (target) {
+    //     grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
+    //     grunt.task.run([target ? ('serve:' + target) : 'serve']);
+    // });
 
     grunt.registerTask('test', [
         'clean:server',
         'wiredep:test',
-        'ngconstant:dev',
-        'karma'
+        'ngconstant:dev'
+        // 'karma'
     ]);
 
     grunt.registerTask('build', [
@@ -407,5 +407,5 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('itest', ['protractor:continuous']);
-    grunt.registerTask('default', ['serve']);
+    grunt.registerTask('default', ['build']);
 };

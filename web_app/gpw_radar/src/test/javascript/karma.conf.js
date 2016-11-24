@@ -41,6 +41,8 @@ module.exports = function (config) {
             'main/webapp/bower_components/json3/lib/json3.js',
             'main/webapp/bower_components/metisMenu/dist/metisMenu.js',
             'main/webapp/bower_components/PACE/pace.js',
+            'main/webapp/bower_components/slimScroll/jquery.slimscroll.js',
+            'main/webapp/bower_components/slimScroll/jquery.slimscroll.min.js',
             'main/webapp/bower_components/ng-file-upload/ng-file-upload.js',
             'main/webapp/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
             'main/webapp/bower_components/sockjs-client/dist/sockjs.js',

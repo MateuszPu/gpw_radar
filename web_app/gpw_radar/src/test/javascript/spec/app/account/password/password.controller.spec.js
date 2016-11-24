@@ -7,7 +7,7 @@ describe('Controllers Tests ', function() {
     describe('PasswordController', function() {
 
         var $scope, $httpBackend, $q;
-        var MockAuth;
+        var MockAuth;A
         var createController;
 
         beforeEach(inject(function($injector) {
