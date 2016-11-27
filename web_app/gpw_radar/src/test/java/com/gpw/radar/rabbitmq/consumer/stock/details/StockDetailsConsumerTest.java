@@ -6,6 +6,7 @@ import com.gpw.radar.rabbitmq.Mapper;
 import com.gpw.radar.rabbitmq.consumer.stock.details.database.Consumer;
 import com.gpw.radar.repository.stock.StockDetailsRepository;
 import com.gpw.radar.repository.stock.StockRepository;
+import com.gpw.radar.service.auto.update.stockDetails.indicators.StandardStockIndicatorsCalculator;
 import com.gpw.radar.service.builders.StockBuilder;
 import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
 import com.gpw.radar.service.parser.web.stock.StockDataDetailsWebParser;
@@ -33,6 +34,7 @@ public class StockDetailsConsumerTest {
 
     private StockDetailsRepository mockedStockDetailsRepository;
     private StockRepository mockedStockRepository;
+    private StandardStockIndicatorsCalculator mockedStandardStockIndicatorsCalculator;
     private StockDataDetailsWebParser detailsParser = new StooqDataParserServiceData();
     private UrlStreamsGetterService mockedUrlStreamsGetterService;
     private Mapper<StockDetailsModel, StockDetails> mapper = new Mapper<>();
@@ -43,9 +45,11 @@ public class StockDetailsConsumerTest {
         mockStockDetailsRepository();
         mockStockRepository();
         mockUrlStreamsGetterService();
+        mockStandardStockIndicatorsCalculator();
         objectUnderTest = new Consumer(mockedStockDetailsRepository, mockedStockRepository,
-            detailsParser, mockedUrlStreamsGetterService, mapper);
+            detailsParser, mockedUrlStreamsGetterService, mockedStandardStockIndicatorsCalculator, mapper);
     }
+
 
     private void mockStockDetailsRepository() {
         mockedStockDetailsRepository = Mockito.mock(StockDetailsRepository.class);
@@ -70,6 +74,10 @@ public class StockDetailsConsumerTest {
             mockedUrlStreamsGetterService = Mockito.mock(UrlStreamsGetterService.class);
             when(mockedUrlStreamsGetterService.getDocFromUrl(anyObject())).thenReturn(stooqSite);
         }
+    }
+
+    private void mockStandardStockIndicatorsCalculator() {
+        mockedStandardStockIndicatorsCalculator = Mockito.mock(StandardStockIndicatorsCalculator.class);
     }
 
     @Test

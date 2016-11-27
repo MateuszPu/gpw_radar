@@ -8,6 +8,7 @@ import com.gpw.radar.rabbitmq.Mapper;
 import com.gpw.radar.rabbitmq.consumer.stock.details.StockDetailsModel;
 import com.gpw.radar.repository.stock.StockDetailsRepository;
 import com.gpw.radar.repository.stock.StockRepository;
+import com.gpw.radar.service.auto.update.stockDetails.indicators.StockIndicatorsCalculator;
 import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
 import com.gpw.radar.service.parser.web.stock.StockDataDetailsWebParser;
 import org.jsoup.nodes.Document;
@@ -37,6 +38,7 @@ public class Consumer {
     private final StockRepository stockRepository;
     private final StockDataDetailsWebParser detailsParser;
     private final UrlStreamsGetterService urlStreamsGetterService;
+    private final StockIndicatorsCalculator standardStockIndicatorsCalculator;
     private final Mapper<StockDetailsModel, StockDetails> mapper;
 
     @Autowired
@@ -44,11 +46,13 @@ public class Consumer {
                     StockRepository stockRepository,
                     @Qualifier("stooqDataParserService") StockDataDetailsWebParser detailsParser,
                     UrlStreamsGetterService urlStreamsGetterService,
+                    StockIndicatorsCalculator standardStockIndicatorsCalculator,
                     Mapper mapper) {
         this.stockDetailsRepository = stockDetailsRepository;
         this.stockRepository = stockRepository;
         this.detailsParser = detailsParser;
         this.urlStreamsGetterService = urlStreamsGetterService;
+        this.standardStockIndicatorsCalculator = standardStockIndicatorsCalculator;
         this.mapper = mapper;
     }
 
@@ -75,8 +79,9 @@ public class Consumer {
             logger.warn("Cannot update stock details as the date is invalid " + topDate);
         }
 
-        cleanCache();
         //calculate stock indicators
+        standardStockIndicatorsCalculator.calculateCurrentStockIndicators();
+        cleanCache();
         return stocksDetails;
     }
 

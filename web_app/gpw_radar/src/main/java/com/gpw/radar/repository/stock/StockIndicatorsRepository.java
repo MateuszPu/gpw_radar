@@ -9,9 +9,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 public interface StockIndicatorsRepository extends JpaRepository<StockIndicators, String> {
-    StockIndicators findByStock(Stock stock);
+    Optional<StockIndicators> findByStock(Stock stock);
 
     @Query(value = "from StockIndicators si join fetch si.stock where si.slopeSimpleRegression10Days > 1 and si.date = :date order by si.slopeSimpleRegression10Days desc", countQuery = "select count(si.stock) from StockIndicators si where si.slopeSimpleRegression10Days > 1 and si.date = :date")
     Page<StockIndicators> findWithStocksIndicators10DaysTrendUp(Pageable pageable, @Param("date") LocalDate date);
