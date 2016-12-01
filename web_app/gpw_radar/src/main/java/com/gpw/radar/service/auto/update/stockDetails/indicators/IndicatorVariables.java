@@ -29,30 +29,33 @@ public class IndicatorVariables {
         }
     }
 
-
     public BigDecimal calculatePercentReturn() {
         BigDecimal result = BigDecimal.ZERO;
         if (stockDetails.size() > 1) {
             BigDecimal todayClose = stockDetails.get(0).getClosePrice();
             BigDecimal previousClose = stockDetails.get(1).getClosePrice();
-            BigDecimal divide = todayClose.divide(previousClose, 6, BigDecimal.ROUND_HALF_UP);
-            BigDecimal subtract = divide.subtract(BigDecimal.ONE);
-            result = subtract.multiply(multiplicand);
+            if (isGreaterThanZero(previousClose)) {
+                BigDecimal divide = todayClose.divide(previousClose, 6, BigDecimal.ROUND_HALF_UP);
+                BigDecimal subtract = divide.subtract(BigDecimal.ONE);
+                result = subtract.multiply(multiplicand);
+            }
         }
         return result.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    private boolean isGreaterThanZero(BigDecimal decimal) {
+        return decimal.compareTo(BigDecimal.ZERO) == 1;
     }
 
     public BigDecimal calculateAverageVolume(int period) {
         BigDecimal result = BigDecimal.ZERO;
         if (period <= stockDetails.size()) {
-            List<Long> volumesForPeriod = stockDetails.stream()
-                .map(e -> e.getVolume())
+            long sum = stockDetails.stream()
                 .limit(period)
-                .collect(Collectors.toList());
-            Long sum = volumesForPeriod.stream().mapToLong(e -> e).sum();
+                .mapToLong(e -> e.getVolume())
+                .sum();
             result = new BigDecimal(sum).divide(new BigDecimal(period), 6, BigDecimal.ROUND_HALF_UP);
         }
-
         return result.setScale(2, RoundingMode.HALF_UP);
     }
 
@@ -61,9 +64,10 @@ public class IndicatorVariables {
         if (period <= stockDetails.size()) {
             BigDecimal averageVolume = calculateAverageVolume(period);
             BigDecimal currentVolume = new BigDecimal(stockDetails.get(0).getVolume());
-            result = currentVolume.divide(averageVolume, 6, BigDecimal.ROUND_HALF_UP);
+            if (isGreaterThanZero(averageVolume)) {
+                result = currentVolume.divide(averageVolume, 6, BigDecimal.ROUND_HALF_UP);
+            }
         }
-
         return result.setScale(2, RoundingMode.HALF_UP);
     }
 
@@ -73,7 +77,6 @@ public class IndicatorVariables {
             BigDecimal averageVolume = calculateAverageVolume(period);
             result = stockDetails.get(0).getClosePrice().multiply(averageVolume);
         }
-
         return result.setScale(2, RoundingMode.HALF_UP);
     }
 
@@ -110,10 +113,12 @@ public class IndicatorVariables {
     }
 
     private BigDecimal normalizeData(BigDecimal number, BigDecimal max, BigDecimal min) {
+        BigDecimal result = BigDecimal.ZERO;
         BigDecimal subtractNumberMin = number.subtract(min);
         BigDecimal subtractMaxMin = max.subtract(min);
-        BigDecimal result = subtractNumberMin.divide(subtractMaxMin, 6, BigDecimal.ROUND_HALF_UP).multiply(multiplicand);
-
+        if (isGreaterThanZero(subtractMaxMin)) {
+            result = subtractNumberMin.divide(subtractMaxMin, 6, BigDecimal.ROUND_HALF_UP).multiply(multiplicand);
+        }
         return result.setScale(2, RoundingMode.HALF_UP);
     }
 

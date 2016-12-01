@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service("stockDetailsDatabaseConsumer")
-@Profile("!" + Constants.SPRING_PROFILE_FAST)
+@Profile("!" + Constants.SPRING_PROFILE_DEVELOPMENT)
 public class Consumer {
 
     private final Logger logger = LoggerFactory.getLogger(Consumer.class);

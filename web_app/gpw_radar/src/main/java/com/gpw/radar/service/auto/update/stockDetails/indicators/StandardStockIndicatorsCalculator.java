@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component("standardStockIndicatorsCalculator")
 public class StandardStockIndicatorsCalculator implements StockIndicatorsCalculator {
@@ -37,30 +38,37 @@ public class StandardStockIndicatorsCalculator implements StockIndicatorsCalcula
     }
 
     public StockIndicators calculateStockIndicator(Stock stock) {
-        StockIndicators stockIndicators = stockIndicatorsRepository.findByStock(stock).orElse(new StockIndicators());
-        IndicatorVariables indicatorVariables = prepareVariables(stock);
+        StockIndicators stockIndicators = stockIndicatorsRepository.findByStockTicker(stock.getTicker())
+            .orElse(new StockIndicators());
+        if (prepareVariables(stock).isPresent()) {
+            IndicatorVariables indicatorVariables = prepareVariables(stock).get();
 
-        stockIndicators.setPercentReturn(indicatorVariables.calculatePercentReturn());
-        stockIndicators.setAverageVolume10Days(indicatorVariables.calculateAverageVolume(10));
-        stockIndicators.setAverageVolume30Days(indicatorVariables.calculateAverageVolume(30));
-        stockIndicators.setVolumeRatio10(indicatorVariables.calculateVolumeRatio(10));
-        stockIndicators.setVolumeRatio30(indicatorVariables.calculateVolumeRatio(30));
-        stockIndicators.setVolumeValue30Days(indicatorVariables.calculateAverageVolumeValue(30));
+            stockIndicators.setPercentReturn(indicatorVariables.calculatePercentReturn());
+            stockIndicators.setAverageVolume10Days(indicatorVariables.calculateAverageVolume(10));
+            stockIndicators.setAverageVolume30Days(indicatorVariables.calculateAverageVolume(30));
+            stockIndicators.setVolumeRatio10(indicatorVariables.calculateVolumeRatio(10));
+            stockIndicators.setVolumeRatio30(indicatorVariables.calculateVolumeRatio(30));
+            stockIndicators.setVolumeValue30Days(indicatorVariables.calculateAverageVolumeValue(30));
 
-        stockIndicators.setSlopeSimpleRegression10Days(indicatorVariables.calculateSlopeSimpleRegression(10));
-        stockIndicators.setSlopeSimpleRegression30Days(indicatorVariables.calculateSlopeSimpleRegression(30));
-        stockIndicators.setSlopeSimpleRegression60Days(indicatorVariables.calculateSlopeSimpleRegression(60));
-        stockIndicators.setSlopeSimpleRegression90Days(indicatorVariables.calculateSlopeSimpleRegression(90));
-        if (indicatorVariables.getDate() != null) {
-            stockIndicators.setDate(indicatorVariables.getDate());
+            stockIndicators.setSlopeSimpleRegression10Days(indicatorVariables.calculateSlopeSimpleRegression(10));
+            stockIndicators.setSlopeSimpleRegression30Days(indicatorVariables.calculateSlopeSimpleRegression(30));
+            stockIndicators.setSlopeSimpleRegression60Days(indicatorVariables.calculateSlopeSimpleRegression(60));
+            stockIndicators.setSlopeSimpleRegression90Days(indicatorVariables.calculateSlopeSimpleRegression(90));
+            if (indicatorVariables.getDate() != null) {
+                stockIndicators.setDate(indicatorVariables.getDate());
+            }
+            stockIndicators.setStock(stock);
         }
-        stockIndicators.setStock(stock);
         return stockIndicators;
     }
 
-    private IndicatorVariables prepareVariables(Stock stock) {
+    private Optional<IndicatorVariables> prepareVariables(Stock stock) {
+        Optional<IndicatorVariables> result = Optional.empty();
         Pageable top100th = new PageRequest(0, 100);
         Page<StockDetails> stockDetails = stockDetailsRepository.findByStockOrderByDateDesc(stock, top100th);
-        return new IndicatorVariables(stockDetails.getContent());
+        if (stockDetails.getContent() != null && stockDetails.getContent().size() > 2) {
+            result = Optional.of(new IndicatorVariables(stockDetails.getContent()));
+        }
+        return result;
     }
 }

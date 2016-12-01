@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Service("rssChatConsumer")
-@Profile("!" + Constants.SPRING_PROFILE_FAST)
+@Profile("!" + Constants.SPRING_PROFILE_DEVELOPMENT)
 public class Consumer {
 
     private final ChatMessageRepository chatMessageRepository;

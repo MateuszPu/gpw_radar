@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Service("rssMailConsumer")
-@Profile("!" + Constants.SPRING_PROFILE_FAST)
+@Profile("!" + Constants.SPRING_PROFILE_DEVELOPMENT)
 public class Consumer {
 
     private final MailService mailService;

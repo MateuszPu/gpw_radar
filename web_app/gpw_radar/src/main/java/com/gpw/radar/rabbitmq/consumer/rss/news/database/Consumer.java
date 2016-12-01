@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service("rssDatabaseConsumer")
-@Profile("!" + Constants.SPRING_PROFILE_FAST)
+@Profile("!" + Constants.SPRING_PROFILE_DEVELOPMENT)
 public class Consumer {
 
     private final String newsTypeHeader;
