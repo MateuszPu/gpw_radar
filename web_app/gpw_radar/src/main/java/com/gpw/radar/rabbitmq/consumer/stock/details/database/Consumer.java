@@ -100,7 +100,6 @@ public class Consumer {
     }
 
     private Stock createStock(String ticker, Document doc) {
-        System.out.println("create stock with ticker " + ticker);
         Stock stock = new Stock();
         stock.setTicker(ticker);
         String stockName = detailsParser.getStockNameFromWeb(doc);

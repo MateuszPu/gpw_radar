@@ -138,7 +138,8 @@ public class StockService {
 
     @Transactional
     public ResponseEntity<List<StockDTO>> getStocksFollowedByUser(String login) {
-        Set<Stock> stocksFollowedByUser = userRepository.findOneByLoginFetchStocks(login).getStocks();
+        User oneByLoginFetchStocks = userRepository.findOneByLoginFetchStocks(login);
+        Set<Stock> stocksFollowedByUser = oneByLoginFetchStocks.getStocks();
         return new ResponseEntity<List<StockDTO>>(getStockDTOs(stocksFollowedByUser), HttpStatus.OK);
     }
 

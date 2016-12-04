@@ -49,6 +49,9 @@
         <resources>
             <resource>
                 <directory>../../configs/rabbitmq/properties</directory>
+                <includes>
+                    <include>rabbitmq_config.properties</include>
+                </includes>
             </resource>
             <resource>
                 <directory>../../configs/shared</directory>

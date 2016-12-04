@@ -32,9 +32,8 @@ public class StandardStockIndicatorsCalculator implements StockIndicatorsCalcula
     public List<StockIndicators> calculateCurrentStockIndicators() {
         List<StockIndicators> stockIndicators = new ArrayList<StockIndicators>();
         List<Stock> dbStocks = stockRepository.findAll();
-        dbStocks.stream()
-            .forEach(st -> stockIndicators.add(calculateStockIndicator(st)));
-        return stockIndicatorsRepository.save(stockIndicators);
+        dbStocks.forEach(st -> stockIndicators.add(calculateStockIndicator(st)));
+        return stockIndicators;
     }
 
     public StockIndicators calculateStockIndicator(Stock stock) {
@@ -59,6 +58,7 @@ public class StandardStockIndicatorsCalculator implements StockIndicatorsCalcula
             }
             stockIndicators.setStock(stock);
         }
+        stockRepository.save(stock);
         return stockIndicators;
     }
 

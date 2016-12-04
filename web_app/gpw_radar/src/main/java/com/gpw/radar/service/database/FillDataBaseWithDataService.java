@@ -93,7 +93,11 @@ public class FillDataBaseWithDataService {
             Stock stock = new Stock();
             stock.setTicker(element);
             stock.setStockName(stockDataNameParser.getStockNameFromWeb(doc));
-            stock.setStockShortName(stockDataNameParser.getStockShortNameFromWeb(doc));
+            String stockShortNameFromWeb = stockDataNameParser.getStockShortNameFromWeb(doc);
+            if(stockShortNameFromWeb.endsWith("PDA")) {
+                continue;
+            }
+            stock.setStockShortName(stockShortNameFromWeb);
             stockRepository.save(stock);
         }
         fillDataStatusRepository.updateType(Type.STOCK.toString());

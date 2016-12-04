@@ -41,7 +41,11 @@ public class GpwSiteParser implements WebStockDetailsParser {
             Elements select = tableRows.get(index).select("td");
 
             StockDetails std = new StockDetails(getElement(select, LAST_CLOSE_PRICE_INDEX));
-            std.setStockName(getElement(select, STOCK_NAME_INDEX));
+            String stockName = getElement(select, STOCK_NAME_INDEX);
+            if(stockName.endsWith("-PDA")) {
+                continue;
+            }
+            std.setStockName(stockName);
             std.setStockTicker(getElement(select, STOCK_TICKER_INDEX));
             std.setDate(date);
             String openPrice = getElement(select, OPEN_PRICE_INDEX);

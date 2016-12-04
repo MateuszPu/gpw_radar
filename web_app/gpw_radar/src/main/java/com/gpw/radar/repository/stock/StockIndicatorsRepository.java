@@ -1,8 +1,6 @@
 package com.gpw.radar.repository.stock;
 
-import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockIndicators;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,7 +11,8 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public interface StockIndicatorsRepository extends JpaRepository<StockIndicators, String> {
-    Optional<StockIndicators> findByStockTicker(String ticker);
+    @Query(value = "select * from stock_indicators where id = (select stock_indicators_id from stock where ticker = :ticker)", nativeQuery = true)
+    Optional<StockIndicators> findByStockTicker(@Param("ticker") String ticker);
 
     @Query(value = "from StockIndicators si join fetch si.stock where si.slopeSimpleRegression10Days > 1 and si.date = :date order by si.slopeSimpleRegression10Days desc", countQuery = "select count(si.stock) from StockIndicators si where si.slopeSimpleRegression10Days > 1 and si.date = :date")
     Page<StockIndicators> findWithStocksIndicators10DaysTrendUp(Pageable pageable, @Param("date") LocalDate date);

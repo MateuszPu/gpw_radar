@@ -16,40 +16,39 @@ public class StockIndicators {
     private String id;
 
     @Column(name = "slope_simple_regression_10")
-    private double slopeSimpleRegression10Days;
+    private double slopeSimpleRegression10Days = 0.0;
 
     @Column(name = "slope_simple_regression_30")
-    private double slopeSimpleRegression30Days;
+    private double slopeSimpleRegression30Days = 0.0;
 
     @Column(name = "slope_simple_regression_60")
-    private double slopeSimpleRegression60Days;
+    private double slopeSimpleRegression60Days = 0.0;
 
     @Column(name = "slope_simple_regression_90")
-    private double slopeSimpleRegression90Days;
+    private double slopeSimpleRegression90Days = 0.0;
 
     @Column(name = "average_volume_10_days", precision = 10, scale = 2, nullable = false)
-    private BigDecimal averageVolume10Days;
+    private BigDecimal averageVolume10Days = new BigDecimal(0);
 
     @Column(name = "average_volume_30_days", precision = 10, scale = 2, nullable = false)
-    private BigDecimal averageVolume30Days;
+    private BigDecimal averageVolume30Days = new BigDecimal(0);
 
     @Column(name = "volume_ratio_10", precision = 10, scale = 2, nullable = false)
-    private BigDecimal volumeRatio10;
+    private BigDecimal volumeRatio10 = new BigDecimal(0);
 
     @Column(name = "volume_ratio_30", precision = 10, scale = 2, nullable = false)
-    private BigDecimal volumeRatio30;
+    private BigDecimal volumeRatio30 = new BigDecimal(0);
 
     @Column(name = "percent_return", precision = 10, scale = 2, nullable = false)
-    private BigDecimal percentReturn;
+    private BigDecimal percentReturn = new BigDecimal(0);
 
     @Column(name = "volume_value_30_days", precision = 25, scale = 2)
-    private BigDecimal volumeValue30Days;
+    private BigDecimal volumeValue30Days = new BigDecimal(0);
 
     private LocalDate date;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "stockIndicators")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "stockIndicators", cascade = CascadeType.MERGE)
     private Stock stock;
-
 
     public String getId() {
         return id;
@@ -153,6 +152,7 @@ public class StockIndicators {
     }
 
     public void setStock(Stock stock) {
+        stock.setStockIndicators(this);
         this.stock = stock;
     }
 }

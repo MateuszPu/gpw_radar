@@ -35,7 +35,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     Optional<User> findOneById(String userId);
 
-    @Query(value = "from User u join fetch u.stocks where u.login = :login")
+    @Query(value = "from User u left outer join u.stocks where u.login = :login")
     User findOneByLoginFetchStocks(@Param("login") String login);
 
     @Modifying
