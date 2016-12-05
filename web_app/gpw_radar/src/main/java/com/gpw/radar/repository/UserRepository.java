@@ -30,12 +30,12 @@ public interface UserRepository extends JpaRepository<User, String> {
     Optional<User> findOneByEmail(String email);
 
     @Cacheable(cacheNames = CacheConfiguration.USER_INFO_CACHE)
-    @Query(value = "from User u join fetch u.authorities where u.login = :login")
-    Optional<User> findOneByLogin(@Param("login") String login);
+//    @Query(value = "from User u left outer join u.authorities where u.login = :login")
+    Optional<User> findOneByLogin(String login);
 
     Optional<User> findOneById(String userId);
 
-    @Query(value = "from User u left outer join u.stocks where u.login = :login")
+    @Query(value = "select * from users us left outer join user_stocks usst on us.id = usst.user_id left outer join stock st on st.id = usst.stock_id where us.login = :login", nativeQuery = true)
     User findOneByLoginFetchStocks(@Param("login") String login);
 
     @Modifying
