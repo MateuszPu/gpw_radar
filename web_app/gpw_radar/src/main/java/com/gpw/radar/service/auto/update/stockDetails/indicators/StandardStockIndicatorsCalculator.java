@@ -37,6 +37,7 @@ public class StandardStockIndicatorsCalculator implements StockIndicatorsCalcula
     }
 
     public StockIndicators calculateStockIndicator(Stock stock) {
+        //TODO: refactor this, now we create over 400 select to DB
         StockIndicators stockIndicators = stockIndicatorsRepository.findByStockTicker(stock.getTicker())
             .orElse(new StockIndicators());
         if (prepareVariables(stock).isPresent()) {
@@ -56,8 +57,8 @@ public class StandardStockIndicatorsCalculator implements StockIndicatorsCalcula
             if (indicatorVariables.getDate() != null) {
                 stockIndicators.setDate(indicatorVariables.getDate());
             }
-            stockIndicators.setStock(stock);
         }
+        stock.setStockIndicators(stockIndicators);
         stockRepository.save(stock);
         return stockIndicators;
     }

@@ -47,9 +47,6 @@ public class StockIndicators {
 
     private LocalDate date;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "stockIndicators", cascade = CascadeType.MERGE)
-    private Stock stock;
-
     public String getId() {
         return id;
     }
@@ -145,14 +142,5 @@ public class StockIndicators {
 
     public void setDate(LocalDate date) {
         this.date = date;
-    }
-
-    public Stock getStock() {
-        return stock;
-    }
-
-    public void setStock(Stock stock) {
-        stock.setStockIndicators(this);
-        this.stock = stock;
     }
 }
