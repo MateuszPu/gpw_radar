@@ -5,7 +5,7 @@
 
     <appender name="FILE_DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>rabbit-mq-logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>rabbit-logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>90</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -14,8 +14,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.rss.rabbitmq" level="DEBUG"/>
-
+    <logger name="com.rss.rabbitmq" level="WARN"/>
     <logger name="javax.activation" level="WARN"/>
     <logger name="javax.mail" level="WARN"/>
     <logger name="javax.xml.bind" level="WARN"/>
@@ -29,9 +28,6 @@
     <logger name="org.apache" level="WARN"/>
     <logger name="org.apache.catalina.startup.DigesterFactory" level="OFF"/>
     <logger name="org.bson" level="WARN"/>
-    <logger name="org.hibernate.validator" level="WARN"/>
-    <logger name="org.hibernate" level="WARN"/>
-    <logger name="org.hibernate.ejb.HibernatePersistence" level="OFF"/>
     <logger name="org.springframework" level="WARN"/>
     <logger name="org.springframework.web" level="WARN"/>
     <logger name="org.springframework.security" level="WARN"/>
@@ -40,14 +36,13 @@
     <logger name="org.xnio" level="WARN"/>
     <logger name="springfox" level="WARN"/>
     <logger name="sun.rmi" level="WARN"/>
-    <logger name="liquibase" level="WARN"/>
     <logger name="sun.rmi.transport" level="WARN"/>
 
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
         <resetJUL>true</resetJUL>
     </contextListener>
 
-    <root level="DEBUG">
+    <root level="WARN">
         <appender-ref ref="FILE_DEBUG"/>
     </root>
 
