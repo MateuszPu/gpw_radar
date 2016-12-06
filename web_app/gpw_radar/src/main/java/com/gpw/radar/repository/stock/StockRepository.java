@@ -5,6 +5,7 @@ import com.gpw.radar.domain.stock.Stock;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +18,11 @@ public interface StockRepository extends JpaRepository<Stock, String> {
 
     @Cacheable(value = CacheConfiguration.STOCK_CACHE)
     Stock findByTicker(String ticker);
+
+    @Query(value = "select * from stock st " +
+        "inner join user_stocks usst on st.id = usst.stock_id " +
+        "inner join users us on us.id = usst.user_id where us.login = :login", nativeQuery = true)
+    Set<Stock> findFollowedByUserLogin(@Param("login") String login);
 
     @Cacheable(value = CacheConfiguration.STOCK_TICKERS_CACHE)
     @Query(value = "SELECT ticker from Stock", nativeQuery = true)

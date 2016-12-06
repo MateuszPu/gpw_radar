@@ -3,7 +3,6 @@ package com.gpw.radar.repository;
 import com.gpw.radar.config.CacheConfiguration;
 import com.gpw.radar.domain.User;
 import com.gpw.radar.domain.stock.Stock;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -33,9 +32,6 @@ public interface UserRepository extends JpaRepository<User, String> {
     Optional<User> findOneByLogin(String login);
 
     Optional<User> findOneById(String userId);
-
-    @Query(value = "select * from users us left outer join user_stocks usst on us.id = usst.user_id left outer join stock st on st.id = usst.stock_id where us.login = :login", nativeQuery = true)
-    User findOneByLoginFetchStocks(@Param("login") String login);
 
     @Modifying
     @Query(value = "insert into USER_STOCKS (user_id, stock_id) values (:userId, :stockId)", nativeQuery = true)
