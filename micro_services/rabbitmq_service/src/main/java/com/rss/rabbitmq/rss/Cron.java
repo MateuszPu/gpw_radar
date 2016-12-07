@@ -43,7 +43,8 @@ public class Cron {
             if (!gpwNewses.isEmpty()) {
                 LocalDateTime dateTime = gpwNewses.stream()
                         .max((e1, e2) -> e1.getNewsDateTime().compareTo(e2.getNewsDateTime()))
-                        .get().getNewsDateTime();
+                        .get()
+                        .getNewsDateTime();
                 rssTypeTimeMap.put(rss, dateTime);
                 String json = jsonConverter.convertToJson(gpwNewses);
                 producer.publish(json, rss.name());

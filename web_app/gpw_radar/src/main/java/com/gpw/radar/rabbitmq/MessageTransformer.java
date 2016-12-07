@@ -32,6 +32,9 @@ public class MessageTransformer {
         List<NewsMessage> newsMessages = mapper.transformFromJsonToDomainObject(message, GpwNewsModel.class, NewsMessage.class);
         newsMessages.stream().forEach(e -> e.setType(type));
         newsMessages.stream().forEach(e -> e.setStock(getStockFromTitle(e.getMessage()).orElse(null)));
+        if(type.equals(RssType.PAP)) {
+            newsMessages.forEach(e -> e.setNewsDateTime(e.getNewsDateTime().plusHours(1)));
+        }
         return newsMessages;
     }
 
