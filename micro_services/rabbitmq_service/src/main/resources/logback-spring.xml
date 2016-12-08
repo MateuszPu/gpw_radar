@@ -14,7 +14,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.rss.rabbitmq" level="WARN"/>
+    <logger name="com.rss.rabbitmq" level="DEBUG"/>
     <logger name="javax.activation" level="WARN"/>
     <logger name="javax.mail" level="WARN"/>
     <logger name="javax.xml.bind" level="WARN"/>
@@ -42,7 +42,7 @@
         <resetJUL>true</resetJUL>
     </contextListener>
 
-    <root level="WARN">
+    <root level="DEBUG">
         <appender-ref ref="FILE_DEBUG"/>
     </root>
 

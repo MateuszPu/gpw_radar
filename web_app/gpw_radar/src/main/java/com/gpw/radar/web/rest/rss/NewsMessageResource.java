@@ -30,7 +30,9 @@ public class NewsMessageResource {
 
     @RequestMapping(value = "/range", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @RolesAllowed(AuthoritiesConstants.USER)
-    public ResponseEntity<List<NewsDetailsDTO>> getNewsMessageByTypeAndDateRange(@RequestParam RssType type, @RequestParam String startDate, @RequestParam String endDate) {
+    public ResponseEntity<List<NewsDetailsDTO>> getNewsMessageByTypeAndDateRange(@RequestParam RssType type,
+                                                                                 @RequestParam String startDate,
+                                                                                 @RequestParam String endDate) {
         return newsMessageServiceable.getMessagesByTypeBetweenDates(type,
             startDate,
             endDate);
