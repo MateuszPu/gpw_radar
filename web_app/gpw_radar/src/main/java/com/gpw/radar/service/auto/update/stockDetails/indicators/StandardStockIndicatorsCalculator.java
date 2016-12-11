@@ -40,9 +40,9 @@ public class StandardStockIndicatorsCalculator implements StockIndicatorsCalcula
         //TODO: refactor this, now we create over 400 select to DB
         StockIndicators stockIndicators = stockIndicatorsRepository.findByStockTicker(stock.getTicker())
             .orElse(new StockIndicators());
-        if (prepareVariables(stock).isPresent()) {
-            IndicatorVariables indicatorVariables = prepareVariables(stock).get();
-
+        Optional<IndicatorVariables> indicatorVariables1 = prepareVariables(stock);
+        if (indicatorVariables1.isPresent()) {
+            IndicatorVariables indicatorVariables = indicatorVariables1.get();
             stockIndicators.setPercentReturn(indicatorVariables.calculatePercentReturn());
             stockIndicators.setAverageVolume10Days(indicatorVariables.calculateAverageVolume(10));
             stockIndicators.setAverageVolume30Days(indicatorVariables.calculateAverageVolume(30));
