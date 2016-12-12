@@ -10,11 +10,11 @@ import java.util.Map;
 @Configuration
 public class CustomDateTimeFormat {
 
-    private final String yearRegex = "[1-9][0-9]{3}";
-    private final String monthRegex = "[0-1][0-9]";
-    private final String dayRegex = "[0-3][0-9]";
-    private final String hourRegex = "([01]?[0-9]|2[0-3])";
-    private final String minutesSecondsRegex = "[0-5][0-9]";
+    public static final String yearRegex = "[1-9][0-9]{3}";
+    public static final String monthRegex = "[0-1][0-9]";
+    public static final String dayRegex = "[0-3][0-9]";
+    public static final String hourRegex = "([01]?[0-9]|2[0-3])";
+    public static final String minutesSecondsRegex = "[0-5][0-9]";
 
     @Bean(name = "localDateTimeFormatter")
     public Map<String, DateTimeFormatter> localDateTimeFormatter() {

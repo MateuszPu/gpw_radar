@@ -9,6 +9,6 @@ angular.module('gpwRadarApp')
     })
     .service("NewsMessageFormat", function () {
         this.getDateFormat = function () {
-            return "YYYY-MM-DD HH:mm:ss.SSS"
+            return "YYYY-MM-DD"
         }
     });
