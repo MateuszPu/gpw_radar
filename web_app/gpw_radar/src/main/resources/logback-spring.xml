@@ -8,7 +8,9 @@
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>gpw-logFile.%i-%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>90</maxHistory>
+            <!-- keep 30 days' worth of history capped at 3GB total size -->
+            <maxHistory>10</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
             <maxFileSize>10MB</maxFileSize>
         </rollingPolicy>
         <encoder>

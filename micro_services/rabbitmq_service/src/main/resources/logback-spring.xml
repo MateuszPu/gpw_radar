@@ -4,9 +4,12 @@
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
     <appender name="FILE_DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>rabbit-logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>90</maxHistory>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>rabbit-logFile.%i-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- keep 30 days' worth of history capped at 3GB total size -->
+            <maxHistory>10</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+            <maxFileSize>10MB</maxFileSize>
         </rollingPolicy>
         <encoder>
             <charset>utf-8</charset>
@@ -14,7 +17,20 @@
         </encoder>
     </appender>
 
-    <logger name="com.rss.rabbitmq" level="DEBUG"/>
+    <springProfile name="!prod">
+        <logger name="com.rss.rabbitmq" level="DEBUG"/>
+        <root level="DEBUG">
+            <appender-ref ref="FILE_DEBUG"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="prod">
+        <logger name="com.rss.rabbitmq" level="WARN"/>
+        <root level="WARN">
+            <appender-ref ref="FILE_DEBUG"/>
+        </root>
+    </springProfile>
+
     <logger name="javax.activation" level="WARN"/>
     <logger name="javax.mail" level="WARN"/>
     <logger name="javax.xml.bind" level="WARN"/>
@@ -41,9 +57,5 @@
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
         <resetJUL>true</resetJUL>
     </contextListener>
-
-    <root level="DEBUG">
-        <appender-ref ref="FILE_DEBUG"/>
-    </root>
 
 </configuration>
