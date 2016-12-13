@@ -7,7 +7,7 @@
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>gpw-logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>gpw-logFile.%i-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>90</maxHistory>
             <maxFileSize>10MB</maxFileSize>
         </rollingPolicy>

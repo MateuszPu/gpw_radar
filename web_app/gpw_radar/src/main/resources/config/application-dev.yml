@@ -20,7 +20,7 @@ spring:
             enabled: false # we use Grunt + BrowserSync for livereload
     datasource:
         driver-class-name: org.postgresql.ds.PGSimpleDataSource
-        url: jdbc:postgresql://localhost:9000/gpw_radar
+        url: jdbc:postgresql://localhost:5432/gpw_radar
         name:
         username: postgres
         password: postgres
