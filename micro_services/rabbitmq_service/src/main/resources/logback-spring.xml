@@ -4,16 +4,7 @@
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
     <springProfile name="!prod">
-        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-            <encoder>
-                <charset>utf-8</charset>
-                <Pattern>%d %-5level [%thread] %logger{0}: %msg%n</Pattern>
-            </encoder>
-        </appender>
         <logger name="com.rss.rabbitmq" level="DEBUG"/>
-        <root level="DEBUG">
-            <appender-ref ref="CONSOLE"/>
-        </root>
     </springProfile>
 
     <springProfile name="prod">

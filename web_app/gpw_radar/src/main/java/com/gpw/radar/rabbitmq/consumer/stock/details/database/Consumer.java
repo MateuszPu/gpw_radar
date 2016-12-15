@@ -111,6 +111,6 @@ public class Consumer {
 
     @CacheEvict(cacheNames = {CacheConfiguration.STOCK_TICKERS_CACHE}, allEntries = true)
     private void cleanCache() {
-        logger.debug("Clean cache");
+        logger.info("Clean cache");
     }
 }
