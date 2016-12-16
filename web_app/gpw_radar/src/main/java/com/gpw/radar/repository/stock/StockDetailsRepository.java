@@ -23,7 +23,6 @@ public interface StockDetailsRepository extends JpaRepository<StockDetails, Stri
     StockDetails findTopByOrderByDateDesc();
 
     @Query(value = "select date from stock_details order by date desc limit 1", nativeQuery = true)
-    @Cacheable(cacheNames = CacheConfiguration.LAST_QUTED_DATE)
     LocalDate findTopDate();
 
     StockDetails findTopByStockOrderByDateDesc(Stock stock);

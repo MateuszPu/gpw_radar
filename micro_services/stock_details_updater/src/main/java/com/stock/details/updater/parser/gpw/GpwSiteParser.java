@@ -42,11 +42,12 @@ public class GpwSiteParser implements WebStockDetailsParser {
 
             StockDetails std = new StockDetails(getElement(select, LAST_CLOSE_PRICE_INDEX));
             String stockName = getElement(select, STOCK_NAME_INDEX);
-            if(stockName.endsWith("-PDA")) {
+            std.setStockName(stockName);
+            String ticker = getElement(select, STOCK_TICKER_INDEX);
+            std.setStockTicker(ticker);
+            if(stockName.endsWith("-PDA") || ticker.length() > 3) {
                 continue;
             }
-            std.setStockName(stockName);
-            std.setStockTicker(getElement(select, STOCK_TICKER_INDEX));
             std.setDate(date);
             String openPrice = getElement(select, OPEN_PRICE_INDEX);
             Matcher matcher = NUMBER_REGEX.matcher(openPrice);

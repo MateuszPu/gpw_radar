@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service("stockDetailsDatabaseConsumer")
 @Profile("!" + Constants.SPRING_PROFILE_DEVELOPMENT)
@@ -63,6 +64,7 @@ public class Consumer {
 
     public List<StockDetails> processMessage(Message message) throws IOException {
         List<StockDetails> stocksDetails = mapper.transformFromJsonToDomainObject(message, StockDetailsModel.class, StockDetails.class);
+        stocksDetails = stocksDetails.stream().filter(e -> e.getStock().getTicker().length() == 3).collect(Collectors.toList());
         LocalDate date = stocksDetails.stream().findAny().get().getDate();
         return processUpdate(stocksDetails, date);
     }
@@ -93,8 +95,7 @@ public class Consumer {
         Optional<Stock> stock = stocks.stream().filter(e -> e.getTicker().equalsIgnoreCase(ticker)).findAny();
         if (!stock.isPresent()) {
             Document doc = urlStreamsGetterService.getDocFromUrl("http://stooq.pl/q/?s=" + ticker);
-            stock = Optional.of(createStock(ticker, doc));
-            stockRepository.save(stock.get());
+            stock = Optional.of(stockRepository.save(createStock(ticker, doc)));
         }
         return stock.get();
     }
