@@ -95,7 +95,8 @@ public class Consumer {
         Optional<Stock> stock = stocks.stream().filter(e -> e.getTicker().equalsIgnoreCase(ticker)).findAny();
         if (!stock.isPresent()) {
             Document doc = urlStreamsGetterService.getDocFromUrl("http://stooq.pl/q/?s=" + ticker);
-            stock = Optional.of(stockRepository.save(createStock(ticker, doc)));
+            stock = Optional.of(createStock(ticker, doc));
+            stockRepository.save(stock.get());
         }
         return stock.get();
     }
