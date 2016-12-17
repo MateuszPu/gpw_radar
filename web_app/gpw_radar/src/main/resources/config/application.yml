@@ -31,7 +31,7 @@ spring:
         host: smtp.gmail.com
         port: 587
         username: gpw.radar@gmail.com
-        password: mail_password
+        password: zaxscdvf89
         protocol: smtp
         tls: true
         properties.mail.smtp:
