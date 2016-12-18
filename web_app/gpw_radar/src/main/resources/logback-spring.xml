@@ -4,7 +4,6 @@
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
 <!-- The FILE and ASYNC appenders are here as examples for a production configuration -->
-
     <springProfile name="prod">
         <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
@@ -19,13 +18,10 @@
                 <Pattern>%d %-5level [%thread] %logger{0}: %msg%n</Pattern>
             </encoder>
         </appender>
-    </springProfile>
-    <!--
-        <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
-            <queueSize>512</queueSize>
+        <root level="@logback.loglevel@">
             <appender-ref ref="FILE"/>
-        </appender>
-    -->
+        </root>
+    </springProfile>
 
     <logger name="com.gpw.radar" level="@logback.loglevel@"/>
 
@@ -59,11 +55,5 @@
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
         <resetJUL>true</resetJUL>
     </contextListener>
-
-    <springProfile name="prod">
-        <root level="@logback.loglevel@">
-            <appender-ref ref="FILE"/>
-        </root>
-    </springProfile>
 
 </configuration>
