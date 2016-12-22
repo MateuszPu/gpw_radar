@@ -426,6 +426,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
+        <!-- elasticsearch -->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-elasticsearch</artifactId>
+        </dependency>
         <!-- technical indicators dependency-->
         <dependency>
             <groupId>pl.technical.analysis</groupId>
@@ -454,6 +459,9 @@
         <resources>
             <resource>
                 <directory>../../configs/rabbitmq/properties</directory>
+            </resource>
+            <resource>
+                <directory>../../configs/elasticsearch/properties</directory>
             </resource>
             <resource>
                 <filtering>true</filtering>

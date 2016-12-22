@@ -51,6 +51,11 @@ public class CustomAuditEventRepository {
             }
 
             @Override
+            public List<AuditEvent> find(String s, Date date, String s1) {
+                return null;
+            }
+
+            @Override
             @Transactional(propagation = Propagation.REQUIRES_NEW)
             public void add(AuditEvent event) {
                 if (!AUTHORIZATION_FAILURE.equals(event.getType()) &&
@@ -64,6 +69,11 @@ public class CustomAuditEventRepository {
                     persistentAuditEvent.setData(auditEventConverter.convertDataToStrings(event.getData()));
                     persistenceAuditEventRepository.save(persistentAuditEvent);
                 }
+            }
+
+            @Override
+            public List<AuditEvent> find(Date date) {
+                return null;
             }
         };
     }
