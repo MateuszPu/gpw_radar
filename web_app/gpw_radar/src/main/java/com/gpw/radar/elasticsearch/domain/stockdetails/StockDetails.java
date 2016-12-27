@@ -1,4 +1,4 @@
-package com.gpw.radar.elasticsearch.domain;
+package com.gpw.radar.elasticsearch.domain.stockdetails;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -12,7 +12,7 @@ import org.springframework.data.elasticsearch.annotations.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Document(indexName = "stock_details", type = "daily", shards = 5, replicas = 0)
+@Document(indexName = "stock_details", type = "daily", replicas = 0)
 public class StockDetails {
 
     @Id
