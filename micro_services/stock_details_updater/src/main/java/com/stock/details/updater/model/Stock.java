@@ -3,11 +3,11 @@ package com.stock.details.updater.model;
 public class Stock {
 
     String ticker;
-    String stockShortName;
+    String shortName;
 
-    public Stock(String ticker, String stockShortName) {
+    public Stock(String ticker, String shortName) {
         this.ticker = ticker;
-        this.stockShortName = stockShortName;
+        this.shortName = shortName;
     }
 
     public String getTicker() {
@@ -18,11 +18,11 @@ public class Stock {
         this.ticker = ticker;
     }
 
-    public String getStockShortName() {
-        return stockShortName;
+    public String getShortName() {
+        return shortName;
     }
 
-    public void setStockShortName(String stockShortName) {
-        this.stockShortName = stockShortName;
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 }

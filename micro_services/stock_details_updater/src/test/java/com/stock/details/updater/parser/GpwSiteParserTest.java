@@ -37,7 +37,7 @@ public class GpwSiteParserTest {
         List<StockDetails> stockDetails = parser.getCurrentStockDetails(rowElements, date);
 
         StockDetails magnaStock = stockDetails.stream().filter(e -> e.getStock().getTicker().equals("06n")).findAny().get();
-        assertThat(magnaStock.getStock().getStockShortName()).isEqualTo("06MAGNA");
+        assertThat(magnaStock.getStock().getShortName()).isEqualTo("06MAGNA");
         assertThat(magnaStock.getStock().getTicker()).isEqualTo("06n");
         assertThat(magnaStock.getDate()).isEqualTo(date);
         assertThat(magnaStock.getOpenPrice()).isEqualTo(new BigDecimal("1.95"));
@@ -48,7 +48,7 @@ public class GpwSiteParserTest {
         assertThat(magnaStock.getVolume()).isEqualTo(206L);
 
         StockDetails agrowillStock = stockDetails.stream().filter(e -> e.getStock().getTicker().equals("awg")).findAny().get();
-        assertThat(agrowillStock.getStock().getStockShortName()).isEqualTo("AGROWILL");
+        assertThat(agrowillStock.getStock().getShortName()).isEqualTo("AGROWILL");
         assertThat(agrowillStock.getStock().getTicker()).isEqualTo("awg");
         assertThat(agrowillStock.getDate()).isEqualTo(date);
         assertThat(agrowillStock.getOpenPrice()).isEqualTo(new BigDecimal("1.39"));
@@ -60,7 +60,7 @@ public class GpwSiteParserTest {
 
         StockDetails attStock = stockDetails.stream().filter(e -> e.getStock().getTicker().equals("att")).findAny().get();
 
-        assertThat(attStock.getStock().getStockShortName()).isEqualTo("GRUPAAZOTY");
+        assertThat(attStock.getStock().getShortName()).isEqualTo("GRUPAAZOTY");
         assertThat(attStock.getStock().getTicker()).isEqualTo("att");
         assertThat(attStock.getDate()).isEqualTo(date);
         assertThat(attStock.getOpenPrice()).isEqualTo(new BigDecimal("4133.05"));
