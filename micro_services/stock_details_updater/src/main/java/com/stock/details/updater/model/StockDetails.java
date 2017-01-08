@@ -5,8 +5,7 @@ import java.time.LocalDate;
 
 public class StockDetails {
 
-    private String stockTicker;
-    private String stockName;
+    private Stock stock;
     private LocalDate date;
     private BigDecimal openPrice;
     private BigDecimal maxPrice;
@@ -18,27 +17,20 @@ public class StockDetails {
     public StockDetails() {
     }
 
-    public StockDetails(String lastPrice) {
+    public StockDetails(String lastPrice, Stock stock) {
         setOpenPrice(new BigDecimal(lastPrice));
         setMaxPrice(new BigDecimal(lastPrice));
         setMinPrice(new BigDecimal(lastPrice));
         setClosePrice(new BigDecimal(lastPrice));
+        this.stock = stock;
     }
 
-    public String getStockTicker() {
-        return stockTicker;
+    public Stock getStock() {
+        return stock;
     }
 
-    public void setStockTicker(String stockTicker) {
-        this.stockTicker = stockTicker;
-    }
-
-    public String getStockName() {
-        return stockName;
-    }
-
-    public void setStockName(String stockName) {
-        this.stockName = stockName;
+    public void setStock(Stock stock) {
+        this.stock = stock;
     }
 
     public LocalDate getDate() {
