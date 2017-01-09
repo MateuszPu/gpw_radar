@@ -2,6 +2,7 @@ package com.gpw.radar.service.database;
 
 import com.gpw.radar.domain.database.Type;
 import com.gpw.radar.domain.stock.*;
+import com.gpw.radar.elasticsearch.repository.StockDetailsEsRepository;
 import com.gpw.radar.repository.auto.update.FillDataStatusRepository;
 import com.gpw.radar.repository.stock.*;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
@@ -13,6 +14,8 @@ import com.gpw.radar.service.parser.web.stockDetails.GpwSiteStockDetailsParser;
 import com.gpw.radar.service.parser.web.stockDetails.StockDetailsParser;
 import com.gpw.radar.service.parser.web.stockFinanceEvent.StockFinanceEventParser;
 import org.jsoup.nodes.Document;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
@@ -27,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -61,6 +65,9 @@ public class FillDataBaseWithDataService {
 
     @Inject
     private DateAndTimeParserService dateAndTimeParserService;
+
+    @Inject
+    private StockDetailsEsRepository esService;
 
     @Inject
     private BeanFactory beanFactory;
@@ -112,19 +119,31 @@ public class FillDataBaseWithDataService {
         LocalDate now = LocalDate.now();
         LocalDate daysAgo = now.minusDays(period);
 
+        List<StockDetails> stockDetailsEs = new LinkedList<>();
         for (LocalDate date = daysAgo; date.isBefore(now); date = date.plusDays(1)) {
             if (date.getDayOfWeek().equals(DayOfWeek.SATURDAY) || date.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
                 continue;
             }
             try {
                 List<StockDetails> stockDetails = stockDetailsParser.parseStockDetails(date);
+                stockDetailsEs.addAll(stockDetails);
                 stockDetailsRepository.save(stockDetails);
             } catch (IOException e) {
                 logger.error("Error occurs: " + e.getMessage());
             }
         }
         fillDataStatusRepository.updateType(Type.STOCK_DETAILS.toString());
+
+        esService.save(converTo(stockDetailsEs));
         return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    private List<com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails> converTo(List<StockDetails> stockDetailsEs) {
+        ModelMapper modelMapper = new ModelMapper();
+        java.lang.reflect.Type dtoType = new TypeToken<List<com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails>>() {
+        }.getType();
+        List<com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails> dto = modelMapper.map(stockDetailsEs, dtoType);
+        return dto;
     }
 
     public ResponseEntity<Void> fillDataBaseWithStockFiveMinutesDetails() {

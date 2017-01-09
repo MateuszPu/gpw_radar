@@ -1,6 +1,6 @@
 package com.gpw.radar.web.rest.stock;
 
-import com.gpw.radar.repository.stock.StockDetailsRepository;
+import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsDaoEs;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +20,10 @@ import java.time.LocalDate;
 public class StockDetailsResource {
 
     @Inject
-    private StockDetailsRepository stockDetailsRepository;
+    private StockDetailsDaoEs stockDetailsDaoEs;
 
     @RequestMapping(value = "/get/top/by/date", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<LocalDate> getTopStockDetailsByDate() throws IOException {
-        return new ResponseEntity<LocalDate>(stockDetailsRepository.findTopDate(), HttpStatus.OK);
+        return new ResponseEntity<LocalDate>(stockDetailsDaoEs.findTopDate(), HttpStatus.OK);
     }
-
 }

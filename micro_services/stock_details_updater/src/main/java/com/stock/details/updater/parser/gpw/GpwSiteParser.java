@@ -24,7 +24,7 @@ public class GpwSiteParser implements WebStockDetailsParser {
     private static final int MAX_PRICE_INDEX = 10;
     private static final int CLOSE_PRICE_INDEX = 11;
     private static final int TRANSACTIONS_COUNT_INDEX = 20;
-    private static final int VOULME_INDEX = 21;
+    private static final int VOLUME_INDEX = 21;
     private static final int LAST_CLOSE_PRICE_INDEX = 6;
     private static final Pattern NUMBER_REGEX = Pattern.compile("\\d{1,5}\\.\\d{2}");
 
@@ -63,7 +63,7 @@ public class GpwSiteParser implements WebStockDetailsParser {
             std.setMaxPrice(new BigDecimal(getElement(select, MAX_PRICE_INDEX)));
             std.setMinPrice(new BigDecimal(getElement(select, MIN_PRICE_INDEX)));
             std.setClosePrice(new BigDecimal(getElement(select, CLOSE_PRICE_INDEX)));
-            std.setVolume(Long.valueOf(getElement(select, VOULME_INDEX)));
+            std.setVolume(Long.valueOf(getElement(select, VOLUME_INDEX)));
             std.setTransactionsNumber(Long.valueOf(getElement(select, TRANSACTIONS_COUNT_INDEX)));
         }
     }

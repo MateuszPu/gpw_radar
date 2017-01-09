@@ -11,12 +11,13 @@ import org.springframework.data.elasticsearch.annotations.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Document(indexName = "stock_details", type = "daily", replicas = 0)
 public class StockDetails {
 
     @Id
-    private String id;
+    private String id = UUID.randomUUID().toString();
 
     @Field(type = FieldType.Date, format = DateFormat.custom, pattern = "yyyy-MM-dd")
     @JsonDeserialize(using = CustomLocalDateDeserializer.class)
@@ -49,6 +50,7 @@ public class StockDetails {
     @Field(type = FieldType.Long)
     private Long volume;
 
+    @Field(type = FieldType.Object)
     private Stock stock;
 
     public String getId() {
@@ -120,6 +122,11 @@ public class StockDetails {
     }
 
     public void setStock(Stock stock) {
+        this.stock = stock;
+    }
+
+    public void setStockWith(String ticker, String name, String shortName) {
+        Stock stock = new Stock(ticker, name, shortName);
         this.stock = stock;
     }
 }

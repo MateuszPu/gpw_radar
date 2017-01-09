@@ -10,10 +10,19 @@ public class Stock {
     private String ticker;
 
     @Field(type= FieldType.String, index = FieldIndex.not_analyzed)
-    private String stockName;
+    private String name;
 
     @Field(type= FieldType.String, index = FieldIndex.not_analyzed)
-    private String stockShortName;
+    private String shortName;
+
+    public Stock() {
+    }
+
+    public Stock(String ticker, String name, String shortName) {
+        this.ticker = ticker;
+        this.name = name;
+        this.shortName = shortName;
+    }
 
     public String getTicker() {
         return ticker;
@@ -23,19 +32,19 @@ public class Stock {
         this.ticker = ticker;
     }
 
-    public String getStockName() {
-        return stockName;
+    public String getName() {
+        return name;
     }
 
-    public void setStockName(String stockName) {
-        this.stockName = stockName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getStockShortName() {
-        return stockShortName;
+    public String getShortName() {
+        return shortName;
     }
 
-    public void setStockShortName(String stockShortName) {
-        this.stockShortName = stockShortName;
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 }
