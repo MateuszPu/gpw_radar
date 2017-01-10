@@ -46,9 +46,6 @@ public class FillDataBaseWithDataService {
     private StockRepository stockRepository;
 
     @Inject
-    private StockDetailsRepository stockDetailsRepository;
-
-    @Inject
     private FillDataStatusRepository fillDataStatusRepository;
 
     @Inject
@@ -91,7 +88,7 @@ public class FillDataBaseWithDataService {
     }
 
     //TODO: refactor sending step as socket to application
-    public ResponseEntity<Void> fillDataBaseWithStocks() {
+    public ResponseEntity<HttpStatus> fillDataBaseWithStocks() {
         Document document = stockBatchWebParser.getDocumentForAllStocks();
         Set<String> tickers = stockBatchWebParser.fetchAllTickers(document);
 
@@ -108,10 +105,10 @@ public class FillDataBaseWithDataService {
             stockRepository.save(stock);
         }
         fillDataStatusRepository.updateType(Type.STOCK.toString());
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<Void> fillDataBaseWithStockDetails() {
+    public ResponseEntity<HttpStatus> fillDataBaseWithStockDetails() {
         List<Stock> all = stockRepository.findAll();
         StockDetailsParser stockDetailsParser = new GpwSiteStockDetailsParser(dateAndTimeParserService,
             urlStreamsGetterService, all);
@@ -127,7 +124,6 @@ public class FillDataBaseWithDataService {
             try {
                 List<StockDetails> stockDetails = stockDetailsParser.parseStockDetails(date);
                 stockDetailsEs.addAll(stockDetails);
-                stockDetailsRepository.save(stockDetails);
             } catch (IOException e) {
                 logger.error("Error occurs: " + e.getMessage());
             }
@@ -135,7 +131,7 @@ public class FillDataBaseWithDataService {
         fillDataStatusRepository.updateType(Type.STOCK_DETAILS.toString());
 
         esService.save(converTo(stockDetailsEs));
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     private List<com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails> converTo(List<StockDetails> stockDetailsEs) {
@@ -146,7 +142,7 @@ public class FillDataBaseWithDataService {
         return dto;
     }
 
-    public ResponseEntity<Void> fillDataBaseWithStockFiveMinutesDetails() {
+    public ResponseEntity<HttpStatus> fillDataBaseWithStockFiveMinutesDetails() {
         step = 0;
         Set<String> tickers = stockRepository.findAllTickers();
         ExecutorService executor = Executors.newFixedThreadPool(4);
@@ -172,14 +168,14 @@ public class FillDataBaseWithDataService {
             logger.error("Error occurs: " + e.getMessage());
         }
         fillDataStatusRepository.updateType(Type.STOCK_DETAILS_FIVE_MINUTES.toString());
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<Void> fillDataBaseWithStockFinanceEvent() {
+    public ResponseEntity<HttpStatus> fillDataBaseWithStockFinanceEvent() {
         List<StockFinanceEvent> stockFinanceEventFromWeb = stockFinanceEventParser.getStockFinanceEventFromWeb();
         stockFinanceEventRepository.save(stockFinanceEventFromWeb);
         fillDataStatusRepository.updateType(Type.STOCK_FINANCE_EVENTS.toString());
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     private synchronized void increaseStep() {

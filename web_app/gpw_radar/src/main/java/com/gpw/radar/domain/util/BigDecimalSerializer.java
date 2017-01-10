@@ -12,6 +12,7 @@ public class BigDecimalSerializer extends JsonSerializer<BigDecimal> {
 
     @Override
     public void serialize(BigDecimal bigDecimalValue, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
-        jsonGenerator.writeString(bigDecimalValue.toString());
+        double doubleValue = bigDecimalValue.doubleValue();
+        jsonGenerator.writeString(String.valueOf(doubleValue));
     }
 }

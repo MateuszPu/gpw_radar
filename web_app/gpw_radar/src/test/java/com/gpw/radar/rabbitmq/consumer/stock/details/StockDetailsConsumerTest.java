@@ -18,47 +18,34 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.StrictAssertions.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class StockDetailsConsumerTest {
 
-    private StockDetailsDaoEs stockDetailsDaoEsMock;
-    private StandardStockIndicatorsCalculator standardStockIndicatorsCalculatorMock;
-    private StockService stockServiceMock;
+    private StockDetailsDaoEs stockDetailsDaoEsMock = Mockito.mock(StockDetailsDaoEs.class);
+    private StandardStockIndicatorsCalculator standardStockIndicatorsCalculatorMock = Mockito.mock(StandardStockIndicatorsCalculator.class);
+    private StockService stockServiceMock = Mockito.mock(StockService.class);
     private Consumer objectUnderTest;
 
     @Before
     public void init() throws IOException {
-        mockStockDetailsRepository();
-        mockStandardStockIndicatorsCalculator();
-        mockStockService();
         objectUnderTest = new Consumer(stockDetailsDaoEsMock, stockServiceMock, standardStockIndicatorsCalculatorMock,
             new Mapper<StockDetails, StockDetails>());
     }
 
-    private void mockStockDetailsRepository() {
-        stockDetailsDaoEsMock = Mockito.mock(StockDetailsDaoEs.class);
-        when(stockDetailsDaoEsMock.findTopDate()).thenReturn(LocalDate.of(2016, 11, 16));
-    }
-
-    private void mockStockService() {
-        stockServiceMock = Mockito.mock(StockService.class);
-
-    }
-
-    private void mockStandardStockIndicatorsCalculator() {
-        standardStockIndicatorsCalculatorMock = Mockito.mock(StandardStockIndicatorsCalculator.class);
-    }
-
     @Test
     public void shouldCorrectParseStockDetails() throws IOException {
-        MessageProperties messageProperties = new MessageProperties();
-        Message rabbitMessage = new Message(prepareJsonMessageWithDate("2016-11-17"), messageProperties);
+        //given
+        given(stockDetailsDaoEsMock.findTopDate()).willReturn(LocalDate.of(2016, 11, 16));
+        Message rabbitMessage = prepareRabbitMessage("2016-11-17");
+
+        //when
         List<StockDetails> savedStocksDetails = objectUnderTest.parseStocksDetails(rabbitMessage);
 
+        //then
         StockDetails tpeStockDetails = getStockByTicker("tpe", savedStocksDetails);
         assertThat(tpeStockDetails.getStock().getTicker()).isEqualTo("tpe");
         assertThat(tpeStockDetails.getStock().getShortName()).isEqualTo("TAURON");
@@ -74,37 +61,67 @@ public class StockDetailsConsumerTest {
 
     @Test
     public void shouldCallAddMissingDataThreeTimes() throws IOException {
-        MessageProperties messageProperties = new MessageProperties();
-        Message rabbitMessage = new Message(prepareJsonMessageWithDate("2016-11-17"), messageProperties);
+        //given
+        given(stockDetailsDaoEsMock.findTopDate()).willReturn(LocalDate.of(2016, 11, 16));
+        Message rabbitMessage = prepareRabbitMessage("2016-11-17");
+
+        //when
         objectUnderTest.parseStocksDetails(rabbitMessage);
 
+        //then
         verify(stockServiceMock, times(3)).addMissingData(any());
     }
 
     @Test
     public void shouldCallCalculateStockIndicators() throws IOException {
-        MessageProperties messageProperties = new MessageProperties();
-        Message rabbitMessage = new Message(prepareJsonMessageWithDate("2016-11-17"), messageProperties);
+        //given
+        given(stockDetailsDaoEsMock.findTopDate()).willReturn(LocalDate.of(2016, 11, 16));
+        Message rabbitMessage = prepareRabbitMessage("2016-11-17");
+
+        //when
         objectUnderTest.parseStocksDetails(rabbitMessage);
 
+
+        //then
         verify(standardStockIndicatorsCalculatorMock, times(1)).calculateCurrentStockIndicators();
     }
 
     @Test
-    public void shouldReturnNotEmptyList() throws IOException {
-        MessageProperties messageProperties = new MessageProperties();
-        Message rabbitMessage = new Message(prepareJsonMessageWithDate("2016-11-17"), messageProperties);
+    public void shouldParseStockDetailsWhenMessageHasLaterDate() throws IOException {
+        //given
+        given(stockDetailsDaoEsMock.findTopDate()).willReturn(LocalDate.of(2016, 11, 16));
+        Message rabbitMessage = prepareRabbitMessage("2016-11-17");
+
+        //when
         List<StockDetails> savedStocksDetails = objectUnderTest.parseStocksDetails(rabbitMessage);
 
+        //then
         assertThat(savedStocksDetails.isEmpty()).isFalse();
     }
 
     @Test
-    public void shouldReturnEmptyList() throws IOException {
-        MessageProperties messageProperties = new MessageProperties();
-        Message rabbitMessage = new Message(prepareJsonMessageWithDate("2016-11-16"), messageProperties);
+    public void shouldNotParseStockDetailsWhenMessageHasTheSameDate() throws IOException {
+        //given
+        given(stockDetailsDaoEsMock.findTopDate()).willReturn(LocalDate.of(2016, 11, 16));
+        Message rabbitMessage = prepareRabbitMessage("2016-11-16");
+
+        //when
         List<StockDetails> savedStocksDetails = objectUnderTest.parseStocksDetails(rabbitMessage);
 
+        //then
+        assertThat(savedStocksDetails.isEmpty()).isTrue();
+    }
+
+    @Test
+    public void shouldNotParseStockDetailsWhenMessageHasTheEarlierDate() throws IOException {
+        //given
+        given(stockDetailsDaoEsMock.findTopDate()).willReturn(LocalDate.of(2016, 11, 16));
+        Message rabbitMessage = prepareRabbitMessage("2016-11-15");
+
+        //when
+        List<StockDetails> savedStocksDetails = objectUnderTest.parseStocksDetails(rabbitMessage);
+
+        //then
         assertThat(savedStocksDetails.isEmpty()).isTrue();
     }
 
@@ -113,6 +130,11 @@ public class StockDetailsConsumerTest {
             .filter(e -> e.getStock().getTicker().equalsIgnoreCase(ticker))
             .findAny()
             .get();
+    }
+
+    private Message prepareRabbitMessage(String date) {
+        MessageProperties messageProperties = new MessageProperties();
+        return new Message(prepareJsonMessageWithDate(date), messageProperties);
     }
 
     private byte[] prepareJsonMessageWithDate(String date) {

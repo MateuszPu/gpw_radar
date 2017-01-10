@@ -167,3 +167,5 @@ src/main/resources/rebel.xml
 
 **/.idea
 **/target
+
+/web_app/gpw_radar/data/**

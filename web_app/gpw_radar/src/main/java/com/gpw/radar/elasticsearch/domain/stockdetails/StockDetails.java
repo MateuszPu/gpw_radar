@@ -24,22 +24,22 @@ public class StockDetails {
     @JsonSerialize(using = CustomLocalDateSerializer.class)
     private LocalDate date;
 
-    @Field(type = FieldType.String, index = FieldIndex.not_analyzed)
+    @Field(type = FieldType.Double, index = FieldIndex.not_analyzed)
     @JsonDeserialize(using = BigDecimalDeserializer.class)
     @JsonSerialize(using = BigDecimalSerializer.class)
     private BigDecimal openPrice;
 
-    @Field(type = FieldType.String, index = FieldIndex.not_analyzed)
+    @Field(type = FieldType.Double, index = FieldIndex.not_analyzed)
     @JsonDeserialize(using = BigDecimalDeserializer.class)
     @JsonSerialize(using = BigDecimalSerializer.class)
     private BigDecimal maxPrice;
 
-    @Field(type = FieldType.String, index = FieldIndex.not_analyzed)
+    @Field(type = FieldType.Double, index = FieldIndex.not_analyzed)
     @JsonDeserialize(using = BigDecimalDeserializer.class)
     @JsonSerialize(using = BigDecimalSerializer.class)
     private BigDecimal minPrice;
 
-    @Field(type = FieldType.String, index = FieldIndex.not_analyzed)
+    @Field(type = FieldType.Double, index = FieldIndex.not_analyzed)
     @JsonDeserialize(using = BigDecimalDeserializer.class)
     @JsonSerialize(using = BigDecimalSerializer.class)
     private BigDecimal closePrice;
