@@ -52,7 +52,7 @@ public class ConfiguratorResource {
 
     @RequestMapping(value = "fill/database", method = RequestMethod.POST)
     @Transactional
-    public ResponseEntity<Void> fillDatabaseWithData(@RequestBody String type) {
+    public ResponseEntity<HttpStatus> fillDatabaseWithData(@RequestBody String type) {
         switch (Type.valueOf(type)) {
             case STOCK:
                 return fillDataBaseWithDataService.fillDataBaseWithStocks();
@@ -63,7 +63,7 @@ public class ConfiguratorResource {
             case STOCK_FINANCE_EVENTS:
                 return fillDataBaseWithDataService.fillDataBaseWithStockFinanceEvent();
             default:
-                return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST);
         }
     }
 

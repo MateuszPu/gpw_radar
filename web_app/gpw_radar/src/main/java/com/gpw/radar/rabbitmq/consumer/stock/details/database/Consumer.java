@@ -4,7 +4,6 @@ import com.gpw.radar.config.CacheConfiguration;
 import com.gpw.radar.config.Constants;
 import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
 import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsDao;
-import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsDaoEs;
 import com.gpw.radar.rabbitmq.Mapper;
 import com.gpw.radar.service.auto.update.stockDetails.indicators.StockIndicatorsCalculator;
 import com.gpw.radar.service.stock.StockService;
@@ -34,7 +33,7 @@ public class Consumer {
     private final Mapper<StockDetails, StockDetails> mapper;
 
     @Autowired
-    public Consumer(StockDetailsDaoEs stockDetailsDaoEs,
+    public Consumer(StockDetailsDao stockDetailsDaoEs,
                     StockService stockService,
                     StockIndicatorsCalculator standardStockIndicatorsCalculator,
                     Mapper mapper) {

@@ -6,13 +6,13 @@ import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.stock.StockService;
 import com.gpw.radar.service.technical.indicators.TickAdapter;
 import com.gpw.radar.web.rest.dto.stock.StockWithStockIndicatorsDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import pl.technical.analysis.Tickable;
 import pl.technical.analysis.indicators.trackers.sma.PriceCrossSMA;
 import pl.technical.analysis.indicators.trackers.sma.SMACrossover;
 
-import javax.inject.Inject;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,7 +23,7 @@ public class SmaIndicatorService {
     private final StockRepository stockRepository;
     private final StockService stockService;
 
-    @Inject
+    @Autowired
     public SmaIndicatorService(final StockDetailsRepository stockDetailsRepository, final StockRepository stockRepository, final StockService stockService) {
         this.stockDetailsRepository = stockDetailsRepository;
         this.stockRepository = stockRepository;
@@ -75,7 +75,7 @@ public class SmaIndicatorService {
             case SMA_CROSSOVER:
                 return new SmaCrossoverAdapter(new SMACrossover(ticks, fasterSma, slowerSma));
             default:
-                throw new IllegalArgumentException("not handle case in switch case regarding to type: " + type);
+                throw new IllegalArgumentException(String.format("Provided type %s not handle in switch case", type));
         }
     }
 }
