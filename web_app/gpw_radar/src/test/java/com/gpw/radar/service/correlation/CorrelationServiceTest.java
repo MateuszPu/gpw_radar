@@ -3,8 +3,8 @@ package com.gpw.radar.service.correlation;
 import com.gpw.radar.domain.stock.StockStatistic;
 import com.gpw.radar.elasticsearch.domain.stockdetails.Stock;
 import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
-import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsDao;
-import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsDaoEs;
+import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsDAO;
+import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsElasticSearchDAO;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.builders.StockDetailsEsBuilder;
 import org.junit.Test;
@@ -26,7 +26,7 @@ import static org.mockito.BDDMockito.given;
 @RunWith(value = Parameterized.class)
 public class CorrelationServiceTest {
 
-    private StockDetailsDao stockDetailsDaoEsMock = Mockito.mock(StockDetailsDaoEs.class);
+    private StockDetailsDAO stockDetailsDaoEsMock = Mockito.mock(StockDetailsElasticSearchDAO.class);
     private StockRepository stockRepositoryMock = Mockito.mock(StockRepository.class);
     private CorrelationService objectUnderTest = new CorrelationService(stockDetailsDaoEsMock, stockRepositoryMock);
 
@@ -102,7 +102,7 @@ public class CorrelationServiceTest {
         Random rnd = new Random();
         LocalDate startDate = LocalDate.of(2016, 5, 20);
         for (int i = 0; i < size; i++) {
-            result.add(StockDetailsEsBuilder.stockDetailsBuilder()
+            result.add(StockDetailsEsBuilder.buildStockDetails()
                 .closePrice(new BigDecimal(String.valueOf(rnd.nextInt(500))))
                 .date(startDate.minusDays(1))
                 .stock(new Stock(ticker, "", ""))

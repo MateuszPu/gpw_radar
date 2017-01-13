@@ -20,7 +20,7 @@ public class StockDetailsEsBuilder {
     private Long volume;
     private Stock stock;
 
-    public static StockDetailsEsBuilder stockDetailsBuilder() {
+    public static StockDetailsEsBuilder buildStockDetails() {
         return new StockDetailsEsBuilder();
     }
 

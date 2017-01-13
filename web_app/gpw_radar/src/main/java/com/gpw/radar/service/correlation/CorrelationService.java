@@ -2,11 +2,12 @@ package com.gpw.radar.service.correlation;
 
 import com.gpw.radar.domain.stock.StockStatistic;
 import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
-import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsDao;
+import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsDAO;
 import com.gpw.radar.repository.stock.StockRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.domain.PageRequest;
@@ -27,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS, value = "session")
 public class CorrelationService {
 
-    private final StockDetailsDao stockDetailsDaoEs;
+    private final StockDetailsDAO stockDetailsDAO;
     private final StockRepository stockRepository;
     private final Logger logger = LoggerFactory.getLogger(CorrelationService.class);
 
@@ -35,8 +36,8 @@ public class CorrelationService {
     private boolean isComputing;
 
     @Autowired
-    public CorrelationService(StockDetailsDao stockDetailsDaoEs, StockRepository stockRepository) {
-        this.stockDetailsDaoEs = stockDetailsDaoEs;
+    public CorrelationService(@Qualifier("stockDetailsElasticSearchDAO") StockDetailsDAO stockDetailsDAO, StockRepository stockRepository) {
+        this.stockDetailsDAO = stockDetailsDAO;
         this.stockRepository = stockRepository;
     }
 
@@ -99,7 +100,7 @@ public class CorrelationService {
 
     private List<StockDetails> getStockDetailsByTicker(String ticker, int period) {
         PageRequest pageable = new PageRequest(0, period);
-        List<StockDetails> stockDetails = stockDetailsDaoEs.findByStockTickerOrderByDateDesc(ticker, pageable);
+        List<StockDetails> stockDetails = stockDetailsDAO.findByStockTickerOrderByDateDesc(ticker, pageable);
         return stockDetails;
     }
 

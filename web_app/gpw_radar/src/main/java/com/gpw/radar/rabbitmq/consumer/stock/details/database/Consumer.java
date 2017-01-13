@@ -3,7 +3,7 @@ package com.gpw.radar.rabbitmq.consumer.stock.details.database;
 import com.gpw.radar.config.CacheConfiguration;
 import com.gpw.radar.config.Constants;
 import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
-import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsDao;
+import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsDAO;
 import com.gpw.radar.rabbitmq.Mapper;
 import com.gpw.radar.service.auto.update.stockDetails.indicators.StockIndicatorsCalculator;
 import com.gpw.radar.service.stock.StockService;
@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -27,17 +28,17 @@ public class Consumer {
 
     private final Logger logger = LoggerFactory.getLogger(Consumer.class);
 
-    private final StockDetailsDao stockDetailsDaoEs;
+    private final StockDetailsDAO stockDetailsDAO;
     private final StockService stockService;
     private final StockIndicatorsCalculator standardStockIndicatorsCalculator;
     private final Mapper<StockDetails, StockDetails> mapper;
 
     @Autowired
-    public Consumer(StockDetailsDao stockDetailsDaoEs,
+    public Consumer(@Qualifier("stockDetailsElasticSearchDAO") StockDetailsDAO stockDetailsDAO,
                     StockService stockService,
                     StockIndicatorsCalculator standardStockIndicatorsCalculator,
                     Mapper mapper) {
-        this.stockDetailsDaoEs = stockDetailsDaoEs;
+        this.stockDetailsDAO = stockDetailsDAO;
         this.stockService = stockService;
         this.standardStockIndicatorsCalculator = standardStockIndicatorsCalculator;
         this.mapper = mapper;
@@ -51,7 +52,7 @@ public class Consumer {
     public List<StockDetails> parseStocksDetails(Message message) throws IOException {
         List<StockDetails> stocksDetails = mapper.deserializeFromJson(message, StockDetails.class);
         LocalDate date = stocksDetails.stream().findAny().get().getDate();
-        LocalDate topDate = stockDetailsDaoEs.findTopDate();
+        LocalDate topDate = stockDetailsDAO.findTopDate();
         if (date.isAfter(topDate)) {
             return fillMandatoryData(stocksDetails);
         }
@@ -61,7 +62,7 @@ public class Consumer {
 
     private List<StockDetails> fillMandatoryData(List<StockDetails> stocksDetails) {
         stocksDetails.forEach(e -> stockService.addMissingData(e));
-        stockDetailsDaoEs.save(stocksDetails);
+        stockDetailsDAO.save(stocksDetails);
         standardStockIndicatorsCalculator.calculateCurrentStockIndicators();
         cleanCache();
         return stocksDetails;

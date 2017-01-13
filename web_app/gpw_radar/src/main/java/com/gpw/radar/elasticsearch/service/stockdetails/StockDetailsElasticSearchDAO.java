@@ -13,12 +13,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class StockDetailsDaoEs implements StockDetailsDao {
+public class StockDetailsElasticSearchDAO implements StockDetailsDAO {
 
     private final StockDetailsEsRepository stockDetailsEsRepository;
 
     @Autowired
-    public StockDetailsDaoEs(StockDetailsEsRepository stockDetailsEsRepository) {
+    public StockDetailsElasticSearchDAO(StockDetailsEsRepository stockDetailsEsRepository) {
         this.stockDetailsEsRepository = stockDetailsEsRepository;
     }
 

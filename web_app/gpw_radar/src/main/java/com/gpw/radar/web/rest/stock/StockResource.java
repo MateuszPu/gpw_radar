@@ -1,7 +1,7 @@
 package com.gpw.radar.web.rest.stock;
 
 import com.gpw.radar.domain.enumeration.TrendDirection;
-import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsDao;
+import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsDAO;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.security.AuthoritiesConstants;
 import com.gpw.radar.service.UserService;
@@ -9,6 +9,7 @@ import com.gpw.radar.service.stock.StockService;
 import com.gpw.radar.web.rest.dto.stock.StockIndicatorsWithStocksDTO;
 import com.gpw.radar.web.rest.dto.stock.StockWithStockIndicatorsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,15 +31,15 @@ public class StockResource {
     private final StockService stockService;
     private final UserService userService;
     private final StockRepository stockRepository;
-    private final StockDetailsDao stockDetailsEsDao;
+    private final StockDetailsDAO stockDetailsDAO;
 
     @Autowired
     public StockResource(StockService stockService, UserService userService, StockRepository stockRepository,
-                         StockDetailsDao stockDetailsEsDao) {
+                         @Qualifier("stockDetailsElasticSearchDAO")StockDetailsDAO stockDetailsDAO) {
         this.stockService = stockService;
         this.userService = userService;
         this.stockRepository = stockRepository;
-        this.stockDetailsEsDao = stockDetailsEsDao;
+        this.stockDetailsDAO = stockDetailsDAO;
     }
 
     @RequestMapping(value = "/stocks/get/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -51,7 +52,7 @@ public class StockResource {
     @RolesAllowed(AuthoritiesConstants.USER)
     public ResponseEntity<List<StockIndicatorsWithStocksDTO>> getStocksTrend(@PathVariable TrendDirection direction, @RequestParam int days, @RequestParam(value = "page") Integer offset,
                                                                              @RequestParam(value = "per_page") Integer limit) throws URISyntaxException {
-        LocalDate topDate = stockDetailsEsDao.findTopDate();
+        LocalDate topDate = stockDetailsDAO.findTopDate();
         return stockService.getTrendingStocks(topDate, direction, days, offset, limit);
     }
 
