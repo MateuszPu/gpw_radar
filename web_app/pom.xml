@@ -10,10 +10,14 @@
     <version>1.0</version>
     <name>Parent_module_for_gpw_radar_application</name>
 
+    <properties>
+        <spring-boot.version>1.4.3.RELEASE</spring-boot.version>
+    </properties>
+
     <parent>
         <artifactId>spring-boot-starter-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
-        <version>1.4.2.RELEASE</version>
+        <version>1.4.3.RELEASE</version>
     </parent>
 
     <modules>
