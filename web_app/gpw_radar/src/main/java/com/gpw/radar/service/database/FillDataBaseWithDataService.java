@@ -1,10 +1,17 @@
 package com.gpw.radar.service.database;
 
 import com.gpw.radar.domain.database.Type;
-import com.gpw.radar.domain.stock.*;
+import com.gpw.radar.domain.stock.Stock;
+import com.gpw.radar.domain.stock.StockFinanceEvent;
+import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
+import com.gpw.radar.domain.stock.StockFiveMinutesIndicators;
+import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
 import com.gpw.radar.elasticsearch.repository.StockDetailsEsRepository;
 import com.gpw.radar.repository.auto.update.FillDataStatusRepository;
-import com.gpw.radar.repository.stock.*;
+import com.gpw.radar.repository.stock.StockFinanceEventRepository;
+import com.gpw.radar.repository.stock.StockFiveMinutesDetailsRepository;
+import com.gpw.radar.repository.stock.StockFiveMinutesIndicatorsRepository;
+import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
 import com.gpw.radar.service.parser.file.stockFiveMinutesDetails.StockFiveMinutesDetailsParser;
 import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
@@ -14,8 +21,6 @@ import com.gpw.radar.service.parser.web.stockDetails.GpwSiteStockDetailsParser;
 import com.gpw.radar.service.parser.web.stockDetails.StockDetailsParser;
 import com.gpw.radar.service.parser.web.stockFinanceEvent.StockFinanceEventParser;
 import org.jsoup.nodes.Document;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
@@ -98,7 +103,7 @@ public class FillDataBaseWithDataService {
             stock.setTicker(element);
             stock.setStockName(stockDataNameParser.getStockNameFromWeb(doc));
             String stockShortNameFromWeb = stockDataNameParser.getStockShortNameFromWeb(doc);
-            if(stockShortNameFromWeb.endsWith("PDA")) {
+            if (stockShortNameFromWeb.endsWith("PDA")) {
                 continue;
             }
             stock.setStockShortName(stockShortNameFromWeb);
@@ -130,16 +135,8 @@ public class FillDataBaseWithDataService {
         }
         fillDataStatusRepository.updateType(Type.STOCK_DETAILS.toString());
 
-        esService.save(converTo(stockDetailsEs));
+        esService.save(stockDetailsEs);
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    private List<com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails> converTo(List<StockDetails> stockDetailsEs) {
-        ModelMapper modelMapper = new ModelMapper();
-        java.lang.reflect.Type dtoType = new TypeToken<List<com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails>>() {
-        }.getType();
-        List<com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails> dto = modelMapper.map(stockDetailsEs, dtoType);
-        return dto;
     }
 
     public ResponseEntity<HttpStatus> fillDataBaseWithStockFiveMinutesDetails() {

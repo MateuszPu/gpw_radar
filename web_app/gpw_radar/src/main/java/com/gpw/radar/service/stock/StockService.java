@@ -32,7 +32,6 @@ import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -119,14 +118,13 @@ public class StockService {
     }
 
     private Stock findStockByTicker(String ticker) {
-        Stock byTicker = stockRepository.findByTicker(ticker);
-        Optional<Stock> stock = byTicker == null ? Optional.empty() : Optional.of(byTicker);
-        if (!stock.isPresent()) {
+        Stock stock = stockRepository.findByTicker(ticker);
+        if (stock == null) {
             Document doc = urlStreamsGetterService.getDocFromUrl("http://stooq.pl/q/?s=" + ticker);
-            stock = Optional.of(createStock(ticker, doc));
-            stockRepository.save(stock.get());
+            stock = createStock(ticker, doc);
+            stockRepository.save(stock);
         }
-        return stock.get();
+        return stock;
     }
 
     private Stock createStock(String ticker, Document doc) {
