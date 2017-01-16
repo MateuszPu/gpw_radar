@@ -38,11 +38,6 @@
          </column>
       </createTable>
    </changeSet>
-   <changeSet author="mateusz" id="20150817192416-3">
-      <addColumn tableName="STOCK_DETAILS">
-         <column name="stock_id" type="varchar(64)"/>
-      </addColumn>
-   </changeSet>
    <changeSet author="mateusz" id="20150817192416-4">
       <addColumn tableName="STOCK_FINANCE_EVENT">
          <column name="stock_id" type="varchar(64)"/>
@@ -50,15 +45,6 @@
    </changeSet>
    <changeSet author="mateusz" id="20150817192416-5">
       <addPrimaryKey columnNames="user_id, stock_id" tableName="USER_STOCKS"/>
-   </changeSet>
-   <changeSet author="mateusz" id="20150817192416-6">
-      <addForeignKeyConstraint baseColumnNames="stock_id"
-                               baseTableName="STOCK_DETAILS"
-                               constraintName="FK_details_to_stock"
-                               deferrable="false"
-                               initiallyDeferred="false"
-                               referencedColumnNames="id"
-                               referencedTableName="STOCK"/>
    </changeSet>
    <changeSet author="mateusz" id="20150817192416-7">
       <addForeignKeyConstraint baseColumnNames="stock_id"
@@ -86,21 +72,6 @@
                                initiallyDeferred="false"
                                referencedColumnNames="id"
                                referencedTableName="STOCK"/>
-   </changeSet>
-   <changeSet author="mateusz" id="20150817192416-11">
-      <dropColumn columnName="average_volume_10_days" tableName="stock_details"/>
-   </changeSet>
-   <changeSet author="mateusz" id="20150817192416-12">
-      <dropColumn columnName="average_volume_30_days" tableName="stock_details"/>
-   </changeSet>
-   <changeSet author="mateusz" id="20150817192416-13">
-      <dropColumn columnName="percent_return" tableName="stock_details"/>
-   </changeSet>
-   <changeSet author="mateusz" id="20150817192416-14">
-      <dropColumn columnName="volume_ratio_10" tableName="stock_details"/>
-   </changeSet>
-   <changeSet author="mateusz" id="20150817192416-15">
-      <dropColumn columnName="volume_ratio_30" tableName="stock_details"/>
    </changeSet>
    <changeSet author="mateusz" id="20150818192416-1">
       <addColumn tableName="STOCK_INDICATORS">

@@ -1,7 +1,10 @@
 package com.gpw.radar.service.stock;
 
+import com.gpw.radar.domain.enumeration.TrendDirection;
 import com.gpw.radar.domain.stock.Stock;
+import com.gpw.radar.domain.stock.StockIndicators;
 import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
+import com.gpw.radar.repository.stock.StockIndicatorsRepository;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.builders.StockBuilder;
 import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
@@ -11,9 +14,13 @@ import org.jsoup.nodes.Document;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +36,7 @@ public class StockServiceTest {
 
     private final StockRepository stockRepositoryMock = Mockito.mock(StockRepository.class);
     private final UrlStreamsGetterService urlStreamsGetterServiceMock = Mockito.mock(UrlStreamsGetterService.class);
+    private final StockIndicatorsRepository stockIndicatorsRepositoryMock = Mockito.mock(StockIndicatorsRepository.class);
     private Stock pzu;
     private Stock tpe;
     private Document stooqSite;
@@ -39,7 +47,7 @@ public class StockServiceTest {
         mockStocks();
         mockStooqSite();
         objectUnderTest = new StockService(stockRepositoryMock, new StooqDataParserServiceData(),
-            urlStreamsGetterServiceMock, null);
+            urlStreamsGetterServiceMock, stockIndicatorsRepositoryMock);
     }
 
     private void mockStooqSite() throws IOException {
@@ -70,7 +78,7 @@ public class StockServiceTest {
     }
 
     @Test
-    public void shouldReturnStockDetailsFilledWithStockName() {
+    public void shouldReturnStockDetailsFilledWithCorrectStockName() {
         //given
         given(stockRepositoryMock.findByTicker("pzu")).willReturn(pzu);
         given(stockRepositoryMock.findByTicker("tpe")).willReturn(tpe);
@@ -84,6 +92,134 @@ public class StockServiceTest {
         assertThat(stockDetails.getStock().getTicker()).isEqualTo("tpe");
         assertThat(stockDetails.getStock().getName()).isEqualTo("TAURON ENERGIA");
         assertThat(stockDetails.getStock().getShortName()).isEqualTo("TAURON");
+    }
+
+    @Test
+    public void shouldCallStocksIndicators10DaysTrendUpMethod() throws URISyntaxException {
+        //given
+        LocalDate notImportantDate = LocalDate.of(2016, 1, 1);
+        TrendDirection trendDirection = TrendDirection.UP;
+        int days = 10;
+        Page<StockIndicators> resultMock = new PageImpl<>(new ArrayList<>());
+        given(stockIndicatorsRepositoryMock.findWithStocksIndicators10DaysTrendUp(any(), any())).willReturn(resultMock);
+
+        //then
+        objectUnderTest.getTrendingStocks(notImportantDate, trendDirection, days, 0, 5);
+
+        //then
+        verify(stockIndicatorsRepositoryMock, times(1)).findWithStocksIndicators10DaysTrendUp(any(), any());
+    }
+
+    @Test
+    public void shouldCallStocksIndicators30DaysTrendUpMethod() throws URISyntaxException {
+        //given
+        LocalDate notImportantDate = LocalDate.of(2016, 1, 1);
+        TrendDirection trendDirection = TrendDirection.UP;
+        int days = 30;
+        Page<StockIndicators> resultMock = new PageImpl<>(new ArrayList<>());
+        given(stockIndicatorsRepositoryMock.findWithStocksIndicators30DaysTrendUp(any(), any())).willReturn(resultMock);
+
+        //then
+        objectUnderTest.getTrendingStocks(notImportantDate, trendDirection, days, 0, 5);
+
+        //then
+        verify(stockIndicatorsRepositoryMock, times(1)).findWithStocksIndicators30DaysTrendUp(any(), any());
+    }
+
+    @Test
+    public void shouldCallStocksIndicators60DaysTrendUpMethod() throws URISyntaxException {
+        //given
+        LocalDate notImportantDate = LocalDate.of(2016, 1, 1);
+        TrendDirection trendDirection = TrendDirection.UP;
+        int days = 60;
+        Page<StockIndicators> resultMock = new PageImpl<>(new ArrayList<>());
+        given(stockIndicatorsRepositoryMock.findWithStocksIndicators60DaysTrendUp(any(), any())).willReturn(resultMock);
+
+        //then
+        objectUnderTest.getTrendingStocks(notImportantDate, trendDirection, days, 0, 5);
+
+        //then
+        verify(stockIndicatorsRepositoryMock, times(1)).findWithStocksIndicators60DaysTrendUp(any(), any());
+    }
+
+    @Test
+    public void shouldCallStocksIndicators90DaysTrendUpMethod() throws URISyntaxException {
+        //given
+        LocalDate notImportantDate = LocalDate.of(2016, 1, 1);
+        TrendDirection trendDirection = TrendDirection.UP;
+        int days = 90;
+        Page<StockIndicators> resultMock = new PageImpl<>(new ArrayList<>());
+        given(stockIndicatorsRepositoryMock.findWithStocksIndicators90DaysTrendUp(any(), any())).willReturn(resultMock);
+
+        //when
+        objectUnderTest.getTrendingStocks(notImportantDate, trendDirection, days, 0, 5);
+
+        //then
+        verify(stockIndicatorsRepositoryMock, times(1)).findWithStocksIndicators90DaysTrendUp(any(), any());
+    }
+
+    @Test
+    public void shouldCallStocksIndicators10DaysTrendDownMethod() throws URISyntaxException {
+        //given
+        LocalDate notImportantDate = LocalDate.of(2016, 1, 1);
+        TrendDirection trendDirection = TrendDirection.DOWN;
+        int days = 10;
+        Page<StockIndicators> resultMock = new PageImpl<>(new ArrayList<>());
+        given(stockIndicatorsRepositoryMock.findWithStocksIndicators10DaysTrendDown(any(), any())).willReturn(resultMock);
+
+        //then
+        objectUnderTest.getTrendingStocks(notImportantDate, trendDirection, days, 0, 5);
+
+        //then
+        verify(stockIndicatorsRepositoryMock, times(1)).findWithStocksIndicators10DaysTrendDown(any(), any());
+    }
+
+    @Test
+    public void shouldCallStocksIndicators30DaysTrendDownMethod() throws URISyntaxException {
+        //given
+        LocalDate notImportantDate = LocalDate.of(2016, 1, 1);
+        TrendDirection trendDirection = TrendDirection.DOWN;
+        int days = 30;
+        Page<StockIndicators> resultMock = new PageImpl<>(new ArrayList<>());
+        given(stockIndicatorsRepositoryMock.findWithStocksIndicators30DaysTrendDown(any(), any())).willReturn(resultMock);
+
+        //then
+        objectUnderTest.getTrendingStocks(notImportantDate, trendDirection, days, 0, 5);
+
+        //then
+        verify(stockIndicatorsRepositoryMock, times(1)).findWithStocksIndicators30DaysTrendDown(any(), any());
+    }
+
+    @Test
+    public void shouldCallStocksIndicators60DaysTrendDownMethod() throws URISyntaxException {
+        //given
+        LocalDate notImportantDate = LocalDate.of(2016, 1, 1);
+        TrendDirection trendDirection = TrendDirection.DOWN;
+        int days = 60;
+        Page<StockIndicators> resultMock = new PageImpl<>(new ArrayList<>());
+        given(stockIndicatorsRepositoryMock.findWithStocksIndicators60DaysTrendDown(any(), any())).willReturn(resultMock);
+
+        //then
+        objectUnderTest.getTrendingStocks(notImportantDate, trendDirection, days, 0, 5);
+
+        //then
+        verify(stockIndicatorsRepositoryMock, times(1)).findWithStocksIndicators60DaysTrendDown(any(), any());
+    }
+
+    @Test
+    public void shouldCallStocksIndicators90DaysTrendDownMethod() throws URISyntaxException {
+        //given
+        LocalDate notImportantDate = LocalDate.of(2016, 1, 1);
+        TrendDirection trendDirection = TrendDirection.DOWN;
+        int days = 90;
+        Page<StockIndicators> resultMock = new PageImpl<>(new ArrayList<>());
+        given(stockIndicatorsRepositoryMock.findWithStocksIndicators90DaysTrendDown(any(), any())).willReturn(resultMock);
+
+        //then
+        objectUnderTest.getTrendingStocks(notImportantDate, trendDirection, days, 0, 5);
+
+        //then
+        verify(stockIndicatorsRepositoryMock, times(1)).findWithStocksIndicators90DaysTrendDown(any(), any());
     }
 
     private List<StockDetails> prepareStockDetails() {

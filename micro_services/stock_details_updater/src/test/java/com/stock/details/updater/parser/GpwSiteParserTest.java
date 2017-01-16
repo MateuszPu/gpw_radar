@@ -36,41 +36,42 @@ public class GpwSiteParserTest {
         LocalDate date = LocalDate.of(2016, 1, 1);
         List<StockDetails> stockDetails = parser.getCurrentStockDetails(rowElements, date);
 
-        StockDetails magnaStock = stockDetails.stream().filter(e -> e.getStock().getTicker().equals("06n")).findAny().get();
-        assertThat(magnaStock.getStock().getShortName()).isEqualTo("06MAGNA");
-        assertThat(magnaStock.getStock().getTicker()).isEqualTo("06n");
-        assertThat(magnaStock.getDate()).isEqualTo(date);
-        assertThat(magnaStock.getOpenPrice()).isEqualTo(new BigDecimal("1.95"));
-        assertThat(magnaStock.getMaxPrice()).isEqualTo(new BigDecimal("1.99"));
-        assertThat(magnaStock.getMinPrice()).isEqualTo(new BigDecimal("1.95"));
-        assertThat(magnaStock.getClosePrice()).isEqualTo(new BigDecimal("1.99"));
-        assertThat(magnaStock.getTransactionsNumber()).isEqualTo(5L);
-        assertThat(magnaStock.getVolume()).isEqualTo(206L);
-
         StockDetails agrowillStock = stockDetails.stream().filter(e -> e.getStock().getTicker().equals("awg")).findAny().get();
-        assertThat(agrowillStock.getStock().getShortName()).isEqualTo("AGROWILL");
-        assertThat(agrowillStock.getStock().getTicker()).isEqualTo("awg");
-        assertThat(agrowillStock.getDate()).isEqualTo(date);
-        assertThat(agrowillStock.getOpenPrice()).isEqualTo(new BigDecimal("1.39"));
-        assertThat(agrowillStock.getMaxPrice()).isEqualTo(new BigDecimal("1.39"));
-        assertThat(agrowillStock.getMinPrice()).isEqualTo(new BigDecimal("1.39"));
-        assertThat(agrowillStock.getClosePrice()).isEqualTo(new BigDecimal("1.39"));
-        assertThat(agrowillStock.getTransactionsNumber()).isEqualTo(0L);
-        assertThat(agrowillStock.getVolume()).isEqualTo(0L);
+
+        AssertUtils.assertStockDetails(agrowillStock)
+                .hasCorrectOpenPrice(new BigDecimal("1.39"))
+                .hasCorrectClosePrice(new BigDecimal("1.39"))
+                .hasCorrectMaxPrice(new BigDecimal("1.39"))
+                .hasCorrectMinPrice(new BigDecimal("1.39"))
+                .hasCorrectDate(date)
+                .hasCorrectStockShortName("AGROWILL")
+                .hasCorrectStockTicker("awg")
+                .hasCorrectTransactionNumber(0L)
+                .hasCorrectVolume(0L);
 
         StockDetails attStock = stockDetails.stream().filter(e -> e.getStock().getTicker().equals("att")).findAny().get();
 
-        assertThat(attStock.getStock().getShortName()).isEqualTo("GRUPAAZOTY");
-        assertThat(attStock.getStock().getTicker()).isEqualTo("att");
-        assertThat(attStock.getDate()).isEqualTo(date);
-        assertThat(attStock.getOpenPrice()).isEqualTo(new BigDecimal("4133.05"));
-        assertThat(attStock.getMaxPrice()).isEqualTo(new BigDecimal("4133.05"));
-        assertThat(attStock.getMinPrice()).isEqualTo(new BigDecimal("4013.00"));
-        assertThat(attStock.getClosePrice()).isEqualTo(new BigDecimal("4096.55"));
-        assertThat(attStock.getTransactionsNumber()).isEqualTo(863L);
-        assertThat(attStock.getVolume()).isEqualTo(1721L);
-
-        Optional<StockDetails> grajewoPdaStock = stockDetails.stream().filter(e -> e.getStock().getTicker().equals("grj")).findAny();
-        assertThat(grajewoPdaStock.isPresent()).isEqualTo(false);
+        AssertUtils.assertStockDetails(attStock)
+                    .hasCorrectOpenPrice(new BigDecimal("4133.05"))
+                    .hasCorrectClosePrice(new BigDecimal("4096.55"))
+                    .hasCorrectMaxPrice(new BigDecimal("4133.05"))
+                    .hasCorrectMinPrice(new BigDecimal("4013.00"))
+                    .hasCorrectDate(date)
+                    .hasCorrectStockShortName("GRUPAAZOTY")
+                    .hasCorrectStockTicker("att")
+                    .hasCorrectTransactionNumber(863L)
+                    .hasCorrectVolume(1721L);
     }
+
+    @Test
+    public void shouldNotParseStockDetailsWhichHasPda() throws IOException {
+        GpwSiteParser parser = new GpwSiteParser();
+        LocalDate date = LocalDate.of(2016, 1, 1);
+        List<StockDetails> stockDetails = parser.getCurrentStockDetails(rowElements, date);
+
+        Optional<StockDetails> attStock = stockDetails.stream().filter(e -> e.getStock().getTicker().equalsIgnoreCase("grja")).findAny();
+
+        assertThat(attStock.isPresent()).isFalse();
+    }
+
 }

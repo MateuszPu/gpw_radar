@@ -47,6 +47,7 @@ public class GpwSiteParser implements WebStockDetailsParser {
             }
             String closePrice = getElement(select, LAST_CLOSE_PRICE_INDEX);
             StockDetails std = new StockDetails(closePrice, stock);
+
             std.setDate(date);
             setPrices(select, std);
             stockDetails.add(std);
