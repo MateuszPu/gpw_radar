@@ -106,4 +106,4 @@ In this particular project I am using rabbitmq. It is configured in docker conta
 [Protractor]: https://angular.github.io/protractor/
 [Docker]: https://docs.docker.com/
 [Rabbitmq]: http://www.rabbitmq.com/download.html
-[Elasticsearch]: http://www.rabbitmq.com/download.html
+[Elasticsearch]: https://www.elastic.co/downloads/elasticsearch
