@@ -7,6 +7,7 @@ import com.gpw.radar.rabbitmq.Mapper;
 import com.gpw.radar.rabbitmq.consumer.stock.details.database.Consumer;
 import com.gpw.radar.service.auto.update.stockDetails.indicators.StandardStockIndicatorsCalculator;
 import com.gpw.radar.service.stock.StockService;
+import com.gpw.radar.utils.StockDetailsAssert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -47,17 +48,22 @@ public class StockDetailsConsumerTest {
         List<StockDetails> savedStocksDetails = objectUnderTest.parseStocksDetails(rabbitMessage);
 
         //then
-        StockDetails tpeStockDetails = getStockByTicker("tpe", savedStocksDetails);
-        assertThat(tpeStockDetails.getStock().getTicker()).isEqualTo("tpe");
-        assertThat(tpeStockDetails.getStock().getShortName()).isEqualTo("TAURON");
-        assertThat(tpeStockDetails.getVolume()).isEqualTo(121013L);
-        assertThat(tpeStockDetails.getTransactionsNumber()).isEqualTo(29);
-        assertThat(tpeStockDetails.getDate()).isEqualTo(LocalDate.of(2016, 11, 17));
-        assertThat(tpeStockDetails.getClosePrice()).isEqualTo(new BigDecimal("3.37"));
-        assertThat(tpeStockDetails.getMinPrice()).isEqualTo(new BigDecimal("2.37"));
-        assertThat(tpeStockDetails.getMaxPrice()).isEqualTo(new BigDecimal("2.61"));
-        assertThat(tpeStockDetails.getOpenPrice()).isEqualTo(new BigDecimal("2.51"));
+        StockDetails tpeStockDetails = savedStocksDetails.stream()
+            .filter(e -> e.getStock().getTicker().equalsIgnoreCase("tpe"))
+            .findAny()
+            .get();
         assertThat(savedStocksDetails.size()).isEqualTo(3);
+
+        StockDetailsAssert.create(tpeStockDetails)
+            .hasCorrectStockTicker("tpe")
+            .hasCorrectStockShortName("TAURON")
+            .hasCorrectOpenPrice(new BigDecimal("2.51"))
+            .hasCorrectClosePrice(new BigDecimal("3.37"))
+            .hasCorrectMaxPrice(new BigDecimal("2.61"))
+            .hasCorrectMinPrice(new BigDecimal("2.37"))
+            .hasCorrectDate(LocalDate.of(2016, 11, 17))
+            .hasCorrectVolume(121013L)
+            .hasCorrectTransactionNumber(29L);
     }
 
     @Test
@@ -124,13 +130,6 @@ public class StockDetailsConsumerTest {
 
         //then
         assertThat(savedStocksDetails.isEmpty()).isTrue();
-    }
-
-    private StockDetails getStockByTicker(String ticker, List<StockDetails> savedStocksDetails) {
-        return savedStocksDetails.stream()
-            .filter(e -> e.getStock().getTicker().equalsIgnoreCase(ticker))
-            .findAny()
-            .get();
     }
 
     private Message prepareRabbitMessage(String date) {

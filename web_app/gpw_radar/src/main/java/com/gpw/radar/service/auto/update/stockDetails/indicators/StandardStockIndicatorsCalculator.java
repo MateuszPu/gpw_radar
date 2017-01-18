@@ -6,6 +6,7 @@ import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
 import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsDAO;
 import com.gpw.radar.repository.stock.StockIndicatorsRepository;
 import com.gpw.radar.repository.stock.StockRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +23,9 @@ public class StandardStockIndicatorsCalculator implements StockIndicatorsCalcula
     private final StockRepository stockRepository;
     private final StockIndicatorsRepository stockIndicatorsRepository;
 
-    public StandardStockIndicatorsCalculator(@Qualifier("stockDetailsElasticSearchDAO") StockDetailsDAO stockDetailsDAO, StockRepository stockRepository,
+    @Autowired
+    public StandardStockIndicatorsCalculator(@Qualifier("stockDetailsElasticSearchDAO") StockDetailsDAO stockDetailsDAO,
+                                             StockRepository stockRepository,
                                              StockIndicatorsRepository stockIndicatorsRepository) {
         this.stockDetailsDAO = stockDetailsDAO;
         this.stockRepository = stockRepository;

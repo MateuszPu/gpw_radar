@@ -92,8 +92,6 @@ public class StockService {
                         result = getStockWithStockIndicatorsDTOs(stockIn90DaysTrendUp.getContent());
                         break;
                 }
-            default:
-                break;
             case DOWN:
                 switch (days) {
                     case 10:
@@ -116,8 +114,9 @@ public class StockService {
                         httpHeaders = PaginationUtil.generatePaginationHttpHeaders(stockIn90DaysTrendDown, "/api/stocks/trends/down/days", offset, limit);
                         result = getStockWithStockIndicatorsDTOs(stockIn90DaysTrendDown.getContent());
                         break;
-
                 }
+            default:
+                break;
         }
         return new ResponseEntity<>(result, httpHeaders, HttpStatus.OK);
     }
