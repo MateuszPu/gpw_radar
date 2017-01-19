@@ -121,9 +121,9 @@ public class MailService {
         if (usersToSendEmail.isEmpty()) {
             return;
         }
-        String[] emails = usersToSendEmail.stream().map(e -> e.getEmail()).toArray(size -> new String[size]);
-        String mailTopic = "[Kanal: " + message.getType().toString() + "] [" + message.getStock().getTicker().toString().toUpperCase() + "]" + message.getMessage();
+        String[] emails = usersToSendEmail.stream().map(e -> e.getEmail()).toArray(String[]::new);
+        String mailTopic = "[Kanal: " + message.getType().toString() + "] [" + message.getStock().getTicker().toUpperCase() + "]";
 
-        sendBccEmail(emails, mailTopic, "Szczegóły: " + message.getMessage(), false, true);
+        sendBccEmail(emails, mailTopic, "Link: " + message.getMessage(), false, true);
     }
 }

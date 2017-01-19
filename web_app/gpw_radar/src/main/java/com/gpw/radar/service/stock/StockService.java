@@ -92,6 +92,7 @@ public class StockService {
                         result = getStockWithStockIndicatorsDTOs(stockIn90DaysTrendUp.getContent());
                         break;
                 }
+                break;
             case DOWN:
                 switch (days) {
                     case 10:

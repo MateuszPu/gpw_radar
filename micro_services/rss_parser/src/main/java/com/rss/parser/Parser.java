@@ -40,12 +40,7 @@ public class Parser implements RssParser {
         SyndFeed feed = null;
         try {
             feed = input.build(new XmlReader(url));
-        } catch (FeedException e) {
-            LOGGER.error("Exception in "
-                    + this.getClass().getName()
-                    + " with clause : "
-                    + e.getCause());
-        } catch (IOException e) {
+        } catch (FeedException | IOException e) {
             LOGGER.error("Exception in "
                     + this.getClass().getName()
                     + " with clause : "

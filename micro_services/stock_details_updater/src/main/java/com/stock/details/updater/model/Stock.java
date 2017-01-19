@@ -2,8 +2,8 @@ package com.stock.details.updater.model;
 
 public class Stock {
 
-    String ticker;
-    String shortName;
+    private String ticker;
+    private String shortName;
 
     public Stock(String ticker, String shortName) {
         this.ticker = ticker;
