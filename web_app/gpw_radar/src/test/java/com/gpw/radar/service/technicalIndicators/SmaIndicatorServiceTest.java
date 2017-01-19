@@ -1,133 +1,119 @@
 package com.gpw.radar.service.technicalIndicators;
 
-import com.gpw.radar.Application;
-import com.gpw.radar.config.CacheConfiguration;
 import com.gpw.radar.config.CustomDateTimeFormat;
-import com.gpw.radar.domain.stock.Stock;
-import com.gpw.radar.domain.stock.StockDetails;
-import com.gpw.radar.repository.stock.StockDetailsRepository;
+import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
+import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsDAO;
+import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsElasticSearchDAO;
 import com.gpw.radar.repository.stock.StockRepository;
-import com.gpw.radar.service.AbstractCleaner;
-import com.gpw.radar.service.builders.StockBuilder;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
 import com.gpw.radar.service.stock.StockService;
 import com.gpw.radar.service.technical.indicators.sma.CrossDirection;
 import com.gpw.radar.service.technical.indicators.sma.SmaIndicatorService;
 import com.gpw.radar.web.rest.dto.stock.StockWithStockIndicatorsDTO;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.cache.CacheManager;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.transaction.annotation.Transactional;
+import org.mockito.Mockito;
+import org.springframework.data.domain.PageRequest;
 
-import javax.inject.Inject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.StrictAssertions.assertThat;
+import static org.mockito.BDDMockito.given;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
-@WebAppConfiguration
-public class SmaIndicatorServiceTest extends AbstractCleaner {
+public class SmaIndicatorServiceTest {
 
-    @Inject
-    private StockDetailsRepository stockDetailsRepository;
+    private StockDetailsDAO stockDetailsDaoEsMock = Mockito.mock(StockDetailsElasticSearchDAO.class);
+    private StockRepository stockRepositoryMock = Mockito.mock(StockRepository.class);
+    private StockService stockServiceMock = Mockito.mock(StockService.class);
 
-    @Inject
-    private StockRepository stockRepository;
+    private SmaIndicatorService objectUnderTest = new SmaIndicatorService(stockDetailsDaoEsMock, stockRepositoryMock, stockServiceMock);
 
-    @Inject
-    private StockService stockService;
+    @Test
+    public void shouldCorrectReturnResultForSmaCrossover() {
+        //given
+        given(stockRepositoryMock.findAllTickers()).willReturn(new HashSet<>(Arrays.asList("tpe", "kgh", "pko")));
+        given(stockDetailsDaoEsMock.findByStockTickerOrderByDateDesc("kgh", new PageRequest(0, 90)))
+            .willReturn(getStockDetailsFromFile(LocalDate.of(2016, 1, 1), "kgh"));
+        given(stockDetailsDaoEsMock.findByStockTickerOrderByDateDesc("tpe", new PageRequest(0, 90)))
+            .willReturn(getStockDetailsFromFile(LocalDate.of(2015, 11, 14), "tpe"));
+        given(stockDetailsDaoEsMock.findByStockTickerOrderByDateDesc("pko", new PageRequest(0, 90)))
+            .willReturn(getStockDetailsFromFile(LocalDate.of(2015, 9, 23), "pko"));
+        given(stockServiceMock.getAllStocksFetchStockIndicators()).willReturn(getStockIndicatorsDto("kgh", "tpe", "pko"));
 
-    @Inject
-    private CacheManager cacheManager;
+        //when
+        List<StockWithStockIndicatorsDTO> resultFromAbove = objectUnderTest.getStocksSmaCrossover(CrossDirection.FROM_ABOVE, 15, 30);
+        List<StockWithStockIndicatorsDTO> resultFromBelow = objectUnderTest.getStocksSmaCrossover(CrossDirection.FROM_BELOW, 15, 30);
 
-    private SmaIndicatorService smaIndicatorService;
-
-
-    @Before
-    @Transactional
-    public void init() {
-        stockDetailsRepository.deleteAll();
-        stockRepository.deleteAll();
-        cacheManager.getCache(CacheConfiguration.STOCK_TICKERS_CACHE).clear();
+        //then
+        assertThat(resultFromAbove.stream().anyMatch(st -> st.getStockTicker().equals("tpe"))).isEqualTo(true);
+        assertThat(resultFromAbove.stream().anyMatch(st -> st.getStockTicker().equals("kgh"))).isEqualTo(false);
+        assertThat(resultFromAbove.stream().anyMatch(st -> st.getStockTicker().equals("pko"))).isEqualTo(false);
+        assertThat(resultFromBelow.stream().anyMatch(st -> st.getStockTicker().equals("pko"))).isEqualTo(true);
+        assertThat(resultFromBelow.stream().anyMatch(st -> st.getStockTicker().equals("kgh"))).isEqualTo(false);
+        assertThat(resultFromBelow.stream().anyMatch(st -> st.getStockTicker().equals("tpe"))).isEqualTo(false);
     }
 
     @Test
-    public void testSmaCrossover() {
-        prepareDb(LocalDate.of(2015, 11, 14), LocalDate.of(2015, 9, 23));
-        smaIndicatorService = new SmaIndicatorService(stockDetailsRepository, stockRepository, stockService);
+    public void shouldCorrectReturnResultForPriceCrossSma() {
+        //given
+        given(stockRepositoryMock.findAllTickers()).willReturn(new HashSet<>(Arrays.asList("tpe", "kgh", "pko")));
+        given(stockDetailsDaoEsMock.findByStockTickerOrderByDateDesc("kgh", new PageRequest(0, 90)))
+            .willReturn(getStockDetailsFromFile(LocalDate.of(2016, 1, 1), "kgh"));
+        given(stockDetailsDaoEsMock.findByStockTickerOrderByDateDesc("tpe", new PageRequest(0, 90)))
+            .willReturn(getStockDetailsFromFile(LocalDate.of(2015, 12, 23), "tpe"));
+        given(stockDetailsDaoEsMock.findByStockTickerOrderByDateDesc("pko", new PageRequest(0, 90)))
+            .willReturn(getStockDetailsFromFile(LocalDate.of(2015, 9, 23), "pko"));
+        given(stockServiceMock.getAllStocksFetchStockIndicators()).willReturn(getStockIndicatorsDto("kgh", "tpe", "pko"));
 
-        List<StockWithStockIndicatorsDTO> resultFromAbove = smaIndicatorService.getStocksSmaCrossover(CrossDirection.FROM_ABOVE, 15, 30);
+        // LocalDate.of(2015, 12, 23) for tpe
+        // LocalDate.of(2015, 9, 23) for pko
+
+        //when
+        List<StockWithStockIndicatorsDTO> resultFromAbove = objectUnderTest.getStocksPriceCrossSma(CrossDirection.FROM_BELOW, 15);
+        List<StockWithStockIndicatorsDTO> resultFromBelow = objectUnderTest.getStocksPriceCrossSma(CrossDirection.FROM_ABOVE, 15);
+
+        //then
         assertThat(resultFromAbove.stream().anyMatch(st -> st.getStockTicker().equals("tpe"))).isEqualTo(true);
+        assertThat(resultFromAbove.stream().anyMatch(st -> st.getStockTicker().equals("pko"))).isEqualTo(false);
         assertThat(resultFromAbove.stream().anyMatch(st -> st.getStockTicker().equals("kgh"))).isEqualTo(false);
-        List<StockWithStockIndicatorsDTO> resultFromBelow = smaIndicatorService.getStocksSmaCrossover(CrossDirection.FROM_BELOW, 15, 30);
         assertThat(resultFromBelow.stream().anyMatch(st -> st.getStockTicker().equals("pko"))).isEqualTo(true);
-        assertThat(resultFromBelow.stream().anyMatch(st -> st.getStockTicker().equals("kgh"))).isEqualTo(false);
-    }
-
-    @Test
-    public void priceCrossSmaTest() {
-        prepareDb(LocalDate.of(2015, 12, 23), LocalDate.of(2015, 9, 23));
-
-        smaIndicatorService = new SmaIndicatorService(stockDetailsRepository, stockRepository, stockService);
-
-        List<StockWithStockIndicatorsDTO> resultFromAbove = smaIndicatorService.getStocksPriceCrossSma(CrossDirection.FROM_BELOW, 15);
-        assertThat(resultFromAbove.stream().anyMatch(st -> st.getStockTicker().equals("tpe"))).isEqualTo(true);
-        assertThat(resultFromAbove.stream().anyMatch(st -> st.getStockTicker().equals("kgh"))).isEqualTo(false);
-        List<StockWithStockIndicatorsDTO> resultFromBelow = smaIndicatorService.getStocksPriceCrossSma(CrossDirection.FROM_ABOVE, 15);
-        assertThat(resultFromBelow.stream().anyMatch(st -> st.getStockTicker().equals("pko"))).isEqualTo(true);
+        assertThat(resultFromBelow.stream().anyMatch(st -> st.getStockTicker().equals("tpe"))).isEqualTo(false);
         assertThat(resultFromBelow.stream().anyMatch(st -> st.getStockTicker().equals("kgh"))).isEqualTo(false);
 
     }
 
-    private void prepareDb(LocalDate dateOne, LocalDate dateTwo) {
-        InputStream inputStreamOfStockDetails = getClass().getResourceAsStream("/stocks_data/daily/pl/wse_stocks/kgh.txt");
-        Stock stockOne = StockBuilder.stockBuilder().id("1").ticker("kgh").build();
-        stockOne = stockRepository.save(stockOne);
-        List<StockDetails> stockDetailsOne = parseStockDetails(stockOne,  inputStreamOfStockDetails);
-        stockDetailsRepository.save(stockDetailsOne);
-
-        inputStreamOfStockDetails = getClass().getResourceAsStream("/stocks_data/daily/pl/wse_stocks/kgh.txt");
-        Stock stockTwo = StockBuilder.stockBuilder().id("2").ticker("tpe").build();
-        stockTwo = stockRepository.save(stockTwo);
-        List<StockDetails> stockDetailsTwo = parseStockDetails(stockTwo,  inputStreamOfStockDetails);
-        stockDetailsRepository.save(stockDetailsTwo.stream().filter(ti -> ti.getDate().isBefore(dateOne)).collect(Collectors.toList()));
-
-        inputStreamOfStockDetails = getClass().getResourceAsStream("/stocks_data/daily/pl/wse_stocks/kgh.txt");
-        Stock stockThree = StockBuilder.stockBuilder().id("3").ticker("pko").build();
-        stockThree = stockRepository.save(stockThree);
-        List<StockDetails> stockDetailsThree = parseStockDetails(stockThree,  inputStreamOfStockDetails);
-        stockDetailsRepository.save(stockDetailsThree.stream().filter(ti -> ti.getDate().isBefore(dateTwo)).collect(Collectors.toList()));
-    }
-
-    private List<StockDetails> parseStockDetails(Stock stock, InputStream inputStreamOfStockDetails) {
-        List<StockDetails> result = new ArrayList<>();
-        BufferedReader in = new BufferedReader(new InputStreamReader(inputStreamOfStockDetails));
-
-        in.lines().forEach(ln -> result.add(parse(stock, ln)));
-
+    private List<StockWithStockIndicatorsDTO> getStockIndicatorsDto(String... tickers) {
+        List<StockWithStockIndicatorsDTO> result = new LinkedList<>();
+        Arrays.stream(tickers).forEach(e -> result.add(new StockWithStockIndicatorsDTO(e)));
         return result;
     }
 
-    private StockDetails parse(Stock stock, String ln) {
+    private List<StockDetails> getStockDetailsFromFile(LocalDate date, String ticker) {
+        InputStream inputStreamOfStockDetails = getClass().getResourceAsStream("/stocks_data/daily/pl/wse_stocks/kgh.txt");
+        List<StockDetails> stockDetailsTwo = parseStockDetails(ticker, inputStreamOfStockDetails);
+        return stockDetailsTwo.stream().filter(ti -> ti.getDate().isBefore(date)).collect(Collectors.toList());
+    }
+
+    private List<StockDetails> parseStockDetails(String ticker, InputStream inputStreamOfStockDetails) {
+        List<StockDetails> result = new ArrayList<>();
+        BufferedReader in = new BufferedReader(new InputStreamReader(inputStreamOfStockDetails));
+        in.lines().forEach(ln -> result.add(parse(ticker, ln)));
+        return result;
+    }
+
+    private StockDetails parse(String ticker, String ln) {
         CustomDateTimeFormat customDateTimeFormat = new CustomDateTimeFormat();
         DateAndTimeParserService parser = new DateAndTimeParserService(null,
             customDateTimeFormat.localDateTimeFormatter(), customDateTimeFormat.localTimeFormatter());
 
         String[] split = ln.split(",");
         StockDetails result = new StockDetails();
-        result.setStock(stock);
+        result.setStockWith(ticker, "name", "shortName");
         result.setDate(parser.parseLocalDateFromString(split[0]));
         result.setOpenPrice(new BigDecimal(split[1]));
         result.setMaxPrice(new BigDecimal(split[2]));

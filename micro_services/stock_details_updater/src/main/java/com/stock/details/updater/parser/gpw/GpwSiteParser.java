@@ -1,5 +1,6 @@
 package com.stock.details.updater.parser.gpw;
 
+import com.stock.details.updater.model.Stock;
 import com.stock.details.updater.model.StockDetails;
 import org.jsoup.select.Elements;
 
@@ -23,7 +24,7 @@ public class GpwSiteParser implements WebStockDetailsParser {
     private static final int MAX_PRICE_INDEX = 10;
     private static final int CLOSE_PRICE_INDEX = 11;
     private static final int TRANSACTIONS_COUNT_INDEX = 20;
-    private static final int VOULME_INDEX = 21;
+    private static final int VOLUME_INDEX = 21;
     private static final int LAST_CLOSE_PRICE_INDEX = 6;
     private static final Pattern NUMBER_REGEX = Pattern.compile("\\d{1,5}\\.\\d{2}");
 
@@ -40,29 +41,39 @@ public class GpwSiteParser implements WebStockDetailsParser {
             }
             Elements select = tableRows.get(index).select("td");
 
-            StockDetails std = new StockDetails(getElement(select, LAST_CLOSE_PRICE_INDEX));
-            String stockName = getElement(select, STOCK_NAME_INDEX);
-            std.setStockName(stockName);
-            String ticker = getElement(select, STOCK_TICKER_INDEX);
-            std.setStockTicker(ticker);
-            if(stockName.endsWith("-PDA") || ticker.length() > 3) {
+            Stock stock = createStock(select);
+            if (stock.getShortName().endsWith("-PDA")) {
                 continue;
             }
-            std.setDate(date);
-            String openPrice = getElement(select, OPEN_PRICE_INDEX);
-            Matcher matcher = NUMBER_REGEX.matcher(openPrice);
+            String closePrice = getElement(select, LAST_CLOSE_PRICE_INDEX);
+            StockDetails std = new StockDetails(closePrice, stock);
 
-            if (matcher.matches()) {
-                std.setOpenPrice(new BigDecimal(getElement(select, OPEN_PRICE_INDEX)));
-                std.setMaxPrice(new BigDecimal(getElement(select, MAX_PRICE_INDEX)));
-                std.setMinPrice(new BigDecimal(getElement(select, MIN_PRICE_INDEX)));
-                std.setClosePrice(new BigDecimal(getElement(select, CLOSE_PRICE_INDEX)));
-                std.setVolume(Long.valueOf(getElement(select, VOULME_INDEX)));
-                std.setTransactionsNumber(Long.valueOf(getElement(select, TRANSACTIONS_COUNT_INDEX)));
-            }
+            std.setDate(date);
+            setPrices(select, std);
             stockDetails.add(std);
         }
         return stockDetails;
+    }
+
+    private void setPrices(Elements select, StockDetails std) {
+        String openPrice = getElement(select, OPEN_PRICE_INDEX);
+        Matcher matcher = NUMBER_REGEX.matcher(openPrice);
+
+        if (matcher.matches()) {
+            std.setOpenPrice(new BigDecimal(getElement(select, OPEN_PRICE_INDEX)));
+            std.setMaxPrice(new BigDecimal(getElement(select, MAX_PRICE_INDEX)));
+            std.setMinPrice(new BigDecimal(getElement(select, MIN_PRICE_INDEX)));
+            std.setClosePrice(new BigDecimal(getElement(select, CLOSE_PRICE_INDEX)));
+            std.setVolume(Long.valueOf(getElement(select, VOLUME_INDEX)));
+            std.setTransactionsNumber(Long.valueOf(getElement(select, TRANSACTIONS_COUNT_INDEX)));
+        }
+    }
+
+    private Stock createStock(Elements select) {
+        String stockShortName = getElement(select, STOCK_NAME_INDEX);
+        String stockTicker = getElement(select, STOCK_TICKER_INDEX).toLowerCase();
+        Stock stock = new Stock(stockTicker, stockShortName);
+        return stock;
     }
 
     private String getElement(Elements select, int indexOfElement) {

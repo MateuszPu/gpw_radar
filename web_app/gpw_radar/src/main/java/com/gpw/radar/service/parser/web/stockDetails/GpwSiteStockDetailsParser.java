@@ -1,7 +1,7 @@
 package com.gpw.radar.service.parser.web.stockDetails;
 
 import com.gpw.radar.domain.stock.Stock;
-import com.gpw.radar.domain.stock.StockDetails;
+import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
 import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -63,7 +63,8 @@ public class GpwSiteStockDetailsParser implements StockDetailsParser {
         Optional<Stock> stockFromRow = getStockFrom(row);
         if (stockFromRow.isPresent()) {
             StockDetails stockDetails = new StockDetails();
-            stockDetails.setStock(stockFromRow.get());
+            Stock stock = stockFromRow.get();
+            stockDetails.setStockWith(stock.getTicker(), stock.getStockName(), stock.getStockShortName());
             stockDetails.setDate(getDateFrom(row));
             stockDetails.setOpenPrice(getBigDecimalFrom(row, XlsMapping.OPEN_PRICE.getCellNumber()));
             stockDetails.setMaxPrice(getBigDecimalFrom(row, XlsMapping.MAX_PRICE.getCellNumber()));

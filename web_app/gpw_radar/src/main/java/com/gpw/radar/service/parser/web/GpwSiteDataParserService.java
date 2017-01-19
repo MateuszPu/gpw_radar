@@ -20,12 +20,12 @@ public class GpwSiteDataParserService implements StockBatchWebParser {
     @Inject
     private UrlStreamsGetterService urlStreamsGetterService;
 
-    private final int indexOfTicker = 3;
-    private final String allStocksData = "https://www.gpw.pl/ajaxindex.php?action=GPWQuotations&start=showTable&tab=all&lang=PL&full=1";
+    private final int TICKER_INDEX = 3;
+    private final String STOCKS_DATA_URL = "https://www.gpw.pl/ajaxindex.php?action=GPWQuotations&start=showTable&tab=all&lang=PL&full=1";
 
     @Override
     public Document getDocumentForAllStocks() {
-        InputStream inputStreamFromUrl = urlStreamsGetterService.getInputStreamFromUrl(allStocksData);
+        InputStream inputStreamFromUrl = urlStreamsGetterService.getInputStreamFromUrl(STOCKS_DATA_URL);
         Document doc = getDocumentFromInputStream(inputStreamFromUrl);
         return doc;
     }
@@ -61,7 +61,7 @@ public class GpwSiteDataParserService implements StockBatchWebParser {
                 continue;
             }
             Elements select = tableRows.get(index).select("td");
-            tickers.add(select.get(indexOfTicker).text().toLowerCase());
+            tickers.add(select.get(TICKER_INDEX).text().toLowerCase());
         }
         return tickers;
     }

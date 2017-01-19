@@ -14,6 +14,10 @@ public class StockWithStockIndicatorsDTO {
     private String stockTicker;
     private String stockShortName;
 
+    public StockWithStockIndicatorsDTO(String ticker) {
+        this.setStockTicker(ticker);
+    }
+
     public BigDecimal getStockIndicatorsPercentReturn() {
         return stockIndicatorsPercentReturn;
     }

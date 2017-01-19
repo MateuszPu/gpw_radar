@@ -1,6 +1,6 @@
 package com.gpw.radar.service.auto.update.stockDetails.indicators;
 
-import com.gpw.radar.domain.stock.StockDetails;
+import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.math3.stat.regression.SimpleRegression;
 
@@ -11,13 +11,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class IndicatorVariables {
+public class IndicatorCalculator {
 
     private final LocalDate date;
     private final List<StockDetails> stockDetails;
     private final BigDecimal multiplicand = new BigDecimal(100);
 
-    public IndicatorVariables(List<StockDetails> stockDetails) {
+    public IndicatorCalculator(List<StockDetails> stockDetails) {
         this.stockDetails = stockDetails.stream()
             .sorted((e1, e2) -> e2.getDate().compareTo(e1.getDate()))
             .collect(Collectors.toList());

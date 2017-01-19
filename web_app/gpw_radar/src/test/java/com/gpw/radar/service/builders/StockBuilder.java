@@ -14,12 +14,12 @@ public class StockBuilder {
     private String stockShortName;
     private Set<User> users = new HashSet<>();
 
-    public static StockBuilder stockBuilder() {
+    public static StockBuilder buildStock() {
         return new StockBuilder();
     }
 
     public static StockBuilder sampleStock() {
-        return stockBuilder().ticker("kgh").stockName("KGH name").stockShortName("KGH short name").users(new HashSet<>());
+        return buildStock().ticker("kgh").stockName("KGH name").stockShortName("KGH short name").users(new HashSet<>());
     }
 
     public StockBuilder id(String id) {

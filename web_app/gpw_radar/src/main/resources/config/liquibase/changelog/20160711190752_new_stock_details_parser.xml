@@ -2,13 +2,6 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
-   <changeSet author="mateusz" id="20160711190752-1">
-       <addColumn tableName="STOCK_DETAILS">
-           <column name="transactions_number" type="bigint" defaultValue="0">
-               <constraints nullable="false"/>
-           </column>
-       </addColumn>
-   </changeSet>
 
     <changeSet id="20160907190752-1" author="mateusz">
         <dropForeignKeyConstraint baseTableName="STOCK_INDICATORS" constraintName="fk_stock_id"/>

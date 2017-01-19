@@ -1,9 +1,17 @@
 package com.gpw.radar.service.database;
 
 import com.gpw.radar.domain.database.Type;
-import com.gpw.radar.domain.stock.*;
+import com.gpw.radar.domain.stock.Stock;
+import com.gpw.radar.domain.stock.StockFinanceEvent;
+import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
+import com.gpw.radar.domain.stock.StockFiveMinutesIndicators;
+import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
+import com.gpw.radar.elasticsearch.repository.StockDetailsEsRepository;
 import com.gpw.radar.repository.auto.update.FillDataStatusRepository;
-import com.gpw.radar.repository.stock.*;
+import com.gpw.radar.repository.stock.StockFinanceEventRepository;
+import com.gpw.radar.repository.stock.StockFiveMinutesDetailsRepository;
+import com.gpw.radar.repository.stock.StockFiveMinutesIndicatorsRepository;
+import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
 import com.gpw.radar.service.parser.file.stockFiveMinutesDetails.StockFiveMinutesDetailsParser;
 import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
@@ -27,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -40,9 +49,6 @@ public class FillDataBaseWithDataService {
 
     @Inject
     private StockRepository stockRepository;
-
-    @Inject
-    private StockDetailsRepository stockDetailsRepository;
 
     @Inject
     private FillDataStatusRepository fillDataStatusRepository;
@@ -61,6 +67,9 @@ public class FillDataBaseWithDataService {
 
     @Inject
     private DateAndTimeParserService dateAndTimeParserService;
+
+    @Inject
+    private StockDetailsEsRepository esService;
 
     @Inject
     private BeanFactory beanFactory;
@@ -84,7 +93,7 @@ public class FillDataBaseWithDataService {
     }
 
     //TODO: refactor sending step as socket to application
-    public ResponseEntity<Void> fillDataBaseWithStocks() {
+    public ResponseEntity<HttpStatus> fillDataBaseWithStocks() {
         Document document = stockBatchWebParser.getDocumentForAllStocks();
         Set<String> tickers = stockBatchWebParser.fetchAllTickers(document);
 
@@ -94,17 +103,17 @@ public class FillDataBaseWithDataService {
             stock.setTicker(element);
             stock.setStockName(stockDataNameParser.getStockNameFromWeb(doc));
             String stockShortNameFromWeb = stockDataNameParser.getStockShortNameFromWeb(doc);
-            if(stockShortNameFromWeb.endsWith("PDA")) {
+            if (stockShortNameFromWeb.endsWith("PDA")) {
                 continue;
             }
             stock.setStockShortName(stockShortNameFromWeb);
             stockRepository.save(stock);
         }
         fillDataStatusRepository.updateType(Type.STOCK.toString());
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<Void> fillDataBaseWithStockDetails() {
+    public ResponseEntity<HttpStatus> fillDataBaseWithStockDetails() {
         List<Stock> all = stockRepository.findAll();
         StockDetailsParser stockDetailsParser = new GpwSiteStockDetailsParser(dateAndTimeParserService,
             urlStreamsGetterService, all);
@@ -112,22 +121,25 @@ public class FillDataBaseWithDataService {
         LocalDate now = LocalDate.now();
         LocalDate daysAgo = now.minusDays(period);
 
+        List<StockDetails> stockDetailsEs = new LinkedList<>();
         for (LocalDate date = daysAgo; date.isBefore(now); date = date.plusDays(1)) {
             if (date.getDayOfWeek().equals(DayOfWeek.SATURDAY) || date.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
                 continue;
             }
             try {
                 List<StockDetails> stockDetails = stockDetailsParser.parseStockDetails(date);
-                stockDetailsRepository.save(stockDetails);
+                stockDetailsEs.addAll(stockDetails);
             } catch (IOException e) {
                 logger.error("Error occurs: " + e.getMessage());
             }
         }
         fillDataStatusRepository.updateType(Type.STOCK_DETAILS.toString());
-        return new ResponseEntity<Void>(HttpStatus.OK);
+
+        esService.save(stockDetailsEs);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<Void> fillDataBaseWithStockFiveMinutesDetails() {
+    public ResponseEntity<HttpStatus> fillDataBaseWithStockFiveMinutesDetails() {
         step = 0;
         Set<String> tickers = stockRepository.findAllTickers();
         ExecutorService executor = Executors.newFixedThreadPool(4);
@@ -153,14 +165,14 @@ public class FillDataBaseWithDataService {
             logger.error("Error occurs: " + e.getMessage());
         }
         fillDataStatusRepository.updateType(Type.STOCK_DETAILS_FIVE_MINUTES.toString());
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<Void> fillDataBaseWithStockFinanceEvent() {
+    public ResponseEntity<HttpStatus> fillDataBaseWithStockFinanceEvent() {
         List<StockFinanceEvent> stockFinanceEventFromWeb = stockFinanceEventParser.getStockFinanceEventFromWeb();
         stockFinanceEventRepository.save(stockFinanceEventFromWeb);
         fillDataStatusRepository.updateType(Type.STOCK_FINANCE_EVENTS.toString());
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     private synchronized void increaseStep() {

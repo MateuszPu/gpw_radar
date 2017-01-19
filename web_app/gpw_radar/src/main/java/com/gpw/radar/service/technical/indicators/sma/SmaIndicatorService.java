@@ -1,31 +1,33 @@
 package com.gpw.radar.service.technical.indicators.sma;
 
-import com.gpw.radar.domain.stock.StockDetails;
-import com.gpw.radar.repository.stock.StockDetailsRepository;
+import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
+import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsDAO;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.stock.StockService;
 import com.gpw.radar.service.technical.indicators.TickAdapter;
 import com.gpw.radar.web.rest.dto.stock.StockWithStockIndicatorsDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import pl.technical.analysis.Tickable;
 import pl.technical.analysis.indicators.trackers.sma.PriceCrossSMA;
 import pl.technical.analysis.indicators.trackers.sma.SMACrossover;
 
-import javax.inject.Inject;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class SmaIndicatorService {
 
-    private final StockDetailsRepository stockDetailsRepository;
+    private final StockDetailsDAO stockDetailsDAO;
     private final StockRepository stockRepository;
     private final StockService stockService;
 
-    @Inject
-    public SmaIndicatorService(final StockDetailsRepository stockDetailsRepository, final StockRepository stockRepository, final StockService stockService) {
-        this.stockDetailsRepository = stockDetailsRepository;
+    @Autowired
+    public SmaIndicatorService(@Qualifier("stockDetailsElasticSearchDAO") final StockDetailsDAO stockDetailsDAO,
+                               final StockRepository stockRepository, final StockService stockService) {
+        this.stockDetailsDAO = stockDetailsDAO;
         this.stockRepository = stockRepository;
         this.stockService = stockService;
     }
@@ -50,8 +52,9 @@ public class SmaIndicatorService {
         result.put(CrossDirection.FROM_ABOVE, new HashSet());
         result.put(CrossDirection.FROM_BELOW, new HashSet());
 
-        for (String ticker : stockRepository.findAllTickers()) {
-            List<StockDetails> stockDetails = stockDetailsRepository.findByStockTickerOrderByDateDesc(ticker, new PageRequest(0, 90)).getContent();
+        Set<String> allTickers = stockRepository.findAllTickers();
+        for (String ticker : allTickers) {
+            List<StockDetails> stockDetails = stockDetailsDAO.findByStockTickerOrderByDateDesc(ticker, new PageRequest(0, 90));
             List<Tickable> ticks = stockDetails.stream().map(e -> new TickAdapter(e)).collect(Collectors.toList());
             if (ticks.size() < slowerSma) {
                 continue;
@@ -75,7 +78,7 @@ public class SmaIndicatorService {
             case SMA_CROSSOVER:
                 return new SmaCrossoverAdapter(new SMACrossover(ticks, fasterSma, slowerSma));
             default:
-                throw new IllegalArgumentException("not handle case in switch case regarding to type: " + type);
+                throw new IllegalArgumentException(String.format("Provided type %s not handle in switch case", type));
         }
     }
 }

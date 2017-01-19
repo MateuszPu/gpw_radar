@@ -6,7 +6,6 @@
 
     <include file="classpath:config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20150723192013_added_entity_Stock.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20150803182915_added_entity_StockDetails.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20150803183322_added_entity_StockFinanceEvent.xml" relativeToChangelogFile="false"/>
    	<include file="classpath:config/liquibase/changelog/20150817192416_refactoring.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20151004130959_added_chat.xml" relativeToChangelogFile="false"/>

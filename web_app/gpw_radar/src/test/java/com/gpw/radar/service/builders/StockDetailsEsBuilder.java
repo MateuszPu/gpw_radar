@@ -1,7 +1,8 @@
 package com.gpw.radar.service.builders;
 
-import com.gpw.radar.domain.stock.Stock;
-import com.gpw.radar.domain.stock.StockDetails;
+
+import com.gpw.radar.elasticsearch.domain.stockdetails.Stock;
+import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -9,7 +10,7 @@ import java.time.LocalDate;
 /**
  * Created by mateusz on 28.05.2016.
  */
-public class StockDetailsBuilder {
+public class StockDetailsEsBuilder {
 
     private LocalDate date;
     private BigDecimal openPrice;
@@ -19,61 +20,61 @@ public class StockDetailsBuilder {
     private Long volume;
     private Stock stock;
 
-    public static StockDetailsBuilder stockDetailsBuilder() {
-        return new StockDetailsBuilder();
+    public static StockDetailsEsBuilder buildStockDetails() {
+        return new StockDetailsEsBuilder();
     }
 
-    public StockDetailsBuilder date(LocalDate date) {
+    public StockDetailsEsBuilder date(LocalDate date) {
         this.date = date;
         return this;
     }
 
-    public StockDetailsBuilder openPrice(BigDecimal openPrice) {
+    public StockDetailsEsBuilder openPrice(BigDecimal openPrice) {
         this.openPrice = openPrice;
         return this;
     }
 
-    public StockDetailsBuilder openPrice(String openPrice) {
+    public StockDetailsEsBuilder openPrice(String openPrice) {
         this.openPrice = new BigDecimal(openPrice);
         return this;
     }
 
-    public StockDetailsBuilder maxPrice(BigDecimal maxPrice) {
+    public StockDetailsEsBuilder maxPrice(BigDecimal maxPrice) {
         this.maxPrice = maxPrice;
         return this;
     }
 
-    public StockDetailsBuilder maxPrice(String maxPrice) {
+    public StockDetailsEsBuilder maxPrice(String maxPrice) {
         this.maxPrice = new BigDecimal(maxPrice);
         return this;
     }
 
-    public StockDetailsBuilder minPrice(BigDecimal minPrice) {
+    public StockDetailsEsBuilder minPrice(BigDecimal minPrice) {
         this.minPrice = minPrice;
         return this;
     }
 
-    public StockDetailsBuilder minPrice(String minPrice) {
+    public StockDetailsEsBuilder minPrice(String minPrice) {
         this.minPrice = new BigDecimal(minPrice);
         return this;
     }
 
-    public StockDetailsBuilder closePrice(BigDecimal closePrice) {
+    public StockDetailsEsBuilder closePrice(BigDecimal closePrice) {
         this.closePrice = closePrice;
         return this;
     }
 
-    public StockDetailsBuilder closePrice(String closePrice) {
+    public StockDetailsEsBuilder closePrice(String closePrice) {
         this.closePrice = new BigDecimal(closePrice);
         return this;
     }
 
-    public StockDetailsBuilder volume(Long volume) {
+    public StockDetailsEsBuilder volume(Long volume) {
         this.volume = volume;
         return this;
     }
 
-    public StockDetailsBuilder stock(Stock stock) {
+    public StockDetailsEsBuilder stock(Stock stock) {
         this.stock = stock;
         return this;
     }

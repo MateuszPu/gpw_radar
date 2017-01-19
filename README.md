@@ -56,15 +56,13 @@ In this particular project I am using rabbitmq. It is configured in docker conta
 
  For person who is familiar with docker:
 
- 1) Go to the folder `configs/rabbitmq/docker`
+ 1) `configs/rabbitmq/docker` folder contains dockerfile which you should use to build rabbitmq docker image
 
- 2) Particular folder contains dockerfile which you should use to build rabbitmq docker image
+ 2) Use following command to build image:  `docker build -t gpw.rabbit:1.0.0 path to dockerfile`
 
- 3) Use following command to build image:  `docker build -t name:version path to dockerfile`
+ 3) Run the image with following command: `docker run -d -p 5672:5672 -p 15672:15672 gpw.rabbit:1.0.0`
 
- 4) Run the image with following command: `docker run -p 5672:5672 -p 15672:15672 name:version`
-
- 5) To verify if everything works go to the http://docker_ip_machine:15672 and login with admin admin
+ 4) To verify if everything works go to the http://docker_ip_machine:15672 and login with admin admin
 
  For person who is not familiar with docker:
 
@@ -72,11 +70,31 @@ In this particular project I am using rabbitmq. It is configured in docker conta
 
  2) Go to the folder `configs/rabbitmq/docker`
 
- 3) There is file `init.sh`
+ 3) Run `init.sh` script
 
- 4) run it
+ 5) To verify if everything works go to the http://localhost:15672 and login with admin admin
 
- 5) To verify if everything works go to the http://docker_ip_machine:15672 and login with admin admin
+ # Elasticsearch on Docker
+ In this particular project I am using elasticsearch in version 2.4.2. It is configured in docker container [Docker][].
+ For person who is familiar with docker:
+
+ 1) `configs/elasticsearch/docker` folder contains dockerfile which you should use to build elasticsearch docker image
+
+ 2) Use following command to build image:  `docker build -t gpw.elasticsearch:1.0.0 full path to the docker file`
+
+ 3) Run the image with following command: `docker run -d -p 9200:9200 -p 9300:9300 --name es gpw.elasticsearch:1.0.0 -Des.network.host=0.0.0.0`
+
+ 4) To verify if everything works go to the http://docker_ip_machine:9200 and then you should see some json file about elasticsearch
+
+ For person who is not familiar with docker:
+
+ 1) Go to the [Elasticsearch][] and install elasticsearch locally
+
+ 2) https://www.elastic.co/guide/en/elasticsearch/reference/2.4/_installation.html
+
+ 3) After install copy config file named `elasticsearch.yml` from `configs/elasticsearch/docker` to your elasticsearch directory
+
+ 4) Change ip addres to localhost in file named `elasticsearch_config.properties` in `configs\elasticsearch\properties` directory
 
 [JHipster]: https://jhipster.github.io/
 [Node.js]: https://nodejs.org/
@@ -88,3 +106,4 @@ In this particular project I am using rabbitmq. It is configured in docker conta
 [Protractor]: https://angular.github.io/protractor/
 [Docker]: https://docs.docker.com/
 [Rabbitmq]: http://www.rabbitmq.com/download.html
+[Elasticsearch]: https://www.elastic.co/downloads/elasticsearch

@@ -12,12 +12,15 @@ import com.gpw.radar.web.rest.dto.ManagedUserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -216,5 +219,17 @@ public class UserService {
             log.debug("Deleting not activated user {}", user.getLogin());
             userRepository.delete(user);
         }
+    }
+
+    public ResponseEntity<Void> followStock(String stockId) throws URISyntaxException {
+        User user = getUserWithAuthorities();
+        userRepository.createAssociationWithStock(user.getId(), stockId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<Void> stopFollowStock(String stockId) throws URISyntaxException {
+        User user = getUserWithAuthorities();
+        userRepository.deleteAssociationWithStock(user.getId(), stockId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

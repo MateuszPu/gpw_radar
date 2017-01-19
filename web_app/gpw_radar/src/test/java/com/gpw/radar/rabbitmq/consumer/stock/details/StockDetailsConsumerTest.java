@@ -1,18 +1,13 @@
 package com.gpw.radar.rabbitmq.consumer.stock.details;
 
-import com.gpw.radar.domain.stock.Stock;
-import com.gpw.radar.domain.stock.StockDetails;
+import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
+import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsDAO;
+import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsElasticSearchDAO;
 import com.gpw.radar.rabbitmq.Mapper;
 import com.gpw.radar.rabbitmq.consumer.stock.details.database.Consumer;
-import com.gpw.radar.repository.stock.StockDetailsRepository;
-import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.auto.update.stockDetails.indicators.StandardStockIndicatorsCalculator;
-import com.gpw.radar.service.builders.StockBuilder;
-import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
-import com.gpw.radar.service.parser.web.stock.StockDataDetailsWebParser;
-import com.gpw.radar.service.parser.web.stock.StooqDataParserServiceData;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
+import com.gpw.radar.service.stock.StockService;
+import com.gpw.radar.utils.StockDetailsAssert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -20,110 +15,132 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.StrictAssertions.assertThat;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class StockDetailsConsumerTest {
 
-    private StockDetailsRepository mockedStockDetailsRepository;
-    private StockRepository mockedStockRepository;
-    private StandardStockIndicatorsCalculator mockedStandardStockIndicatorsCalculator;
-    private StockDataDetailsWebParser detailsParser = new StooqDataParserServiceData();
-    private UrlStreamsGetterService mockedUrlStreamsGetterService;
-    private Mapper<StockDetailsModel, StockDetails> mapper = new Mapper<>();
+    private StockDetailsDAO stockDetailsDaoEsMock = Mockito.mock(StockDetailsElasticSearchDAO.class);
+    private StandardStockIndicatorsCalculator standardStockIndicatorsCalculatorMock = Mockito.mock(StandardStockIndicatorsCalculator.class);
+    private StockService stockServiceMock = Mockito.mock(StockService.class);
     private Consumer objectUnderTest;
 
     @Before
     public void init() throws IOException {
-        mockStockDetailsRepository();
-        mockStockRepository();
-        mockUrlStreamsGetterService();
-        mockStandardStockIndicatorsCalculator();
-        objectUnderTest = new Consumer(mockedStockDetailsRepository, mockedStockRepository,
-            detailsParser, mockedUrlStreamsGetterService, mockedStandardStockIndicatorsCalculator, mapper);
-    }
-
-
-    private void mockStockDetailsRepository() {
-        mockedStockDetailsRepository = Mockito.mock(StockDetailsRepository.class);
-        when(mockedStockDetailsRepository.findTopDate()).thenReturn(LocalDate.of(2016, 11, 16));
-    }
-
-
-    private void mockStockRepository() {
-        mockedStockRepository = Mockito.mock(StockRepository.class);
-        List<Stock> stocks = new ArrayList<>();
-        Stock pzu = StockBuilder.sampleStock().id("1").stockName("PZU UBEZPIECZENIA").stockShortName("PZU SA").ticker("pzu").build();
-        Stock tpe = StockBuilder.sampleStock().id("2").stockName("TAURON ENERGIA").stockShortName("TAURON").ticker("tpe").build();
-        stocks.add(pzu);
-        stocks.add(tpe);
-        when(mockedStockRepository.findAll()).thenReturn(stocks);
-    }
-
-    private void mockUrlStreamsGetterService() throws IOException {
-        String htmlStooqSite = "/stocks_data/stooqSite.html";
-        try (InputStream in = getClass().getResourceAsStream(htmlStooqSite)) {
-            Document stooqSite = Jsoup.parse(in, null, "uri cannot be null");
-            mockedUrlStreamsGetterService = Mockito.mock(UrlStreamsGetterService.class);
-            when(mockedUrlStreamsGetterService.getDocFromUrl(anyObject())).thenReturn(stooqSite);
-        }
-    }
-
-    private void mockStandardStockIndicatorsCalculator() {
-        mockedStandardStockIndicatorsCalculator = Mockito.mock(StandardStockIndicatorsCalculator.class);
+        objectUnderTest = new Consumer(stockDetailsDaoEsMock, stockServiceMock, standardStockIndicatorsCalculatorMock,
+            new Mapper<StockDetails, StockDetails>());
     }
 
     @Test
-    public void assertThatConsumerGetMessageAndProcessIt() throws IOException, InterruptedException {
-        MessageProperties messageProperties = new MessageProperties();
-        Message rabbitMessage = new Message(prepareJsonMessage(), messageProperties);
-        List<StockDetails> savedStocksDetails = objectUnderTest.processMessage(rabbitMessage);
+    public void shouldCorrectParseStockDetails() throws IOException {
+        //given
+        given(stockDetailsDaoEsMock.findTopDate()).willReturn(LocalDate.of(2016, 11, 16));
+        Message rabbitMessage = prepareRabbitMessage("2016-11-17");
 
-        StockDetails tpeStockDetails = getStockByTicker("tpe", savedStocksDetails);
-        assertThat(tpeStockDetails.getStock().getId()).isEqualTo("2");
-        assertThat(tpeStockDetails.getStock().getTicker()).isEqualTo("tpe");
-        assertThat(tpeStockDetails.getStock().getStockName()).isEqualTo("TAURON ENERGIA");
-        assertThat(tpeStockDetails.getStock().getStockShortName()).isEqualTo("TAURON");
-        assertThat(tpeStockDetails.getVolume()).isEqualTo(121013L);
-        assertThat(tpeStockDetails.getTransactionsNumber()).isEqualTo(29);
-        assertThat(tpeStockDetails.getDate()).isEqualTo(LocalDate.of(2016, 11, 17));
-        assertThat(tpeStockDetails.getClosePrice()).isEqualTo(new BigDecimal("3.37"));
-        assertThat(tpeStockDetails.getMinPrice()).isEqualTo(new BigDecimal("2.37"));
-        assertThat(tpeStockDetails.getMaxPrice()).isEqualTo(new BigDecimal("2.61"));
-        assertThat(tpeStockDetails.getOpenPrice()).isEqualTo(new BigDecimal("2.51"));
+        //when
+        List<StockDetails> savedStocksDetails = objectUnderTest.parseStocksDetails(rabbitMessage);
 
-        StockDetails kghStockDetails = getStockByTicker("kgh", savedStocksDetails);
-        assertThat(kghStockDetails.getStock().getId()).isEqualTo(null);
-        assertThat(kghStockDetails.getStock().getTicker()).isEqualTo("kgh");
-        assertThat(kghStockDetails.getStock().getStockName()).isEqualTo("KGHM POLSKA MIEDŹ SA");
-        assertThat(kghStockDetails.getStock().getStockShortName()).isEqualTo("KGHM");
-        assertThat(kghStockDetails.getVolume()).isEqualTo(621013L);
-        assertThat(kghStockDetails.getTransactionsNumber()).isEqualTo(229);
-        assertThat(kghStockDetails.getDate()).isEqualTo(LocalDate.of(2016, 11, 17));
-        assertThat(kghStockDetails.getClosePrice()).isEqualTo(new BigDecimal("23.37"));
-        assertThat(kghStockDetails.getMinPrice()).isEqualTo(new BigDecimal("22.37"));
-        assertThat(kghStockDetails.getMaxPrice()).isEqualTo(new BigDecimal("22.61"));
-        assertThat(kghStockDetails.getOpenPrice()).isEqualTo(new BigDecimal("22.51"));
-    }
-
-    private StockDetails getStockByTicker(String ticker, List<StockDetails> savedStocksDetails) {
-        return savedStocksDetails.stream()
-            .filter(e -> e.getStock().getTicker().equalsIgnoreCase(ticker))
+        //then
+        StockDetails tpeStockDetails = savedStocksDetails.stream()
+            .filter(e -> e.getStock().getTicker().equalsIgnoreCase("tpe"))
             .findAny()
             .get();
+        assertThat(savedStocksDetails.size()).isEqualTo(3);
+
+        StockDetailsAssert.create(tpeStockDetails)
+            .hasCorrectStockTicker("tpe")
+            .hasCorrectStockShortName("TAURON")
+            .hasCorrectOpenPrice(new BigDecimal("2.51"))
+            .hasCorrectClosePrice(new BigDecimal("3.37"))
+            .hasCorrectMaxPrice(new BigDecimal("2.61"))
+            .hasCorrectMinPrice(new BigDecimal("2.37"))
+            .hasCorrectDate(LocalDate.of(2016, 11, 17))
+            .hasCorrectVolume(121013L)
+            .hasCorrectTransactionNumber(29L);
     }
 
-    private byte[] prepareJsonMessage() {
-        String jsonStockDetailsOne = "{\"stockTicker\":\"PZU\",\"stockName\":\"PZUSA\",\"date\":\"2016-11-17\",\"openPrice\":1.41,\"maxPrice\":1.31,\"minPrice\":1.37,\"closePrice\":1.37,\"volume\":1013,\"transactionsNumber\":9}";
-        String jsonStockDetailsTwo = "{\"stockTicker\":\"TPE\",\"stockName\":\"TAURON\",\"date\":\"2016-11-17\",\"openPrice\":2.51,\"maxPrice\":2.61,\"minPrice\":2.37,\"closePrice\":3.37,\"volume\":121013,\"transactionsNumber\":29}";
-        String jsonStockDetailsThree = "{\"stockTicker\":\"KGH\",\"stockName\":\"KGHM\",\"date\":\"2016-11-17\",\"openPrice\":22.51,\"maxPrice\":22.61,\"minPrice\":22.37,\"closePrice\":23.37,\"volume\":621013,\"transactionsNumber\":229}";
+    @Test
+    public void shouldCallAddMissingDataThreeTimes() throws IOException {
+        //given
+        given(stockDetailsDaoEsMock.findTopDate()).willReturn(LocalDate.of(2016, 11, 16));
+        Message rabbitMessage = prepareRabbitMessage("2016-11-17");
+
+        //when
+        objectUnderTest.parseStocksDetails(rabbitMessage);
+
+        //then
+        verify(stockServiceMock, times(3)).addMissingData(any());
+    }
+
+    @Test
+    public void shouldCallCalculateStockIndicators() throws IOException {
+        //given
+        given(stockDetailsDaoEsMock.findTopDate()).willReturn(LocalDate.of(2016, 11, 16));
+        Message rabbitMessage = prepareRabbitMessage("2016-11-17");
+
+        //when
+        objectUnderTest.parseStocksDetails(rabbitMessage);
+
+
+        //then
+        verify(standardStockIndicatorsCalculatorMock, times(1)).calculateCurrentStockIndicators();
+    }
+
+    @Test
+    public void shouldParseStockDetailsWhenMessageHasLaterDate() throws IOException {
+        //given
+        given(stockDetailsDaoEsMock.findTopDate()).willReturn(LocalDate.of(2016, 11, 16));
+        Message rabbitMessage = prepareRabbitMessage("2016-11-17");
+
+        //when
+        List<StockDetails> savedStocksDetails = objectUnderTest.parseStocksDetails(rabbitMessage);
+
+        //then
+        assertThat(savedStocksDetails.isEmpty()).isFalse();
+    }
+
+    @Test
+    public void shouldNotParseStockDetailsWhenMessageHasTheSameDate() throws IOException {
+        //given
+        given(stockDetailsDaoEsMock.findTopDate()).willReturn(LocalDate.of(2016, 11, 16));
+        Message rabbitMessage = prepareRabbitMessage("2016-11-16");
+
+        //when
+        List<StockDetails> savedStocksDetails = objectUnderTest.parseStocksDetails(rabbitMessage);
+
+        //then
+        assertThat(savedStocksDetails.isEmpty()).isTrue();
+    }
+
+    @Test
+    public void shouldNotParseStockDetailsWhenMessageHasTheEarlierDate() throws IOException {
+        //given
+        given(stockDetailsDaoEsMock.findTopDate()).willReturn(LocalDate.of(2016, 11, 16));
+        Message rabbitMessage = prepareRabbitMessage("2016-11-15");
+
+        //when
+        List<StockDetails> savedStocksDetails = objectUnderTest.parseStocksDetails(rabbitMessage);
+
+        //then
+        assertThat(savedStocksDetails.isEmpty()).isTrue();
+    }
+
+    private Message prepareRabbitMessage(String date) {
+        MessageProperties messageProperties = new MessageProperties();
+        return new Message(prepareJsonMessageWithDate(date), messageProperties);
+    }
+
+    private byte[] prepareJsonMessageWithDate(String date) {
+        String jsonStockDetailsOne = "{\"stock\":{\"ticker\":\"pzu\",\"shortName\":\"PZUSA\"},\"date\":\"" + date + "\",\"openPrice\":1.41,\"maxPrice\":1.31,\"minPrice\":1.37,\"closePrice\":1.37,\"volume\":1013,\"transactionsNumber\":9}";
+        String jsonStockDetailsTwo = "{\"stock\":{\"ticker\":\"tpe\",\"shortName\":\"TAURON\"},\"date\":\"" + date + "\",\"openPrice\":2.51,\"maxPrice\":2.61,\"minPrice\":2.37,\"closePrice\":3.37,\"volume\":121013,\"transactionsNumber\":29}";
+        String jsonStockDetailsThree = "{\"stock\":{\"ticker\":\"kgh\",\"shortName\":\"KGHM\"},\"date\":\"" + date + "\",\"openPrice\":22.51,\"maxPrice\":22.61,\"minPrice\":22.37,\"closePrice\":23.37,\"volume\":621013,\"transactionsNumber\":229}";
         String message = "[" + jsonStockDetailsOne + "," + jsonStockDetailsTwo + "," + jsonStockDetailsThree + "]";
         return message.getBytes();
     }
