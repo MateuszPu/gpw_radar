@@ -25,13 +25,9 @@ public class ChatMessageResource {
     @Inject
     private ChatMessageService chatMessageService;
 
-    @RequestMapping(value = "/last/10/messages", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/messages", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ChatMessageDTO>> getLastMessages(@RequestParam int page) {
         return chatMessageService.getLastMessages(page);
     }
 
-    @RequestMapping(value = "/older/messages", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ChatMessageDTO>> getOlderMessages(@RequestParam int page) {
-        return chatMessageService.getOlderMessages(page);
-    }
 }

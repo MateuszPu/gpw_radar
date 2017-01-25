@@ -14,8 +14,6 @@ import com.gpw.radar.web.rest.dto.stock.StockIndicatorsWithStocksDTO;
 import com.gpw.radar.web.rest.dto.stock.StockWithStockIndicatorsDTO;
 import com.gpw.radar.web.rest.util.PaginationUtil;
 import org.jsoup.nodes.Document;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +25,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Type;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -43,25 +39,25 @@ public class StockService {
     private final StockIndicatorsRepository stockIndicatorsRepository;
     private final StockDataDetailsWebParser detailsParser;
     private final UrlStreamsGetterService urlStreamsGetterService;
+    private final StockMapperDtoFacade stockMapperDtoFacade;
 
     @Autowired
     public StockService(StockRepository stockRepository,
                         @Qualifier("stooqDataParserService") StockDataDetailsWebParser detailsParser,
                         UrlStreamsGetterService urlStreamsGetterService,
-                        StockIndicatorsRepository stockIndicatorsRepository) {
+                        StockIndicatorsRepository stockIndicatorsRepository,
+                        StockMapperDtoFacade stockMapperDtoFacade) {
         this.stockRepository = stockRepository;
         this.detailsParser = detailsParser;
         this.urlStreamsGetterService = urlStreamsGetterService;
         this.stockIndicatorsRepository = stockIndicatorsRepository;
+        this.stockMapperDtoFacade = stockMapperDtoFacade;
     }
 
     @Cacheable(value = CacheConfiguration.ALL_STOCKS_FETCH_INDICATORS_CACHE)
     public List<StockWithStockIndicatorsDTO> getAllStocksFetchStockIndicators() {
         List<Stock> stocks = stockRepository.findAllFetchIndicators();
-        ModelMapper modelMapper = new ModelMapper();
-        Type dtoType = new TypeToken<List<StockWithStockIndicatorsDTO>>() {
-        }.getType();
-        return modelMapper.map(stocks, dtoType);
+        return stockMapperDtoFacade.mapToStockWithIndicatorsDto(stocks);
     }
 
     @Cacheable(value = CacheConfiguration.TRENDING_STOCKS_CACHE)
@@ -74,22 +70,22 @@ public class StockService {
                     case 10:
                         Page<StockIndicators> stockIn10DaysTrendUp = stockIndicatorsRepository.findWithStocksIndicators10DaysTrendUp(PaginationUtil.generatePageRequest(offset, limit), date);
                         httpHeaders = PaginationUtil.generatePaginationHttpHeaders(stockIn10DaysTrendUp, "/api/stocks/trends/up/days", offset, limit);
-                        result = getStockWithStockIndicatorsDTOs(stockIn10DaysTrendUp.getContent());
+                        result = stockMapperDtoFacade.mapToStockIndiactorsDto(stockIn10DaysTrendUp.getContent());
                         break;
                     case 30:
                         Page<StockIndicators> stockIn30DaysTrendUp = stockIndicatorsRepository.findWithStocksIndicators30DaysTrendUp(PaginationUtil.generatePageRequest(offset, limit), date);
                         httpHeaders = PaginationUtil.generatePaginationHttpHeaders(stockIn30DaysTrendUp, "/api/stocks/trends/up/days", offset, limit);
-                        result = getStockWithStockIndicatorsDTOs(stockIn30DaysTrendUp.getContent());
+                        result = stockMapperDtoFacade.mapToStockIndiactorsDto(stockIn30DaysTrendUp.getContent());
                         break;
                     case 60:
                         Page<StockIndicators> stockIn60DaysTrendUp = stockIndicatorsRepository.findWithStocksIndicators60DaysTrendUp(PaginationUtil.generatePageRequest(offset, limit), date);
                         httpHeaders = PaginationUtil.generatePaginationHttpHeaders(stockIn60DaysTrendUp, "/api/stocks/trends/up/days", offset, limit);
-                        result = getStockWithStockIndicatorsDTOs(stockIn60DaysTrendUp.getContent());
+                        result = stockMapperDtoFacade.mapToStockIndiactorsDto(stockIn60DaysTrendUp.getContent());
                         break;
                     case 90:
                         Page<StockIndicators> stockIn90DaysTrendUp = stockIndicatorsRepository.findWithStocksIndicators90DaysTrendUp(PaginationUtil.generatePageRequest(offset, limit), date);
                         httpHeaders = PaginationUtil.generatePaginationHttpHeaders(stockIn90DaysTrendUp, "/api/stocks/trends/up/days", offset, limit);
-                        result = getStockWithStockIndicatorsDTOs(stockIn90DaysTrendUp.getContent());
+                        result = stockMapperDtoFacade.mapToStockIndiactorsDto(stockIn90DaysTrendUp.getContent());
                         break;
                 }
                 break;
@@ -98,22 +94,22 @@ public class StockService {
                     case 10:
                         Page<StockIndicators> stockIn10DaysTrendDown = stockIndicatorsRepository.findWithStocksIndicators10DaysTrendDown(PaginationUtil.generatePageRequest(offset, limit), date);
                         httpHeaders = PaginationUtil.generatePaginationHttpHeaders(stockIn10DaysTrendDown, "/api/stocks/trends/down/days", offset, limit);
-                        result = getStockWithStockIndicatorsDTOs(stockIn10DaysTrendDown.getContent());
+                        result = stockMapperDtoFacade.mapToStockIndiactorsDto(stockIn10DaysTrendDown.getContent());
                         break;
                     case 30:
                         Page<StockIndicators> stockIn30DaysTrendDown = stockIndicatorsRepository.findWithStocksIndicators30DaysTrendDown(PaginationUtil.generatePageRequest(offset, limit), date);
                         httpHeaders = PaginationUtil.generatePaginationHttpHeaders(stockIn30DaysTrendDown, "/api/stocks/trends/down/days", offset, limit);
-                        result = getStockWithStockIndicatorsDTOs(stockIn30DaysTrendDown.getContent());
+                        result = stockMapperDtoFacade.mapToStockIndiactorsDto(stockIn30DaysTrendDown.getContent());
                         break;
                     case 60:
                         Page<StockIndicators> stockIn60DaysTrendDown = stockIndicatorsRepository.findWithStocksIndicators60DaysTrendDown(PaginationUtil.generatePageRequest(offset, limit), date);
                         httpHeaders = PaginationUtil.generatePaginationHttpHeaders(stockIn60DaysTrendDown, "/api/stocks/trends/down/days", offset, limit);
-                        result = getStockWithStockIndicatorsDTOs(stockIn60DaysTrendDown.getContent());
+                        result = stockMapperDtoFacade.mapToStockIndiactorsDto(stockIn60DaysTrendDown.getContent());
                         break;
                     case 90:
                         Page<StockIndicators> stockIn90DaysTrendDown = stockIndicatorsRepository.findWithStocksIndicators90DaysTrendDown(PaginationUtil.generatePageRequest(offset, limit), date);
                         httpHeaders = PaginationUtil.generatePaginationHttpHeaders(stockIn90DaysTrendDown, "/api/stocks/trends/down/days", offset, limit);
-                        result = getStockWithStockIndicatorsDTOs(stockIn90DaysTrendDown.getContent());
+                        result = stockMapperDtoFacade.mapToStockIndiactorsDto(stockIn90DaysTrendDown.getContent());
                         break;
                 }
             default:
@@ -151,20 +147,8 @@ public class StockService {
 
     public ResponseEntity<List<StockDTO>> getStocksFollowedByUser(String login) {
         Set<Stock> stocksFollowedByUser = stockRepository.findFollowedByUserLogin(login);
-        return new ResponseEntity<>(getStockDTOs(stocksFollowedByUser), HttpStatus.OK);
+        List<StockDTO> stockDtos = stockMapperDtoFacade.mapToStocksDto(stocksFollowedByUser);
+        return new ResponseEntity<>(stockDtos, HttpStatus.OK);
     }
 
-    private List<StockIndicatorsWithStocksDTO> getStockWithStockIndicatorsDTOs(List<?> stocks) {
-        ModelMapper modelMapper = new ModelMapper();
-        Type dtoType = new TypeToken<List<StockIndicatorsWithStocksDTO>>() {
-        }.getType();
-        return modelMapper.map(stocks, dtoType);
-    }
-
-    private List<StockDTO> getStockDTOs(Collection<Stock> stocks) {
-        ModelMapper modelMapper = new ModelMapper();
-        Type dto = new TypeToken<List<StockDTO>>() {
-        }.getType();
-        return modelMapper.map(stocks, dto);
-    }
 }

@@ -1,0 +1,90 @@
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <a ui-sref="news"><h5 translate="main.top5News">TYPE</h5></a>
+                        </div>
+                        <div class="ibox-content inspinia-timeline">
+                            <div id="vertical-timeline" class="vertical-container dark-timeline">
+                                <div class="vertical-timeline-block" ng-repeat="item in topFiveNewsMessages">
+                                    <div class="vertical-timeline-icon blue-bg">
+                                        <i class="fa fa-info-circle "></i>
+                                    </div>
+
+                                    <div class="vertical-timeline-content" >
+                                        <p ng-bind-html="item.chatMessage | htmlConvert"></p>
+                                        <span class="vertical-date">
+                                            {{item.createdDate | date : 'HH:mm dd.MM.yyyy'}} <br/>
+                                            <small class="text-navy" am-time-ago="item.newsDateTime"></small>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5 translate="main.up">Rising</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="stat-percent font-bold text-navy">{{ upCount / (upCount+downCount+noChangeCount)*100 | number : 0}}%<i class="fa fa-level-up"></i></div>
+                                <h1>{{upCount}}</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5 translate="main.down">Falling</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="stat-percent font-bold text-danger">{{ downCount / (upCount+downCount+noChangeCount)*100 | number : 0}}%<i class="fa fa-level-down"></i></div>
+                                <h1>{{downCount}}</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5 translate="main.noChange">No change</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="stat-percent font-bold text-warning">{{ noChangeCount / (upCount+downCount+noChangeCount)*100 | number : 0}}% <i class="fa fa-exchange"></i></div>
+                                <h1>{{noChangeCount}}</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5 translate="main.topFollowed">Top 5 following</h5>
+                            </div>
+                            <div ng-repeat="stock in mostFollowedStocks track by $index">
+                                <div class="ibox-content">
+                                    <ul class="list-group clear-list m-t">
+                                        <li class="list-group-item fist-item">
+                                <span class="pull-right">
+                                    {{stock.statisticValue}} - followers
+                                </span>
+                                            <span class="label label-success">{{$index+1}}</span> {{stock.gpwStockTicker}}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

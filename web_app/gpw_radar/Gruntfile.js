@@ -49,7 +49,7 @@ module.exports = function (grunt) {
         yeoman: {
             // configurable paths
             app: require('./bower.json').appPath || 'app',
-            dist: 'src/main/webapp/dist'
+            dist: 'src/main/resources/static/dist'
         },
         watch: {
             bower: {
@@ -62,7 +62,7 @@ module.exports = function (grunt) {
             },
             includeSource: {
                 // Watch for added and deleted scripts to update index.html
-                files: 'src/main/webapp/scripts/**/*.js',
+                files: 'src/main/resources/static/scripts/**/*.js',
                 tasks: ['includeSource'],
                 options: {
                     event: ['added', 'deleted']
@@ -74,7 +74,7 @@ module.exports = function (grunt) {
         },
         wiredep: {
             app: {
-                src: ['src/main/webapp/index.html'],
+                src: ['src/main/resources/static/index.html'],
                 exclude: [
                     /angular-i18n/  // localizations are loaded dynamically
                 ]
@@ -100,13 +100,13 @@ module.exports = function (grunt) {
         includeSource: {
             // Task to include files into index.html
             options: {
-                basePath: 'src/main/webapp',
+                basePath: 'src/main/resources/static',
                 baseUrl: '',
                 ordering: 'top-down'
             },
             app: {
                 files: {
-                    'src/main/webapp/index.html': 'src/main/webapp/index.html'
+                    'src/main/resources/static/index.html': 'src/main/resources/static/index.html'
                 }
             }
         },
@@ -114,11 +114,11 @@ module.exports = function (grunt) {
             dev: {
                 bsFiles: {
                     src : [
-                        'src/main/webapp/**/*.html',
-                        'src/main/webapp/**/*.json',
-                        'src/main/webapp/assets/styles/**/*.css',
-                        'src/main/webapp/scripts/**/*.{js,html}',
-                        'src/main/webapp/assets/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
+                        'src/main/resources/static/**/*.html',
+                        'src/main/resources/static/**/*.json',
+                        'src/main/resources/static/assets/styles/**/*.css',
+                        'src/main/resources/static/scripts/**/*.{js,html}',
+                        'src/main/resources/static/assets/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
                         'tmp/**/*.{css,js}'
                     ]
                 }
@@ -152,9 +152,9 @@ module.exports = function (grunt) {
             },
             all: [
                 'Gruntfile.js',
-                'src/main/webapp/scripts/app.js',
-                'src/main/webapp/scripts/app/**/*.js',
-                'src/main/webapp/scripts/components/**/*.js'
+                'src/main/resources/static/scripts/app.js',
+                'src/main/resources/static/scripts/app/**/*.js',
+                'src/main/resources/static/scripts/components/**/*.js'
             ]
         },
         concat: {
@@ -176,7 +176,7 @@ module.exports = function (grunt) {
             }
         },
         useminPrepare: {
-            html: 'src/main/webapp/index.html',
+            html: 'src/main/resources/static/index.html',
             options: {
                 dest: '<%= yeoman.dist %>',
                 flow: {
@@ -208,7 +208,7 @@ module.exports = function (grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    cwd: 'src/main/webapp/assets/images',
+                    cwd: 'src/main/resources/static/assets/images',
                     src: '**/*.{jpg,jpeg}', // we don't optimize PNG files as it doesn't work on Linux. If you are not on Linux, feel free to use '**/*.{png,jpg,jpeg}'
                     dest: '<%= yeoman.dist %>/assets/images'
                 }]
@@ -218,7 +218,7 @@ module.exports = function (grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    cwd: 'src/main/webapp/assets/images',
+                    cwd: 'src/main/resources/static/assets/images',
                     src: '**/*.svg',
                     dest: '<%= yeoman.dist %>/assets/images'
                 }]
@@ -229,7 +229,7 @@ module.exports = function (grunt) {
         },
         ngtemplates:    {
             dist: {
-                cwd: 'src/main/webapp',
+                cwd: 'src/main/resources/static',
                 src: ['scripts/app/**/*.html', 'scripts/components/**/*.html',],
                 dest: '.tmp/templates/templates.js',
                 options: {
@@ -268,7 +268,7 @@ module.exports = function (grunt) {
                     expand: true,
                     dot: true,
                     flatten: true,
-                    cwd: 'src/main/webapp',
+                    cwd: 'src/main/resources/static',
                     dest: '<%= yeoman.dist %>/assets/fonts',
                     src: [
                       'bower_components/bootstrap/fonts/*.*'
@@ -279,7 +279,7 @@ module.exports = function (grunt) {
                 files: [{
                     expand: true,
                     dot: true,
-                    cwd: 'src/main/webapp',
+                    cwd: 'src/main/resources/static',
                     dest: '<%= yeoman.dist %>',
                     src: [
                         '*.html',
@@ -345,7 +345,7 @@ module.exports = function (grunt) {
             },
             dev: {
                 options: {
-                    dest: 'src/main/webapp/scripts/app/app.constants.js'
+                    dest: 'src/main/resources/static/scripts/app/app.constants.js'
                 },
                 constants: {
                     ENV: 'dev',

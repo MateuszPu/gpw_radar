@@ -1,0 +1,12 @@
+<!DOCTYPE html> <html class=no-js> <head> <meta charset=utf-8> <meta http-equiv=X-UA-Compatible content="IE=edge"> <title>gpwRadar</title> <meta name=description content=""> <meta name=google value=notranslate> <meta name=viewport content="width=device-width"> <!-- Place favicon.ico and apple-touch-icon.png in the root directory --> <link rel=stylesheet href=assets/styles/c39b221d.vendor.css> <link rel=stylesheet href=assets/styles/85267076.main.css> <link href=//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css rel=stylesheet> </head> <body ng-app=gpwRadarApp> <!--[if lt IE 9]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]--> <div id=wrapper> <!-- Left navbar --> <div ui-view=leftNavbar></div> <!-- Page wraper --> <!-- ng-class with current state name give you the ability to extended customization your view --> <div id=page-wrapper class="gray-bg {{$state.current.name}}"> <!-- Top navbar --> <div ui-view=topNavbar ng-cloak=""></div> <!-- Main view  --> <div ui-view=content></div> <!-- Footer
+		        <div ng-include="'scripts/components/navbars/footer.html'"></div>--> </div> <!-- End page wrapper--> </div> <!-- Google Analytics: uncomment and change UA-XXXXX-X to be your site's ID.
+        <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='//www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-XXXXX-X');ga('send','pageview');
+        </script>--> <script src=scripts/c32fcbb7.vendor.js></script> <script src=bower_components/messageformat/locale/pl.js></script> <script src=scripts/dfb693c1.app.js></script> </body> </html> 

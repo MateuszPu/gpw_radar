@@ -7,8 +7,12 @@ import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
 import com.gpw.radar.repository.stock.StockIndicatorsRepository;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.builders.StockBuilder;
+import com.gpw.radar.service.mapper.DtoMapper;
 import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
 import com.gpw.radar.service.parser.web.stock.StooqDataParserServiceData;
+import com.gpw.radar.web.rest.dto.stock.StockDTO;
+import com.gpw.radar.web.rest.dto.stock.StockIndicatorsWithStocksDTO;
+import com.gpw.radar.web.rest.dto.stock.StockWithStockIndicatorsDTO;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Before;
@@ -33,10 +37,13 @@ import static org.mockito.Mockito.verify;
 
 public class StockServiceTest {
 
-
     private final StockRepository stockRepositoryMock = Mockito.mock(StockRepository.class);
     private final UrlStreamsGetterService urlStreamsGetterServiceMock = Mockito.mock(UrlStreamsGetterService.class);
     private final StockIndicatorsRepository stockIndicatorsRepositoryMock = Mockito.mock(StockIndicatorsRepository.class);
+    private final DtoMapper<Stock, StockWithStockIndicatorsDTO> stockWithIndicatorsDtoMapper = new DtoMapper<>();
+    private final DtoMapper<StockIndicators, StockIndicatorsWithStocksDTO> stockIndicatorsMapper = new DtoMapper<>();
+    private final DtoMapper<Stock, StockDTO> stockDtoMapper = new DtoMapper<>();
+    private final StockMapperDtoFacade stockMapperDtoFacade = new StockMapperDtoFacade(stockWithIndicatorsDtoMapper, stockIndicatorsMapper, stockDtoMapper);
     private Stock pzu;
     private Stock tpe;
     private Document stooqSite;
@@ -47,7 +54,7 @@ public class StockServiceTest {
         mockStocks();
         mockStooqSite();
         objectUnderTest = new StockService(stockRepositoryMock, new StooqDataParserServiceData(),
-            urlStreamsGetterServiceMock, stockIndicatorsRepositoryMock);
+            urlStreamsGetterServiceMock, stockIndicatorsRepositoryMock, stockMapperDtoFacade);
     }
 
     private void mockStooqSite() throws IOException {

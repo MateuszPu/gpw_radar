@@ -1,0 +1,59 @@
+<breadcrumbs translate-path="configurator.title"></breadcrumbs>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+	<div class="row">
+	    <div class="col-lg-6">
+	        <div class="ibox float-e-margins">
+	            <div class="ibox-title">
+	                <h5 translate="configurator.parser.title">parser method</h5>
+	                <ibox-tools hide-tools="false"></ibox-tools>
+	            </div>
+	            <div class="ibox-content">
+	            	<form method="get" class="form-horizontal">
+		            	<div class="form-group">
+		            		<label class="col-lg-2" translate="configurator.parser.select">Select method</label>
+		            		<div class="col-lg-10">
+		            			<select class="form-control m-b" ng-model="selectedMethod" ng-options="method for method in allMethods"></select>
+		            		</div>
+			            	<h4 class="col-lg-12" translate="configurator.parser.selectInfo"></h4>
+			            	<div class="col-lg-12" ng-switch="selectedMethod">
+			            		<div ng-switch-when="GPW" translate="configurator.parser.gpwMethod">GPW</div>
+			            		<div ng-switch-when="STOOQ"> <span translate="configurator.parser.stooqMethod.info"> STOOQ </span>
+				            		<div class="panel panel-warning">
+		                                <div class="panel-heading">
+		                                    <i class="fa fa-warning"></i> <span translate="configurator.parser.stooqMethod.warning.title">Warning!</span>
+		                                </div>
+		                                <div class="panel-body">
+		                                    <p translate="configurator.parser.stooqMethod.warning.content">Content</p>
+		                                </div>
+	                            	</div>
+                            	</div>
+			            	</div>
+		            	</div>
+	            		<div class="hr-line-dashed"></div>
+	                	<button class="btn btn-success btn-sm" ng-click="setMethod()" translate="configurator.parser.save">Save</button>
+	            	</form>
+	            </div>
+	        </div>
+	    </div>
+
+	    <div class="col-lg-6">
+	        <div class="ibox float-e-margins">
+	            <div class="ibox-title">
+	                <h5 translate="configurator.fillData.title">Fill database</h5>
+                    <ibox-tools hide-tools="false"></ibox-tools>
+	            </div>
+				<div class="ibox-content">
+					<div ng-repeat="data in fillDataStatus track by data.type">
+						<button class="btn btn-success btn-sm" ng-disabled="isDisabled('{{data.type}}')" translate="configurator.fillData.button.{{data.type}}" ng-click="fillDatabase(data.type)">Step</button>
+						<span ng-hide="updatingDB && data.type == typeName" translate="configurator.fillData.info.{{data.type}}">Data type info</span>
+						<span ng-show="updatingDB && data.type == typeName">
+							<progressbar animate="true" class="progress-striped" value='step/stockTickersCount*100' type="success">{{step/stockTickersCount*100 | number:0}}% completed</progressbar>
+						</span>
+						<div class="hr-line-dashed"></div>
+					</div>
+				</div>
+	        </div>
+	    </div>
+	</div>
+</div>

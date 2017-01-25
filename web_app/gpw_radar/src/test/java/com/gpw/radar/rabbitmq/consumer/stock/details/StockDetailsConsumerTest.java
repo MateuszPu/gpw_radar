@@ -3,9 +3,9 @@ package com.gpw.radar.rabbitmq.consumer.stock.details;
 import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
 import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsDAO;
 import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsElasticSearchDAO;
-import com.gpw.radar.rabbitmq.Mapper;
 import com.gpw.radar.rabbitmq.consumer.stock.details.database.Consumer;
 import com.gpw.radar.service.auto.update.stockDetails.indicators.StandardStockIndicatorsCalculator;
+import com.gpw.radar.service.mapper.JsonTransformer;
 import com.gpw.radar.service.stock.StockService;
 import com.gpw.radar.utils.StockDetailsAssert;
 import org.junit.Before;
@@ -35,7 +35,7 @@ public class StockDetailsConsumerTest {
     @Before
     public void init() throws IOException {
         objectUnderTest = new Consumer(stockDetailsDaoEsMock, stockServiceMock, standardStockIndicatorsCalculatorMock,
-            new Mapper<StockDetails, StockDetails>());
+            new JsonTransformer<StockDetails>());
     }
 
     @Test

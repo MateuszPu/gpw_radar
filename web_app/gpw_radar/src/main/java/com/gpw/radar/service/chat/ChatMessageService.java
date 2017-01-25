@@ -4,7 +4,7 @@ import com.gpw.radar.domain.User;
 import com.gpw.radar.domain.chat.ChatMessage;
 import com.gpw.radar.repository.UserRepository;
 import com.gpw.radar.repository.chat.ChatMessageRepository;
-import com.gpw.radar.service.mapper.ChatMessageMapper;
+import com.gpw.radar.service.mapper.custom.ChatMessageMapper;
 import com.gpw.radar.web.rest.dto.chat.ChatMessageDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -36,18 +35,15 @@ public class ChatMessageService {
     }
 
     public ResponseEntity<List<ChatMessageDTO>> getLastMessages(int page) {
-        List<ChatMessageDTO> reverse = getMessages(page);
-        Collections.reverse(reverse);
-        return new ResponseEntity<List<ChatMessageDTO>>(reverse, HttpStatus.OK);
-    }
-
-    public ResponseEntity<List<ChatMessageDTO>> getOlderMessages(int page) {
-        List<ChatMessageDTO> messages = getMessages(page);
-        return new ResponseEntity<List<ChatMessageDTO>>(messages, HttpStatus.OK);
+        Pageable pageRequest = new PageRequest(page, 10, Sort.Direction.DESC, "createdDate");
+        Page<ChatMessage> messages = chatMessageRepository.findAll(pageRequest);
+        List<ChatMessage> reverse = new ArrayList<>(messages.getContent());
+        List<ChatMessageDTO> chatMessagesDto = chatMessageMapper.mapToDto(reverse);
+        return new ResponseEntity<>(chatMessagesDto, HttpStatus.OK);
     }
 
     public ChatMessage createUserMessage(String message, Principal principal) {
-        if (message.length() > 128 || message.length() < 1) {
+        if ( message.isEmpty() || message.length() > 128) {
             throw new IllegalArgumentException("Message should have length of 1 to 128");
         }
         String userLogin = principal.getName();
@@ -57,12 +53,5 @@ public class ChatMessageService {
         msg.setUser(currentUser);
         chatMessageRepository.save(msg);
         return msg;
-    }
-
-    private List<ChatMessageDTO> getMessages(int page) {
-        Pageable pageRequest = new PageRequest(page, 10, Sort.Direction.DESC, "createdDate");
-        Page<ChatMessage> messages = chatMessageRepository.findAll(pageRequest);
-        List<ChatMessage> reverse = new ArrayList<>(messages.getContent());
-        return chatMessageMapper.mapToDto(reverse);
     }
 }

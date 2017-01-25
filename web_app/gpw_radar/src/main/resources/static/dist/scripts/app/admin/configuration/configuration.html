@@ -1,0 +1,40 @@
+<breadcrumbs translate-path="configuration.title"></breadcrumbs>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox-title">
+                <h2 translate="configuration.title">configuration</h2>
+            </div>
+            <div class="ibox-content">
+
+
+                {{'configuration.filter' | translate}} <input type="text" ng-model="filter" class="form-control">
+
+                <table class="table table-condensed table-striped table-bordered table-responsive"
+                       style="table-layout:fixed">
+                    <thead>
+                    <tr>
+                        <th ng-click="predicate = 'prefix'; reverse=!reverse">{{'configuration.table.prefix' |
+                            translate}}
+                        </th>
+                        <th>{{'configuration.table.properties' | translate}}</th>
+                    </tr>
+                    </thead>
+
+                    <tr ng-repeat="entry in configuration | filter:filter | orderBy:predicate:reverse">
+                        <td><span>{{entry.prefix}}</span></td>
+                        <td>
+                            <div class="row" ng-repeat="(key, value) in entry.properties">
+                                <div class="col-md-6">{{key}}</div>
+                                <div class="col-md-6"><span class="pull-right label label-info"
+                                                            style="white-space: normal;word-break:break-all">{{value}}</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
