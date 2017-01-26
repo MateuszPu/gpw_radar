@@ -1,7 +1,7 @@
 ######################
 # Project Specific
 ######################
-/web_app/gpw_radar/src/main/webapp/dist
+/web_app/gpw_radar/src/main/resources/static/dist
 
 ######################
 # Node

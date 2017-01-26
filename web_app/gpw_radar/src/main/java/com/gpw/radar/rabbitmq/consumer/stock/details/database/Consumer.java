@@ -4,8 +4,8 @@ import com.gpw.radar.config.CacheConfiguration;
 import com.gpw.radar.config.Constants;
 import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
 import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsDAO;
-import com.gpw.radar.rabbitmq.Mapper;
 import com.gpw.radar.service.auto.update.stockDetails.indicators.StockIndicatorsCalculator;
+import com.gpw.radar.service.mapper.JsonTransformer;
 import com.gpw.radar.service.stock.StockService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,17 +31,17 @@ public class Consumer {
     private final StockDetailsDAO stockDetailsDAO;
     private final StockService stockService;
     private final StockIndicatorsCalculator standardStockIndicatorsCalculator;
-    private final Mapper<StockDetails, StockDetails> mapper;
+    private final JsonTransformer<StockDetails> jsonTransformer;
 
     @Autowired
     public Consumer(@Qualifier("stockDetailsElasticSearchDAO") StockDetailsDAO stockDetailsDAO,
                     StockService stockService,
                     StockIndicatorsCalculator standardStockIndicatorsCalculator,
-                    Mapper mapper) {
+                    JsonTransformer jsonTransformer) {
         this.stockDetailsDAO = stockDetailsDAO;
         this.stockService = stockService;
         this.standardStockIndicatorsCalculator = standardStockIndicatorsCalculator;
-        this.mapper = mapper;
+        this.jsonTransformer = jsonTransformer;
     }
 
     @RabbitListener(queues = "${stock_details_updater_queue}")
@@ -50,7 +50,7 @@ public class Consumer {
     }
 
     public List<StockDetails> parseStocksDetails(Message message) throws IOException {
-        List<StockDetails> stocksDetails = mapper.deserializeFromJson(message, StockDetails.class);
+        List<StockDetails> stocksDetails = jsonTransformer.deserializeFromJson(message, StockDetails.class);
         LocalDate date = stocksDetails.stream().findAny().get().getDate();
         LocalDate topDate = stockDetailsDAO.findTopDate();
         if (date.isAfter(topDate)) {

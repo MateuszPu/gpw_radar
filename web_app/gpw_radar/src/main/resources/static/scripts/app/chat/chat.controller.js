@@ -10,14 +10,14 @@ angular.module('gpwRadarApp')
     		else {
     			return login != 'system';
     		}
-    	}
+    	};
 
         $scope.messages = ChatMessage.getMessages({page: 0});
 
         var counter = 1;
         $scope.loadOlder = function() {
         	var promise = $http({
-        	    url: 'api/chat/older/messages',
+        	    url: 'api/chat/messages',
         	    method: "GET",
         	    params: {page: counter}
         	 });

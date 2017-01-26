@@ -4,7 +4,6 @@ import com.gpw.radar.domain.rss.NewsMessage;
 import com.gpw.radar.rabbitmq.MessageTransformer;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.builders.StockBuilder;
-import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.amqp.core.Message;
@@ -16,25 +15,14 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.StrictAssertions.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyObject;
-import static org.mockito.Mockito.when;
 
 public class MessageTransformerDatabaseTest {
 
-    private StockRepository mockedStockRepository;
+    private StockRepository mockedStockRepository = Mockito.mock(StockRepository.class);;
     private final String headerName = "testHeader";
-    private MessageTransformer objectUnderTest;
-
-    @Before
-    public void init() {
-        mockStockRepo();
-        objectUnderTest = new MessageTransformer(mockedStockRepository);
-    }
-
-    private void mockStockRepo() {
-        mockedStockRepository = Mockito.mock(StockRepository.class);
-        when(mockedStockRepository.findByStockName(anyObject())).thenReturn(Optional.of(StockBuilder.sampleStock().build()));
-    }
+    private MessageTransformer objectUnderTest  = new MessageTransformer(mockedStockRepository);;
 
     @Test
     public void transformMessageTest() {
@@ -47,6 +35,7 @@ public class MessageTransformerDatabaseTest {
         //given
         String jsonMessageFirst = "{\"newsDateTime\":\"2016-08-04T20:14:00\",\"message\":\"test message\",\"link\":\"http://www.twiter.com/\"}";
         String jsonMessageSecond = "{\"newsDateTime\":\"2016-08-01T20:00:00\",\"message\":\"RAWLPLUG SA test message two\",\"link\":\"http://www.google.pl/\"}";
+        given(mockedStockRepository.findByStockName(anyObject())).willReturn(Optional.of(StockBuilder.sampleStock().build()));
         String message = "[" + jsonMessageFirst + ", " + jsonMessageSecond + "]";
         MessageProperties messageProperties = new MessageProperties();
         messageProperties.getHeaders().put("testHeader", RssType.EBI.name());

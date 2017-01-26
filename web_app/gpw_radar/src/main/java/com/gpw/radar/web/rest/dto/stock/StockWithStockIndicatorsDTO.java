@@ -14,6 +14,9 @@ public class StockWithStockIndicatorsDTO {
     private String stockTicker;
     private String stockShortName;
 
+    public StockWithStockIndicatorsDTO() {
+    }
+
     public StockWithStockIndicatorsDTO(String ticker) {
         this.setStockTicker(ticker);
     }
