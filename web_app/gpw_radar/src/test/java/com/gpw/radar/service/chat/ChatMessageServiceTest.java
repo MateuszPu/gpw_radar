@@ -97,8 +97,6 @@ public class ChatMessageServiceTest {
         //given
         Pageable pageRequest = new PageRequest(0, 10, Sort.Direction.DESC, "createdDate");
         given(chatMessageRepositoryMock.findAll(pageRequest)).willReturn(chatMessagePage());
-        ZonedDateTime firstDate = ZonedDateTime.of(2016, 10, 1, 12, 14, 32, 0, ZoneId.systemDefault());
-        ZonedDateTime lastDate = ZonedDateTime.of(2016, 10, 10, 12, 14, 32, 0, ZoneId.systemDefault());
 
         //when
         ResponseEntity<List<ChatMessageDTO>> lastMessages = objectUnderTest.getLastMessages(0);

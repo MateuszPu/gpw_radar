@@ -68,8 +68,7 @@ public class NewsMessageServiceTest {
         given(dateAndTimeParserService.parseLocalDateFromString(endDate)).willReturn(LocalDate.of(2016, 11, 1));
 
         //when
-        ResponseEntity<List<NewsDetailsDTO>> startAfterEnd = objectUnderTest
-            .getMessagesByTypeBetweenDates(RssType.CHALLENGE, startDate, endDate);
+        objectUnderTest.getMessagesByTypeBetweenDates(RssType.CHALLENGE, startDate, endDate);
 
         //then
         verify(newsMessageRepository, times(1))
