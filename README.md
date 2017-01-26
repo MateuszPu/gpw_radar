@@ -74,7 +74,7 @@ In this particular project I am using rabbitmq. It is configured in docker conta
 
  5) To verify if everything works go to the http://localhost:15672 and login with admin admin
 
- # Elasticsearch on Docker
+# Elasticsearch on Docker
  In this particular project I am using elasticsearch in version 2.4.2. It is configured in docker container [Docker][].
  For person who is familiar with docker:
 
