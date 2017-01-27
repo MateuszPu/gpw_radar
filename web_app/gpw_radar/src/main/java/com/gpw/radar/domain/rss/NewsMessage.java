@@ -1,6 +1,8 @@
 package com.gpw.radar.domain.rss;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.rabbitmq.consumer.rss.news.RssType;
 import org.hibernate.annotations.GenericGenerator;
@@ -34,6 +36,7 @@ public class NewsMessage {
 
     @NotNull
     @Column(name = "news_date_time", nullable = false)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime newsDateTime;
 
     @NotNull

@@ -116,7 +116,7 @@ public class MailService {
         }
     }
 
-    public void informUserAboutStockNewsByEmail(NewsMessage message) {
+    public void informUserAboutStockNews(NewsMessage message) {
         List<User> usersToSendEmail = userRepository.findAllByStocks(message.getStock());
         if (usersToSendEmail.isEmpty()) {
             return;

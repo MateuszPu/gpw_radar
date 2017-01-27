@@ -1,48 +1,59 @@
 package com.gpw.radar.rabbitmq.consumer.rss.news;
 
+import com.gpw.radar.domain.chat.ChatMessage;
 import com.gpw.radar.domain.rss.NewsMessage;
-import com.gpw.radar.rabbitmq.MessageTransformer;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.builders.StockBuilder;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessageProperties;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static com.gpw.radar.rabbitmq.consumer.rss.news.MessageFactory.createRabbitMessage;
 import static org.assertj.core.api.StrictAssertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyObject;
 
-public class MessageTransformerDatabaseTest {
+public class MessageTransformerTest {
 
-    private StockRepository mockedStockRepository = Mockito.mock(StockRepository.class);;
+    private StockRepository mockedStockRepository = Mockito.mock(StockRepository.class);
     private final String headerName = "testHeader";
-    private MessageTransformer objectUnderTest  = new MessageTransformer(mockedStockRepository);;
+    private MessageTransformer objectUnderTest = new MessageTransformer(mockedStockRepository);
 
     @Test
-    public void transformMessageTest() {
-        String message = objectUnderTest.transformMessage("www.onet.pl", "message test");
+    public void shouldCorrectlyTransformLinkAndMessage() {
+        String message = objectUnderTest.transformToChatMessageContent("www.onet.pl", "message test");
         assertThat(message).isEqualTo("<a href=\"www.onet.pl\" target=\"_blank\">message test</a>");
     }
 
     @Test
-    public void getNewsMessageTest() throws IOException, InterruptedException {
+    public void shouldCorrectlyTransformToChatMessage() throws IOException {
         //given
-        String jsonMessageFirst = "{\"newsDateTime\":\"2016-08-04T20:14:00\",\"message\":\"test message\",\"link\":\"http://www.twiter.com/\"}";
-        String jsonMessageSecond = "{\"newsDateTime\":\"2016-08-01T20:00:00\",\"message\":\"RAWLPLUG SA test message two\",\"link\":\"http://www.google.pl/\"}";
-        given(mockedStockRepository.findByStockName(anyObject())).willReturn(Optional.of(StockBuilder.sampleStock().build()));
-        String message = "[" + jsonMessageFirst + ", " + jsonMessageSecond + "]";
-        MessageProperties messageProperties = new MessageProperties();
-        messageProperties.getHeaders().put("testHeader", RssType.EBI.name());
-        Message msg = new Message(message.getBytes(), messageProperties);
+        Message msg = createRabbitMessage();
 
         //when
-        List<NewsMessage> newsMessages = objectUnderTest.getNewsMessages(msg, headerName);
+        List<ChatMessage> chatMessages = objectUnderTest.transformMessage(msg);
+
+        //then
+        ChatMessage firstMessage = chatMessages.get(0);
+        assertThat(firstMessage.getMessage()).isEqualTo("<a href=\"http://www.twiter.com/\" target=\"_blank\">test message</a>");
+        assertThat(firstMessage.getLink()).isEqualTo("http://www.twiter.com/");
+        assertThat(firstMessage.getUser().getId()).isEqualTo("h6ehbr4khohjr116k23pon9vojv66c3eab45aui6pmau3acq1b");
+        assertThat(firstMessage.getUser().getLogin()).isEqualTo("system");
+    }
+
+    @Test
+    public void shouldCorrectlyTransformToNewsMessage() throws IOException, InterruptedException {
+        //given
+        given(mockedStockRepository.findByStockName(anyObject())).willReturn(Optional.of(StockBuilder.sampleStock().build()));
+        Message msg = createRabbitMessage();
+
+        //when
+        List<NewsMessage> newsMessages = objectUnderTest.transformMessage(msg, headerName);
 
         //then
         NewsMessage newsMessageWithOutStock = newsMessages.stream().filter(e -> e.getStock() == null).findAny().get();
@@ -60,4 +71,5 @@ public class MessageTransformerDatabaseTest {
         assertThat(newsMessageWithStock.getStock().getStockName()).isEqualTo("KGH name");
         assertThat(newsMessageWithStock.getStock().getStockShortName()).isEqualTo("KGH short name");
     }
+
 }

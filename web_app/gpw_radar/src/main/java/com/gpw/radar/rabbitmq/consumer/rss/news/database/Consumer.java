@@ -2,7 +2,7 @@ package com.gpw.radar.rabbitmq.consumer.rss.news.database;
 
 import com.gpw.radar.config.Constants;
 import com.gpw.radar.domain.rss.NewsMessage;
-import com.gpw.radar.rabbitmq.MessageTransformer;
+import com.gpw.radar.rabbitmq.consumer.rss.news.MessageTransformer;
 import com.gpw.radar.repository.rss.NewsMessageRepository;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -33,7 +33,7 @@ public class Consumer {
 
     @RabbitListener(queues = "${rss_reader_database_queue}")
     public void consumeMessage(Message message) throws InterruptedException, IOException {
-        List<NewsMessage> newsMessages = messageTransformer.getNewsMessages(message, newsTypeHeader);
-        newsMessages.stream().forEach(e -> newsMessageRepository.save(e));
+        List<NewsMessage> newsMessages = messageTransformer.transformMessage(message, newsTypeHeader);
+        newsMessageRepository.save(newsMessages);
     }
 }

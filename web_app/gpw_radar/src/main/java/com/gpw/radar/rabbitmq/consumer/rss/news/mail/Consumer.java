@@ -2,7 +2,7 @@ package com.gpw.radar.rabbitmq.consumer.rss.news.mail;
 
 import com.gpw.radar.config.Constants;
 import com.gpw.radar.domain.rss.NewsMessage;
-import com.gpw.radar.rabbitmq.MessageTransformer;
+import com.gpw.radar.rabbitmq.consumer.rss.news.MessageTransformer;
 import com.gpw.radar.service.mail.MailService;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -22,7 +22,6 @@ public class Consumer {
     private final String newsTypeHeader;
     private final MessageTransformer messageTransformer;
 
-
     @Autowired
     public Consumer(MailService mailService, @Value("${rss_reader_news_type_header}") String newsTypeHeader,
                     MessageTransformer messageTransformer) {
@@ -33,9 +32,9 @@ public class Consumer {
 
     @RabbitListener(queues = "${rss_reader_mail_queue}")
     public void consumeMessage(Message message) throws InterruptedException, IOException {
-        List<NewsMessage> newsMessages = messageTransformer.getNewsMessages(message, newsTypeHeader);
-        newsMessages.forEach(e -> e.setMessage(messageTransformer.transformMessage(e.getLink(), e.getMessage())));
-        newsMessages.stream().filter(e -> e.getStock() != null).forEach(e -> mailService.informUserAboutStockNewsByEmail(e));
+        List<NewsMessage> newsMessages = messageTransformer.transformMessage(message, newsTypeHeader);
+        newsMessages.forEach(e -> e.setMessage(messageTransformer.transformToChatMessageContent(e.getLink(), e.getMessage())));
+        newsMessages.stream().filter(e -> e.getStock() != null).forEach(mailService::informUserAboutStockNews);
     }
 
 }
