@@ -27,7 +27,7 @@ public class ChatConsumerTest {
     private MessageTransformer messageTransformerMock = Mockito.mock(MessageTransformer.class);
     private ChatMessageRepository chatMessageRepositoryMock = Mockito.mock(ChatMessageRepository.class);
     private SocketMessageService socketMessageServiceMock = Mockito.mock(SocketMessageService.class);
-    Consumer objectUnderTest = new Consumer(chatMessageRepositoryMock, socketMessageServiceMock, messageTransformerMock);
+    private Consumer objectUnderTest = new Consumer(chatMessageRepositoryMock, socketMessageServiceMock, messageTransformerMock);
 
     @Test
     public void shouldSaveAndSendChatMessage() throws IOException, InterruptedException {
