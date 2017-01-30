@@ -12,6 +12,7 @@ import java.util.List;
 public class ChatMessageMapper extends DtoMapper<ChatMessage, ChatMessageDTO> {
 
     public ChatMessageMapper() {
+        super(ChatMessageDTO.class);
         super.modelMapper.addMappings(orderMap);
     }
 
@@ -23,10 +24,10 @@ public class ChatMessageMapper extends DtoMapper<ChatMessage, ChatMessageDTO> {
     };
 
     public List<ChatMessageDTO> mapToDto(List<ChatMessage> source) {
-        return super.mapToDto(source, ChatMessageDTO.class);
+        return super.mapToDto(source);
     }
 
     public ChatMessageDTO mapToDto(ChatMessage source) {
-        return super.mapToDto(source, ChatMessageDTO.class);
+        return super.mapToDto(source);
     }
 }

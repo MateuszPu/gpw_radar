@@ -32,7 +32,7 @@ public class SocketMessageService {
     }
 
     public void sendToChat(ChatMessage message) {
-        ChatMessageDTO chatMessageDTO = chatMessageMapper.mapToDto(message, ChatMessageDTO.class);
+        ChatMessageDTO chatMessageDTO = chatMessageMapper.mapToDto(message);
         messagingTemplate.convertAndSend("/webchat/recive", chatMessageDTO);
     }
 }

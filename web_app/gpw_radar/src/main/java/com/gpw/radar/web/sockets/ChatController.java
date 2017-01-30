@@ -34,7 +34,7 @@ public class ChatController {
     @SendTo("/webchat/recive")
     public ChatMessageDTO sendChatMessage(Message message, Principal principal) {
         ChatMessage msg = chatMessageService.createUserMessage(message.getMessage(), principal);
-        return chatMessageMapper.mapToDto(msg, ChatMessageDTO.class);
+        return chatMessageMapper.mapToDto(msg);
     }
 
     @SubscribeMapping("/webchat/user/login")

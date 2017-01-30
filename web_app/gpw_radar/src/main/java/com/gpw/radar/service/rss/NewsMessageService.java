@@ -22,20 +22,18 @@ public class NewsMessageService implements NewsMessageServiceable {
 
     private final NewsMessageRepository newsMessageRepository;
     private final DateAndTimeParserService dateAndTimeParserService;
-    private final DtoMapper<NewsMessage, NewsDetailsDTO> dtoMapper;
+    private final DtoMapper<NewsMessage, NewsDetailsDTO> dtoMapper = new DtoMapper<>(NewsDetailsDTO.class);
 
     @Autowired
     public NewsMessageService(NewsMessageRepository newsMessageRepository,
-                              DateAndTimeParserService dateAndTimeParserService,
-                              DtoMapper<NewsMessage, NewsDetailsDTO> dtoMapper) {
+                              DateAndTimeParserService dateAndTimeParserService) {
         this.newsMessageRepository = newsMessageRepository;
         this.dateAndTimeParserService = dateAndTimeParserService;
-        this.dtoMapper = dtoMapper;
     }
 
     public ResponseEntity<List<NewsDetailsDTO>> getLatestNewsMessageByType(RssType type) {
         List<NewsMessage> latestNewsMessage = newsMessageRepository.findTop5ByTypeOrderByNewsDateTimeDesc(type);
-        List<NewsDetailsDTO> newsDetailsDtos = dtoMapper.mapToDto(latestNewsMessage, NewsDetailsDTO.class);
+        List<NewsDetailsDTO> newsDetailsDtos = dtoMapper.mapToDto(latestNewsMessage);
         return new ResponseEntity<>(newsDetailsDtos, HttpStatus.OK);
     }
 
@@ -51,13 +49,13 @@ public class NewsMessageService implements NewsMessageServiceable {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         List<NewsMessage> latestNewsMessageDateRange = newsMessageRepository.findByTypeAndNewsDateTimeAfterAndNewsDateTimeBefore(type, startDate, endDate);
-        List<NewsDetailsDTO> newsDetailsDtos = dtoMapper.mapToDto(latestNewsMessageDateRange, NewsDetailsDTO.class);
+        List<NewsDetailsDTO> newsDetailsDtos = dtoMapper.mapToDto(latestNewsMessageDateRange);
         return new ResponseEntity<>(newsDetailsDtos, HttpStatus.OK);
     }
 
     public ResponseEntity<List<NewsDetailsDTO>> getLatestTop5NewsMessage() {
         Set<NewsMessage> latestNewsMessage = newsMessageRepository.findTop5ByOrderByNewsDateTimeDesc();
-        List<NewsDetailsDTO> newsDetailsDtos = dtoMapper.mapToDto(latestNewsMessage, NewsDetailsDTO.class);
+        List<NewsDetailsDTO> newsDetailsDtos = dtoMapper.mapToDto(latestNewsMessage);
         return new ResponseEntity<>(newsDetailsDtos, HttpStatus.OK);
     }
 }

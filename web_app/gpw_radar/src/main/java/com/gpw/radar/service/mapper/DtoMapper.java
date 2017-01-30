@@ -1,24 +1,28 @@
 package com.gpw.radar.service.mapper;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-@Service
 public class DtoMapper<T, W> {
 
     protected ModelMapper modelMapper = new ModelMapper();
+    protected Class<W> destinationClass;
 
-    public List<W> mapToDto(Collection<T> source, Class<W> clazz) {
+    public DtoMapper(Class<W> destinationClass) {
+        this.destinationClass = destinationClass;
+    }
+
+    public List<W> mapToDto(Collection<T> source) {
         List<W> result = new LinkedList<>();
-        source.forEach(e -> result.add(mapToDto(e, clazz)));
+        source.forEach(e -> result.add(mapToDto(e)));
         return result;
     }
 
-    public W mapToDto(T source, Class<W> clazz) {
-        return modelMapper.map(source, clazz);
+    @SuppressWarnings("unchecked")
+    public W mapToDto(T source) {
+        return modelMapper.map(source, destinationClass);
     }
 }

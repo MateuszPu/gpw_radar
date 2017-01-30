@@ -18,26 +18,24 @@ public class StockFinanceEventService {
 
     private final StockFinanceEventRepository stockFinanceEventRepository;
     private final UserService userService;
-    private final DtoMapper<StockFinanceEvent, StockWithStockFinanceEventDTO> mapper;
+    private final DtoMapper<StockFinanceEvent, StockWithStockFinanceEventDTO> mapper = new DtoMapper<>(StockWithStockFinanceEventDTO.class);
 
     @Autowired
-    public StockFinanceEventService(StockFinanceEventRepository stockFinanceEventRepository, UserService userService,
-                                    DtoMapper<StockFinanceEvent, StockWithStockFinanceEventDTO> mapper) {
+    public StockFinanceEventService(StockFinanceEventRepository stockFinanceEventRepository, UserService userService) {
         this.stockFinanceEventRepository = stockFinanceEventRepository;
         this.userService = userService;
-        this.mapper = mapper;
     }
 
     public ResponseEntity<List<StockWithStockFinanceEventDTO>> getAllStockFinanceEvent() {
         List<StockFinanceEvent> list = stockFinanceEventRepository.getAllFetchStock();
-        List<StockWithStockFinanceEventDTO> dto = mapper.mapToDto(list, StockWithStockFinanceEventDTO.class);
+        List<StockWithStockFinanceEventDTO> dto = mapper.mapToDto(list);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
     public ResponseEntity<List<StockWithStockFinanceEventDTO>> getStocksFinanceEventFollowedByUser() {
         User user = userService.getUserWithAuthorities();
         List<StockFinanceEvent> stockFinanceEventsFollowedByUser = stockFinanceEventRepository.getFollowedStockFinanceEvent(user.getId());
-        List<StockWithStockFinanceEventDTO> dto = mapper.mapToDto(stockFinanceEventsFollowedByUser, StockWithStockFinanceEventDTO.class);
+        List<StockWithStockFinanceEventDTO> dto = mapper.mapToDto(stockFinanceEventsFollowedByUser);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 }

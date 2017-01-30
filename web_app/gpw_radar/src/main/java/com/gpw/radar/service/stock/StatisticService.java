@@ -25,25 +25,25 @@ public class StatisticService {
 
     public ResponseEntity<Long> countStocksUp() {
         long countUp = stockRepository.countUpStocks();
-        return new ResponseEntity<Long>(countUp, HttpStatus.OK);
+        return new ResponseEntity<>(countUp, HttpStatus.OK);
     }
 
     public ResponseEntity<Long> countStocksDown() {
         long countDown = stockRepository.countDownStocks();
-        return new ResponseEntity<Long>(countDown, HttpStatus.OK);
+        return new ResponseEntity<>(countDown, HttpStatus.OK);
     }
 
     public ResponseEntity<Long> countStocksNoChange() {
         long countNoChange = stockRepository.countNoChangeStocks();
-        return new ResponseEntity<Long>(countNoChange, HttpStatus.OK);
+        return new ResponseEntity<>(countNoChange, HttpStatus.OK);
     }
 
     public ResponseEntity<List<StockStatistic>> getFiveMostFollowedStocks() {
         List<StockStatistic> mostFollowed = stockRepository.getTop5MostFollowedStocks().stream().map(e -> new StockStatistic(((BigInteger) e[0]).doubleValue(), (String) e[1])).collect(Collectors.toList());
-        return new ResponseEntity<List<StockStatistic>>(mostFollowed, HttpStatus.OK);
+        return new ResponseEntity<>(mostFollowed, HttpStatus.OK);
     }
 
     public ResponseEntity<Set<NewsMessage>> getFiveLatestNewsMessage() {
-        return new ResponseEntity<Set<NewsMessage>>(newsMessageRepository.findTop5ByOrderByNewsDateTimeDesc(), HttpStatus.OK);
+        return new ResponseEntity<>(newsMessageRepository.findTop5ByOrderByNewsDateTimeDesc(), HttpStatus.OK);
     }
 }

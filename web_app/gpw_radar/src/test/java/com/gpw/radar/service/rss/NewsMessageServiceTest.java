@@ -2,7 +2,6 @@ package com.gpw.radar.service.rss;
 
 import com.gpw.radar.rabbitmq.consumer.rss.news.RssType;
 import com.gpw.radar.repository.rss.NewsMessageRepository;
-import com.gpw.radar.service.mapper.DtoMapper;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
 import com.gpw.radar.web.rest.dto.rssNews.NewsDetailsDTO;
 import org.junit.Test;
@@ -24,10 +23,9 @@ public class NewsMessageServiceTest {
 
     private final NewsMessageRepository newsMessageRepository = Mockito.mock(NewsMessageRepository.class);
     private final DateAndTimeParserService dateAndTimeParserService = Mockito.mock(DateAndTimeParserService.class);
-    private final DtoMapper dtoMapper = Mockito.mock(DtoMapper.class);
 
     private NewsMessageServiceable objectUnderTest = new NewsMessageService(newsMessageRepository,
-        dateAndTimeParserService, dtoMapper);
+        dateAndTimeParserService);
 
     @Test
     public void shouldReturnBadResponseForNotParsableDate() {
@@ -73,8 +71,6 @@ public class NewsMessageServiceTest {
         //then
         verify(newsMessageRepository, times(1))
             .findByTypeAndNewsDateTimeAfterAndNewsDateTimeBefore(eq(RssType.CHALLENGE), any(), any());
-        verify(dtoMapper, times(1))
-            .mapToDto(any(), eq(NewsDetailsDTO.class));
     }
 
     @Test
@@ -83,17 +79,14 @@ public class NewsMessageServiceTest {
 
         verify(newsMessageRepository, times(1))
             .findTop5ByTypeOrderByNewsDateTimeDesc(any());
-        verify(dtoMapper, times(1))
-            .mapToDto(any(), eq(NewsDetailsDTO.class));
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void shouldCallRepositoryAndMapper_2() {
         objectUnderTest.getLatestTop5NewsMessage();
 
         verify(newsMessageRepository, times(1))
             .findTop5ByOrderByNewsDateTimeDesc();
-        verify(dtoMapper, times(1))
-            .mapToDto(any(), eq(NewsDetailsDTO.class));
     }
 }
