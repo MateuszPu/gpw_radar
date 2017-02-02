@@ -18,21 +18,6 @@ spring:
             enabled: true
         livereload:
             enabled: false # we use Grunt + BrowserSync for livereload
-    datasource:
-        driver-class-name: org.postgresql.ds.PGSimpleDataSource
-        url: jdbc:postgresql://localhost:5432/gpw_radar
-        name:
-        username: postgres
-        password: postgres
-    jpa:
-        database-platform: com.gpw.radar.domain.util.FixedPostgreSQL82Dialect
-        database: POSTGRESQL
-        show_sql: true
-        properties:
-            hibernate.cache.use_second_level_cache: true
-            hibernate.cache.use_query_cache: false
-            hibernate.generate_statistics: true
-            hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
     messages:
         cache-seconds: 1
     thymeleaf:
@@ -40,9 +25,6 @@ spring:
 
 liquibase:
     contexts: dev
-
-server:
-    port: 8080
 
 # ===================================================================
 # JHipster specific properties
