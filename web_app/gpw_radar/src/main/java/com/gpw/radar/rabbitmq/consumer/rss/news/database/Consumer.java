@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 @Service("rssDatabaseConsumer")
-@Profile("!" + Constants.SPRING_PROFILE_DEVELOPMENT)
+@Profile({Constants.SPRING_PROFILE_PRODUCTION, Constants.SPRING_PROFILE_DEVELOPMENT})
 public class Consumer {
 
     private final String newsTypeHeader;

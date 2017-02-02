@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service("stockDetailsDatabaseConsumer")
-@Profile("!" + Constants.SPRING_PROFILE_DEVELOPMENT)
+@Profile({Constants.SPRING_PROFILE_PRODUCTION, Constants.SPRING_PROFILE_DEVELOPMENT})
 public class Consumer {
 
     private final Logger logger = LoggerFactory.getLogger(Consumer.class);

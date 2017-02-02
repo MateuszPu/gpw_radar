@@ -15,11 +15,21 @@ spring:
     rabbitmq:
       username: gpw_consumer
       password: consumer
+    datasource:
+        driver-class-name: org.postgresql.ds.PGSimpleDataSource
+        url: jdbc:postgresql://localhost:5432/gpw_radar
+        name:
+        username: postgres
+        password: postgres
     jpa:
-        open-in-view: false
-        hibernate:
-            ddl-auto: none
-            naming-strategy: org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy
+        database-platform: com.gpw.radar.domain.util.FixedPostgreSQL82Dialect
+        database: POSTGRESQL
+        show_sql: true
+        properties:
+            hibernate.cache.use_second_level_cache: true
+            hibernate.cache.use_query_cache: false
+            hibernate.generate_statistics: true
+            hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
     messages:
         basename: classpath:/i18n/messages
     mvc:
@@ -38,7 +48,8 @@ spring:
             auth: true
             starttls.enable: true
             ssl.trust: smtp.gmail.com
-
+server:
+    port: 8080
 security:
     basic:
         enabled: false
