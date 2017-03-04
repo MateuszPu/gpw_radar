@@ -1,12 +1,13 @@
 package com.gpw.radar.service.rss;
 
+import com.gpw.radar.dao.newsmessage.NewsMessageDAO;
 import com.gpw.radar.domain.rss.NewsMessage;
 import com.gpw.radar.rabbitmq.consumer.rss.news.RssType;
-import com.gpw.radar.repository.rss.NewsMessageRepository;
 import com.gpw.radar.service.mapper.DtoMapper;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
 import com.gpw.radar.web.rest.dto.rssNews.NewsDetailsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,12 +21,12 @@ import static com.gpw.radar.config.CustomDateTimeFormat.*;
 @Service
 public class NewsMessageService implements NewsMessageServiceable {
 
-    private final NewsMessageRepository newsMessageRepository;
+    private final NewsMessageDAO newsMessageRepository;
     private final DateAndTimeParserService dateAndTimeParserService;
     private final DtoMapper<NewsMessage, NewsDetailsDTO> dtoMapper = new DtoMapper<>(NewsDetailsDTO.class);
 
     @Autowired
-    public NewsMessageService(NewsMessageRepository newsMessageRepository,
+    public NewsMessageService(@Qualifier("newsMessageSqlDAO") NewsMessageDAO newsMessageRepository,
                               DateAndTimeParserService dateAndTimeParserService) {
         this.newsMessageRepository = newsMessageRepository;
         this.dateAndTimeParserService = dateAndTimeParserService;

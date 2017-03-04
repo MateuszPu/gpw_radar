@@ -1,8 +1,8 @@
 package com.gpw.radar.rabbitmq.consumer.stock.details;
 
-import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
-import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsDAO;
-import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsElasticSearchDAO;
+import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
+import com.gpw.radar.dao.stockdetails.StockDetailsDAO;
+import com.gpw.radar.elasticsearch.stockdetails.service.StockDetailsElasticSearchDAO;
 import com.gpw.radar.rabbitmq.consumer.stock.details.database.Consumer;
 import com.gpw.radar.service.auto.update.stockDetails.indicators.StandardStockIndicatorsCalculator;
 import com.gpw.radar.service.mapper.JsonTransformer;

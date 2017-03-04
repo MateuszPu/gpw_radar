@@ -1,7 +1,7 @@
 package com.gpw.radar.web.rest.stock;
 
 import com.gpw.radar.domain.enumeration.TrendDirection;
-import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsDAO;
+import com.gpw.radar.dao.stockdetails.StockDetailsDAO;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.security.AuthoritiesConstants;
 import com.gpw.radar.service.UserService;

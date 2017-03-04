@@ -1,6 +1,6 @@
-package com.gpw.radar.elasticsearch.service.stockdetails;
+package com.gpw.radar.dao.stockdetails;
 
-import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
+import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;

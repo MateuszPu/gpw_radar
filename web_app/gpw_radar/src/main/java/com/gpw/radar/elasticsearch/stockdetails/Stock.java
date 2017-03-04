@@ -1,4 +1,4 @@
-package com.gpw.radar.elasticsearch.domain.stockdetails;
+package com.gpw.radar.elasticsearch.stockdetails;
 
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldIndex;

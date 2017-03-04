@@ -1,6 +1,6 @@
 package com.gpw.radar.utils;
 
-import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
+import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

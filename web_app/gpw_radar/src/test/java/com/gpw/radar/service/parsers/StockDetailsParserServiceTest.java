@@ -1,7 +1,7 @@
 package com.gpw.radar.service.parsers;
 
 import com.gpw.radar.domain.stock.Stock;
-import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
+import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
 import com.gpw.radar.service.builders.StockBuilder;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
 import com.gpw.radar.service.parser.web.UrlStreamsGetterService;

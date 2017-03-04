@@ -1,6 +1,6 @@
 package com.gpw.radar.service.parser.web.stockDetails;
 
-import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
+import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
 
 import java.io.IOException;
 import java.time.LocalDate;

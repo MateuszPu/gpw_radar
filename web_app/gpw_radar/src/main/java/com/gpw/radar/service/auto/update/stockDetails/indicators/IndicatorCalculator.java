@@ -1,6 +1,6 @@
 package com.gpw.radar.service.auto.update.stockDetails.indicators;
 
-import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
+import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.math3.stat.regression.SimpleRegression;
 

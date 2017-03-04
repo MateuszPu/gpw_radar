@@ -1,8 +1,8 @@
 package com.gpw.radar.service.correlation;
 
 import com.gpw.radar.domain.stock.StockStatistic;
-import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
-import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsDAO;
+import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
+import com.gpw.radar.dao.stockdetails.StockDetailsDAO;
 import com.gpw.radar.repository.stock.StockRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

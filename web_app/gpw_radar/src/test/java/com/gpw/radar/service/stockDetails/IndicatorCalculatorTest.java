@@ -1,6 +1,6 @@
 package com.gpw.radar.service.stockDetails;
 
-import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
+import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
 import com.gpw.radar.service.auto.update.stockDetails.indicators.IndicatorCalculator;
 import com.gpw.radar.service.builders.StockDetailsEsBuilder;
 import org.assertj.core.data.Percentage;

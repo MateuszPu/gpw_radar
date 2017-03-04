@@ -3,7 +3,7 @@ package com.gpw.radar.service.stock;
 import com.gpw.radar.domain.enumeration.TrendDirection;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockIndicators;
-import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
+import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
 import com.gpw.radar.repository.stock.StockIndicatorsRepository;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.builders.StockBuilder;

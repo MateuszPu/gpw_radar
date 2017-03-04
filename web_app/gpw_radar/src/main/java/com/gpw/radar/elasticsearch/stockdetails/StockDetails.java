@@ -1,4 +1,4 @@
-package com.gpw.radar.elasticsearch.domain.stockdetails;
+package com.gpw.radar.elasticsearch.stockdetails;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

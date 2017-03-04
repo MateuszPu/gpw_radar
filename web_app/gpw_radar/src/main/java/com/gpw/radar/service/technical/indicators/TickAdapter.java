@@ -1,6 +1,6 @@
 package com.gpw.radar.service.technical.indicators;
 
-import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
+import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
 import pl.technical.analysis.Tickable;
 
 import java.math.BigDecimal;

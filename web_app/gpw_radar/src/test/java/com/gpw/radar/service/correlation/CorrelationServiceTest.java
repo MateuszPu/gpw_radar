@@ -1,10 +1,10 @@
 package com.gpw.radar.service.correlation;
 
 import com.gpw.radar.domain.stock.StockStatistic;
-import com.gpw.radar.elasticsearch.domain.stockdetails.Stock;
-import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
-import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsDAO;
-import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsElasticSearchDAO;
+import com.gpw.radar.elasticsearch.stockdetails.Stock;
+import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
+import com.gpw.radar.dao.stockdetails.StockDetailsDAO;
+import com.gpw.radar.elasticsearch.stockdetails.service.StockDetailsElasticSearchDAO;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.builders.StockDetailsEsBuilder;
 import org.junit.Test;

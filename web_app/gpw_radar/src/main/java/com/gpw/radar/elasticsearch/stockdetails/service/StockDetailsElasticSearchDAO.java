@@ -1,7 +1,8 @@
-package com.gpw.radar.elasticsearch.service.stockdetails;
+package com.gpw.radar.elasticsearch.stockdetails.service;
 
-import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
-import com.gpw.radar.elasticsearch.repository.StockDetailsEsRepository;
+import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
+import com.gpw.radar.elasticsearch.stockdetails.repository.StockDetailsEsRepository;
+import com.gpw.radar.dao.stockdetails.StockDetailsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

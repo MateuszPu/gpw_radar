@@ -2,8 +2,8 @@ package com.gpw.radar.rabbitmq.consumer.stock.details.database;
 
 import com.gpw.radar.config.CacheConfiguration;
 import com.gpw.radar.config.Constants;
-import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
-import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsDAO;
+import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
+import com.gpw.radar.dao.stockdetails.StockDetailsDAO;
 import com.gpw.radar.service.auto.update.stockDetails.indicators.StockIndicatorsCalculator;
 import com.gpw.radar.service.mapper.JsonTransformer;
 import com.gpw.radar.service.stock.StockService;

@@ -1,7 +1,7 @@
 package com.gpw.radar.rabbitmq.consumer.rss.news;
 
+import com.gpw.radar.dao.newsmessage.NewsMessageDAO;
 import com.gpw.radar.rabbitmq.consumer.rss.news.database.Consumer;
-import com.gpw.radar.repository.rss.NewsMessageRepository;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -14,7 +14,7 @@ import static org.mockito.Mockito.verify;
 
 public class DatabaseConsumerTest {
 
-    private NewsMessageRepository newsMessageRepositoryMock = Mockito.mock(NewsMessageRepository.class);
+    private NewsMessageDAO newsMessageRepositoryMock = Mockito.mock(NewsMessageDAO.class);
     private MessageTransformer messageTransformerMock = Mockito.mock(MessageTransformer.class);
     private Consumer objectUnderTest = new Consumer(newsMessageRepositoryMock, "not_important", messageTransformerMock);
 

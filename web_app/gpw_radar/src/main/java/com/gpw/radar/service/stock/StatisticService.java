@@ -1,14 +1,15 @@
 package com.gpw.radar.service.stock;
 
+import com.gpw.radar.dao.newsmessage.NewsMessageDAO;
 import com.gpw.radar.domain.rss.NewsMessage;
 import com.gpw.radar.domain.stock.StockStatistic;
-import com.gpw.radar.repository.rss.NewsMessageRepository;
 import com.gpw.radar.repository.stock.StockRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Set;
@@ -17,11 +18,15 @@ import java.util.stream.Collectors;
 @Service
 public class StatisticService {
 
-    @Inject
-    private StockRepository stockRepository;
+    private final StockRepository stockRepository;
+    private final NewsMessageDAO newsMessageRepository;
 
-    @Inject
-    private NewsMessageRepository newsMessageRepository;
+    @Autowired
+    public StatisticService(StockRepository stockRepository,
+                            @Qualifier("newsMessageSqlDAO") NewsMessageDAO newsMessageRepository) {
+        this.stockRepository = stockRepository;
+        this.newsMessageRepository = newsMessageRepository;
+    }
 
     public ResponseEntity<Long> countStocksUp() {
         long countUp = stockRepository.countUpStocks();

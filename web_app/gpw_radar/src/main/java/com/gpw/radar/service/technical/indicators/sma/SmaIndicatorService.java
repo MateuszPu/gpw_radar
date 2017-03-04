@@ -1,7 +1,7 @@
 package com.gpw.radar.service.technical.indicators.sma;
 
-import com.gpw.radar.elasticsearch.domain.stockdetails.StockDetails;
-import com.gpw.radar.elasticsearch.service.stockdetails.StockDetailsDAO;
+import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
+import com.gpw.radar.dao.stockdetails.StockDetailsDAO;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.stock.StockService;
 import com.gpw.radar.service.technical.indicators.TickAdapter;
