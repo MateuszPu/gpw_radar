@@ -1,4 +1,4 @@
-package com.gpw.radar.elasticsearch.newsmessage.service;
+package com.gpw.radar.elasticsearch.newsmessage.dao;
 
 import com.gpw.radar.dao.newsmessage.NewsMessageDAO;
 import com.gpw.radar.domain.rss.NewsMessage;
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
-public class NewsMessageElasticSearchDAO implements NewsMessageDAO {
+public class NewsMessageEsDAO implements NewsMessageDAO {
 
     @Override
     public List<NewsMessage> findTop5ByTypeOrderByNewsDateTimeDesc(RssType type) {

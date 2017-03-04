@@ -6,8 +6,8 @@
 //import com.gpw.radar.domain.stock.StockFiveMinutesIndicators;
 //import com.gpw.radar.repository.stock.StockFiveMinutesIndicatorsRepository;
 //import com.gpw.radar.repository.stock.StockRepository;
-//import com.gpw.radar.service.parser.DateAndTimeParserService;
-//import com.gpw.radar.service.parser.web.UrlStreamsGetterService;
+//import com.gpw.radar.dao.parser.DateAndTimeParserService;
+//import com.gpw.radar.dao.parser.web.UrlStreamsGetterService;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 //import org.springframework.stereotype.Component;

@@ -2,7 +2,7 @@
 //
 //import com.gpw.radar.domain.stock.StockFiveMinutesDetails;
 //import com.gpw.radar.repository.stock.StockFiveMinutesDetailsRepository;
-//import com.gpw.radar.service.sockets.SocketMessageHandler;
+//import com.gpw.radar.dao.sockets.SocketMessageHandler;
 //import org.springframework.beans.factory.BeanFactory;
 //import org.springframework.scheduling.annotation.Scheduled;
 //import org.springframework.stereotype.Service;

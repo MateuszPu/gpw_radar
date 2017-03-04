@@ -1,4 +1,4 @@
-package com.gpw.radar.elasticsearch.stockdetails.service;
+package com.gpw.radar.elasticsearch.stockdetails.dao;
 
 import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
 import com.gpw.radar.elasticsearch.stockdetails.repository.StockDetailsEsRepository;
@@ -14,12 +14,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class StockDetailsElasticSearchDAO implements StockDetailsDAO {
+public class StockDetailsEsDAO implements StockDetailsDAO {
 
     private final StockDetailsEsRepository stockDetailsEsRepository;
 
     @Autowired
-    public StockDetailsElasticSearchDAO(StockDetailsEsRepository stockDetailsEsRepository) {
+    public StockDetailsEsDAO(StockDetailsEsRepository stockDetailsEsRepository) {
         this.stockDetailsEsRepository = stockDetailsEsRepository;
     }
 

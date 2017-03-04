@@ -8,8 +8,8 @@
 //import com.gpw.radar.domain.stock.StockFiveMinutesIndicators;
 //import com.gpw.radar.repository.stock.StockFiveMinutesIndicatorsRepository;
 //import com.gpw.radar.repository.stock.StockRepository;
-//import com.gpw.radar.service.auto.update.stockFiveMinutesDetails.StooqFiveMinutesProcessor;
-//import com.gpw.radar.service.builders.StockBuilder;
+//import com.gpw.radar.dao.auto.update.stockFiveMinutesDetails.StooqFiveMinutesProcessor;
+//import com.gpw.radar.dao.builders.StockBuilder;
 //import org.assertj.core.data.Percentage;
 //import org.junit.After;
 //import org.junit.Before;

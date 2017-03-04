@@ -1,7 +1,6 @@
 package com.gpw.radar.domain.util;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
@@ -15,7 +14,7 @@ public class CustomLocalDateSerializer extends JsonSerializer<LocalDate> {
             DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Override
-    public void serialize(LocalDate localDateTime, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
+    public void serialize(LocalDate localDateTime, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         jsonGenerator.writeString(formatter.format(localDateTime));
     }
 }

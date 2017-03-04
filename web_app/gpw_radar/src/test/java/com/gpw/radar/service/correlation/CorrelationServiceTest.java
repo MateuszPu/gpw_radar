@@ -4,7 +4,7 @@ import com.gpw.radar.domain.stock.StockStatistic;
 import com.gpw.radar.elasticsearch.stockdetails.Stock;
 import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
 import com.gpw.radar.dao.stockdetails.StockDetailsDAO;
-import com.gpw.radar.elasticsearch.stockdetails.service.StockDetailsElasticSearchDAO;
+import com.gpw.radar.elasticsearch.stockdetails.dao.StockDetailsEsDAO;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.builders.StockDetailsEsBuilder;
 import org.junit.Test;
@@ -26,7 +26,7 @@ import static org.mockito.BDDMockito.given;
 @RunWith(value = Parameterized.class)
 public class CorrelationServiceTest {
 
-    private StockDetailsDAO stockDetailsDaoEsMock = Mockito.mock(StockDetailsElasticSearchDAO.class);
+    private StockDetailsDAO stockDetailsDaoEsMock = Mockito.mock(StockDetailsEsDAO.class);
     private StockRepository stockRepositoryMock = Mockito.mock(StockRepository.class);
     private CorrelationService objectUnderTest = new CorrelationService(stockDetailsDaoEsMock, stockRepositoryMock);
 

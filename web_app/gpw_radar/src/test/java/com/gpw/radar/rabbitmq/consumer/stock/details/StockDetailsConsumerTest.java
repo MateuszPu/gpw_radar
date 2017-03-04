@@ -2,7 +2,7 @@ package com.gpw.radar.rabbitmq.consumer.stock.details;
 
 import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
 import com.gpw.radar.dao.stockdetails.StockDetailsDAO;
-import com.gpw.radar.elasticsearch.stockdetails.service.StockDetailsElasticSearchDAO;
+import com.gpw.radar.elasticsearch.stockdetails.dao.StockDetailsEsDAO;
 import com.gpw.radar.rabbitmq.consumer.stock.details.database.Consumer;
 import com.gpw.radar.service.auto.update.stockDetails.indicators.StandardStockIndicatorsCalculator;
 import com.gpw.radar.service.mapper.JsonTransformer;
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.verify;
 
 public class StockDetailsConsumerTest {
 
-    private StockDetailsDAO stockDetailsDaoEsMock = Mockito.mock(StockDetailsElasticSearchDAO.class);
+    private StockDetailsDAO stockDetailsDaoEsMock = Mockito.mock(StockDetailsEsDAO.class);
     private StandardStockIndicatorsCalculator standardStockIndicatorsCalculatorMock = Mockito.mock(StandardStockIndicatorsCalculator.class);
     private StockService stockServiceMock = Mockito.mock(StockService.class);
     private Consumer objectUnderTest;

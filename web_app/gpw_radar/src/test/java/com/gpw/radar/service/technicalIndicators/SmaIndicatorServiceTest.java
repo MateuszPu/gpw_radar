@@ -3,7 +3,7 @@ package com.gpw.radar.service.technicalIndicators;
 import com.gpw.radar.config.CustomDateTimeFormat;
 import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
 import com.gpw.radar.dao.stockdetails.StockDetailsDAO;
-import com.gpw.radar.elasticsearch.stockdetails.service.StockDetailsElasticSearchDAO;
+import com.gpw.radar.elasticsearch.stockdetails.dao.StockDetailsEsDAO;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
 import com.gpw.radar.service.stock.StockService;
@@ -27,7 +27,7 @@ import static org.mockito.BDDMockito.given;
 
 public class SmaIndicatorServiceTest {
 
-    private StockDetailsDAO stockDetailsDaoEsMock = Mockito.mock(StockDetailsElasticSearchDAO.class);
+    private StockDetailsDAO stockDetailsDaoEsMock = Mockito.mock(StockDetailsEsDAO.class);
     private StockRepository stockRepositoryMock = Mockito.mock(StockRepository.class);
     private StockService stockServiceMock = Mockito.mock(StockService.class);
 

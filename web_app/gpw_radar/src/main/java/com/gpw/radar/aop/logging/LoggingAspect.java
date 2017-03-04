@@ -15,7 +15,7 @@ import javax.inject.Inject;
 import java.util.Arrays;
 
 /**
- * Aspect for logging execution of service and repository Spring components.
+ * Aspect for logging execution of dao and repository Spring components.
  */
 @Aspect
 public class LoggingAspect {
