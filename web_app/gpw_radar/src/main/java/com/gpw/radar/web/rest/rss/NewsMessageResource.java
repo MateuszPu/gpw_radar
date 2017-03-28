@@ -33,9 +33,7 @@ public class NewsMessageResource {
     public ResponseEntity<List<NewsDetailsDTO>> getNewsMessageByTypeAndDateRange(@RequestParam RssType type,
                                                                                  @RequestParam String startDate,
                                                                                  @RequestParam String endDate) {
-        return newsMessageServiceable.getMessagesByTypeBetweenDates(type,
-            startDate,
-            endDate);
+        return newsMessageServiceable.getMessagesByTypeBetweenDates(type, startDate, endDate);
     }
 
     @RequestMapping(value = "/top/five/latest", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

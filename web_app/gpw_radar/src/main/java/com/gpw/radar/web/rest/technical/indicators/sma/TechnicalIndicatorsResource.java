@@ -27,12 +27,12 @@ public class TechnicalIndicatorsResource {
     @RequestMapping(value = "/sma/crossover", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<StockWithStockIndicatorsDTO>> getCorrelationForSelectedTicker(@RequestParam(value = "direction", required = true) CrossDirection crossDirection, @RequestParam(value = "fasterSma", required = true) int fasterSma, @RequestParam(value = "slowerSma", required = true) int slowerSma) {
         List<StockWithStockIndicatorsDTO> stocksSmaCrossover = smaIndicatorService.getStocksSmaCrossover(crossDirection, fasterSma, slowerSma);
-        return new ResponseEntity<List<StockWithStockIndicatorsDTO>>(stocksSmaCrossover, HttpStatus.OK);
+        return new ResponseEntity<>(stocksSmaCrossover, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/price/cross/sma", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<StockWithStockIndicatorsDTO>> getCorrelationForSelectedTicker(@RequestParam(value = "direction", required = true) CrossDirection crossDirection, @RequestParam(value = "sma", required = true) int sma) {
         List<StockWithStockIndicatorsDTO> stocksPriceCrossSma = smaIndicatorService.getStocksPriceCrossSma(crossDirection, sma);
-        return new ResponseEntity<List<StockWithStockIndicatorsDTO>>(stocksPriceCrossSma, HttpStatus.OK);
+        return new ResponseEntity<>(stocksPriceCrossSma, HttpStatus.OK);
     }
 }

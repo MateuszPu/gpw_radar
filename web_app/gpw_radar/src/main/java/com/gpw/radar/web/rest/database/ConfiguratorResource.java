@@ -11,7 +11,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -29,15 +33,17 @@ public class ConfiguratorResource {
     @Inject
     private FillDataBaseWithDataService fillDataBaseWithDataService;
 
-    @RequestMapping(value = "all/stock/details/parser/methods", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "all/stock/details/parser/methods", method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EnumSet<ParserMethod>> getAllMethods() {
-        return new ResponseEntity<EnumSet<ParserMethod>>(EnumSet.allOf(ParserMethod.class), HttpStatus.OK);
+        return new ResponseEntity<>(EnumSet.allOf(ParserMethod.class), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "current/stock/details/parser/method", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "current/stock/details/parser/method", method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DailyStockDetailsParser> getCurrentMethod() {
         DailyStockDetailsParser currentMethod = configuratorService.getCurrentStockDetailsParserMethod();
-        return new ResponseEntity<DailyStockDetailsParser>(currentMethod, HttpStatus.OK);
+        return new ResponseEntity<>(currentMethod, HttpStatus.OK);
     }
 
     @RequestMapping(value = "set/stock/details/parser/method", method = RequestMethod.GET)
@@ -63,12 +69,12 @@ public class ConfiguratorResource {
             case STOCK_FINANCE_EVENTS:
                 return fillDataBaseWithDataService.fillDataBaseWithStockFinanceEvent();
             default:
-                return new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @RequestMapping(value = "get/step/of/fill", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Integer> getStepOfFill() {
-        return new ResponseEntity<Integer>(fillDataBaseWithDataService.getStep(), HttpStatus.OK);
+        return new ResponseEntity<>(fillDataBaseWithDataService.getStep(), HttpStatus.OK);
     }
 }

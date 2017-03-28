@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StockDetailsEsDAO implements StockDetailsDAO {
@@ -26,12 +27,11 @@ public class StockDetailsEsDAO implements StockDetailsDAO {
     @Override
     public LocalDate findTopDate() {
         Sort sort = new Sort(new Sort.Order(Sort.Direction.DESC, "date"));
-        StockDetails topByOrderByDateDesc = stockDetailsEsRepository.findAll(new PageRequest(0, 1, sort))
+        Optional<StockDetails> topByOrderByDateDesc = stockDetailsEsRepository.findAll(new PageRequest(0, 1, sort))
             .getContent()
             .stream()
-            .findFirst()
-            .get();
-        return topByOrderByDateDesc.getDate();
+            .findFirst();
+        return topByOrderByDateDesc.orElseThrow(() -> new RuntimeException()).getDate();
     }
 
     @Override

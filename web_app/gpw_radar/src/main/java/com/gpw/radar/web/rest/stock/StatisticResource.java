@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.security.RolesAllowed;
@@ -44,7 +45,7 @@ public class StatisticResource {
     @RequestMapping(value = "/stock/correlation/step", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @RolesAllowed(AuthoritiesConstants.USER)
     public ResponseEntity<Integer> getStep() {
-        return new ResponseEntity<Integer>(correlationService.getStep(), HttpStatus.OK);
+        return new ResponseEntity<>(correlationService.getStep(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/stocks/up", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -75,7 +76,7 @@ public class StatisticResource {
     @RequestMapping(value = "all/type/correlation", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @RolesAllowed(AuthoritiesConstants.USER)
     public ResponseEntity<EnumSet<CorrelationType>> getAllCorrelationTypes() {
-        return new ResponseEntity<EnumSet<CorrelationType>>(EnumSet.allOf(CorrelationType.class), HttpStatus.OK);
+        return new ResponseEntity<>(EnumSet.allOf(CorrelationType.class), HttpStatus.OK);
     }
 
 }
