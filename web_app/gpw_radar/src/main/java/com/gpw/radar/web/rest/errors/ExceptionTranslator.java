@@ -1,5 +1,7 @@
 package com.gpw.radar.web.rest.errors;
 
+import com.gpw.radar.web.rest.errors.exceptions.CustomParameterizedException;
+import com.gpw.radar.web.rest.errors.exceptions.ResourceNotExistException;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -42,6 +44,14 @@ public class ExceptionTranslator {
     @ResponseBody
     public ParameterizedErrorDTO processParameterizedValidationError(CustomParameterizedException ex) {
         return ex.getErrorDTO();
+    }
+
+    @ExceptionHandler(ResourceNotExistException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ErrorDTO processResourceNotFoundException(ResourceNotExistException ex) {
+        ErrorDTO errorDTO = new ErrorDTO(ex.getMessage());
+        return errorDTO;
     }
 
     @ExceptionHandler(AccessDeniedException.class)

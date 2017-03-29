@@ -3,6 +3,7 @@ package com.gpw.radar.elasticsearch.stockdetails.dao;
 import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
 import com.gpw.radar.elasticsearch.stockdetails.repository.StockDetailsEsRepository;
 import com.gpw.radar.dao.stockdetails.StockDetailsDAO;
+import com.gpw.radar.web.rest.errors.exceptions.ResourceNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Service("stockDetailsElasticSearchDAO")
 public class StockDetailsEsDAO implements StockDetailsDAO {
 
     private final StockDetailsEsRepository stockDetailsEsRepository;
@@ -31,7 +32,7 @@ public class StockDetailsEsDAO implements StockDetailsDAO {
             .getContent()
             .stream()
             .findFirst();
-        return topByOrderByDateDesc.orElseThrow(() -> new RuntimeException()).getDate();
+        return topByOrderByDateDesc.orElseThrow(() -> new ResourceNotExistException()).getDate();
     }
 
     @Override

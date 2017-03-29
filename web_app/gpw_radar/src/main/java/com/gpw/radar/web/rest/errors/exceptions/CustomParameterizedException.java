@@ -1,4 +1,6 @@
-package com.gpw.radar.web.rest.errors;
+package com.gpw.radar.web.rest.errors.exceptions;
+
+import com.gpw.radar.web.rest.errors.ParameterizedErrorDTO;
 
 /**
  * Custom, parameterized exception, which can be translated on the client side.
