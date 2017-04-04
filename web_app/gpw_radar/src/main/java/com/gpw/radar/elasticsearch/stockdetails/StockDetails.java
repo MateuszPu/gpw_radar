@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.gpw.radar.domain.util.BigDecimalDeserializer;
 import com.gpw.radar.domain.util.BigDecimalSerializer;
-import com.gpw.radar.domain.util.CustomLocalDateDeserializer;
-import com.gpw.radar.domain.util.CustomLocalDateSerializer;
+import com.gpw.radar.domain.util.date.CustomLocalDateDeserializer;
+import com.gpw.radar.domain.util.date.CustomLocalDateSerializer;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.*;
 

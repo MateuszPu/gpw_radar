@@ -1,4 +1,4 @@
-package com.gpw.radar.domain.util;
+package com.gpw.radar.domain.util.date;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
