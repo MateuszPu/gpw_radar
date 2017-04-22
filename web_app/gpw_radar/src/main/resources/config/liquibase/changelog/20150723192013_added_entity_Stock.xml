@@ -10,11 +10,14 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="ticker" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="stock_name" type="varchar(255)"/>
             <column name="stock_short_name" type="varchar(255)"/>
         </createTable>
+    </changeSet>
 
+    <changeSet id="20170422135313" author="mateusz">
+        <addUniqueConstraint tableName="STOCK" columnNames="ticker"/>
     </changeSet>
 </databaseChangeLog>

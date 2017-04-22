@@ -19,6 +19,8 @@ import java.util.UUID;
 @Document(indexName = "news_messages", type = "news", replicas = 0)
 public class NewsMessage {
 
+    public static final String DATE_TIME_FIELD_NAME = "newsDateTime";
+
     @Id
     private String id = UUID.randomUUID().toString();
 
@@ -31,7 +33,7 @@ public class NewsMessage {
     @Field(type = FieldType.String, index = FieldIndex.no)
     private String link;
 
-    @Field(type = FieldType.Date, pattern = "yyyy-MM-dd'T'hh:mm:ss", format = DateFormat.custom)
+    @Field(type = FieldType.Date, pattern = "yyyy-MM-dd'T'HH:mm:ss", format = DateFormat.custom)
     @JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)
     @JsonSerialize(using = CustomLocalDateTimeSerializer.class)
     private LocalDateTime newsDateTime;

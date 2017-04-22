@@ -1,7 +1,7 @@
 package com.gpw.radar.service.rss;
 
 import com.gpw.radar.dao.newsmessage.NewsMessageDAO;
-import com.gpw.radar.domain.rss.NewsMessage;
+import com.gpw.radar.elasticsearch.newsmessage.NewsMessage;
 import com.gpw.radar.rabbitmq.consumer.rss.news.RssType;
 import com.gpw.radar.service.mapper.DtoMapper;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
@@ -21,12 +21,12 @@ import static com.gpw.radar.config.CustomDateTimeFormat.*;
 @Service
 public class NewsMessageService implements NewsMessageServiceable {
 
-    private final NewsMessageDAO newsMessageRepository;
+    private final NewsMessageDAO<NewsMessage> newsMessageRepository;
     private final DateAndTimeParserService dateAndTimeParserService;
     private final DtoMapper<NewsMessage, NewsDetailsDTO> dtoMapper = new DtoMapper<>(NewsDetailsDTO.class);
 
     @Autowired
-    public NewsMessageService(@Qualifier("newsMessageSqlDAO") NewsMessageDAO newsMessageRepository,
+    public NewsMessageService(@Qualifier("newsMessageEsDAO") NewsMessageDAO<NewsMessage> newsMessageRepository,
                               DateAndTimeParserService dateAndTimeParserService) {
         this.newsMessageRepository = newsMessageRepository;
         this.dateAndTimeParserService = dateAndTimeParserService;
@@ -55,7 +55,7 @@ public class NewsMessageService implements NewsMessageServiceable {
     }
 
     public ResponseEntity<List<NewsDetailsDTO>> getLatestTop5NewsMessage() {
-        Set<NewsMessage> latestNewsMessage = newsMessageRepository.findTop5ByOrderByNewsDateTimeDesc();
+        List<NewsMessage> latestNewsMessage = newsMessageRepository.findTop5ByOrderByNewsDateTimeDesc();
         List<NewsDetailsDTO> newsDetailsDtos = dtoMapper.mapToDto(latestNewsMessage);
         return new ResponseEntity<>(newsDetailsDtos, HttpStatus.OK);
     }

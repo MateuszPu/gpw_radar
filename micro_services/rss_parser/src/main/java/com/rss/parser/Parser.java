@@ -19,55 +19,51 @@ import java.util.stream.Collectors;
 
 public class Parser implements RssParser {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-    private final URL url;
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	private final URL url;
 
-    private Parser() {
-        throw new IllegalStateException("Cannot create parser without url");
-    }
+	private Parser() {
+		throw new IllegalStateException("Cannot create parser without url");
+	}
 
-    public Parser(String url) {
-        try {
-            this.url = new URL(url);
-        } catch (MalformedURLException e) {
-            throw new IllegalStateException("invalid URL");
-        }
-    }
+	public Parser(String url) {
+		try {
+			this.url = new URL(url);
+		} catch (MalformedURLException e) {
+			throw new IllegalStateException("invalid URL");
+		}
+	}
 
-    @Override
-    public List<GpwNews> parseBy(LocalDateTime dateTime) {
-        SyndFeedInput input = new SyndFeedInput();
-        SyndFeed feed = null;
-        try {
-            feed = input.build(new XmlReader(url));
-        } catch (FeedException | IOException e) {
-            LOGGER.error("Exception in "
-                    + this.getClass().getName()
-                    + " with clause : "
-                    + e.getCause());
-        }
-        List<GpwNews> newses = getEntriesAfter(feed, dateTime)
-                .stream()
-                .map(e -> getNewsFrom(e))
-                .collect(Collectors.toList());
-        return newses;
-    }
+	@Override
+	public List<GpwNews> parseBy(LocalDateTime dateTime) {
+		SyndFeedInput input = new SyndFeedInput();
+		SyndFeed feed = null;
+		try {
+			feed = input.build(new XmlReader(url));
+		} catch (FeedException | IOException e) {
+			LOGGER.error("Exception in {} with message: {}", this.getClass().getName(), e.getMessage());
+		}
+		return getEntriesAfter(feed, dateTime)
+				.stream()
+				.map(this::getNewsFrom)
+				.collect(Collectors.toList());
+	}
 
-    private List<SyndEntry> getEntriesAfter(SyndFeed feed, LocalDateTime dateTime) {
-        return feed.getEntries()
-                .stream()
-                .filter(e -> getDateFrom(e).isAfter(dateTime))
-                .collect(Collectors.toList());
-    }
+	private List<SyndEntry> getEntriesAfter(SyndFeed feed, LocalDateTime dateTime) {
+		return feed.getEntries()
+				.stream()
+				.filter(e -> getDateFrom(e).isAfter(dateTime))
+				.collect(Collectors.toList());
+	}
 
-    private GpwNews getNewsFrom(SyndEntry syndEntry) {
-        LocalDateTime date = getDateFrom(syndEntry);
-        String message = syndEntry.getTitle();
-        String link = syndEntry.getLink();
-        return new GpwNews(date, message, link);
-    }
+	private GpwNews getNewsFrom(SyndEntry syndEntry) {
+		LocalDateTime date = getDateFrom(syndEntry);
+		String message = syndEntry.getTitle();
+		String link = syndEntry.getLink();
+		return new GpwNews(date, message, link);
+	}
 
-    private LocalDateTime getDateFrom(SyndEntry syndEntry) {
-        return LocalDateTime.ofInstant(syndEntry.getPublishedDate().toInstant(), ZoneId.systemDefault());
-    }
+	private LocalDateTime getDateFrom(SyndEntry syndEntry) {
+		return LocalDateTime.ofInstant(syndEntry.getPublishedDate().toInstant(), ZoneId.systemDefault());
+	}
 }

@@ -32,7 +32,7 @@ public class StockDetailsEsDAO implements StockDetailsDAO {
             .getContent()
             .stream()
             .findFirst();
-        return topByOrderByDateDesc.orElseThrow(() -> new ResourceNotExistException()).getDate();
+        return topByOrderByDateDesc.orElseThrow(ResourceNotExistException::new).getDate();
     }
 
     @Override
