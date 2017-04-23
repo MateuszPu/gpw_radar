@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
-import javax.inject.Inject;
 import javax.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.Locale;
@@ -124,8 +123,17 @@ public class MailService {
             return;
         }
         String[] emails = usersToSendEmail.stream().map(User::getEmail).toArray(String[]::new);
-        String mailTopic = "[Kanal: " + message.getType().toString() + "] [" + message.getStock().getTicker().toUpperCase() + "]";
-
+        String mailTopic = createMailTopic(message);
         sendBccEmail(emails, mailTopic, "Link: " + message.getMessage(), false, true);
+    }
+
+    private String createMailTopic(NewsMessage message) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[Kanal: ");
+        sb.append(message.getType().toString());
+        sb.append("] [");
+        sb.append(message.getStock().getTicker().toUpperCase());
+        sb.append("]");
+        return sb.toString();
     }
 }

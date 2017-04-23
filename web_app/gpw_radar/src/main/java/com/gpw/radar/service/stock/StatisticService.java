@@ -39,8 +39,14 @@ public class StatisticService {
     public ResponseEntity<List<StockStatistic>> getFiveMostFollowedStocks() {
         List<StockStatistic> mostFollowed = stockRepository.getTop5MostFollowedStocks()
             .stream()
-            .map(e -> new StockStatistic(((BigInteger) e[0]).doubleValue(), (String) e[1]))
+            .map(this::createStockStatistic)
             .collect(Collectors.toList());
         return new ResponseEntity<>(mostFollowed, HttpStatus.OK);
+    }
+
+    private StockStatistic createStockStatistic(Object[] e) {
+        double count = ((BigInteger) e[0]).doubleValue();
+        String stockTicker = (String) e[1];
+        return new StockStatistic(count, stockTicker);
     }
 }
