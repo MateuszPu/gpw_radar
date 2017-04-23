@@ -2,7 +2,6 @@
 
 angular.module('gpwRadarApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pascalprecht.translate',
    'ngResource', 'ngCookies', 'ngAria', 'ngCacheBuster', 'ngFileUpload',
-    // jhipster-needle-angularjs-add-module JHipster will add new module here
     'ui.bootstrap', 'ui.router',  'infinite-scroll', 'angular-loading-bar',
     'luegg.directives', 'angularMoment', 'smart-table', 'ui.select', 'ui.calendar',
     'ngResource', 'daterangepicker', 'rzModule'

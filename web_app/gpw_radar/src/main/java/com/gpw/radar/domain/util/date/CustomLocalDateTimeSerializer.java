@@ -1,7 +1,6 @@
-package com.rss.rabbitmq.config.jackson;
+package com.gpw.radar.domain.util.date;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
@@ -13,12 +12,8 @@ public class CustomLocalDateTimeSerializer extends JsonSerializer<LocalDateTime>
 
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
-    public CustomLocalDateTimeSerializer(String localDateTimeFormat) {
-        formatter = DateTimeFormatter.ofPattern(localDateTimeFormat);
-    }
-
     @Override
-    public void serialize(LocalDateTime localDateTime, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
+    public void serialize(LocalDateTime localDateTime, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         jsonGenerator.writeString(formatter.format(localDateTime));
     }
 }

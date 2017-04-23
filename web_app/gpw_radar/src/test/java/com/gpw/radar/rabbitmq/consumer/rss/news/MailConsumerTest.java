@@ -1,7 +1,7 @@
 package com.gpw.radar.rabbitmq.consumer.rss.news;
 
-import com.gpw.radar.domain.rss.NewsMessage;
-import com.gpw.radar.domain.stock.Stock;
+import com.gpw.radar.elasticsearch.newsmessage.NewsMessage;
+import com.gpw.radar.elasticsearch.stockdetails.Stock;
 import com.gpw.radar.rabbitmq.consumer.rss.news.mail.Consumer;
 import com.gpw.radar.service.mail.MailService;
 import org.junit.Test;
@@ -11,8 +11,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.gpw.radar.rabbitmq.consumer.rss.news.MessageFactory.createRabbitMessage;
-import static org.mockito.BDDMockito.given;
+import static com.gpw.radar.rabbitmq.consumer.rss.news.MessageFactory.*;
+import static org.mockito.BDDMockito.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;

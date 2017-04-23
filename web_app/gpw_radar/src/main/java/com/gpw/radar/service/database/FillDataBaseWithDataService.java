@@ -98,7 +98,10 @@ public class FillDataBaseWithDataService {
         Set<String> tickers = stockBatchWebParser.fetchAllTickers(document);
 
         for (String element : tickers) {
-            Document doc = urlStreamsGetterService.getDocFromUrl("http://stooq.pl/q/?s=" + element);
+            Document doc = null;
+            while(doc == null) {
+                doc = urlStreamsGetterService.getDocFromUrl("http://stooq.pl/q/?s=" + element);
+            }
             Stock stock = new Stock();
             stock.setTicker(element);
             stock.setStockName(stockDataNameParser.getStockNameFromWeb(doc));
@@ -107,6 +110,11 @@ public class FillDataBaseWithDataService {
                 continue;
             }
             stock.setStockShortName(stockShortNameFromWeb);
+            try {
+                Thread.sleep(1_000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             stockRepository.save(stock);
         }
         fillDataStatusRepository.updateType(Type.STOCK.toString());

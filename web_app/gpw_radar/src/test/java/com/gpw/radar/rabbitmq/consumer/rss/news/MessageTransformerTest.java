@@ -1,7 +1,7 @@
 package com.gpw.radar.rabbitmq.consumer.rss.news;
 
 import com.gpw.radar.domain.chat.ChatMessage;
-import com.gpw.radar.domain.rss.NewsMessage;
+import com.gpw.radar.elasticsearch.newsmessage.NewsMessage;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.builders.StockBuilder;
 import org.junit.Test;
@@ -68,8 +68,8 @@ public class MessageTransformerTest {
         assertThat(newsMessageWithStock.getType()).isEqualTo(RssType.EBI);
         assertThat(newsMessageWithStock.getNewsDateTime()).isEqualTo(LocalDateTime.of(2016, 8, 1, 20, 0, 0));
         assertThat(newsMessageWithStock.getStock().getTicker()).isEqualTo("kgh");
-        assertThat(newsMessageWithStock.getStock().getStockName()).isEqualTo("KGH name");
-        assertThat(newsMessageWithStock.getStock().getStockShortName()).isEqualTo("KGH short name");
+        assertThat(newsMessageWithStock.getStock().getName()).isEqualTo("KGH name");
+        assertThat(newsMessageWithStock.getStock().getShortName()).isEqualTo("KGH short name");
     }
 
 }

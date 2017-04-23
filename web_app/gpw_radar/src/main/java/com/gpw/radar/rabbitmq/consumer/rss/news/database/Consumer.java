@@ -2,7 +2,7 @@ package com.gpw.radar.rabbitmq.consumer.rss.news.database;
 
 import com.gpw.radar.config.Constants;
 import com.gpw.radar.dao.newsmessage.NewsMessageDAO;
-import com.gpw.radar.domain.rss.NewsMessage;
+import com.gpw.radar.elasticsearch.newsmessage.NewsMessage;
 import com.gpw.radar.rabbitmq.consumer.rss.news.MessageTransformer;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -24,7 +24,7 @@ public class Consumer {
     private final MessageTransformer messageTransformer;
 
     @Autowired
-    public Consumer(@Qualifier("newsMessageSqlDAO") NewsMessageDAO newsMessageRepository,
+    public Consumer(@Qualifier("newsMessageEsDAO") NewsMessageDAO newsMessageRepository,
                     @Value("${rss_reader_news_type_header}") String newsTypeHeader,
                     MessageTransformer messageTransformer) {
         this.newsMessageRepository = newsMessageRepository;

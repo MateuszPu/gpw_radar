@@ -1,6 +1,5 @@
 package com.gpw.radar.web.rest.stock;
 
-import com.gpw.radar.domain.rss.NewsMessage;
 import com.gpw.radar.domain.stock.StockStatistic;
 import com.gpw.radar.security.AuthoritiesConstants;
 import com.gpw.radar.service.correlation.CorrelationService;
@@ -18,7 +17,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -66,11 +64,6 @@ public class StatisticResource {
     @RequestMapping(value = "/five/most/followed/stocks", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<StockStatistic>> getFiveMostFollowedStocks() {
         return statisticService.getFiveMostFollowedStocks();
-    }
-
-    @RequestMapping(value = "/five/latest/news/message", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Set<NewsMessage>> getFiveLatestNewsMessage() {
-        return statisticService.getFiveLatestNewsMessage();
     }
 
     @RequestMapping(value = "all/type/correlation", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

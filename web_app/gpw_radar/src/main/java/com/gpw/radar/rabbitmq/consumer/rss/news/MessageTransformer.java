@@ -2,8 +2,8 @@ package com.gpw.radar.rabbitmq.consumer.rss.news;
 
 import com.gpw.radar.domain.User;
 import com.gpw.radar.domain.chat.ChatMessage;
-import com.gpw.radar.domain.rss.NewsMessage;
-import com.gpw.radar.domain.stock.Stock;
+import com.gpw.radar.elasticsearch.newsmessage.NewsMessage;
+import com.gpw.radar.elasticsearch.stockdetails.Stock;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.mapper.JsonTransformer;
 import org.springframework.amqp.core.Message;
@@ -60,16 +60,19 @@ public class MessageTransformer {
     }
 
     private Optional<Stock> getStockFromTitle(String message) {
+        Optional<Stock> result = Optional.empty();
         Pattern pattern = Pattern.compile("^([\\p{javaUpperCase}0-9-/.]+ )+");
         String trim = message.trim();
         Matcher matcher = pattern.matcher(trim);
         if (matcher.find()) {
-            Optional<Stock> stock = stockRepository.findByStockName(matcher.group(0).trim());
+            Optional<com.gpw.radar.domain.stock.Stock> stock = stockRepository.findByStockName(matcher.group(0).trim());
             if (stock.isPresent()) {
-                return Optional.of(stock.get());
+                com.gpw.radar.domain.stock.Stock dbStock = stock.get();
+                Stock st = new Stock(dbStock.getTicker(), dbStock.getStockName(), dbStock.getStockShortName());
+                result = Optional.of(st);
             }
         }
-        return Optional.empty();
+        return result;
     }
 
     public String transformToChatMessageContent(String link, String message) {

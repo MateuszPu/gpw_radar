@@ -1,7 +1,7 @@
 package com.gpw.radar.rabbitmq.consumer.rss.news.mail;
 
 import com.gpw.radar.config.Constants;
-import com.gpw.radar.domain.rss.NewsMessage;
+import com.gpw.radar.elasticsearch.newsmessage.NewsMessage;
 import com.gpw.radar.rabbitmq.consumer.rss.news.MessageTransformer;
 import com.gpw.radar.service.mail.MailService;
 import org.springframework.amqp.core.Message;

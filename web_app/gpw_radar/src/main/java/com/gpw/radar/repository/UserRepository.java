@@ -2,7 +2,6 @@ package com.gpw.radar.repository;
 
 import com.gpw.radar.config.CacheConfiguration;
 import com.gpw.radar.domain.User;
-import com.gpw.radar.domain.stock.Stock;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -22,7 +21,10 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     List<User> findAllByActivatedIsFalseAndCreatedDateBefore(ZonedDateTime dateTime);
 
-    List<User> findAllByStocks(Stock stock);
+    @Query(value = "select * from users u " +
+        "inner join user_stocks usSt on u.id = usSt.user_id " +
+        "inner join stock st on usSt.stock_id = st.id where st.ticker = :stockTicker", nativeQuery = true)
+    List<User> findAllByStockTicker(@Param("stockTicker") String stockTicker);
 
     Optional<User> findOneByResetKey(String resetKey);
 

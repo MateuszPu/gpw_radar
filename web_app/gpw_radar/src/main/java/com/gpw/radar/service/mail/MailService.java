@@ -2,11 +2,12 @@ package com.gpw.radar.service.mail;
 
 import com.gpw.radar.config.JHipsterProperties;
 import com.gpw.radar.domain.User;
-import com.gpw.radar.domain.rss.NewsMessage;
+import com.gpw.radar.elasticsearch.newsmessage.NewsMessage;
 import com.gpw.radar.repository.UserRepository;
 import org.apache.commons.lang.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
-import javax.inject.Inject;
 import javax.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.Locale;
@@ -32,25 +32,26 @@ public class MailService {
 
     private final Logger log = LoggerFactory.getLogger(MailService.class);
 
-    @Inject
-    private JHipsterProperties jHipsterProperties;
-
-    @Inject
-    private JavaMailSenderImpl javaMailSender;
-
-    @Inject
-    private MessageSource messageSource;
-
-    @Inject
-    private SpringTemplateEngine templateEngine;
-
-    @Inject
-    private UserRepository userRepository;
+    private final JHipsterProperties jHipsterProperties;
+    private final JavaMailSenderImpl javaMailSender;
+    private final MessageSource messageSource;
+    private final SpringTemplateEngine templateEngine;
+    private final UserRepository userRepository;
 
     /**
      * System default email address that sends the e-mails.
      */
     private String from;
+
+    @Autowired
+    public MailService(JHipsterProperties jHipsterProperties, JavaMailSenderImpl javaMailSender,
+                       MessageSource messageSource, SpringTemplateEngine templateEngine, UserRepository userRepository) {
+        this.jHipsterProperties = jHipsterProperties;
+        this.javaMailSender = javaMailSender;
+        this.messageSource = messageSource;
+        this.templateEngine = templateEngine;
+        this.userRepository = userRepository;
+    }
 
     @Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
@@ -117,13 +118,22 @@ public class MailService {
     }
 
     public void informUserAboutStockNews(NewsMessage message) {
-        List<User> usersToSendEmail = userRepository.findAllByStocks(message.getStock());
+        List<User> usersToSendEmail = userRepository.findAllByStockTicker(message.getStock().getTicker());
         if (usersToSendEmail.isEmpty()) {
             return;
         }
-        String[] emails = usersToSendEmail.stream().map(e -> e.getEmail()).toArray(String[]::new);
-        String mailTopic = "[Kanal: " + message.getType().toString() + "] [" + message.getStock().getTicker().toUpperCase() + "]";
-
+        String[] emails = usersToSendEmail.stream().map(User::getEmail).toArray(String[]::new);
+        String mailTopic = createMailTopic(message);
         sendBccEmail(emails, mailTopic, "Link: " + message.getMessage(), false, true);
+    }
+
+    private String createMailTopic(NewsMessage message) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[Kanal: ");
+        sb.append(message.getType().toString());
+        sb.append("] [");
+        sb.append(message.getStock().getTicker().toUpperCase());
+        sb.append("]");
+        return sb.toString();
     }
 }

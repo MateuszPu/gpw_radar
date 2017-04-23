@@ -3,25 +3,6 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
 
-    <changeSet author="mateusz" id="20151004130959-1">
-        <createTable tableName="STOCK_NEWS_MESSAGE">
-            <column name="id" type="varchar(64)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="news_date_time" type="timestamp">
-                <constraints nullable="false"/>
-            </column>
-            <column name="link" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="message" type="VARCHAR(1000)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="type" type="VARCHAR(255)"/>
-            <column name="stock_id" type="varchar(64)"/>
-        </createTable>
-    </changeSet>
-
     <changeSet author="mateusz" id="20151004130959-2">
         <createTable tableName="CHAT_MESSAGE">
             <column name="id" type="varchar(64)">
@@ -39,11 +20,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="mateusz" id="20151004130959-3">
-        <addPrimaryKey columnNames="id"
-                       constraintName="NewsMessagePK"
-                       tableName="STOCK_NEWS_MESSAGE"/>
-    </changeSet>
     <changeSet author="mateusz" id="20151004130959-4">
         <addPrimaryKey columnNames="id"
                        constraintName="UserMessagePK"
