@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -30,15 +33,19 @@ public class MessageTransformer {
 
     public List<ChatMessage> transformMessage(Message message) throws IOException {
         List<NewsMessage> newsMessages = jsonTransformer.deserializeFromJson(message, NewsMessage.class);
-        List<ChatMessage> chatMessages = newsMessages.stream().map(this::createChatMessage).collect(Collectors.toList());
+        List<ChatMessage> chatMessages = newsMessages.stream()
+            .map(this::createChatMessage)
+            .collect(Collectors.toList());
         chatMessages.forEach(e -> e.setMessage(transformToChatMessageContent(e.getLink(), e.getMessage())));
-        chatMessages.forEach(e -> {
-            User user = new User();
-            user.setId("h6ehbr4khohjr116k23pon9vojv66c3eab45aui6pmau3acq1b");
-            user.setLogin("system");
-            e.setUser(user);
-        });
+        chatMessages.forEach(e -> e.setUser(createSystemUser()));
         return chatMessages;
+    }
+
+    private User createSystemUser() {
+        User user = new User();
+        user.setId("h6ehbr4khohjr116k23pon9vojv66c3eab45aui6pmau3acq1b");
+        user.setLogin("system");
+        return user;
     }
 
     private ChatMessage createChatMessage(NewsMessage e) {
@@ -52,14 +59,14 @@ public class MessageTransformer {
         RssType type = RssType.valueOf((String) message.getMessageProperties().getHeaders().get(newsTypeHeader));
         List<NewsMessage> newsMessages = jsonTransformer.deserializeFromJson(message, NewsMessage.class);
         newsMessages.forEach(e -> e.setType(type));
-        newsMessages.forEach(e -> e.setStock(getStockFromTitle(e.getMessage()).orElse(null)));
+        newsMessages.forEach(e -> e.setStock(getStockFromMessage(e.getMessage()).orElse(null)));
         if (type.equals(RssType.PAP)) {
             newsMessages.forEach(e -> e.setNewsDateTime(e.getNewsDateTime().plusHours(1)));
         }
         return newsMessages;
     }
 
-    private Optional<Stock> getStockFromTitle(String message) {
+    private Optional<Stock> getStockFromMessage(String message) {
         Optional<Stock> result = Optional.empty();
         Pattern pattern = Pattern.compile("^([\\p{javaUpperCase}0-9-/.]+ )+");
         String trim = message.trim();

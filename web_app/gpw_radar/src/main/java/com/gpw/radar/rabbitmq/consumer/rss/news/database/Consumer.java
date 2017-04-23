@@ -20,11 +20,11 @@ import java.util.List;
 public class Consumer {
 
     private final String newsTypeHeader;
-    private final NewsMessageDAO newsMessageRepository;
+    private final NewsMessageDAO<NewsMessage> newsMessageRepository;
     private final MessageTransformer messageTransformer;
 
     @Autowired
-    public Consumer(@Qualifier("newsMessageEsDAO") NewsMessageDAO newsMessageRepository,
+    public Consumer(@Qualifier("newsMessageEsDAO") NewsMessageDAO<NewsMessage> newsMessageRepository,
                     @Value("${rss_reader_news_type_header}") String newsTypeHeader,
                     MessageTransformer messageTransformer) {
         this.newsMessageRepository = newsMessageRepository;

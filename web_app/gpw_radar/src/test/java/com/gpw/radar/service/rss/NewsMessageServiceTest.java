@@ -1,6 +1,7 @@
 package com.gpw.radar.service.rss;
 
 import com.gpw.radar.dao.newsmessage.NewsMessageDAO;
+import com.gpw.radar.elasticsearch.newsmessage.NewsMessage;
 import com.gpw.radar.rabbitmq.consumer.rss.news.RssType;
 import com.gpw.radar.service.parser.DateAndTimeParserService;
 import com.gpw.radar.web.rest.dto.rssNews.NewsDetailsDTO;
@@ -21,7 +22,7 @@ import static org.mockito.Mockito.verify;
 
 public class NewsMessageServiceTest {
 
-    private final NewsMessageDAO newsMessageRepository = Mockito.mock(NewsMessageDAO.class);
+    private final NewsMessageDAO<NewsMessage> newsMessageRepository = Mockito.mock(NewsMessageDAO.class);
     private final DateAndTimeParserService dateAndTimeParserService = Mockito.mock(DateAndTimeParserService.class);
 
     private NewsMessageServiceable objectUnderTest = new NewsMessageService(newsMessageRepository,
