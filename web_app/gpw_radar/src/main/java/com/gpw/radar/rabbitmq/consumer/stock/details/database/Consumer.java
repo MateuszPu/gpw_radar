@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+import sun.plugin.dom.exception.InvalidStateException;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -51,7 +52,10 @@ public class Consumer {
 
     public List<StockDetails> parseStocksDetails(Message message) throws IOException {
         List<StockDetails> stocksDetails = jsonTransformer.deserializeFromJson(message, StockDetails.class);
-        LocalDate date = stocksDetails.stream().findAny().get().getDate();
+        LocalDate date = stocksDetails.stream()
+            .findAny()
+            .orElseThrow(() -> new InvalidStateException("Stock details does not have date property"))
+            .getDate();
         LocalDate topDate = stockDetailsDAO.findTopDate();
         if (date.isAfter(topDate)) {
             return fillMandatoryData(stocksDetails);
@@ -61,7 +65,7 @@ public class Consumer {
     }
 
     private List<StockDetails> fillMandatoryData(List<StockDetails> stocksDetails) {
-        stocksDetails.forEach(e -> stockService.addMissingData(e));
+        stocksDetails.forEach(stockService::setNameAndShortNameOfStock);
         stockDetailsDAO.save(stocksDetails);
         standardStockIndicatorsCalculator.calculateCurrentStockIndicators();
         cleanCache();

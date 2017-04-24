@@ -118,7 +118,7 @@ public class StockService {
         return new ResponseEntity<>(result, httpHeaders, HttpStatus.OK);
     }
 
-    public StockDetails addMissingData(StockDetails stockDetails) {
+    public StockDetails setNameAndShortNameOfStock(StockDetails stockDetails) {
         String ticker = stockDetails.getStock().getTicker();
         Stock stock = findStockByTicker(ticker);
         stockDetails.setStockWith(stock.getTicker(), stock.getStockName(), stock.getStockShortName());
