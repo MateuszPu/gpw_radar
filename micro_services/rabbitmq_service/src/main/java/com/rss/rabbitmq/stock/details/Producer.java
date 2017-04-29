@@ -41,10 +41,7 @@ public class Producer {
                     .build();
             this.template.convertAndSend(name, routingKey, message);
         } catch (UnsupportedEncodingException e) {
-            LOGGER.error("Exception in "
-                    + this.getClass().getName()
-                    + " with clause : "
-                    + e.getCause());
+            LOGGER.error("Exception in {} with clause : {}", this.getClass().getName(), e.getCause());
         }
     }
 }

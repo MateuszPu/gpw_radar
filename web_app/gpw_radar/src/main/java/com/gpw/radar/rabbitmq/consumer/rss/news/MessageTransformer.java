@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class MessageTransformer {
 
     private final StockRepository stockRepository;
-    private final JsonTransformer<NewsMessage> jsonTransformer = new JsonTransformer<NewsMessage>();
+    private final JsonTransformer<NewsMessage> jsonTransformer = new JsonTransformer<>();
 
     @Autowired
     public MessageTransformer(StockRepository stockRepository) {
@@ -31,25 +31,11 @@ public class MessageTransformer {
     public List<ChatMessage> transformMessage(Message message) throws IOException {
         List<NewsMessage> newsMessages = jsonTransformer.deserializeFromJson(message, NewsMessage.class);
         List<ChatMessage> chatMessages = newsMessages.stream()
-            .map(this::createChatMessage)
+            .map(ChatMessage::new)
             .collect(Collectors.toList());
         chatMessages.forEach(e -> e.setMessage(transformToChatMessageContent(e.getLink(), e.getMessage())));
-        chatMessages.forEach(e -> e.setUser(createSystemUser()));
+        chatMessages.forEach(e -> e.setUser(User.createSystemUser()));
         return chatMessages;
-    }
-
-    private User createSystemUser() {
-        User user = new User();
-        user.setId("h6ehbr4khohjr116k23pon9vojv66c3eab45aui6pmau3acq1b");
-        user.setLogin("system");
-        return user;
-    }
-
-    private ChatMessage createChatMessage(NewsMessage e) {
-        ChatMessage chatMessage = new ChatMessage();
-        chatMessage.setLink(e.getLink());
-        chatMessage.setMessage(e.getMessage());
-        return chatMessage;
     }
 
     public List<NewsMessage> transformMessage(Message message, String newsTypeHeader) throws IOException {

@@ -1,5 +1,6 @@
 package com.gpw.radar.rabbitmq.consumer.stock.details.database;
 
+import com.gpw.radar.aop.exception.RabbitExceptionHandler;
 import com.gpw.radar.config.CacheConfiguration;
 import com.gpw.radar.config.Constants;
 import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
@@ -46,6 +47,7 @@ public class Consumer {
     }
 
     @RabbitListener(queues = "${stock_details_updater_queue}")
+    @RabbitExceptionHandler
     public void consumeMessage(Message message) throws InterruptedException, IOException {
         parseStocksDetails(message);
     }

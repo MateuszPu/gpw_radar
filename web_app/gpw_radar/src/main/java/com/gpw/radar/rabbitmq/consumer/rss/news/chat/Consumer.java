@@ -1,10 +1,13 @@
 package com.gpw.radar.rabbitmq.consumer.rss.news.chat;
 
+import com.gpw.radar.aop.exception.RabbitExceptionHandler;
 import com.gpw.radar.config.Constants;
 import com.gpw.radar.domain.chat.ChatMessage;
 import com.gpw.radar.rabbitmq.consumer.rss.news.MessageTransformer;
 import com.gpw.radar.repository.chat.ChatMessageRepository;
 import com.gpw.radar.service.sockets.SocketMessageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +34,11 @@ public class Consumer {
     }
 
     @RabbitListener(queues = "${rss_reader_chat_queue}")
-    public void consumeMessage(Message message) throws InterruptedException, IOException {
-        List<ChatMessage> chatMessages = messageTransformer.transformMessage(message);
-        List<ChatMessage> save = chatMessageRepository.save(chatMessages);
-        sendMessagesToChat(save);
+    @RabbitExceptionHandler
+    public void consumeMessage(Message message) throws IOException {
+            List<ChatMessage> chatMessages = messageTransformer.transformMessage(message);
+            List<ChatMessage> save = chatMessageRepository.save(chatMessages);
+            sendMessagesToChat(save);
     }
 
     private void sendMessagesToChat(List<ChatMessage> chatMessages) {
