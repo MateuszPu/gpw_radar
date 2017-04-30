@@ -84,10 +84,7 @@ public class Cron {
             httpStatusCode = connection.getResponseCode();
             connection.disconnect();
         } catch (IOException e) {
-            LOGGER.error("Exception in "
-                    + this.getClass().getName()
-                    + " with clause : "
-                    + e.getCause());
+            LOGGER.error("Exception in {} with clause : {}", this.getClass().getName(), e.getCause());
         }
         return httpStatusCode;
     }

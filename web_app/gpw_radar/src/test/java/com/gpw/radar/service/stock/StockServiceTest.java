@@ -71,7 +71,7 @@ public class StockServiceTest {
         List<StockDetails> stocksDetailsToProcessMissingData = prepareStockDetails();
 
         //when
-        stocksDetailsToProcessMissingData.forEach(e -> objectUnderTest.addMissingData(e));
+        stocksDetailsToProcessMissingData.forEach(e -> objectUnderTest.setNameAndShortNameOfStock(e));
 
         //then
         verify(stockRepositoryMock, times(1)).save(any(Stock.class));
@@ -86,7 +86,7 @@ public class StockServiceTest {
         //when
         StockDetails tpeStockDetails = new StockDetails();
         tpeStockDetails.setStockWith("tpe", null, "TAURON");
-        StockDetails stockDetails = objectUnderTest.addMissingData(tpeStockDetails);
+        StockDetails stockDetails = objectUnderTest.setNameAndShortNameOfStock(tpeStockDetails);
 
         //then
         assertThat(stockDetails.getStock().getTicker()).isEqualTo("tpe");

@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class MessageTransformer {
 
     private final StockRepository stockRepository;
-    private final JsonTransformer<NewsMessage> jsonTransformer = new JsonTransformer<NewsMessage>();
+    private final JsonTransformer<NewsMessage> jsonTransformer = new JsonTransformer<>();
 
     @Autowired
     public MessageTransformer(StockRepository stockRepository) {
@@ -31,52 +31,42 @@ public class MessageTransformer {
     public List<ChatMessage> transformMessage(Message message) throws IOException {
         List<NewsMessage> newsMessages = jsonTransformer.deserializeFromJson(message, NewsMessage.class);
         List<ChatMessage> chatMessages = newsMessages.stream()
-            .map(this::createChatMessage)
+            .map(ChatMessage::new)
             .collect(Collectors.toList());
         chatMessages.forEach(e -> e.setMessage(transformToChatMessageContent(e.getLink(), e.getMessage())));
-        chatMessages.forEach(e -> e.setUser(createSystemUser()));
+        chatMessages.forEach(e -> e.setUser(User.createSystemUser()));
         return chatMessages;
-    }
-
-    private User createSystemUser() {
-        User user = new User();
-        user.setId("h6ehbr4khohjr116k23pon9vojv66c3eab45aui6pmau3acq1b");
-        user.setLogin("system");
-        return user;
-    }
-
-    private ChatMessage createChatMessage(NewsMessage e) {
-        ChatMessage chatMessage = new ChatMessage();
-        chatMessage.setLink(e.getLink());
-        chatMessage.setMessage(e.getMessage());
-        return chatMessage;
     }
 
     public List<NewsMessage> transformMessage(Message message, String newsTypeHeader) throws IOException {
         RssType type = RssType.valueOf((String) message.getMessageProperties().getHeaders().get(newsTypeHeader));
         List<NewsMessage> newsMessages = jsonTransformer.deserializeFromJson(message, NewsMessage.class);
         newsMessages.forEach(e -> e.setType(type));
-        newsMessages.forEach(e -> e.setStock(getStockFromMessage(e.getMessage()).orElse(null)));
+        newsMessages.forEach(e -> e.setStock(getStockFromMessage(e.getMessage())));
+        //don't know why PAP messages have wrong time
         if (type.equals(RssType.PAP)) {
             newsMessages.forEach(e -> e.setNewsDateTime(e.getNewsDateTime().plusHours(1)));
         }
         return newsMessages;
     }
 
-    private Optional<Stock> getStockFromMessage(String message) {
-        Optional<Stock> result = Optional.empty();
-        Pattern pattern = Pattern.compile("^([\\p{javaUpperCase}0-9-/.]+ )+");
-        String trim = message.trim();
-        Matcher matcher = pattern.matcher(trim);
+    private Stock getStockFromMessage(String message) {
+        Stock result = null;
+        Matcher matcher = getMatcher(message);
         if (matcher.find()) {
             Optional<com.gpw.radar.domain.stock.Stock> stock = stockRepository.findByStockName(matcher.group(0).trim());
             if (stock.isPresent()) {
                 com.gpw.radar.domain.stock.Stock dbStock = stock.get();
-                Stock st = new Stock(dbStock.getTicker(), dbStock.getStockName(), dbStock.getStockShortName());
-                result = Optional.of(st);
+                result = new Stock(dbStock.getTicker(), dbStock.getStockName(), dbStock.getStockShortName());
             }
         }
         return result;
+    }
+
+    private Matcher getMatcher(String message) {
+        Pattern pattern = Pattern.compile("^([\\p{javaUpperCase}0-9-/.]+ )+");
+        String trim = message.trim();
+        return pattern.matcher(trim);
     }
 
     public String transformToChatMessageContent(String link, String message) {

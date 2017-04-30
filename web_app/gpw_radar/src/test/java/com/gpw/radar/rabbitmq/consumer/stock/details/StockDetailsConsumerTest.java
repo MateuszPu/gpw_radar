@@ -76,7 +76,7 @@ public class StockDetailsConsumerTest {
         objectUnderTest.parseStocksDetails(rabbitMessage);
 
         //then
-        verify(stockServiceMock, times(3)).addMissingData(any());
+        verify(stockServiceMock, times(3)).setNameAndShortNameOfStock(any());
     }
 
     @Test

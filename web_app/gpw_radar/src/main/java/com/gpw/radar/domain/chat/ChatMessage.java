@@ -2,6 +2,7 @@ package com.gpw.radar.domain.chat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gpw.radar.domain.User;
+import com.gpw.radar.elasticsearch.newsmessage.NewsMessage;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Immutable;
 
@@ -37,6 +38,14 @@ public class ChatMessage {
 
     @Transient
     private String link;
+
+    public ChatMessage() {
+    }
+
+    public ChatMessage(NewsMessage newsMessage) {
+        this.link = newsMessage.getLink();
+        this.message = newsMessage.getMessage();
+    }
 
     public String getId() {
         return id;

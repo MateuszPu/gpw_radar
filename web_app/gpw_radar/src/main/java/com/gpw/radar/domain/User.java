@@ -243,4 +243,11 @@ public class User extends AbstractAuditingEntity implements Serializable {
             ", activationKey='" + activationKey + '\'' +
             "}";
     }
+
+    public static User createSystemUser() {
+        User user = new User();
+        user.setId("h6ehbr4khohjr116k23pon9vojv66c3eab45aui6pmau3acq1b");
+        user.setLogin("system");
+        return user;
+    }
 }

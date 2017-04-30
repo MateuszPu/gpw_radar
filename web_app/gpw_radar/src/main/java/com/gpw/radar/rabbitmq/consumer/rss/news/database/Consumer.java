@@ -1,5 +1,6 @@
 package com.gpw.radar.rabbitmq.consumer.rss.news.database;
 
+import com.gpw.radar.aop.exception.RabbitExceptionHandler;
 import com.gpw.radar.config.Constants;
 import com.gpw.radar.dao.newsmessage.NewsMessageDAO;
 import com.gpw.radar.elasticsearch.newsmessage.NewsMessage;
@@ -33,7 +34,8 @@ public class Consumer {
     }
 
     @RabbitListener(queues = "${rss_reader_database_queue}")
-    public void consumeMessage(Message message) throws InterruptedException, IOException {
+    @RabbitExceptionHandler
+    public void consumeMessage(Message message) throws IOException {
         List<NewsMessage> newsMessages = messageTransformer.transformMessage(message, newsTypeHeader);
         newsMessageRepository.save(newsMessages);
     }

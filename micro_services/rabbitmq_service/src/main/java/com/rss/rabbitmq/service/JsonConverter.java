@@ -37,10 +37,7 @@ public class JsonConverter<T> {
         try {
             result = mapper.writeValueAsString(objects);
         } catch (JsonProcessingException e) {
-            LOGGER.error("Exception in "
-                    + this.getClass().getName()
-                    + " with clause : "
-                    + e.getCause());
+            LOGGER.error("Exception in {} with clause : {}", this.getClass().getName(), e.getCause());
         }
         return result;
     }

@@ -1,5 +1,6 @@
 package com.gpw.radar.rabbitmq.consumer.rss.news.mail;
 
+import com.gpw.radar.aop.exception.RabbitExceptionHandler;
 import com.gpw.radar.config.Constants;
 import com.gpw.radar.elasticsearch.newsmessage.NewsMessage;
 import com.gpw.radar.rabbitmq.consumer.rss.news.MessageTransformer;
@@ -31,7 +32,8 @@ public class Consumer {
     }
 
     @RabbitListener(queues = "${rss_reader_mail_queue}")
-    public void consumeMessage(Message message) throws InterruptedException, IOException {
+    @RabbitExceptionHandler
+    public void consumeMessage(Message message) throws IOException {
         List<NewsMessage> newsMessages = messageTransformer.transformMessage(message, newsTypeHeader);
         newsMessages.forEach(e -> e.setMessage(messageTransformer.transformToChatMessageContent(e.getLink(), e.getMessage())));
         newsMessages.stream().filter(e -> e.getStock() != null).forEach(mailService::informUserAboutStockNews);
