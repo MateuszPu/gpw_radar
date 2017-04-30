@@ -33,7 +33,6 @@ public class MessageTransformer {
         List<ChatMessage> chatMessages = newsMessages.stream()
             .map(ChatMessage::new)
             .collect(Collectors.toList());
-        chatMessages.forEach(e -> e.setMessage(transformToChatMessageContent(e.getLink(), e.getMessage())));
         chatMessages.forEach(e -> e.setUser(User.createSystemUser()));
         return chatMessages;
     }
@@ -67,15 +66,5 @@ public class MessageTransformer {
         Pattern pattern = Pattern.compile("^([\\p{javaUpperCase}0-9-/.]+ )+");
         String trim = message.trim();
         return pattern.matcher(trim);
-    }
-
-    public String transformToChatMessageContent(String link, String message) {
-        StringBuilder str = new StringBuilder();
-        str.append("<a href=\"");
-        str.append(link);
-        str.append("\" target=\"_blank\">");
-        str.append(message);
-        str.append("</a>");
-        return str.toString();
     }
 }

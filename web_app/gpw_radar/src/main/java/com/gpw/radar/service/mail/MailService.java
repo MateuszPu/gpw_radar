@@ -124,7 +124,7 @@ public class MailService {
         }
         String[] emails = usersToSendEmail.stream().map(User::getEmail).toArray(String[]::new);
         String mailTopic = createMailTopic(message);
-        sendBccEmail(emails, mailTopic, "Link: " + message.getMessage(), false, true);
+        sendBccEmail(emails, mailTopic, message.transformToChatMessageContent(), false, true);
     }
 
     private String createMailTopic(NewsMessage message) {

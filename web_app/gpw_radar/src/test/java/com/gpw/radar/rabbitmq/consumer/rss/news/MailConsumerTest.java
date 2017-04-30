@@ -38,7 +38,6 @@ public class MailConsumerTest {
 
         //then
         verify(messageTransformerMock, times(1)).transformMessage(any(), anyString());
-        verify(messageTransformerMock, times(3)).transformToChatMessageContent(anyString(), anyString());
         verify(mailServiceMock, times(1)).informUserAboutStockNews(any());
     }
 }

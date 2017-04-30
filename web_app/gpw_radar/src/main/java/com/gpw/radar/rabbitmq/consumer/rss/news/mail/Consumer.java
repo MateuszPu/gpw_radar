@@ -35,7 +35,6 @@ public class Consumer {
     @RabbitExceptionHandler
     public void consumeMessage(Message message) throws IOException {
         List<NewsMessage> newsMessages = messageTransformer.transformMessage(message, newsTypeHeader);
-        newsMessages.forEach(e -> e.setMessage(messageTransformer.transformToChatMessageContent(e.getLink(), e.getMessage())));
         newsMessages.stream().filter(e -> e.getStock() != null).forEach(mailService::informUserAboutStockNews);
     }
 

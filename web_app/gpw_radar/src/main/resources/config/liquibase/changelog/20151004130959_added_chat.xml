@@ -11,6 +11,9 @@
             <column name="created_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="news_date_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
             <column name="user_id" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>

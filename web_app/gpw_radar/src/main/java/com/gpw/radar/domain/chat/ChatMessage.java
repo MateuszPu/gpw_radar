@@ -6,9 +6,18 @@ import com.gpw.radar.elasticsearch.newsmessage.NewsMessage;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Immutable;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -32,6 +41,10 @@ public class ChatMessage {
     private ZonedDateTime createdDate = ZonedDateTime.now();
 
     @NotNull
+    @Column(name = "news_date_time", nullable = false)
+    private LocalDateTime newsDateTime;
+
+    @NotNull
     @Size(min = 1, max = 512)
     @Column(length = 512, nullable = false)
     private String message;
@@ -44,7 +57,8 @@ public class ChatMessage {
 
     public ChatMessage(NewsMessage newsMessage) {
         this.link = newsMessage.getLink();
-        this.message = newsMessage.getMessage();
+        this.newsDateTime = newsMessage.getNewsDateTime();
+        this.message = newsMessage.transformToChatMessageContent();
     }
 
     public String getId() {
@@ -71,6 +85,14 @@ public class ChatMessage {
         this.createdDate = createdDate;
     }
 
+    public LocalDateTime getNewsDateTime() {
+        return newsDateTime;
+    }
+
+    public void setNewsDateTime(LocalDateTime newsDateTime) {
+        this.newsDateTime = newsDateTime;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -86,4 +108,5 @@ public class ChatMessage {
     public void setLink(String link) {
         this.link = link;
     }
+
 }

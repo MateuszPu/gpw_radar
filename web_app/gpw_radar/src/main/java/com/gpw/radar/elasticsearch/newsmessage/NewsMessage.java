@@ -88,4 +88,17 @@ public class NewsMessage {
     public void setType(RssType type) {
         this.type = type;
     }
+
+    public String transformToChatMessageContent() {
+        StringBuilder str = new StringBuilder();
+        str.append("[");
+        str.append(this.newsDateTime);
+        str.append("]");
+        str.append("<a href=\"");
+        str.append(this.link);
+        str.append("\" target=\"_blank\">");
+        str.append(this.message);
+        str.append("</a>");
+        return str.toString();
+    }
 }

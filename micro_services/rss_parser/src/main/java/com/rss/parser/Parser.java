@@ -30,6 +30,7 @@ public class Parser implements RssParser {
 		try {
 			this.url = new URL(url);
 		} catch (MalformedURLException e) {
+			LOGGER.error("invalid URL {} with message: {}", url, e.getMessage());
 			throw new IllegalStateException("invalid URL");
 		}
 	}

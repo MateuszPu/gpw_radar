@@ -25,12 +25,6 @@ public class MessageTransformerTest {
     private MessageTransformer objectUnderTest = new MessageTransformer(mockedStockRepository);
 
     @Test
-    public void shouldCorrectlyTransformLinkAndMessage() {
-        String message = objectUnderTest.transformToChatMessageContent("www.onet.pl", "message test");
-        assertThat(message).isEqualTo("<a href=\"www.onet.pl\" target=\"_blank\">message test</a>");
-    }
-
-    @Test
     public void shouldCorrectlyTransformToChatMessage() throws IOException {
         //given
         Message msg = createRabbitMessage();
@@ -40,7 +34,7 @@ public class MessageTransformerTest {
 
         //then
         ChatMessage firstMessage = chatMessages.get(0);
-        assertThat(firstMessage.getMessage()).isEqualTo("<a href=\"http://www.twiter.com/\" target=\"_blank\">test message</a>");
+        assertThat(firstMessage.getMessage()).isEqualTo("[2016-08-04T20:14]<a href=\"http://www.twiter.com/\" target=\"_blank\">test message</a>");
         assertThat(firstMessage.getLink()).isEqualTo("http://www.twiter.com/");
         assertThat(firstMessage.getUser().getId()).isEqualTo("h6ehbr4khohjr116k23pon9vojv66c3eab45aui6pmau3acq1b");
         assertThat(firstMessage.getUser().getLogin()).isEqualTo("system");
