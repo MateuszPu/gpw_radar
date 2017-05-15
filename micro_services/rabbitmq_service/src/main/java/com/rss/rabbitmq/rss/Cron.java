@@ -40,12 +40,13 @@ public class Cron {
 		this.jsonConverter = jsonConverter;
 	}
 
-	@Scheduled(cron = "*/5 * 8-23 * * *")
+	@Scheduled(cron = "*/3 * 8-18 * * MON-FRI")
 	@Scheduled(cron = "0 */5 19-23 * * MON-FRI")
 	@Scheduled(cron = "0 */30 0-7 * * MON-FRI")
 	@Scheduled(cron = "0 */30 * * * SAT,SUN")
 	public void fireCron() {
 		for (RssType rss : rssTypeTimeMap.keySet()) {
+			LOGGER.info("Run cron for {}", rss);
 			RssParser parser = rssTypeParserMap.get(rss);
 			List<GpwNews> gpwNewses = parser.parseBy(this.rssTypeTimeMap.get(rss));
 			if (!gpwNewses.isEmpty()) {

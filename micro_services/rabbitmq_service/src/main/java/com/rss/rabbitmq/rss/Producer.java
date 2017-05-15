@@ -30,10 +30,10 @@ public class Producer {
 		this.template = template;
 	}
 
-	public void publish(String newses, String rssChannelName) {
+	public void publish(String newsesJson, String rssChannelName) {
 		try {
-			Message message = MessageBuilder.withBody(newses.getBytes("UTF-8"))
-					.setContentType(MessageProperties.CONTENT_TYPE_TEXT_PLAIN)
+			Message message = MessageBuilder.withBody(newsesJson.getBytes("UTF-8"))
+					.setContentType(MessageProperties.CONTENT_TYPE_JSON)
 					.setHeader(newsType, rssChannelName)
 					.build();
 			this.template.convertAndSend(name, "", message);

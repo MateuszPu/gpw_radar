@@ -33,10 +33,10 @@ public class Producer {
         this.template = template;
     }
 
-    public void publish(String stockDetails, String date) {
+    public void publish(String stockDetailsJson, String date) {
         try {
-            Message message = MessageBuilder.withBody(stockDetails.getBytes("UTF-8"))
-                    .setContentType(MessageProperties.CONTENT_TYPE_TEXT_PLAIN)
+            Message message = MessageBuilder.withBody(stockDetailsJson.getBytes("UTF-8"))
+                    .setContentType(MessageProperties.CONTENT_TYPE_JSON)
                     .setHeader(dateHeader, date)
                     .build();
             this.template.convertAndSend(name, routingKey, message);
