@@ -1,4 +1,4 @@
-package com.rss.rabbitmq.config.rss;
+package com.producer.rabbitmq.config.rss;
 
 import com.rss.parser.Parser;
 import com.rss.parser.RssParser;

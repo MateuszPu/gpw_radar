@@ -1,4 +1,4 @@
-package com.rss.rabbitmq.rss;
+package com.producer.rabbitmq.rss;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

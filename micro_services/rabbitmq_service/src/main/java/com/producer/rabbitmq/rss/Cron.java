@@ -1,9 +1,9 @@
-package com.rss.rabbitmq.rss;
+package com.producer.rabbitmq.rss;
 
+import com.producer.rabbitmq.service.JsonConverter;
 import com.rss.parser.RssParser;
 import com.rss.parser.model.GpwNews;
-import com.rss.rabbitmq.config.rss.RssType;
-import com.rss.rabbitmq.service.JsonConverter;
+import com.producer.rabbitmq.config.rss.RssType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

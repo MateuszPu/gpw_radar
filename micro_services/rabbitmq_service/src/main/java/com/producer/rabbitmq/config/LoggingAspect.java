@@ -1,4 +1,4 @@
-package com.rss.rabbitmq.config;
+package com.producer.rabbitmq.config;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;

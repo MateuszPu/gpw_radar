@@ -1,4 +1,4 @@
-package com.rss.rabbitmq.config.rss;
+package com.producer.rabbitmq.config.rss;
 
 public enum RssType {
     RESULTS("http://biznes.pap.pl/pl/rss/6639"),

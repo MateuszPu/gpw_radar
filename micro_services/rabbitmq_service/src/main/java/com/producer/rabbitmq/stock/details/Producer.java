@@ -1,4 +1,4 @@
-package com.rss.rabbitmq.stock.details;
+package com.producer.rabbitmq.stock.details;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

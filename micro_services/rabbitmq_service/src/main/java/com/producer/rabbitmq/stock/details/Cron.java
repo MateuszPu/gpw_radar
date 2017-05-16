@@ -1,6 +1,6 @@
-package com.rss.rabbitmq.stock.details;
+package com.producer.rabbitmq.stock.details;
 
-import com.rss.rabbitmq.service.JsonConverter;
+import com.producer.rabbitmq.service.JsonConverter;
 import com.stock.details.updater.model.StockDetails;
 import com.stock.details.updater.parser.gpw.HtmlParser;
 import com.stock.details.updater.parser.gpw.WebStockDetailsParser;

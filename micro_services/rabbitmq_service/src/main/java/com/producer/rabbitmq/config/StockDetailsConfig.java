@@ -1,4 +1,4 @@
-package com.rss.rabbitmq.config;
+package com.producer.rabbitmq.config;
 
 import com.stock.details.updater.parser.gpw.GpwSiteParser;
 import com.stock.details.updater.parser.gpw.HtmlParser;

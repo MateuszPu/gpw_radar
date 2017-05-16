@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.rss.rabbitmq</groupId>
+    <groupId>com.producer.rabbitmq</groupId>
     <artifactId>rabbitmq-service</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -22,6 +22,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <rss.parser.version>1.1-SNAPSHOT</rss.parser.version>
         <stock-details-updater.version>1.1-SNAPSHOT</stock-details-updater.version>
+        <assertj-core.version>3.1.0</assertj-core.version>
+        <junit.version>4.12</junit.version>
     </properties>
 
     <dependencies>
@@ -42,6 +44,18 @@
             <groupId>com.stock.details.updater</groupId>
             <artifactId>stock-details-updater</artifactId>
             <version>${stock-details-updater.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj-core.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -73,7 +87,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.rss.rabbitmq.App</mainClass>
+                    <mainClass>com.producer.rabbitmq.App</mainClass>
                 </configuration>
             </plugin>
         </plugins>
