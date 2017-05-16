@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.List;
 
 @Service("rssChatConsumer")
 @Profile({Constants.SPRING_PROFILE_PRODUCTION, Constants.SPRING_PROFILE_DEVELOPMENT})
@@ -34,14 +33,8 @@ public class Consumer {
     @RabbitListener(queues = "${rss_reader_chat_queue}")
     @RabbitExceptionHandler
     public void consumeMessage(Message message) throws IOException {
-            List<ChatMessage> chatMessages = messageTransformer.transformMessage(message);
-            List<ChatMessage> save = chatMessageRepository.save(chatMessages);
-            sendMessagesToChat(save);
-    }
-
-    private void sendMessagesToChat(List<ChatMessage> chatMessages) {
-        chatMessages.stream()
-            .sorted((e1, e2) -> e1.getCreatedDate().compareTo(e2.getCreatedDate()))
-            .forEach(socketMessageService::sendToChat);
+        ChatMessage chatMessages = messageTransformer.transformMessage(message);
+        ChatMessage save = chatMessageRepository.save(chatMessages);
+        socketMessageService.sendToChat(save);
     }
 }

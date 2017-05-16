@@ -22,16 +22,14 @@ public class MailConsumerTest {
 
     private MailService mailServiceMock = Mockito.mock(MailService.class);
     private MessageTransformer messageTransformerMock = Mockito.mock(MessageTransformer.class);
-    private Consumer objectUnderTest = new Consumer(mailServiceMock, "notImportant", messageTransformerMock);
+    private Consumer objectUnderTest = new Consumer(mailServiceMock, "testHeader", messageTransformerMock);
 
     @Test
     public void shouldSendEmailToUser() throws IOException, InterruptedException {
-
         //given
         NewsMessage newsMessageMock = new NewsMessage();
         newsMessageMock.setStock(new Stock());
-        List<NewsMessage> newsMessagesMock = Arrays.asList(new NewsMessage(), new NewsMessage(), newsMessageMock);
-        given(messageTransformerMock.transformMessage(any(), anyString())).willReturn(newsMessagesMock);
+        given(messageTransformerMock.transformMessage(any(), anyString())).willReturn(newsMessageMock);
 
         //when
         objectUnderTest.consumeMessage(createRabbitMessage());

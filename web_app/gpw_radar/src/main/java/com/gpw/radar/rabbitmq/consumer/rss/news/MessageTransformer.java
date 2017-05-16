@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @Service
 public class MessageTransformer {
@@ -28,25 +27,23 @@ public class MessageTransformer {
         this.stockRepository = stockRepository;
     }
 
-    public List<ChatMessage> transformMessage(Message message) throws IOException {
-        List<NewsMessage> newsMessages = jsonTransformer.deserializeFromJson(message, NewsMessage.class);
-        List<ChatMessage> chatMessages = newsMessages.stream()
-            .map(ChatMessage::new)
-            .collect(Collectors.toList());
-        chatMessages.forEach(e -> e.setUser(User.createSystemUser()));
-        return chatMessages;
+    public ChatMessage transformMessage(Message message) throws IOException {
+        NewsMessage newsMessage = jsonTransformer.deserializeObjectFromJson(message, NewsMessage.class);
+        ChatMessage chatMessage = new ChatMessage(newsMessage);
+        chatMessage.setUser(User.createSystemUser());
+        return chatMessage;
     }
 
-    public List<NewsMessage> transformMessage(Message message, String newsTypeHeader) throws IOException {
+    public NewsMessage transformMessage(Message message, String newsTypeHeader) throws IOException {
         RssType type = RssType.valueOf((String) message.getMessageProperties().getHeaders().get(newsTypeHeader));
-        List<NewsMessage> newsMessages = jsonTransformer.deserializeFromJson(message, NewsMessage.class);
-        newsMessages.forEach(e -> e.setType(type));
-        newsMessages.forEach(e -> e.setStock(getStockFromMessage(e.getMessage())));
+        NewsMessage newsMessage = jsonTransformer.deserializeObjectFromJson(message, NewsMessage.class);
+        newsMessage.setType(type);
+        newsMessage.setStock(getStockFromMessage(newsMessage.getMessage()));
         //don't know why PAP messages have wrong time
         if (type.equals(RssType.PAP)) {
-            newsMessages.forEach(e -> e.setNewsDateTime(e.getNewsDateTime().plusHours(1)));
+            newsMessage.setNewsDateTime(newsMessage.getNewsDateTime().plusHours(1));
         }
-        return newsMessages;
+        return newsMessage;
     }
 
     private Stock getStockFromMessage(String message) {

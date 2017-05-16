@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.List;
 
 @Service("rssDatabaseConsumer")
 @Profile({Constants.SPRING_PROFILE_PRODUCTION, Constants.SPRING_PROFILE_DEVELOPMENT})
@@ -36,7 +35,7 @@ public class Consumer {
     @RabbitListener(queues = "${rss_reader_database_queue}")
     @RabbitExceptionHandler
     public void consumeMessage(Message message) throws IOException {
-        List<NewsMessage> newsMessages = messageTransformer.transformMessage(message, newsTypeHeader);
+        NewsMessage newsMessages = messageTransformer.transformMessage(message, newsTypeHeader);
         newsMessageRepository.save(newsMessages);
     }
 }

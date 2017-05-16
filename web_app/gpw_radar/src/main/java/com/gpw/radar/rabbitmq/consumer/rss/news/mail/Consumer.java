@@ -4,6 +4,7 @@ import com.gpw.radar.aop.exception.RabbitExceptionHandler;
 import com.gpw.radar.config.Constants;
 import com.gpw.radar.elasticsearch.newsmessage.NewsMessage;
 import com.gpw.radar.rabbitmq.consumer.rss.news.MessageTransformer;
+import com.gpw.radar.rabbitmq.consumer.rss.news.RssType;
 import com.gpw.radar.service.mail.MailService;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -13,7 +14,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.List;
 
 @Service("rssMailConsumer")
 @Profile({Constants.SPRING_PROFILE_PRODUCTION, Constants.SPRING_PROFILE_DEVELOPMENT})
@@ -34,8 +34,9 @@ public class Consumer {
     @RabbitListener(queues = "${rss_reader_mail_queue}")
     @RabbitExceptionHandler
     public void consumeMessage(Message message) throws IOException {
-        List<NewsMessage> newsMessages = messageTransformer.transformMessage(message, newsTypeHeader);
-        newsMessages.stream().filter(e -> e.getStock() != null).forEach(mailService::informUserAboutStockNews);
+        NewsMessage newsMessage = messageTransformer.transformMessage(message, newsTypeHeader);
+        newsMessage.setType(RssType.valueOf(message.getMessageProperties().getHeaders().get(newsTypeHeader).toString()));
+        mailService.informUserAboutStockNews(newsMessage);
     }
 
 }

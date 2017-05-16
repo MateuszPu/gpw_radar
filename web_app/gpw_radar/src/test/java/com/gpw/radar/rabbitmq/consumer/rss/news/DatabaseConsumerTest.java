@@ -9,7 +9,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 
 import static com.gpw.radar.rabbitmq.consumer.rss.news.MessageFactory.createRabbitMessage;
-import static org.mockito.Matchers.anyCollection;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -22,7 +22,7 @@ public class DatabaseConsumerTest {
     @Test
     public void shouldSaveNewsMessage() throws IOException, InterruptedException {
         objectUnderTest.consumeMessage(createRabbitMessage());
-        verify(newsMessageRepositoryMock, times(1)).save(anyCollection());
+        verify(newsMessageRepositoryMock, times(1)).save(any(NewsMessage.class));
     }
 
 }

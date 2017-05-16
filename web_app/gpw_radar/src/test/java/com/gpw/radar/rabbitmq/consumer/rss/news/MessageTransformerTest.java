@@ -30,14 +30,13 @@ public class MessageTransformerTest {
         Message msg = createRabbitMessage();
 
         //when
-        List<ChatMessage> chatMessages = objectUnderTest.transformMessage(msg);
+        ChatMessage chatMessages = objectUnderTest.transformMessage(msg);
 
         //then
-        ChatMessage firstMessage = chatMessages.get(0);
-        assertThat(firstMessage.getMessage()).isEqualTo("[2016-08-04T20:14]<a href=\"http://www.twiter.com/\" target=\"_blank\">test message</a>");
-        assertThat(firstMessage.getLink()).isEqualTo("http://www.twiter.com/");
-        assertThat(firstMessage.getUser().getId()).isEqualTo("h6ehbr4khohjr116k23pon9vojv66c3eab45aui6pmau3acq1b");
-        assertThat(firstMessage.getUser().getLogin()).isEqualTo("system");
+        assertThat(chatMessages.getMessage()).isEqualTo("[2016-08-04T20:14]<a href=\"http://www.twiter.com/\" target=\"_blank\">test message</a>");
+        assertThat(chatMessages.getLink()).isEqualTo("http://www.twiter.com/");
+        assertThat(chatMessages.getUser().getId()).isEqualTo("h6ehbr4khohjr116k23pon9vojv66c3eab45aui6pmau3acq1b");
+        assertThat(chatMessages.getUser().getLogin()).isEqualTo("system");
     }
 
     @Test
@@ -47,23 +46,13 @@ public class MessageTransformerTest {
         Message msg = createRabbitMessage();
 
         //when
-        List<NewsMessage> newsMessages = objectUnderTest.transformMessage(msg, headerName);
+        NewsMessage newsMessages = objectUnderTest.transformMessage(msg, headerName);
 
         //then
-        NewsMessage newsMessageWithOutStock = newsMessages.stream().filter(e -> e.getStock() == null).findAny().get();
-        assertThat(newsMessageWithOutStock.getMessage()).isEqualTo("test message");
-        assertThat(newsMessageWithOutStock.getLink()).isEqualTo("http://www.twiter.com/");
-        assertThat(newsMessageWithOutStock.getType()).isEqualTo(RssType.EBI);
-        assertThat(newsMessageWithOutStock.getNewsDateTime()).isEqualTo(LocalDateTime.of(2016, 8, 4, 20, 14, 0));
-
-        NewsMessage newsMessageWithStock = newsMessages.stream().filter(e -> e.getStock() != null).findAny().get();
-        assertThat(newsMessageWithStock.getMessage()).isEqualTo("RAWLPLUG SA test message two");
-        assertThat(newsMessageWithStock.getLink()).isEqualTo("http://www.google.pl/");
-        assertThat(newsMessageWithStock.getType()).isEqualTo(RssType.EBI);
-        assertThat(newsMessageWithStock.getNewsDateTime()).isEqualTo(LocalDateTime.of(2016, 8, 1, 20, 0, 0));
-        assertThat(newsMessageWithStock.getStock().getTicker()).isEqualTo("kgh");
-        assertThat(newsMessageWithStock.getStock().getName()).isEqualTo("KGH name");
-        assertThat(newsMessageWithStock.getStock().getShortName()).isEqualTo("KGH short name");
+        assertThat(newsMessages.getMessage()).isEqualTo("test message");
+        assertThat(newsMessages.getLink()).isEqualTo("http://www.twiter.com/");
+        assertThat(newsMessages.getType()).isEqualTo(RssType.EBI);
+        assertThat(newsMessages.getNewsDateTime()).isEqualTo(LocalDateTime.of(2016, 8, 4, 20, 14, 0));
     }
 
 }

@@ -53,7 +53,7 @@ public class Consumer {
     }
 
     public List<StockDetails> parseStocksDetails(Message message) throws IOException {
-        List<StockDetails> stocksDetails = jsonTransformer.deserializeFromJson(message, StockDetails.class);
+        List<StockDetails> stocksDetails = jsonTransformer.deserializeCollectionFromJson(message, StockDetails.class);
         LocalDate date = stocksDetails.stream()
             .findAny()
             .orElseThrow(() -> new InvalidStateException("Stock details does not have date property"))
@@ -75,7 +75,7 @@ public class Consumer {
     }
 
     @CacheEvict(cacheNames = {CacheConfiguration.STOCK_TICKERS_CACHE}, allEntries = true)
-    private void cleanCache() {
+    public void cleanCache() {
         logger.debug("Clean cache");
     }
 }
