@@ -1,9 +1,9 @@
 package com.producer.rabbitmq.rss;
 
+import com.producer.rabbitmq.config.rss.RssType;
 import com.producer.rabbitmq.service.JsonConverter;
 import com.rss.parser.RssParser;
 import com.rss.parser.model.GpwNews;
-import com.producer.rabbitmq.config.rss.RssType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,29 +49,32 @@ public class Cron {
 			LOGGER.info("Run cron for {}", rss);
 			RssParser parser = rssTypeParserMap.get(rss);
 			List<GpwNews> gpwNewses = parser.parseBy(this.rssTypeTimeMap.get(rss));
-			if (!gpwNewses.isEmpty()) {
-				logInvalidLinks(gpwNewses, rss);
-				LocalDateTime dateTime = gpwNewses.stream()
-						.max(Comparator.comparing(GpwNews::getNewsDateTime))
-						.get()
-						.getNewsDateTime();
-				rssTypeTimeMap.put(rss, dateTime);
-				String json = jsonConverter.convertToJson(gpwNewses);
-				producer.publish(json, rss.name());
-			}
+			LocalDateTime lastMessageTime = gpwNewses.stream()
+					.max(Comparator.comparing(GpwNews::getNewsDateTime))
+					.map(GpwNews::getNewsDateTime)
+					.orElse(rssTypeTimeMap.get(rss));
+			rssTypeTimeMap.put(rss, lastMessageTime);
+			gpwNewses.forEach(e -> createMessage(e, rss));
 		}
 	}
 
-	private void logInvalidLinks(List<GpwNews> gpwNewses, RssType rss) {
-		for (GpwNews news : gpwNewses) {
-			if (checkStatusOfLink(news.getLink()) != 200) {
-				LOGGER.warn("News type \"{}\" on date \"{}\" has not valid link \"{}\"",
-						rss, news.getNewsDateTime(), news.getLink());
-			}
-		}
+	private void createMessage(GpwNews gpwNews, RssType rss) {
+		String json = jsonConverter.convertToJson(gpwNews);
+		boolean validLink = hasValidLink(gpwNews, rss);
+		producer.publish(json, rss.name(), validLink);
 	}
 
-	private int checkStatusOfLink(String link) {
+	private boolean hasValidLink(GpwNews gpwNews, RssType rss) {
+		boolean result = true;
+		if (getStatusOf(gpwNews.getLink()) != 200) {
+			result = false;
+			LOGGER.warn("News type \"{}\" on date \"{}\" has not valid link \"{}\"",
+					rss, gpwNews.getNewsDateTime(), gpwNews.getLink());
+		}
+		return result;
+	}
+
+	private int getStatusOf(String link) {
 		int httpStatusCode = 400;
 		HttpURLConnection connection = null;
 		try {

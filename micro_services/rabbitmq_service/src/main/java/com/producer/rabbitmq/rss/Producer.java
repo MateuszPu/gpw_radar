@@ -18,10 +18,13 @@ public class Producer {
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
 	@Value("${rss_reader_fanout_exchange}")
-	private String name;
+	private String fanoutNsme;
 
 	@Value("${rss_reader_news_type_header}")
 	private String newsType;
+
+	@Value("${rss_reader_news_valid_link_header}")
+	private String validLink;
 
 	private final RabbitTemplate template;
 
@@ -30,13 +33,14 @@ public class Producer {
 		this.template = template;
 	}
 
-	public void publish(String newsesJson, String rssChannelName) {
+	public void publish(String newsesJson, String rssChannelName, boolean validLink) {
 		try {
 			Message message = MessageBuilder.withBody(newsesJson.getBytes("UTF-8"))
 					.setContentType(MessageProperties.CONTENT_TYPE_JSON)
 					.setHeader(newsType, rssChannelName)
+					.setHeader(this.validLink, validLink)
 					.build();
-			this.template.convertAndSend(name, "", message);
+			this.template.convertAndSend(fanoutNsme, "", message);
 		} catch (UnsupportedEncodingException e) {
 			LOGGER.error("Exception in {} with clause : {}", this.getClass().getName(), e.getCause());
 		}
