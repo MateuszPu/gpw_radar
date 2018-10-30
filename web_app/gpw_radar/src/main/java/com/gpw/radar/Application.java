@@ -84,10 +84,10 @@ public class Application {
      * If no profile has been configured, set by default the "dev" profile.
      */
     private static void addDefaultProfile(SpringApplication app, SimpleCommandLinePropertySource source) {
-        if (!source.containsProperty("spring.profiles.active") &&
-            !System.getenv().containsKey("SPRING_PROFILES_ACTIVE")) {
-
-            app.setAdditionalProfiles(Constants.SPRING_PROFILE_DEVELOPMENT);
-        }
+//        if (!source.containsProperty("spring.profiles.active") &&
+//            !System.getenv().containsKey("SPRING_PROFILES_ACTIVE")) {
+//
+//            app.setAdditionalProfiles(Constants.SPRING_PROFILE_DEVELOPMENT);
+//        }
     }
 }

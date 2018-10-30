@@ -40,7 +40,7 @@ public class ChatMessage {
     @Column(name = "created_date", nullable = false)
     private ZonedDateTime createdDate = ZonedDateTime.now();
 
-    @NotNull
+//    @NotNull
     @Column(name = "news_date_time", nullable = false)
     private LocalDateTime newsDateTime;
 
