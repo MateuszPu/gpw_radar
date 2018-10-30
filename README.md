@@ -1,3 +1,6 @@
+# Author's thoughts
+Yes I am aware that a lot of code in this repo sucks. However when I implemented it I was not aware of it :) Now the project was postponed and I am going to create the 2.0 version of gpw radar.
+
 # Architecture overview
 ![alt tag](https://github.com/MateuszPu/gpw_radar/blob/dev/architecture.png)
 
