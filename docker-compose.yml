@@ -1,0 +1,39 @@
+version: '3.7'
+services:
+  postgres:
+    image: postgres:9.6.10
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: gpw_radar
+    network:
+    - gpw
+  rabbit:
+    build:
+      context: ./configs/rabbitmq/docker
+      dockerfile: Dockerfile
+    network:
+    - gpw
+  es:
+    build:
+      context: ./configs/elasticsearch/docker
+        dockerfile: Dockerfile
+    network:
+      - gpw
+  rss:
+    build:
+      context: ./target/rss
+        dockerfile: Dockerfile
+    netowrk:
+      - gpw
+  gpwApp:
+    build:
+      context: ./target/web
+        dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    network:
+      - gpw
+networks:
+  gpw:
+    driver: "bridge"
