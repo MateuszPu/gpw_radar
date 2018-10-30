@@ -1,3 +1,0 @@
-CREATE USER postgres;
-CREATE DATABASE gpw_radar;
-GRANT ALL PRIVILEGES ON DATABASE gpw_radar TO postgres;

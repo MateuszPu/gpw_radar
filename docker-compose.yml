@@ -6,33 +6,39 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: gpw_radar
-    network:
+    networks:
     - gpw
   rabbit:
     build:
       context: ./configs/rabbitmq/docker
       dockerfile: Dockerfile
-    network:
+    networks:
     - gpw
   es:
     build:
       context: ./configs/elasticsearch/docker
-        dockerfile: Dockerfile
-    network:
+      dockerfile: Dockerfile
+    command: -Des.network.host=0.0.0.0
+    networks:
       - gpw
   rss:
     build:
       context: ./target/rss
-        dockerfile: Dockerfile
-    netowrk:
+      dockerfile: Dockerfile
+    networks:
       - gpw
-  gpwApp:
+  gpw_app:
     build:
       context: ./target/web
-        dockerfile: Dockerfile
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
-    network:
+    depends_on:
+      - rss
+      - rabbit
+      - es
+      - postgres
+    networks:
       - gpw
 networks:
   gpw:
