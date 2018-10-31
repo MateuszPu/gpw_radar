@@ -93,6 +93,13 @@ In this particular project I am using rabbitmq. It is configured in docker conta
  3) After install copy config file named `elasticsearch.yml` from `configs/elasticsearch/docker` to your elasticsearch directory
 
  4) Change ip addres to localhost in file named `elasticsearch_config.properties` in `configs\elasticsearch\properties` directory
+ 
+ 
+# docker
+docker build -t build:1.0 .
+docker run -d --name build build:1.0 && docker cp build:configs/app target
+
+docker-compose up -d
 
 [JHipster]: https://jhipster.github.io/
 [Node.js]: https://nodejs.org/

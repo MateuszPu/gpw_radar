@@ -1,20 +1,26 @@
 version: '3.7'
 services:
   postgres:
+    container_name: postgres
     image: postgres:9.6.10
     environment:
+      TZ: "Europe/Warsaw"
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: gpw_radar
     networks:
     - gpw
   rabbit:
+    container_name: rabbit
     build:
       context: ./configs/rabbitmq/docker
       dockerfile: Dockerfile
+    ports:
+    - "15672:15672"
     networks:
     - gpw
   es:
+    container_name: es
     build:
       context: ./configs/elasticsearch/docker
       dockerfile: Dockerfile
@@ -22,12 +28,18 @@ services:
     networks:
       - gpw
   rss:
+    container_name: rss
+    environment:
+      TZ: "Europe/Warsaw"
     build:
       context: ./target/rss
       dockerfile: Dockerfile
     networks:
       - gpw
   gpw_app:
+    container_name: gpw_app
+    environment:
+      TZ: "Europe/Warsaw"
     build:
       context: ./target/web
       dockerfile: Dockerfile

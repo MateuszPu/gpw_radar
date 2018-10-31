@@ -14,7 +14,5 @@ RUN apt-get update
   #&& /usr/local/bin/npm install -g grunt \
  # && /usr/local/bin/npm install -g grunt-cli
 
-RUN ls web_app/gpw_radar
-RUN /build_project.sh pass
-RUN ls configs/app/rss
-RUN ls configs/app/web
+RUN ./build_project.sh pass
+
