@@ -30,7 +30,8 @@ services:
   rss:
     container_name: rss
     environment:
-      TZ: "Europe/Warsaw"
+       - "spring.profiles.active=dev"
+       - "TZ=Europe/Warsaw"
     build:
       context: ./target/rss
       dockerfile: Dockerfile
@@ -39,7 +40,8 @@ services:
   gpw_app:
     container_name: gpw_app
     environment:
-      TZ: "Europe/Warsaw"
+       - "spring.profiles.active=dev"
+       - "TZ=Europe/Warsaw"
     build:
       context: ./target/web
       dockerfile: Dockerfile

@@ -4,4 +4,4 @@ COPY app.jar /app.jar
 
 
 # Define default command
-CMD ["/usr/bin/java", "-jar", "-Dspring.profiles.active=dev", "/app.jar"]
+ENTRYPOINT ["/usr/bin/java",  "-jar", "/app.jar"]
