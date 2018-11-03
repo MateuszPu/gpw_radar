@@ -9,7 +9,7 @@ What should you do to build and run application?
 First of all install [Docker] and [Docker-compose]. After that run following command (assuming you are in root of project)
 
     docker build -t build:1.0 .
-    docker run -d --name build build:1.0 && docker cp build:configs/app target
+    docker create -it --name build build:1.0 && docker cp build:configs/app target
 
 After that you should se new folder target and then run following command:
 

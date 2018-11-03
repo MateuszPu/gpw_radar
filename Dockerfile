@@ -3,16 +3,16 @@ FROM jimador/docker-jdk-8-maven-node
 ADD configs configs
 ADD micro_services micro_services
 ADD web_app  web_app
-ADD build_project.sh build_project.sh
-RUN apt-get update
-#RUN curl -sL https://deb.nodesource.com/setup_8.x
-#RUN apt-get install -y nodejs
-#RUN ls /usr/local/bin/docker-java-home
-#RUN whereis npm
-#RUN /usr/local/bin/npm -v \
- # && /usr/local/bin/npm install -g bower \
-  #&& /usr/local/bin/npm install -g grunt \
- # && /usr/local/bin/npm install -g grunt-cli
+ENV pass=myPassword
 
-RUN ./build_project.sh pass
-
+RUN apt-get update && \
+    rm -rf configs/app/*/*.jar && \
+    rm -rf target && \
+    mkdir target && \
+    perl -pi -e 's/mail_password/'${pass}'/g' web_app/gpw_radar/src/main/resources/config/application.yml && \
+    mvn -f web_app/technical_analysis clean install && \
+    mvn -f web_app/gpw_radar -Pprod clean package && \
+    cp web_app/gpw_radar/target/gpw-radar-*.jar target && \
+    cp web_app/gpw_radar/target/gpw-radar-*.jar configs/app/web/app.jar && \
+    mvn -f micro_services clean package && \
+    cp micro_services/rabbitmq_service/target/rabbitmq*.jar configs/app/rss/app.jar
