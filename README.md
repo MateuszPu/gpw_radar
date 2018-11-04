@@ -1,5 +1,5 @@
 # Author's thoughts
-Yes I am aware that a lot of code in this repo breaks good design approach, OOP etc. However when I implemented it I was not aware of it :) Now the impementation was postponed and I treat this project as a battlefield of trying new technologies.
+Yes, I am aware that a lot of code in this repo breaks good design approach, OOP etc. However when I implemented it I was not aware of it :) Now the implementation was postponed and I treat this project as a battlefield of trying new technologies.
 
 # Architecture overview
 ![alt tag](https://github.com/MateuszPu/gpw_radar/blob/dev/architecture.png)
