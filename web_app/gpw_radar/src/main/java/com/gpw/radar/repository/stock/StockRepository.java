@@ -28,6 +28,9 @@ public interface StockRepository extends JpaRepository<Stock, String> {
     @Query(value = "SELECT ticker from Stock", nativeQuery = true)
     Set<String> findAllTickers();
 
+    @Query(value = "SELECT ticker from Stock st where st.ticker <> :ticker")
+    Set<String> findAllTickerNotEquals(@Param("ticker") String ticker);
+
     @Query("from Stock st left outer join fetch st.stockIndicators")
     List<Stock> findAllFetchIndicators();
 

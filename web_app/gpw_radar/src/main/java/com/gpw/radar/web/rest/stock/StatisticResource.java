@@ -17,6 +17,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
@@ -36,7 +37,7 @@ public class StatisticResource {
 
     @RequestMapping(value = "/stock/correlation", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @RolesAllowed(AuthoritiesConstants.USER)
-    public ResponseEntity<TreeSet<StockStatistic>> getCorrelationForSelectedTicker(@RequestParam(value = "correlation_type", required = true) CorrelationType correlationType, @RequestParam(value = "ticker", required = true) String ticker, @RequestParam(value = "period", required = true) int period) {
+    public ResponseEntity<List<StockStatistic>> getCorrelationForSelectedTicker(@RequestParam(value = "correlation_type", required = true) CorrelationType correlationType, @RequestParam(value = "ticker", required = true) String ticker, @RequestParam(value = "period", required = true) int period) {
         return correlationService.computeCorrelation(ticker, period, correlationType, NUMBER_OF_THREADS);
     }
 

@@ -16,13 +16,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS, value = "session")
@@ -41,50 +48,49 @@ public class CorrelationService {
         this.stockRepository = stockRepository;
     }
 
-    public ResponseEntity<TreeSet<StockStatistic>> computeCorrelation(String correlationForTicker, int period,
+    public ResponseEntity<List<StockStatistic>> computeCorrelation(String correlationForTicker, int period,
                                                                       CorrelationType correlationType, int numberOfThreads) {
-        if (period != 10 && period != 20 && period != 30 && period != 60 && period != 90
-            && correlationForTicker != null && correlationType != null) {
+        if (validate(correlationForTicker, period, correlationType))
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        this.step = 0;
-        isComputing = true;
 
         Correlator correlator = getCorrelatorImpl(correlationType);
-        TreeSet<StockStatistic> correlationTreeSet = new TreeSet<>();
-        Set<String> tickersToScan = new HashSet<>(stockRepository.findAllTickers());
-        tickersToScan.remove(correlationForTicker);
-        List<StockDetails> stockDetailsSource = getStockDetailsByTicker(correlationForTicker, period);
-        LocalDate sourceEndDate = stockDetailsSource.get(0).getDate();
-        LocalDate sourceStartDate = stockDetailsSource.get(stockDetailsSource.size() - 1).getDate();
-        final double[] sourceClosePrices = stockDetailsSource.stream().mapToDouble(e -> e.getClosePrice().doubleValue()).toArray();
+        final List<StockStatistic> result = Collections.synchronizedList(new ArrayList());
+        Set<String> tickersToScan = stockRepository.findAllTickerNotEquals(correlationForTicker);
+
 
         ExecutorService executor = Executors.newFixedThreadPool(numberOfThreads);
-
-        for (String ticker : tickersToScan) {
-            executor.submit(() -> {
-                double[] targetClosePrices = getClosePrices(getStockDetailsByTicker(ticker, period), sourceStartDate, sourceEndDate);
-                if (targetClosePrices.length == 0) {
-                    return;
-                }
-                double correlation = correlator.correlate(sourceClosePrices, targetClosePrices);
-                StockStatistic statistic = new StockStatistic(correlation, ticker);
-                correlationTreeSet.add(statistic);
-                increaseStep();
-            });
-        }
+        tickersToScan.forEach(ticker -> executor.submit(() -> result.add(computeCorrelation(correlationForTicker, ticker, period, correlator))));
         executor.shutdown();
-
         try {
             executor.awaitTermination(1, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             logger.error("Error occurs {}", e);
         }
+        Predicate<StockStatistic> isNull = Objects::isNull;
+        List<StockStatistic> stockStatistics = result.stream().filter(isNull.negate()).sorted().collect(Collectors.toList());
+        return new ResponseEntity<>(stockStatistics, HttpStatus.OK);
+    }
 
-        this.step = 0;
-        this.isComputing = false;
-        return new ResponseEntity<>(correlationTreeSet, HttpStatus.OK);
+    private boolean validate(String correlationForTicker, int period, CorrelationType correlationType) {
+        if (period != 10 && period != 20 && period != 30 && period != 60 && period != 90
+            && correlationForTicker != null && correlationType != null) {
+            return true;
+        }
+        return false;
+    }
+
+    private StockStatistic computeCorrelation(String sourceTicker, String ticker, int period, Correlator correlator) {
+        List<StockDetails> stockDetailsSource = getStockDetailsByTicker(sourceTicker, period);
+        final double[] sourceClosePrices = stockDetailsSource.stream().mapToDouble(stockDetails -> stockDetails.getClosePrice().doubleValue()).toArray();
+        LocalDate sourceEndDate = stockDetailsSource.stream().max(Comparator.comparing(StockDetails::getDate)).orElseThrow(RuntimeException::new).getDate();
+        LocalDate sourceStartDate = stockDetailsSource.stream().min(Comparator.comparing(StockDetails::getDate)).orElseThrow(RuntimeException::new).getDate();
+
+        double[] targetClosePrices = getClosePrices(getStockDetailsByTicker(ticker, period), sourceStartDate, sourceEndDate);
+        if (targetClosePrices.length == 0) {
+            return null;
+        }
+        double correlation = correlator.correlate(sourceClosePrices, targetClosePrices);
+        return new StockStatistic(correlation, ticker);
     }
 
     private double[] getClosePrices(List<StockDetails> stockDetails, LocalDate sourceStartDate, LocalDate sourceEndDate) {

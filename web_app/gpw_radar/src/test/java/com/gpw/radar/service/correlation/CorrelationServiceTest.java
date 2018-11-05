@@ -52,7 +52,7 @@ public class CorrelationServiceTest {
         String ticker = "ticker";
 
         //when
-        ResponseEntity<TreeSet<StockStatistic>> response = objectUnderTest.computeCorrelation(ticker, invalidPeriod,
+        ResponseEntity<List<StockStatistic>> response = objectUnderTest.computeCorrelation(ticker, invalidPeriod,
             correlationType, 1);
 
         //then
@@ -64,14 +64,14 @@ public class CorrelationServiceTest {
         //given
         int period = 10;
         Pageable pageable = new PageRequest(0, period);
-        given(stockRepositoryMock.findAllTickers()).willReturn(new HashSet<>(Arrays.asList("a", "b", "c", "d", "e")));
+        given(stockRepositoryMock.findAllTickerNotEquals("a")).willReturn(new HashSet<>(Arrays.asList("b", "c", "d", "e")));
         given(stockDetailsDaoEsMock.findByStockTickerOrderByDateDesc("a", pageable)).willReturn(createRandomData("a", period));
         given(stockDetailsDaoEsMock.findByStockTickerOrderByDateDesc("b", pageable)).willReturn(createRandomData("b", period));
         given(stockDetailsDaoEsMock.findByStockTickerOrderByDateDesc("c", pageable)).willReturn(createRandomData("c", period));
 
         //when
         List<StockStatistic> correlationForA = new ArrayList<>(objectUnderTest.computeCorrelation("a", period,
-            correlationType, 1).getBody());
+            correlationType, 3).getBody());
 
         //then
         assertThat(correlationForA.size()).isEqualTo(2);
@@ -82,7 +82,7 @@ public class CorrelationServiceTest {
         //given
         int period = 10;
         Pageable pageable = new PageRequest(0, period);
-        given(stockRepositoryMock.findAllTickers()).willReturn(new HashSet<>(Arrays.asList("a", "b", "c", "d", "e")));
+        given(stockRepositoryMock.findAllTickerNotEquals("a")).willReturn(new HashSet<>(Arrays.asList("b", "c", "d", "e")));
         given(stockDetailsDaoEsMock.findByStockTickerOrderByDateDesc("a", pageable)).willReturn(createRandomData("a", period));
         given(stockDetailsDaoEsMock.findByStockTickerOrderByDateDesc("b", pageable)).willReturn(createRandomData("b", period));
         given(stockDetailsDaoEsMock.findByStockTickerOrderByDateDesc("c", pageable)).willReturn(createRandomData("c", period));
@@ -102,12 +102,13 @@ public class CorrelationServiceTest {
         Random rnd = new Random();
         LocalDate startDate = LocalDate.of(2016, 5, 20);
         for (int i = 0; i < size; i++) {
+            LocalDate date = startDate.minusDays(1);
             result.add(StockDetailsEsBuilder.buildStockDetails()
-                .closePrice(new BigDecimal(String.valueOf(rnd.nextInt(500))))
-                .date(startDate.minusDays(1))
+                .closePrice(new BigDecimal(String.valueOf(rnd.nextInt(500)+1)))
+                .date(date)
                 .stock(new Stock(ticker, "", ""))
                 .build());
-            startDate = startDate.minusDays(i);
+            startDate = date;
         }
         return result;
     }
