@@ -1,6 +1,5 @@
 package com.gpw.radar.service.correlation;
 
-import com.gpw.radar.domain.stock.StockStatistic;
 import com.gpw.radar.elasticsearch.stockdetails.Stock;
 import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
 import com.gpw.radar.dao.stockdetails.StockDetailsDAO;
@@ -52,15 +51,15 @@ public class CorrelationServiceTest {
         String ticker = "ticker";
 
         //when
-        ResponseEntity<List<StockStatistic>> response = objectUnderTest.computeCorrelation(ticker, invalidPeriod,
-            correlationType, 1);
+        ResponseEntity<List<CorrelationResult>> response = objectUnderTest.computeCorrelation(ticker, invalidPeriod,
+            correlationType);
 
         //then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
-    public void resultShouldBeSizeFourForDataSameLength() throws InterruptedException {
+    public void resultShouldBeSizeFourForDataSameLength() {
         //given
         int period = 10;
         Pageable pageable = new PageRequest(0, period);
@@ -70,15 +69,15 @@ public class CorrelationServiceTest {
         given(stockDetailsDaoEsMock.findByStockTickerOrderByDateDesc("c", pageable)).willReturn(createRandomData("c", period));
 
         //when
-        List<StockStatistic> correlationForA = new ArrayList<>(objectUnderTest.computeCorrelation("a", period,
-            correlationType, 3).getBody());
+        List<CorrelationResult> correlationForA = new ArrayList<>(objectUnderTest.computeCorrelation("a", period,
+            correlationType).getBody());
 
         //then
         assertThat(correlationForA.size()).isEqualTo(2);
     }
 
     @Test
-    public void resultShouldBeSizeTwoForDataDifferentLength() throws InterruptedException {
+    public void resultShouldBeSizeTwoForDataDifferentLength() {
         //given
         int period = 10;
         Pageable pageable = new PageRequest(0, period);
@@ -90,8 +89,8 @@ public class CorrelationServiceTest {
         given(stockDetailsDaoEsMock.findByStockTickerOrderByDateDesc("e", pageable)).willReturn(createRandomData("e", 9));
 
         //when
-        List<StockStatistic> correlationForA = new ArrayList<>(objectUnderTest.computeCorrelation("a", period,
-            correlationType, 1).getBody());
+        List<CorrelationResult> correlationForA = new ArrayList<>(objectUnderTest.computeCorrelation("a", period,
+            correlationType).getBody());
 
         //then
         assertThat(correlationForA.size()).isEqualTo(2);

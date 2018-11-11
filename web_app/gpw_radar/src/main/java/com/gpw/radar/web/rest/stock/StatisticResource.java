@@ -1,6 +1,7 @@
 package com.gpw.radar.web.rest.stock;
 
-import com.gpw.radar.domain.stock.StockStatistic;
+import com.gpw.radar.service.correlation.CorrelationResult;
+import com.gpw.radar.service.correlation.StockCorrelationStatistic;
 import com.gpw.radar.security.AuthoritiesConstants;
 import com.gpw.radar.service.correlation.CorrelationService;
 import com.gpw.radar.service.correlation.CorrelationType;
@@ -17,8 +18,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 /**
  * REST controller for managing statistics.
@@ -33,18 +32,10 @@ public class StatisticResource {
     @Inject
     private StatisticService statisticService;
 
-    private final int NUMBER_OF_THREADS = 2;
-
     @RequestMapping(value = "/stock/correlation", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @RolesAllowed(AuthoritiesConstants.USER)
-    public ResponseEntity<List<StockStatistic>> getCorrelationForSelectedTicker(@RequestParam(value = "correlation_type", required = true) CorrelationType correlationType, @RequestParam(value = "ticker", required = true) String ticker, @RequestParam(value = "period", required = true) int period) {
-        return correlationService.computeCorrelation(ticker, period, correlationType, NUMBER_OF_THREADS);
-    }
-
-    @RequestMapping(value = "/stock/correlation/step", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @RolesAllowed(AuthoritiesConstants.USER)
-    public ResponseEntity<Integer> getStep() {
-        return new ResponseEntity<>(correlationService.getStep(), HttpStatus.OK);
+    public ResponseEntity<List<CorrelationResult>> getCorrelationForSelectedTicker(@RequestParam(value = "correlation_type", required = true) CorrelationType correlationType, @RequestParam(value = "ticker", required = true) String ticker, @RequestParam(value = "period", required = true) int period) {
+        return correlationService.computeCorrelation(ticker, period, correlationType);
     }
 
     @RequestMapping(value = "/stocks/up", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -63,7 +54,7 @@ public class StatisticResource {
     }
 
     @RequestMapping(value = "/five/most/followed/stocks", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<StockStatistic>> getFiveMostFollowedStocks() {
+    public ResponseEntity<List<CorrelationResult>> getFiveMostFollowedStocks() {
         return statisticService.getFiveMostFollowedStocks();
     }
 
