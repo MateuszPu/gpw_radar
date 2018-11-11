@@ -3,12 +3,6 @@ package com.gpw.radar.service.correlation;
 import com.gpw.radar.dao.stockdetails.StockDetailsDAO;
 import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
 import com.gpw.radar.repository.stock.StockRepository;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.math3.stat.correlation.KendallsCorrelation;
-import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
-import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
@@ -18,16 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -39,7 +26,8 @@ public class CorrelationService {
     private final StockRepository stockRepository;
 
     @Autowired
-    public CorrelationService(@Qualifier("stockDetailsElasticSearchDAO") StockDetailsDAO stockDetailsDAO, StockRepository stockRepository) {
+    public CorrelationService(@Qualifier("stockDetailsElasticSearchDAO") StockDetailsDAO stockDetailsDAO,
+                              StockRepository stockRepository) {
         this.stockDetailsDAO = stockDetailsDAO;
         this.stockRepository = stockRepository;
     }

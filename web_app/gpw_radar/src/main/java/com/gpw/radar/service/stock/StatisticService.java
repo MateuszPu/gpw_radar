@@ -1,8 +1,7 @@
 package com.gpw.radar.service.stock;
 
-import com.gpw.radar.service.correlation.CorrelationResult;
-import com.gpw.radar.service.correlation.StockCorrelationStatistic;
 import com.gpw.radar.repository.stock.StockRepository;
+import com.gpw.radar.service.correlation.CorrelationResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

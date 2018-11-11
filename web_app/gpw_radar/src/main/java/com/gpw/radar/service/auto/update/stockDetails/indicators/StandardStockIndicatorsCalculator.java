@@ -1,9 +1,9 @@
 package com.gpw.radar.service.auto.update.stockDetails.indicators;
 
+import com.gpw.radar.dao.stockdetails.StockDetailsDAO;
 import com.gpw.radar.domain.stock.Stock;
 import com.gpw.radar.domain.stock.StockIndicators;
 import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
-import com.gpw.radar.dao.stockdetails.StockDetailsDAO;
 import com.gpw.radar.repository.stock.StockIndicatorsRepository;
 import com.gpw.radar.repository.stock.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.gpw.radar.service.technical.indicators.sma;
 
-import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
 import com.gpw.radar.dao.stockdetails.StockDetailsDAO;
+import com.gpw.radar.elasticsearch.stockdetails.StockDetails;
 import com.gpw.radar.repository.stock.StockRepository;
 import com.gpw.radar.service.stock.StockService;
 import com.gpw.radar.service.technical.indicators.TickAdapter;
@@ -14,7 +14,11 @@ import pl.technical.analysis.Tickable;
 import pl.technical.analysis.indicators.trackers.sma.PriceCrossSMA;
 import pl.technical.analysis.indicators.trackers.sma.SMACrossover;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
